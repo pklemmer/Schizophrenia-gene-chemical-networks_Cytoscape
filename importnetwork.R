@@ -38,22 +38,38 @@ lapply(scz_pathways.ids,import)
 lapply(adc_pathways.ids,import)  
   #Opening all the pathways previously selected consecutively - probably not so great if there are a lot of pathways
 
-scz_pathways.names <- scz_pathways$name
-adc_pathways.names <- adc_pathways$name
+scz_pathways.names <- paste(scz_pathways$name, scz_pathways$species, sep = " - ")
+adc_pathways.names <- paste(adc_pathways$name, adc_pathways$species, sep = " - ")
+  #Getting the names of the pathways as shown in Cytoscape, which includes the species. 
 
 intersect_df <- expand.grid(scz_pathways.names, adc_pathways.names)
-  #Matching every SCZ pathway against every addiction pathway to detect all interactions
+intersect_df <- as.data.frame(lapply(intersect_df, as.character))
+  #Matching every SCZ pathway against every addiction pathway to detect all interactions and forcing entries to be characters (required for mergeNetwork)
 
 
-intersect <- function(j) {
-  mergeNetworks(c(j[,1],j[,2]), "test","intersection")
+intersect <- function(row) {
+  col1 <- row[1]
+  col2 <- row[2]
+  mergeNetworks(c(col1,col2),(paste(col1,col2, sep =  " - ")),"intersection")
+    #Merging networks with 'intersect' parameter
+  getIntersections <- as.character(getAllNodes())
+    #Getting the nodes resulting in the intersection networks
+  list(intersection_names = paste(getIntersections,collapse = ", "))
+    #Extracting the names of these nodes and making them more legible
 }
 
+df_results <- apply(intersect_df, 1, intersect)
+  #Applying the function to the intersect_df, i.e. every SCZ pathway is merged with every addiction pathway
+intersection_names <- sapply(df_results, function(x) x$intersection_names)
+intersect_df$intersection_names <- intersection_names
+  #Adding the intersections to a new column in the df 
+intersect_df <- intersect_df %>% mutate_all(~na_if(.,""))
+  #Some pathways do not have any overlaps, so the field in the df is marked as NA
+intersect_df <- cbind(intersect_df, scz_pathways.ids, adc_pathways.ids)
+intersect_df <- intersect_df %>%
+  select (scz_pathways.ids,Var1, adc_pathways.ids,Var2,intersection_names)
+names(intersect_df) <- c("SCZ WP ID","SCZ pathway","ADC WP ID","Addiction pathway", "Intersections")
+  #Reordering and renaming the df columns for easier reading
 
-a <- as.character(intersect_df[1,1])
-b <- as.character(intersect_df[2,1])
-
-mergeNetworks(c(a,b),"test","intersection")
-mergeNetworks(c("Disruption of postsynaptic signaling by CNV - Homo sapiens","Opioid receptor pathways - Homo sapiens"),"test")
-  #overlay all addiction pathways with all scz pathways and extract interactions
-  #group networks together? tidier and easier for overlapping
+View(intersect_df)
+write.csv(intersect_df, file = "CSVs/Intersections.csv")
