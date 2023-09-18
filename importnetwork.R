@@ -22,7 +22,6 @@ n
   #'n' is to deny BiocManager packages updadates
 invisible(lapply(c("dplyr","rWikiPathways","RCy3"), require, character.only = TRUE))
 
-
 cytoscapePing()
 cytoscapeVersionInfo()
   #Checking if Cytoscape is running and version info
@@ -59,7 +58,6 @@ adc_pathways.names <- paste(adc_pathways$name, adc_pathways$species, sep = " - "
 intersect_df <- expand.grid(scz_pathways.names, adc_pathways.names)
 intersect_df <- as.data.frame(lapply(intersect_df, as.character))
   #Matching every SCZ pathway against every addiction pathway to detect all interactions and forcing entries to be characters (required for mergeNetwork)
-
 
 intersect <- function(row) {
   col1 <- row[1]
