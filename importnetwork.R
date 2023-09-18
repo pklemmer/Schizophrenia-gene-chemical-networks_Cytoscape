@@ -1,18 +1,27 @@
 sessionInfo()
   #Requires R 4.1.3 and Rtools 4.0
+  #dplyr v.1.1.2; BiocManager v. 1.30.22; rWikiPathways 1.14.0; RCy3 2.14.2
 setwd("~/GitHub/SCZ-CNV")
-install.packages("dplyr")
-  #v. 1.1.2
-install.packages("BiocManager")
-  # v.1.30.22
-BiocManager::install("RCy3")
-  #v. 2.14.2
-  #Legacy version of R and Rtools is needed as the 'mergeNetworks' function of the current newest RCy3 version (v. 2.20.1) is not functional 
-BiocManager::install("rWikiPathways")
-  #v. 1.14.0
-library(RCy3)
-library(rWikiPathways)
-library(dplyr)
+packages <- c("dplyr")
+installed_packages <- packages %in% rownames(installed.packages())
+if (any(installed_packages == FALSE)) {
+  install.packages(packages[!installed_packages])
+}
+if(!"rWikiPathways" %in% installed.packages()){
+  if (!requireNamespace("BiocManager", quietly=TRUE))
+    install.packages("BiocManager")
+  BiocManager::install("rWikiPathways")
+}
+n
+if(!"RCy3" %in% installed.packages()){
+  if (!requireNamespace("BiocManager", quietly=TRUE))
+    install.packages("BiocManager")
+  BiocManager::install("RCy3")
+}
+n
+  #'n' is to deny BiocManager packages updadates
+invisible(lapply(c("dplyr","rWikiPathways","RCy3"), require, character.only = TRUE))
+
 
 cytoscapePing()
 cytoscapeVersionInfo()
