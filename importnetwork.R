@@ -1,13 +1,18 @@
 sessionInfo()
+  #Requires R 4.1.3 and Rtools 4.0
 setwd("~/GitHub/SCZ-CNV")
+install.packages("dplyr")
+  #v. 1.1.2
 install.packages("BiocManager")
+  # v.1.30.22
 BiocManager::install("RCy3")
+  #v. 2.14.2
+  #Legacy version of R and Rtools is needed as the 'mergeNetworks' function of the current newest RCy3 version (v. 2.20.1) is not functional 
 BiocManager::install("rWikiPathways")
-#Installing packages
+  #v. 1.14.0
 library(RCy3)
 library(rWikiPathways)
 library(dplyr)
-  #Opening libraries this script depends on 
 
 cytoscapePing()
 cytoscapeVersionInfo()
@@ -33,14 +38,14 @@ adc_pathways.ids <- adc_pathways$id
 import <- function(i) 
   {commandsRun(paste0('wikipathways import-as-network id=', i))
 }
-
+  #RCy3 command to import queried pathways as networks by network WP ID
 lapply(scz_pathways.ids,import)
 lapply(adc_pathways.ids,import)  
-  #Opening all the pathways previously selected consecutively - probably not so great if there are a lot of pathways
+  #Opening all the pathways previously selected consecutively
 
 scz_pathways.names <- paste(scz_pathways$name, scz_pathways$species, sep = " - ")
 adc_pathways.names <- paste(adc_pathways$name, adc_pathways$species, sep = " - ")
-  #Getting the names of the pathways as shown in Cytoscape, which includes the species. 
+  #Getting the names of the pathways as shown in Cytoscape, which includes the species 
 
 intersect_df <- expand.grid(scz_pathways.names, adc_pathways.names)
 intersect_df <- as.data.frame(lapply(intersect_df, as.character))
