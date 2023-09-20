@@ -58,20 +58,44 @@ adc_pathways.names <- paste(adc_pathways$name, adc_pathways$species, sep = " - "
 intersect_df <- expand.grid(scz_pathways.names, adc_pathways.names)
 intersect_df <- as.data.frame(lapply(intersect_df, as.character))
   #Matching every SCZ pathway against every addiction pathway to detect all interactions and forcing entries to be characters (required for mergeNetwork)
-
 intersect <- function(row) {
   col1 <- row[1]
   col2 <- row[2]
   mergeNetworks(c(col1,col2),(paste(col1,col2, sep =  " - ")),"intersection")
     #Merging networks with 'intersect' parameter
-  getIntersections <- as.character(getAllNodes())
-    #Getting the nodes resulting in the intersection networks
-  list(intersection_names = paste(getIntersections,collapse = ", "))
-    #Extracting the names of these nodes and making them more legible
+  infos <- as.character(getTableColumns("node",c("name", "XrefId", "XrefDatasource")))
+  tryCatch({
+  list(names = paste(infos[,"names"], collapse = ", "))
+  list(ids = paste(infos[,"XrefId"], collapse = ", "))
+  list(sources = paste(infos[,"XrefDatasource"], collapse = ", ")) },
+  error = function(e) {
+    cat("Error occurred:", conditionMessage(e), "/n")
+    names <- NA
+    ids <- NA
+    sources <- NA
+  })
 }
 
-df_results <- apply(intersect_df, 1, intersect)
+
+intersect_list <- apply(intersect_df, 1, intersect)
+names <- sapply(intersect_list, function(x) x["names"])
+ids <- sapply(intersect_list, function(x) x[ids])
+sources <- sapply(intersect_list, function(x) x[sources])
+
+
+result_df <- bind_rows(names,ids,sources)
+intersect_df <- cbind(intersect_df, result_df)
+
   #Applying the function to the intersect_df, i.e. every SCZ pathway is merged with every addiction pathway
+name <- lapply(df_results, function(x) x$name)
+intersect_df$name <- name
+XrefId <- sapply(df_results, function(x) x$XrefId)
+intersect_df$XrefId <- XrefId
+XrefDatasource <- sapply(df_results, function(x) x$XrefDatasource)
+intersect_df$XrefDatasource <- XrefDatasource 
+
+
+
 intersection_names <- sapply(df_results, function(x) x$intersection_names)
 intersect_df$intersection_names <- intersection_names
   #Adding the intersections to a new column in the df 
@@ -85,3 +109,18 @@ names(intersect_df) <- c("SCZ WP ID","SCZ pathway","ADC WP ID","Addiction pathwa
 
 View(intersect_df)
 write.csv(intersect_df, file = "CSVs/Intersections.csv")
+
+
+getIntersections <- as.character(getAllNodes())
+#Getting the nodes resulting in the intersection networks
+list(intersection_names = paste(getIntersections,collapse = ", "))
+#Extracting the names of these nodes and making them more legible
+
+
+info <- as.character(getTableColumns("node", c("name","XrefId","XrefDatasource")))
+info[,"name"]
+nn <- as.character(getTableColumns("node","name"))
+list(nnl = paste(nn, collapse = ", "))
+qq <- getTableColumns("node","XrefDatasource")
+list(qql = paste(qq, collapse = ", "))
+infoname =paste(info$name, collapse = ", ")
