@@ -6,7 +6,7 @@
 "5","WP4222","Phosphodiesterases in neuronal function - Homo sapiens","WP1281","Common pathways underlying drug addiction - Homo sapiens","group, DRD2, GRIA1, Dopamine, GRIN1, PRKACA, ADCY8, CAMK2A, DRD1, ADCY1, GRIN2A"
 "6","WP4942","15q13.3 copy number variation syndrome - Homo sapiens","WP5093","Common pathways underlying drug addiction - Homo sapiens",NA
 "7","WP4932","7q11.23 copy number variation syndrome - Homo sapiens","WP2636","Common pathways underlying drug addiction - Homo sapiens","Glutamate, Dopamine"
-"8","WP4657","22q11.2 copy number variation syndrome - Homo sapiens","WP1281","Common pathways underlying drug addiction - Homo sapiens","group, Dopamine, PPP1CB, RAF1, DRD2"
+"8","WP4657","22q11.2 copy number variation syndrome - Homo sapiens","WP1281","Common pathways underlying drug addiction - Homo sapiens","DRD2, group, Dopamine, PPP1CB, RAF1"
 "9","WP4875","Disruption of postsynaptic signaling by CNV - Homo sapiens","WP5093","Hypothetical network for drug addiction - Rattus norvegicus",NA
 "10","WP4905","1q21.1 copy number variation syndrome - Homo sapiens","WP2636","Hypothetical network for drug addiction - Rattus norvegicus",NA
 "11","WP5412","8q11.23 (RB1CC1) copy number variation - Homo sapiens","WP1281","Hypothetical network for drug addiction - Rattus norvegicus",NA
@@ -15,7 +15,7 @@
 "14","WP4942","15q13.3 copy number variation syndrome - Homo sapiens","WP1281","Hypothetical network for drug addiction - Rattus norvegicus",NA
 "15","WP4932","7q11.23 copy number variation syndrome - Homo sapiens","WP5093","Hypothetical network for drug addiction - Rattus norvegicus",NA
 "16","WP4657","22q11.2 copy number variation syndrome - Homo sapiens","WP2636","Hypothetical network for drug addiction - Rattus norvegicus",NA
-"17","WP4875","Disruption of postsynaptic signaling by CNV - Homo sapiens","WP1281","Opioid receptor pathways - Homo sapiens","ARC, CAMK2A, GRIN2B, GRIN2A, GRIN1, group_MAPK3_MAPK1, group, HOMER1, MAPK1"
+"17","WP4875","Disruption of postsynaptic signaling by CNV - Homo sapiens","WP1281","Opioid receptor pathways - Homo sapiens","group_MAPK3_MAPK1, group, HOMER1, MAPK1, ARC, CAMK2A, GRIN2B, GRIN2A, GRIN1"
 "18","WP4905","1q21.1 copy number variation syndrome - Homo sapiens","WP5093","Opioid receptor pathways - Homo sapiens","GJA1"
 "19","WP5412","8q11.23 (RB1CC1) copy number variation - Homo sapiens","WP2636","Opioid receptor pathways - Homo sapiens","PTK2, TNF, PTK2B"
 "20","WP5398","NRXN1 deletion syndrome - Homo sapiens","WP1281","Opioid receptor pathways - Homo sapiens","GRIN2A, DLG4, GRIN1, GRIN2B"
