@@ -1,8 +1,8 @@
 sessionInfo()
   #Requires R 4.1.3 and Rtools 4.0
-  #dplyr v.1.1.2; BiocManager v. 1.30.22; rWikiPathways 1.14.0; RCy3 2.14.2
+  #dplyr 1.1.2; httr 1.4.7; BiocManager 1.30.22; rWikiPathways 1.14.0; RCy3 2.14.2
 setwd("~/GitHub/SCZ-CNV")
-packages <- c("dplyr")
+packages <- c("dplyr","httr")
 installed_packages <- packages %in% rownames(installed.packages())
 if (any(installed_packages == FALSE)) {
   install.packages(packages[!installed_packages])
@@ -20,36 +20,99 @@ if(!"RCy3" %in% installed.packages()){
 }
 n
   #'n' is to deny BiocManager packages updadates
-invisible(lapply(c("dplyr","rWikiPathways","RCy3"), require, character.only = TRUE))
+invisible(lapply(c("dplyr","httr","rWikiPathways","RCy3"), require, character.only = TRUE))
 
 cytoscapePing()
 cytoscapeVersionInfo()
   #Checking if Cytoscape is running and version info
+  #Script tested using v. 3.10.1
 installApp('WikiPathways')
+installApp('DisGeNET-app')
+  #Using DisGeNET app for the first time requires the user to define the directory for the database file
 installApp('CyTargetLinker')
   #Installing required Cytoscape apps to query and expand WikiPathways networks
 
-scz_pathways <- findPathwaysByText("Schizophrenia")
-  #Querying WikiPathways for relevant pathways using "Schizophrenia" as keyword
-scz_pathways <- scz_pathways %>%
-  dplyr::filter(species %in% c("Homo sapiens", "Rattus norvegicus", "Mus musculus"))
-  #Filtering by species
-scz_pathways.ids <- scz_pathways$id
-  #Selecting the WP IDs of the relevant pathways
+getpathways.wp<- function(i) {
+  pw <- findPathwaysByText(i)
+  pw <- pw %>%
+    dplyr::filter(species %in% c("Homo sapiens","Rattus norvegicus","Mus musculus"))
+  pw.ids <- paste0(i, "_wpids")
+  assign(pw.ids, as.character(pw$id),envir = .GlobalEnv)
+}
+  #Function to query WikiPathways using keyword and to extract WP IDs for the import function
 
-adc_pathways <- findPathwaysByText("Addiction")
-adc_pathways <- adc_pathways %>%
-  dplyr::filter(species %in% c("Homo sapiens", "Rattus norvegicus", "Mus musculus"))
-adc_pathways.ids <- adc_pathways$id
-  #Finding addiction pathways 
-
-import <- function(i) 
-  {commandsRun(paste0('wikipathways import-as-network id=', i))
+import <- function(j) {
+  commandsRun(paste0('wikipathways import-as-network id=', j))
 }
   #RCy3 command to import queried pathways as networks by network WP ID
-lapply(scz_pathways.ids,import)
-lapply(adc_pathways.ids,import)  
-  #Opening all the pathways previously selected consecutively
+
+
+disgenetRestUrl<-function(netType,host="127.0.0.1",port=1234,version="v7"){
+  if(is.null(netType)){
+    print("Network type not specified.")
+  }else{
+    url<-sprintf("http://%s:%i/disgenet/%s/%s",host,port,version,netType)
+  }
+  return (url)
+}
+disgenetRestUrl(netType = "gene-disease-net")
+  #Defining object for REST to call DisGeNET automation module; defining that we will be using gene-disease associations (GDA)
+disgenetRestCall<-function(netType,netParams){
+  url<-disgenetRestUrl(netType)
+  restCall<-POST(url, body = netParams, encode = "json")
+  result<-content(restCall,"parsed")
+  return(result)
+}
+  #Object that executes REST calls to DisGeNET module in Cytoscape 
+geneDisParams <- list(
+  source = "CURATED",
+  assocType = "Any",
+  diseaseClass = "Any",
+  diseaseSearch = "Schizophrenia",
+  geneSearch = " ",
+  initialScoreValue = "0.3",
+  finalScoreValue = "1.0"
+)
+  #Specifying parameters of the GDA network to be imported
+geneDisResult <- disgenetRestCall("gene-disease-net",geneDisParams)
+  #Importing DisGeNET disease-associated genes for SCZ 
+
+getpathways.wp("Schizophrenia")
+wpids <- c("4875","5412","4222","4942","5408","5402","5346","5405","5406","5407","4940","4905","5398","5399","4906","4657","4932")
+sczcnv <- sapply(wpids, function(k) paste0("WP",k))
+  #Manually adding relevant SCZ CNV pathways from WikiPathways
+
+lapply(c(Schizophrenia_wpids,sczcnv), import)
+  #Importing WP pathways (both manually added and by keyword)
+
+networklist.dup <- getNetworkList()
+dup.filter <- function(input,suffix) {
+  filtered_list <- input[substr(input, nchar(input) - 1,nchar(input))==suffix]
+}
+duplicates <- dup.filter(networklist.dup,"_1")
+  #Getting duplicate networks (Cytoscape marks duplicate networks with a "_1" suffix to the network name)
+delete.dupes <- function(nw) {
+  setCurrentNetwork(nw)
+  deleteNetwork()
+}
+lapply(duplicates,delete.dupes)
+  #Selecting and deleting duplicate networks
+
+ #================================================================
+networklist <- getNetworkList()
+merge <- function(n1,n2) {
+  mergeNetworks(c(n1,n2),(paste(n1,n2,sep = " - ")),"merge")
+}
+mergeresult <- networklist[1]
+for (i in 2:length(networklist)) {
+  mergeresult <- merge(mergeresult,networklist[i])
+}
+ #================================================================
+
+linkset <- file.path(getwd(),"Linksets","wikipathways-20220511-hsa-WP.xgmml")
+CTLextend.cmd = paste('cytargetlinker extend idAttribute="XrefId" linkSetFiles="', linkset, '" network=current direction=TARGETS', sep="")
+commandsRun(CTLextend.cmd)
+  #Extending the network
 
 scz_pathways.names <- paste(scz_pathways$name, scz_pathways$species, sep = " - ")
 adc_pathways.names <- paste(adc_pathways$name, adc_pathways$species, sep = " - ")
