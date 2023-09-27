@@ -27,9 +27,12 @@ cytoscapeVersionInfo()
   #Checking if Cytoscape is running and version info
   #Script tested using v. 3.10.1
 installApp('WikiPathways')
+  #v. 3.3.10
 installApp('DisGeNET-app')
   #Using DisGeNET app for the first time requires the user to define the directory for the database file
+  #v. 7.3.0
 installApp('CyTargetLinker')
+  #v. 4.1.0
   #Installing required Cytoscape apps to query and expand WikiPathways networks
 
 getpathways.wp<- function(i) {
@@ -98,16 +101,14 @@ delete.dupes <- function(nw) {
 lapply(duplicates,delete.dupes)
   #Selecting and deleting duplicate networks
 
- #================================================================
 networklist <- getNetworkList()
-merge <- function(n1,n2) {
-  mergeNetworks(c(n1,n2),(paste(n1,n2,sep = " - ")),"merge")
+setCurrentNetwork(networklist[[1]])
+for(i in 1:length(networklist)) {
+  current <- getNetworkName()
+  mergeNetworks(c(current,networklist[[i]]), paste(current,networklist[[i]]),"union")
 }
-mergeresult <- networklist[1]
-for (i in 2:length(networklist)) {
-  mergeresult <- merge(mergeresult,networklist[i])
-}
- #================================================================
+  #Looping through the network list to merge all currently open networks with each other, creating one large unified network
+
 
 linkset <- file.path(getwd(),"Linksets","wikipathways-20220511-hsa-WP.xgmml")
 CTLextend.cmd = paste('cytargetlinker extend idAttribute="XrefId" linkSetFiles="', linkset, '" network=current direction=TARGETS', sep="")
