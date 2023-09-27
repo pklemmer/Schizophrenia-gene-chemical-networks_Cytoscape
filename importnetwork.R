@@ -1,8 +1,8 @@
 sessionInfo()
   #Requires R 4.1.3 and Rtools 4.0
-  #dplyr 1.1.2; httr 1.4.7; BiocManager 1.30.22; rWikiPathways 1.14.0; RCy3 2.14.2
+  #dplyr 1.1.2; httr 1.4.7;jsonlite 1.84; BiocManager 1.30.22; rWikiPathways 1.14.0; RCy3 2.14.2
 setwd("~/GitHub/SCZ-CNV")
-packages <- c("dplyr","httr")
+packages <- c("dplyr","httr","jsonlite")
 installed_packages <- packages %in% rownames(installed.packages())
 if (any(installed_packages == FALSE)) {
   install.packages(packages[!installed_packages])
@@ -20,7 +20,7 @@ if(!"RCy3" %in% installed.packages()){
 }
 n
   #'n' is to deny BiocManager packages updadates
-invisible(lapply(c("dplyr","httr","rWikiPathways","RCy3"), require, character.only = TRUE))
+invisible(lapply(c("dplyr","httr","jsonlite","rWikiPathways","RCy3"), require, character.only = TRUE))
 
 cytoscapePing()
 cytoscapeVersionInfo()
@@ -67,7 +67,7 @@ disgenetRestCall<-function(netType,netParams){
   return(result)
 }
   #Object that executes REST calls to DisGeNET module in Cytoscape 
-geneDisParams <- list(
+geneDisParams_scz <- list(
   source = "CURATED",
   assocType = "Any",
   diseaseClass = "Any",
@@ -77,7 +77,7 @@ geneDisParams <- list(
   finalScoreValue = "1.0"
 )
   #Specifying parameters of the GDA network to be imported
-geneDisResult <- disgenetRestCall("gene-disease-net",geneDisParams)
+geneDisResult <- disgenetRestCall("gene-disease-net",geneDisParams_scz)
   #Importing DisGeNET disease-associated genes for SCZ 
 
 getpathways.wp("Schizophrenia")
@@ -114,6 +114,29 @@ linkset <- file.path(getwd(),"Linksets","wikipathways-20220511-hsa-WP.xgmml")
 CTLextend.cmd = paste('cytargetlinker extend idAttribute="XrefId" linkSetFiles="', linkset, '" network=current direction=TARGETS', sep="")
 commandsRun(CTLextend.cmd)
   #Extending the network
+
+getpathways.wp("Dopamine")
+getpathways.wp("Addiction")
+lapply(c(Dopamine_wpids,Addiction_wpids), import)
+geneDisParams_adc <- list(
+  source = "CURATED",
+  assocType = "Any",
+  diseaseClass = "Any",
+  diseaseSearch = "Addictive Behavior",
+  geneSearch = " ",
+  initialScoreValue = "0.3",
+  finalScoreValue = "1.0"
+)
+#Specifying parameters of the GDA network to be imported
+geneDisResult <- disgenetRestCall("gene-disease-net",geneDisParams_adc)
+#Importing DisGeNET disease-associated genes for addictive behavior
+
+call <- "https://api.pharmgkb.org/v1/data/pathway/PA166170742?view=max"
+antipsychotics_pgkb <- GET(url = call)
+status_code(antipsychotics_pgkb)
+  #Figure out how to get TSV which can then be imported to Cytoscape 
+
+
 
 scz_pathways.names <- paste(scz_pathways$name, scz_pathways$species, sep = " - ")
 adc_pathways.names <- paste(adc_pathways$name, adc_pathways$species, sep = " - ")
