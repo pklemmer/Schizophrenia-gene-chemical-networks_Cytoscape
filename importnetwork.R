@@ -1,6 +1,7 @@
 sessionInfo()
   #Requires R 4.1.3 and Rtools 4.0
-  #dplyr 1.1.2; httr 1.4.7;jsonlite 1.84; BiocManager 1.30.22; rWikiPathways 1.14.0; RCy3 2.14.2
+  #dplyr 1.1.2; httr 1.4.7;jsonlite 1.8.4; BiocManager 1.30.22; rWikiPathways 1.14.0; RCy3 2.14.2
+  #Cytoscape 3.10.1
 setwd("~/GitHub/SCZ-CNV")
 packages <- c("dplyr","httr","jsonlite")
 installed_packages <- packages %in% rownames(installed.packages())
@@ -12,20 +13,16 @@ if(!"rWikiPathways" %in% installed.packages()){
     install.packages("BiocManager")
   BiocManager::install("rWikiPathways")
 }
-n
 if(!"RCy3" %in% installed.packages()){
   if (!requireNamespace("BiocManager", quietly=TRUE))
     install.packages("BiocManager")
   BiocManager::install("RCy3")
 }
-n
-  #'n' is to deny BiocManager packages updadates
 invisible(lapply(c("dplyr","httr","jsonlite","rWikiPathways","RCy3"), require, character.only = TRUE))
 
 cytoscapePing()
 cytoscapeVersionInfo()
   #Checking if Cytoscape is running and version info
-  #Script tested using v. 3.10.1
 installApp('WikiPathways')
   #v. 3.3.10
 installApp('DisGeNET-app')
@@ -67,15 +64,17 @@ disgenetRestCall<-function(netType,netParams){
   return(result)
 }
   #Object that executes REST calls to DisGeNET module in Cytoscape 
-geneDisParams_scz <- list(
-  source = "CURATED",
+geneDisParams <- function(source,dis,min) {list(
+  source = source,
   assocType = "Any",
   diseaseClass = "Any",
-  diseaseSearch = "Schizophrenia",
+  diseaseSearch = dis,
   geneSearch = " ",
-  initialScoreValue = "0.3",
+  initialScoreValue = min,
   finalScoreValue = "1.0"
 )
+}
+geneDisParams_scz <- geneDisParams("CURATED","Schizophrenia","0.3")
   #Specifying parameters of the GDA network to be imported
 geneDisResult <- disgenetRestCall("gene-disease-net",geneDisParams_scz)
   #Importing DisGeNET disease-associated genes for SCZ 
@@ -115,21 +114,42 @@ CTLextend.cmd = paste('cytargetlinker extend idAttribute="XrefId" linkSetFiles="
 commandsRun(CTLextend.cmd)
   #Extending the network
 
+  #===========ADDICTION=================================================================
+
+genedisparams_df <- read.table("CSVs/disgenetparams.txt",header=TRUE,sep = "\t")
+  #Loading relevant gene-disease networks from DisGeNET
+  #Networks of interest manually added into tsv where it is easier to adjust filters
+apply(genedisparams_df,1,function(row) {
+  gdp <- geneDisParams(row["source"],row["dis"],row["min"])
+  geneDisResult <- disgenetRestCall("gene-disease-net",gdp)
+})
+
+lapply(c(Dopamine_wpids,Addiction_wpids), import)
 getpathways.wp("Dopamine")
 getpathways.wp("Addiction")
-lapply(c(Dopamine_wpids,Addiction_wpids), import)
-geneDisParams_adc <- list(
-  source = "CURATED",
-  assocType = "Any",
-  diseaseClass = "Any",
-  diseaseSearch = "Addictive Behavior",
-  geneSearch = " ",
-  initialScoreValue = "0.3",
-  finalScoreValue = "1.0"
-)
-#Specifying parameters of the GDA network to be imported
-geneDisResult <- disgenetRestCall("gene-disease-net",geneDisParams_adc)
-#Importing DisGeNET disease-associated genes for addictive behavior
+
+networklist.dup <- getNetworkList()
+dup.filter <- function(input,suffix) {
+  filtered_list <- input[substr(input, nchar(input) - 1,nchar(input))==suffix]
+}
+duplicates <- dup.filter(networklist.dup,"_1")
+#Getting duplicate networks (Cytoscape marks duplicate networks with a "_1" suffix to the network name)
+delete.dupes <- function(nw) {
+  setCurrentNetwork(nw)
+  deleteNetwork()
+}
+lapply(duplicates,delete.dupes)
+#Selecting and deleting duplicate networks
+
+networklist <- getNetworkList()
+setCurrentNetwork(networklist[[1]])
+for(i in 1:length(networklist)) {
+  current <- getNetworkName()
+  mergeNetworks(c(current,networklist[[i]]), paste(current,networklist[[i]]),"union")
+}
+#Looping through the network list to merge all currently open networks with each other, creating one large unified network
+
+
 
 call <- "https://api.pharmgkb.org/v1/data/pathway/PA166170742?view=max"
 antipsychotics_pgkb <- GET(url = call)
