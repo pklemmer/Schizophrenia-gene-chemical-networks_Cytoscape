@@ -41,11 +41,34 @@ getpathways.wp<- function(i) {
 }
   #Function to query WikiPathways using keyword and to extract WP IDs for the import function
 
+createNodeSource <- function(source) {
+  networkname <- getNetworkName()
+  nodetable <- paste0(networkname," default node")
+  #Getting the name of the node table of the previously imported network with following nomenclature [Network name - species default node] (note the single space between "default" and "node")
+  commandsRun(sprintf("table create column columnName=NodeSource table=%s type=string",nodetable))
+  #Creating a new column named "NodeSource" in which the source of the node is stored 
+  commandsRun(sprintf("table set values columnName=NodeSource handleEquations=false rowList=all table=%1$s value=%2$s",nodetable,source))
+  #Filling the new "NodeSource" column with the source 
+}
+  #Function to create new column in node table specifying origin of network/node
+
+createNodeSource.wp <- function(source) {
+  networkname <- getNetworkName()
+  nodetable <- paste0(networkname," default  node")
+  #Getting the name of the node table of the previously imported network with following nomenclature [Network name - species default  node] (note the two spaces between "default" and "node")
+  commandsRun(sprintf("table create column columnName=NodeSource table=%s type=string",nodetable))
+  #Creating a new column named "NodeSource" in which the source of the node is stored 
+  commandsRun(sprintf("table set values columnName=NodeSource handleEquations=false rowList=all table=%1$s value=%2$s",nodetable,source))
+  #Filling the new "NodeSource" column with the source 
+}
+  #Same function, but for WikiPathways imports as these have a typo in the designation of node tables
+
+
 import <- function(j) {
   commandsRun(paste0('wikipathways import-as-network id=', j))
+    #Pasting WikiPathways IDs into a Cytoscape command line prompt to import as networks
+  createNodeSource.wp("WikiPathways")
 }
-  #RCy3 command to import queried pathways as networks by network WP ID
-
 
 disgenetRestUrl<-function(netType,host="127.0.0.1",port=1234,version="v7"){
   if(is.null(netType)){
@@ -72,12 +95,15 @@ geneDisParams <- function(source,dis,min) {list(
   geneSearch = " ",
   initialScoreValue = min,
   finalScoreValue = "1.0"
-)
-}
+)}
+#Specifying parameters of the GDA network to be imported
+
 geneDisParams_scz <- geneDisParams("CURATED","Schizophrenia","0.3")
-  #Specifying parameters of the GDA network to be imported
 geneDisResult <- disgenetRestCall("gene-disease-net",geneDisParams_scz)
   #Importing DisGeNET disease-associated genes for SCZ 
+createNodeSource("DisGeNET")
+  #Adding a DisGeNET as source for all nodes of the previously imported network
+  
 
 getpathways.wp("Schizophrenia")
 wpids <- c("4875","5412","4222","4942","5408","5402","5346","5405","5406","5407","4940","4905","5398","5399","4906","4657","4932")
@@ -85,7 +111,7 @@ sczcnv <- sapply(wpids, function(k) paste0("WP",k))
   #Manually adding relevant SCZ CNV pathways from WikiPathways
 
 lapply(c(Schizophrenia_wpids,sczcnv), import)
-  #Importing WP pathways (both manually added and by keyword)
+  #Importing WP pathways (both manually added and by keyword). Also adds "WikiPathways" as NodeSource column to node table
 
 networklist.dup <- getNetworkList()
 dup.filter <- function(input,suffix) {
@@ -109,10 +135,11 @@ for(i in 1:length(networklist)) {
   #Looping through the network list to merge all currently open networks with each other, creating one large unified network
 
 
-linkset <- file.path(getwd(),"Linksets","wikipathways-20220511-hsa-WP.xgmml")
-CTLextend.cmd = paste('cytargetlinker extend idAttribute="XrefId" linkSetFiles="', linkset, '" network=current direction=TARGETS', sep="")
+hsa <- file.path(getwd(), "Linksets", "wikipathways-20220511-hsa-WP.xgmml")
+hsa_react <- file.path(getwd(), "Linksets", "wikipathways-20220511-hsa-REACTOME.xgmml")
+  #Loading the WikiPathways linksets available at https://cytargetlinker.github.io/pages/linksets/wikipathways
+CTLextend.cmd = paste('cytargetlinker extend idAttribute="XrefId" linkSetFiles="', hsa, ',', hsa_react, '" network=current direction=TARGETS', sep="")
 commandsRun(CTLextend.cmd)
-  #Extending the network
 
   #===========ADDICTION=================================================================
 
@@ -123,10 +150,12 @@ apply(genedisparams_df,1,function(row) {
   gdp <- geneDisParams(row["source"],row["dis"],row["min"])
   geneDisResult <- disgenetRestCall("gene-disease-net",gdp)
 })
+createNodeSource("DisGeNET")
 
-lapply(c(Dopamine_wpids,Addiction_wpids), import)
+
 getpathways.wp("Dopamine")
 getpathways.wp("Addiction")
+lapply(c(Dopamine_wpids,Addiction_wpids), import)
 
 networklist.dup <- getNetworkList()
 dup.filter <- function(input,suffix) {
