@@ -18,7 +18,9 @@ if(!"RCy3" %in% installed.packages()){
     install.packages("BiocManager")
   BiocManager::install("RCy3")
 }
+  #Checking if required packages are installed and installing if not
 invisible(lapply(c("dplyr","httr","jsonlite","rWikiPathways","RCy3"), require, character.only = TRUE))
+  #Loading libraries
 
 cytoscapePing()
 cytoscapeVersionInfo()
@@ -36,8 +38,10 @@ getpathways.wp<- function(i) {
   pw <- findPathwaysByText(i)
   pw <- pw %>%
     dplyr::filter(species %in% c("Homo sapiens","Rattus norvegicus","Mus musculus"))
+    #Filtering by species
   pw.ids <- paste0(i, "_wpids")
   assign(pw.ids, as.character(pw$id),envir = .GlobalEnv)
+    #Extracting WP IDs
 }
   #Function to query WikiPathways using keyword and to extract WP IDs for the import function
 
@@ -98,18 +102,19 @@ geneDisParams <- function(source,dis,min) {list(
 )}
 #Specifying parameters of the GDA network to be imported
 
-geneDisParams_scz <- geneDisParams("CURATED","Schizophrenia","0.3")
-geneDisResult <- disgenetRestCall("gene-disease-net",geneDisParams_scz)
-  #Importing DisGeNET disease-associated genes for SCZ 
-createNodeSource("DisGeNET")
-  #Adding a DisGeNET as source for all nodes of the previously imported network
-  
-
-getpathways.wp("Schizophrenia")
+genedisparams_scz_df <- read.table("CSVs/disgenetparams-scz.txt",header=TRUE,sep = "\t")
+#Loading relevant gene-disease networks from DisGeNET
+#Networks of interest manually added into tsv where it is easier to adjust filters
+apply(genedisparams_scz_df,1,function(row) {
+  gdp <- geneDisParams(row["source"],row["dis"],row["min"])
+  geneDisResult <- disgenetRestCall("gene-disease-net",gdp)
+  createNodeSource("DisGeNET")
+})
 wpids <- c("4875","5412","4222","4942","5408","5402","5346","5405","5406","5407","4940","4905","5398","5399","4906","4657","4932")
 sczcnv <- sapply(wpids, function(k) paste0("WP",k))
   #Manually adding relevant SCZ CNV pathways from WikiPathways
 
+getpathways.wp("Schizophrenia")
 lapply(c(Schizophrenia_wpids,sczcnv), import)
   #Importing WP pathways (both manually added and by keyword). Also adds "WikiPathways" as NodeSource column to node table
 
@@ -133,25 +138,33 @@ for(i in 1:length(networklist)) {
   mergeNetworks(c(current,networklist[[i]]), paste(current,networklist[[i]]),"union")
 }
   #Looping through the network list to merge all currently open networks with each other, creating one large unified network
-
+networklist <- getNetworkList()
+bignw_scz <- getNetworkName()
+  #Getting the name of the unified network to preserve it from deletion
+lapply(networklist[networklist != bignw_scz],deleteNetwork)
+  #Deleting all networks besides newly generated unified network
 
 hsa <- file.path(getwd(), "Linksets", "wikipathways-20220511-hsa-WP.xgmml")
 hsa_react <- file.path(getwd(), "Linksets", "wikipathways-20220511-hsa-REACTOME.xgmml")
   #Loading the WikiPathways linksets available at https://cytargetlinker.github.io/pages/linksets/wikipathways
 CTLextend.cmd = paste('cytargetlinker extend idAttribute="XrefId" linkSetFiles="', hsa, ',', hsa_react, '" network=current direction=TARGETS', sep="")
 commandsRun(CTLextend.cmd)
+  #Extending the network with previously loaded linksets
+layoutNetwork()
+  #Adding basic network layout
+bignw_scz_ext <- getNetworkName()
 
+preserve <- c(bignw_scz, bignw_scz_ext)
   #===========ADDICTION=================================================================
 
-genedisparams_df <- read.table("CSVs/disgenetparams.txt",header=TRUE,sep = "\t")
+genedisparams_adc_df <- read.table("CSVs/disgenetparams-adc.txt",header=TRUE,sep = "\t")
   #Loading relevant gene-disease networks from DisGeNET
   #Networks of interest manually added into tsv where it is easier to adjust filters
-apply(genedisparams_df,1,function(row) {
+apply(genedisparams_adc_df,1,function(row) {
   gdp <- geneDisParams(row["source"],row["dis"],row["min"])
   geneDisResult <- disgenetRestCall("gene-disease-net",gdp)
+  createNodeSource("DisGeNET")
 })
-createNodeSource("DisGeNET")
-
 
 getpathways.wp("Dopamine")
 getpathways.wp("Addiction")
@@ -162,22 +175,47 @@ dup.filter <- function(input,suffix) {
   filtered_list <- input[substr(input, nchar(input) - 1,nchar(input))==suffix]
 }
 duplicates <- dup.filter(networklist.dup,"_1")
-#Getting duplicate networks (Cytoscape marks duplicate networks with a "_1" suffix to the network name)
+  #Getting duplicate networks (Cytoscape marks duplicate networks with a "_1" suffix to the network name)
 delete.dupes <- function(nw) {
   setCurrentNetwork(nw)
   deleteNetwork()
 }
 lapply(duplicates,delete.dupes)
-#Selecting and deleting duplicate networks
+  #Selecting and deleting duplicate networks
 
 networklist <- getNetworkList()
-setCurrentNetwork(networklist[[1]])
-for(i in 1:length(networklist)) {
+networklist <- networklist[!networklist %in% preserve]
+  #Getting all networks besides the big SCZ networks
+setCurrentNetwork(networklist[[2]])
+for(i in 1:length(networklist)) tryCatch({
   current <- getNetworkName()
   mergeNetworks(c(current,networklist[[i]]), paste(current,networklist[[i]]),"union")
-}
+}, error = function(e) {
+  cat("An error occured:\n")
+  cat("Error message: ", conditionMessage(e),"\n")
+  cat("Call stack:\n")
+  print(sys/calls())
+})
 #Looping through the network list to merge all currently open networks with each other, creating one large unified network
 
+networklist <- getNetworkList()
+bignw_adc <- getNetworkName()
+preserve <- c(bignw_scz, bignw_scz_ext,bignw_adc)
+  #Getting the name of the unified network to preserve it from deletion
+lapply(networklist[!networklist %in% preserve],deleteNetwork)
+  #Deleting all networks besides newly generated unified networks
+
+hsa <- file.path(getwd(), "Linksets", "wikipathways-20220511-hsa-WP.xgmml")
+hsa_react <- file.path(getwd(), "Linksets", "wikipathways-20220511-hsa-REACTOME.xgmml")
+  #Loading the WikiPathways linksets available at https://cytargetlinker.github.io/pages/linksets/wikipathways
+CTLextend.cmd = paste('cytargetlinker extend idAttribute="XrefId" linkSetFiles="', hsa, ',', hsa_react, '" network=current direction=TARGETS', sep="")
+commandsRun(CTLextend.cmd)
+  #Extending the network with previously loaded linksets
+layoutNetwork()
+  #Adding basic network layout
+bignw_adc_ext <- getNetworkName()
+
+preserve <- c(bignw_scz, bignw_scz_ext,bignw_adc,bignw_adc_ext)
 
 
 call <- "https://api.pharmgkb.org/v1/data/pathway/PA166170742?view=max"
