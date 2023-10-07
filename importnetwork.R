@@ -1,3 +1,4 @@
+# SETUP -----------------------------------------------------------------------------------------------------------------------
 sessionInfo()
   #Requires R 4.1.3 and Rtools 4.0
   #dplyr 1.1.2; httr 1.4.7;jsonlite 1.8.4; BiocManager 1.30.22; rWikiPathways 1.14.0; RCy3 2.14.2
@@ -19,7 +20,7 @@ if(!"RCy3" %in% installed.packages()){
   BiocManager::install("RCy3")
 }
   #Checking if required packages are installed and installing if not
-invisible(lapply(c("dplyr","httr","jsonlite","rWikiPathways","RCy3"), require, character.only = TRUE))
+invisible(lapply(c(packages,"rWikiPathways","RCy3"), require, character.only = TRUE))
   #Loading libraries
 
 cytoscapePing()
@@ -32,7 +33,11 @@ installApp('DisGeNET-app')
   #v. 7.3.0
 installApp('CyTargetLinker')
   #v. 4.1.0
+installApp('stringApp')
+  #v. 2.0.1
   #Installing required Cytoscape apps to query and expand WikiPathways networks
+
+# FUNCTIONS------------------------------------------------------------------------------------------------------------------------
 
 getpathways.wp<- function(i) {
   pw <- findPathwaysByText(i)
@@ -100,16 +105,20 @@ geneDisParams <- function(source,dis,min) {list(
   initialScoreValue = min,
   finalScoreValue = "1.0"
 )}
-#Specifying parameters of the GDA network to be imported
+  #Specifying parameters of the GDA network to be imported
+
+# SCHIZOPHRENIA =======================================================================================================================
+## IMPORTING AND MERGING ---------------------------------------------------------------------------------------------------------------
 
 genedisparams_scz_df <- read.table("CSVs/disgenetparams-scz.txt",header=TRUE,sep = "\t")
-#Loading relevant gene-disease networks from DisGeNET
-#Networks of interest manually added into tsv where it is easier to adjust filters
+  #Loading relevant gene-disease networks from DisGeNET
+  #Networks of interest manually added into tsv where it is easier to adjust filters
 apply(genedisparams_scz_df,1,function(row) {
   gdp <- geneDisParams(row["source"],row["dis"],row["min"])
   geneDisResult <- disgenetRestCall("gene-disease-net",gdp)
   createNodeSource("DisGeNET")
 })
+  #Importing networks from DisGeNET
 wpids <- c("4875","5412","4222","4942","5408","5402","5346","5405","5406","5407","4940","4905","5398","5399","4906","4657","4932")
 sczcnv <- sapply(wpids, function(k) paste0("WP",k))
   #Manually adding relevant SCZ CNV pathways from WikiPathways
@@ -138,12 +147,15 @@ for(i in 1:length(networklist)) {
   mergeNetworks(c(current,networklist[[i]]), paste(current,networklist[[i]]),"union")
 }
   #Looping through the network list to merge all currently open networks with each other, creating one large unified network
+renameNetwork("Schizophrenia supernetwork")
 networklist <- getNetworkList()
-bignw_scz <- getNetworkName()
+snw_scz <- getNetworkName()
   #Getting the name of the unified network to preserve it from deletion
-lapply(networklist[networklist != bignw_scz],deleteNetwork)
+lapply(networklist[networklist != snw_scz],deleteNetwork)
   #Deleting all networks besides newly generated unified network
 
+## CTL EXTENSION ----------------------------------------------------------------------------------------------------------------------
+setCurrentNetwork(snw_scz)
 hsa <- file.path(getwd(), "Linksets", "wikipathways-20220511-hsa-WP.xgmml")
 hsa_react <- file.path(getwd(), "Linksets", "wikipathways-20220511-hsa-REACTOME.xgmml")
   #Loading the WikiPathways linksets available at https://cytargetlinker.github.io/pages/linksets/wikipathways
@@ -152,11 +164,18 @@ commandsRun(CTLextend.cmd)
   #Extending the network with previously loaded linksets
 layoutNetwork()
   #Adding basic network layout
-bignw_scz_ext <- getNetworkName()
+snw_scz_ext <- getNetworkName()
+  
+## STRINGIFY --------------------------------------------------------------------------------------------------------------------------
+setCurrentNetwork(snw_scz)
+commandsRun("string stringify column=name compoundQuery=false cutoff=0.4 includeNotMapped=false networkNoGui=current networkType='full STRING network' species='Homo sapiens'")
+  #compoundQuery=false for now due to problem connecting to STITCH
+## SAVING ------------------------------------------------------------------------------------------------------------------------------
 
-preserve <- c(bignw_scz, bignw_scz_ext)
-  #===========ADDICTION=================================================================
+preserve <- c(snw_scz, snw_scz_ext)
 
+# ADDICTION ===========================================================================================================================
+## IMPORTING AND MERGING --------------------------------------------------------------------------------------------------------------
 genedisparams_adc_df <- read.table("CSVs/disgenetparams-adc.txt",header=TRUE,sep = "\t")
   #Loading relevant gene-disease networks from DisGeNET
   #Networks of interest manually added into tsv where it is easier to adjust filters
@@ -199,11 +218,13 @@ for(i in 1:length(networklist)) tryCatch({
 #Looping through the network list to merge all currently open networks with each other, creating one large unified network
 
 networklist <- getNetworkList()
-bignw_adc <- getNetworkName()
-preserve <- c(bignw_scz, bignw_scz_ext,bignw_adc)
+snw_adc <- getNetworkName()
+preserve <- c(snw_scz, snw_scz_ext,snw_adc)
   #Getting the name of the unified network to preserve it from deletion
 lapply(networklist[!networklist %in% preserve],deleteNetwork)
   #Deleting all networks besides newly generated unified networks
+
+## CTL EXTENSION -----------------------------------------------------------------------------------------------------------------------
 
 hsa <- file.path(getwd(), "Linksets", "wikipathways-20220511-hsa-WP.xgmml")
 hsa_react <- file.path(getwd(), "Linksets", "wikipathways-20220511-hsa-REACTOME.xgmml")
@@ -213,11 +234,14 @@ commandsRun(CTLextend.cmd)
   #Extending the network with previously loaded linksets
 layoutNetwork()
   #Adding basic network layout
-bignw_adc_ext <- getNetworkName()
+snw_adc_ext <- getNetworkName()
 
-preserve <- c(bignw_scz, bignw_scz_ext,bignw_adc,bignw_adc_ext)
+## STRINGIFY ---------------------------------------------------------------------------------------------------------------------------
+## SAVING ------------------------------------------------------------------------------------------------------------------------------
 
+preserve <- c(snw_scz, snw_scz_ext,snw_adc,snw_adc_ext)
 
+# WIP ==================================================================================================================================
 call <- "https://api.pharmgkb.org/v1/data/pathway/PA166170742?view=max"
 antipsychotics_pgkb <- GET(url = call)
 status_code(antipsychotics_pgkb)
