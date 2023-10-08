@@ -217,6 +217,7 @@ for(i in 1:length(networklist)) tryCatch({
 })
 #Looping through the network list to merge all currently open networks with each other, creating one large unified network
 
+renameNetwork("Addiction supernetwork")
 networklist <- getNetworkList()
 snw_adc <- getNetworkName()
 preserve <- c(snw_scz, snw_scz_ext,snw_adc)
@@ -237,6 +238,8 @@ layoutNetwork()
 snw_adc_ext <- getNetworkName()
 
 ## STRINGIFY ---------------------------------------------------------------------------------------------------------------------------
+setCurrentNetwork(snw_adc)
+commandsRun("string stringify column=name compoundQuery=false cutoff=0.4 includeNotMapped=false networkNoGui=current networkType='full STRING network' species='Homo sapiens'")
 ## SAVING ------------------------------------------------------------------------------------------------------------------------------
 
 preserve <- c(snw_scz, snw_scz_ext,snw_adc,snw_adc_ext)
