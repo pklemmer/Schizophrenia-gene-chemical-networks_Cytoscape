@@ -242,10 +242,8 @@ snw_adc_ext <- getNetworkName()
 preserve <- c(snw_scz, snw_scz_ext,snw_adc,snw_adc_ext)
 
 # WIP ==================================================================================================================================
-call <- "https://api.pharmgkb.org/v1/data/pathway/PA166170742?view=max"
-antipsychotics_pgkb <- GET(url = call)
-status_code(antipsychotics_pgkb)
-  #Figure out how to get TSV which can then be imported to Cytoscape 
+url = "https://api.pharmgkb.org/v1/download/pathway/PA166170742?format=.tsv"
+download.file(url, "PharmGKB pathways/antipsychotics-pw-pharmgkb.csv")
 
 
 
