@@ -245,10 +245,16 @@ commandsRun("string stringify column=name compoundQuery=false cutoff=0.4 include
 preserve <- c(snw_scz, snw_scz_ext,snw_adc,snw_adc_ext)
 
 # WIP ==================================================================================================================================
-url = "https://api.pharmgkb.org/v1/download/pathway/PA166170742?format=.tsv"
-download.file(url, "PharmGKB pathways/antipsychotics-pw-pharmgkb.csv")
+## PharmGKB ----------------------------------------------------------------------------------------------------------------------------
+pgkb.import <- function(pgkb_id,pgkb_name) {
+  url = sprintf("https://api.pharmgkb.org/v1/download/pathway/%s?format=.tsv", pgkb_id)
+  pgkb_name <- paste0(pgkb_name,".tsv")
+  download.file(url, sprintf("PharmGKB pathways/%s",pgkb_name))
+  commandsRun(sprintf("network import file indexColumnSourceInteraction=From indexColumnTargetInteraction=To file=PharmGKB pathways/%s",pgkb_name))
+}
+pgkb.import("PA166170742","Antipsychotics pathway")
 
-
+## INTERSECTION -----------------------------------------------------------------------------------------------------------------------
 
 scz_pathways.names <- paste(scz_pathways$name, scz_pathways$species, sep = " - ")
 adc_pathways.names <- paste(adc_pathways$name, adc_pathways$species, sep = " - ")
