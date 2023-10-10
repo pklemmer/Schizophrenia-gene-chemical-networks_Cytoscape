@@ -39,7 +39,7 @@ installApp('stringApp')
 
 # FUNCTIONS------------------------------------------------------------------------------------------------------------------------
 
-getpathways.wp<- function(i) {
+getPathways.wp<- function(i) {
   pw <- findPathwaysByText(i)
   pw <- pw %>%
     dplyr::filter(species %in% c("Homo sapiens","Rattus norvegicus","Mus musculus"))
@@ -54,10 +54,12 @@ createNodeSource <- function(source) {
   networkname <- getNetworkName()
   nodetable <- paste0(networkname," default node")
   #Getting the name of the node table of the previously imported network with following nomenclature [Network name - species default node] (note the single space between "default" and "node")
-  commandsRun(sprintf("table create column columnName=NodeSource table=%s type=string",nodetable))
-  #Creating a new column named "NodeSource" in which the source of the node is stored 
-  commandsRun(sprintf("table set values columnName=NodeSource handleEquations=false rowList=all table=%1$s value=%2$s",nodetable,source))
-  #Filling the new "NodeSource" column with the source 
+  commandsRun(sprintf("table create column columnName=WikiPathways table=%s type=string",nodetable))
+  commandsRun(sprintf("table create column columnName=DisGeNET table=%s type=string",nodetable))
+  commandsRun(sprintf("table create column columnName=PharmGKB table=%s type=string",nodetable))
+  #Creating a new column for each source used for all networks
+  commandsRun(sprintf("table set values columnName=%1$s handleEquations=false rowList=all table=%2$s value=1",source,nodetable))
+  #Filling the new column of the corresponding source with 1 to indicate which source the node is imported from 
 }
   #Function to create new column in node table specifying origin of network/node
 
@@ -65,10 +67,12 @@ createNodeSource.wp <- function(source) {
   networkname <- getNetworkName()
   nodetable <- paste0(networkname," default  node")
   #Getting the name of the node table of the previously imported network with following nomenclature [Network name - species default  node] (note the two spaces between "default" and "node")
-  commandsRun(sprintf("table create column columnName=NodeSource table=%s type=string",nodetable))
-  #Creating a new column named "NodeSource" in which the source of the node is stored 
-  commandsRun(sprintf("table set values columnName=NodeSource handleEquations=false rowList=all table=%1$s value=%2$s",nodetable,source))
-  #Filling the new "NodeSource" column with the source 
+  commandsRun(sprintf("table create column columnName=WikiPathways table=%s type=string",nodetable))
+  commandsRun(sprintf("table create column columnName=DisGeNET table=%s type=string",nodetable))
+  commandsRun(sprintf("table create column columnName=PharmGKB table=%s type=string",nodetable))
+  #Creating a new column for each source used for all networks
+  commandsRun(sprintf("table set values columnName=%1$s handleEquations=false rowList=all table=%2$s value=1",source,nodetable))
+  #Filling the new column of the corresponding source with 1 to indicate which source the node is imported from 
 }
   #Same function, but for WikiPathways imports as these have a typo in the designation of node tables
 
@@ -110,10 +114,10 @@ geneDisParams <- function(source,dis,min) {list(
 # SCHIZOPHRENIA =======================================================================================================================
 ## IMPORTING AND MERGING ---------------------------------------------------------------------------------------------------------------
 
-genedisparams_scz_df <- read.table("CSVs/disgenetparams-scz.txt",header=TRUE,sep = "\t")
+genedisparams.scz.df <- read.table("CSVs/disgenetparams-scz.txt",header=TRUE,sep = "\t")
   #Loading relevant gene-disease networks from DisGeNET
   #Networks of interest manually added into tsv where it is easier to adjust filters
-apply(genedisparams_scz_df,1,function(row) {
+apply(genedisparams.scz.df,1,function(row) {
   gdp <- geneDisParams(row["source"],row["dis"],row["min"])
   geneDisResult <- disgenetRestCall("gene-disease-net",gdp)
   createNodeSource("DisGeNET")
@@ -123,7 +127,7 @@ wpids <- c("4875","5412","4222","4942","5408","5402","5346","5405","5406","5407"
 sczcnv <- sapply(wpids, function(k) paste0("WP",k))
   #Manually adding relevant SCZ CNV pathways from WikiPathways
 
-getpathways.wp("Schizophrenia")
+getPathways.wp("Schizophrenia")
 lapply(c(Schizophrenia_wpids,sczcnv), import)
   #Importing WP pathways (both manually added and by keyword). Also adds "WikiPathways" as NodeSource column to node table
 
@@ -176,17 +180,17 @@ preserve <- c(snw_scz, snw_scz_ext)
 
 # ADDICTION ===========================================================================================================================
 ## IMPORTING AND MERGING --------------------------------------------------------------------------------------------------------------
-genedisparams_adc_df <- read.table("CSVs/disgenetparams-adc.txt",header=TRUE,sep = "\t")
+genedisparams.adc.df <- read.table("CSVs/disgenetparams-adc.txt",header=TRUE,sep = "\t")
   #Loading relevant gene-disease networks from DisGeNET
   #Networks of interest manually added into tsv where it is easier to adjust filters
-apply(genedisparams_adc_df,1,function(row) {
+apply(genedisparams.adc.df,1,function(row) {
   gdp <- geneDisParams(row["source"],row["dis"],row["min"])
   geneDisResult <- disgenetRestCall("gene-disease-net",gdp)
   createNodeSource("DisGeNET")
 })
 
-getpathways.wp("Dopamine")
-getpathways.wp("Addiction")
+getPathways.wp("Dopamine")
+getPathways.wp("Addiction")
 lapply(c(Dopamine_wpids,Addiction_wpids), import)
 
 networklist.dup <- getNetworkList()
@@ -240,11 +244,6 @@ snw_adc_ext <- getNetworkName()
 ## STRINGIFY ---------------------------------------------------------------------------------------------------------------------------
 setCurrentNetwork(snw_adc)
 commandsRun("string stringify column=name compoundQuery=false cutoff=0.4 includeNotMapped=false networkNoGui=current networkType='full STRING network' species='Homo sapiens'")
-## SAVING ------------------------------------------------------------------------------------------------------------------------------
-
-preserve <- c(snw_scz, snw_scz_ext,snw_adc,snw_adc_ext)
-
-# WIP ==================================================================================================================================
 ## PharmGKB ----------------------------------------------------------------------------------------------------------------------------
 pgkb.import <- function(pgkb_id,pgkb_name) {
   url = sprintf("https://api.pharmgkb.org/v1/download/pathway/%s?format=.tsv", pgkb_id)
@@ -253,6 +252,12 @@ pgkb.import <- function(pgkb_id,pgkb_name) {
   commandsRun(sprintf("network import file indexColumnSourceInteraction=From indexColumnTargetInteraction=To file=PharmGKB pathways/%s",pgkb_name))
 }
 pgkb.import("PA166170742","Antipsychotics pathway")
+## SAVING ------------------------------------------------------------------------------------------------------------------------------
+
+preserve <- c(snw_scz, snw_scz_ext,snw_adc,snw_adc_ext)
+
+# WIP ==================================================================================================================================
+
 
 ## INTERSECTION -----------------------------------------------------------------------------------------------------------------------
 
