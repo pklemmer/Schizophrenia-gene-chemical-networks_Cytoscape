@@ -35,7 +35,10 @@ installApp('CyTargetLinker')
   #v. 4.1.0
 installApp('stringApp')
   #v. 2.0.1
-  #Installing required Cytoscape apps to query and expand WikiPathways networks
+installApp('BridgeDb')
+  #v. 1.2.0
+  #Using the Homo sapiens 'Hs_Derby_Ensembl_108' from 2023-03-31 from BridgeDb
+
 
 # FUNCTIONS------------------------------------------------------------------------------------------------------------------------
 
@@ -76,12 +79,18 @@ createNodeSource.wp <- function(source) {
 }
   #Same function, but for WikiPathways imports as these have a typo in the designation of node tables
 
+mapToEnsembl <- function(col,from) {
+  mapTableColumn(col,"Human",from,"Ensembl")
+}
+  #Mapping node table columns such as name to Ensembl identifiers for consistent merging 
 
 import <- function(j) {
   commandsRun(paste0('wikipathways import-as-network id=', j))
     #Pasting WikiPathways IDs into a Cytoscape command line prompt to import as networks
   createNodeSource.wp("WikiPathways")
+    #Filling the 'WikiPathways' column with 1 to indicate the source
 }
+  #Importing pathways from WikiPathways by pathway ID
 
 disgenetRestUrl<-function(netType,host="127.0.0.1",port=1234,version="v7"){
   if(is.null(netType)){
@@ -121,6 +130,9 @@ apply(genedisparams.scz.df,1,function(row) {
   gdp <- geneDisParams(row["source"],row["dis"],row["min"])
   geneDisResult <- disgenetRestCall("gene-disease-net",gdp)
   createNodeSource("DisGeNET")
+    #Adding information about data source to each node
+  mapToEnsembl("geneName","HGNC")
+    #Mapping the HGNC gene name from the geneName column in the node table to Ensembl identifiers
 })
   #Importing networks from DisGeNET
 wpids <- c("4875","5412","4222","4942","5408","5402","5346","5405","5406","5407","4940","4905","5398","5399","4906","4657","4932")
@@ -148,7 +160,7 @@ networklist <- getNetworkList()
 setCurrentNetwork(networklist[[1]])
 for(i in 1:length(networklist)) {
   current <- getNetworkName()
-  mergeNetworks(c(current,networklist[[i]]), paste(current,networklist[[i]]),"union")
+  mergeNetworks(c(current,networklist[[i]]), paste(current,networklist[[i]]),"union",inNetworkMerge = TRUE,nodeKeys=c("Ensembl","Ensembl"))
 }
   #Looping through the network list to merge all currently open networks with each other, creating one large unified network
 renameNetwork("Schizophrenia supernetwork")
@@ -172,7 +184,7 @@ snw_scz_ext <- getNetworkName()
   
 ## STRINGIFY --------------------------------------------------------------------------------------------------------------------------
 setCurrentNetwork(snw_scz)
-commandsRun("string stringify column=name compoundQuery=false cutoff=0.4 includeNotMapped=false networkNoGui=current networkType='full STRING network' species='Homo sapiens'")
+commandsRun("string stringify column=Ensembl compoundQuery=TRUE cutoff=0.4 includeNotMapped=false networkNoGui=current networkType='full STRING network' species='Homo sapiens'")
   #compoundQuery=false for now due to problem connecting to STITCH
 ## SAVING ------------------------------------------------------------------------------------------------------------------------------
 
@@ -187,6 +199,7 @@ apply(genedisparams.adc.df,1,function(row) {
   gdp <- geneDisParams(row["source"],row["dis"],row["min"])
   geneDisResult <- disgenetRestCall("gene-disease-net",gdp)
   createNodeSource("DisGeNET")
+  mapToEnsembl("geneName","HGNC")
 })
 
 getPathways.wp("Dopamine")
@@ -209,24 +222,23 @@ lapply(duplicates,delete.dupes)
 networklist <- getNetworkList()
 networklist <- networklist[!networklist %in% preserve]
   #Getting all networks besides the big SCZ networks
-setCurrentNetwork(networklist[[2]])
+setCurrentNetwork(networklist[[1]])
 for(i in 1:length(networklist)) tryCatch({
   current <- getNetworkName()
-  mergeNetworks(c(current,networklist[[i]]), paste(current,networklist[[i]]),"union")
+  mergeNetworks(c(current,networklist[[i]]), paste(current,networklist[[i]]),"union",inNetworkMerge = TRUE,nodeKeys=c("Ensembl","Ensembl"))
 }, error = function(e) {
   cat("An error occured:\n")
   cat("Error message: ", conditionMessage(e),"\n")
   cat("Call stack:\n")
-  print(sys/calls())
+  print(sys.calls())
 })
 #Looping through the network list to merge all currently open networks with each other, creating one large unified network
 
 renameNetwork("Addiction supernetwork")
 networklist <- getNetworkList()
 snw_adc <- getNetworkName()
-preserve <- c(snw_scz, snw_scz_ext,snw_adc)
   #Getting the name of the unified network to preserve it from deletion
-lapply(networklist[!networklist %in% preserve],deleteNetwork)
+lapply(networklist[networklist != snw_adc ],deleteNetwork)
   #Deleting all networks besides newly generated unified networks
 
 ## CTL EXTENSION -----------------------------------------------------------------------------------------------------------------------
