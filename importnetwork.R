@@ -40,7 +40,7 @@ installApp('BridgeDb')
   #Using the Homo sapiens 'Hs_Derby_Ensembl_108' from 2023-03-31 from BridgeDb
 
 
-# FUNCTIONS------------------------------------------------------------------------------------------------------------------------
+# FUNCTION DICTIONARY-------------------------------------------------------------------------------------------------------------------
 
 getPathways.wp<- function(i) {
   pw <- findPathwaysByText(i)
@@ -142,6 +142,10 @@ sczcnv <- sapply(wpids, function(k) paste0("WP",k))
 getPathways.wp("Schizophrenia")
 lapply(c(Schizophrenia_wpids,sczcnv), import)
   #Importing WP pathways (both manually added and by keyword). Also adds "WikiPathways" as NodeSource column to node table
+commandsRun(sprintf("network import file columnTypeList='sa,sa,source,sa,sa,sa,sa' file=%s firstRowAsColumnNames=true startLoadRow=1", paste0(getwd(),"/CSVs/scz2022-Extended-Data-Table1.txt")))
+  #Importing network from file
+  #List of 120 genes implicated in Trubetskoy et al., doi: 10.1038/s41586-022-04434-5
+renameNetwork("Trubetskoy risk genes")
 
 networklist.dup <- getNetworkList()
 dup.filter <- function(input,suffix) {
