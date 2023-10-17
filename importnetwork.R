@@ -56,10 +56,11 @@ getPathways.wp<- function(i) {
 createNodeSource <- function(source) {
   networkname <- getNetworkName()
   nodetable <- paste0(networkname," default node")
-  #Getting the name of the node table of the previously imported network with following nomenclature [Network name - species default node] (note the single space between "default" and "node")
+  #Getting the name of the node table of the previously imported network with following nomenclature [Network name default node] (note the single space between "default" and "node")
   commandsRun(sprintf("table create column columnName=WikiPathways table=%s type=string",nodetable))
   commandsRun(sprintf("table create column columnName=DisGeNET table=%s type=string",nodetable))
   commandsRun(sprintf("table create column columnName=PharmGKB table=%s type=string",nodetable))
+  commandsRun(sprintf("table create column columnName=Literature table=%s type=string",nodetable))
   #Creating a new column for each source used for all networks
   commandsRun(sprintf("table set values columnName=%1$s handleEquations=false rowList=all table=%2$s value=1",source,nodetable))
   #Filling the new column of the corresponding source with 1 to indicate which source the node is imported from 
@@ -69,10 +70,11 @@ createNodeSource <- function(source) {
 createNodeSource.wp <- function(source) {
   networkname <- getNetworkName()
   nodetable <- paste0(networkname," default  node")
-  #Getting the name of the node table of the previously imported network with following nomenclature [Network name - species default  node] (note the two spaces between "default" and "node")
+  #Getting the name of the node table of the previously imported network with following nomenclature [Network name default  node] (note the two spaces between "default" and "node")
   commandsRun(sprintf("table create column columnName=WikiPathways table=%s type=string",nodetable))
   commandsRun(sprintf("table create column columnName=DisGeNET table=%s type=string",nodetable))
   commandsRun(sprintf("table create column columnName=PharmGKB table=%s type=string",nodetable))
+  commandsRun(sprintf("table create column columnName=Literature table=%s type=string",nodetable))
   #Creating a new column for each source used for all networks
   commandsRun(sprintf("table set values columnName=%1$s handleEquations=false rowList=all table=%2$s value=1",source,nodetable))
   #Filling the new column of the corresponding source with 1 to indicate which source the node is imported from 
@@ -142,10 +144,17 @@ sczcnv <- sapply(wpids, function(k) paste0("WP",k))
 getPathways.wp("Schizophrenia")
 lapply(c(Schizophrenia_wpids,sczcnv), import)
   #Importing WP pathways (both manually added and by keyword). Also adds "WikiPathways" as NodeSource column to node table
-commandsRun(sprintf("network import file columnTypeList='sa,sa,source,sa,sa,sa,sa' file=%s firstRowAsColumnNames=true startLoadRow=1", paste0(getwd(),"/CSVs/scz2022-Extended-Data-Table1.txt")))
+
+commandsRun(sprintf("network import file columnTypeList='sa,sa,source,sa,sa,sa,sa' file=%s firstRowAsColumnNames=true rootNetworkList=-- Create new network collection -- startLoadRow=1", paste0(getwd(),"/CSVs/scz2022-Extended-Data-Table1.txt")))
   #Importing network from file
   #List of 120 genes implicated in Trubetskoy et al., doi: 10.1038/s41586-022-04434-5
+commandsRun("table rename column columnName=Ensembl.ID newColumnName=Ensembl table=scz2022-Extended-Data-Table1.txt default node")
+  #Renaming the Ensembl.ID column from the dataset to Ensembl for coherence with networks from other sources
+createNodeSource("Literature")
+  #Adding literature as  source to all imported nodes 
 renameNetwork("Trubetskoy risk genes")
+  #Renaming the newly imported network
+
 
 networklist.dup <- getNetworkList()
 dup.filter <- function(input,suffix) {
