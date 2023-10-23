@@ -43,11 +43,11 @@ installApp('BridgeDb')
 
 
 # FUNCTION DICTIONARY-------------------------------------------------------------------------------------------------------------------
-
+queryspecies.wp <- c("Homo sapiens","Rattus norvegicus","Mus musculus")
 getPathways.wp<- function(i) {
   pw <- findPathwaysByText(i)
   pw <- pw %>%
-    dplyr::filter(species %in% c("Homo sapiens","Rattus norvegicus","Mus musculus"))
+    dplyr::filter(species %in% queryspecies.wp)
     #Filtering by species
   pw.ids <- paste0(i, "_wpids")
   assign(pw.ids, as.character(pw$id),envir = .GlobalEnv)
@@ -100,15 +100,16 @@ disgenetRestUrl<-function(netType,host="127.0.0.1",port=1234,version="v7"){
   if(is.null(netType)){
     print("Network type not specified.")
   }else{
-    url<-sprintf("http://%s:%i/disgenet/%s/%s",host,port,version,netType)
+    disgeneturl<-sprintf("http://%s:%i/disgenet/%s/%s",host,port,version,netType)
   }
-  return (url)
+  return (disgeneturl)
 }
-disgenetRestUrl(netType = "gene-disease-net")
+net <- "gene-disease-net"
+disgenetRestUrl(netType = net)
   #Defining object for REST to call DisGeNET automation module; defining that we will be using gene-disease associations (GDA)
 disgenetRestCall<-function(netType,netParams){
-  url<-disgenetRestUrl(netType)
-  restCall<-POST(url, body = netParams, encode = "json")
+  disgeneturl<-disgenetRestUrl(netType)
+  restCall<-POST(disgeneturl, body = netParams, encode = "json")
   result<-content(restCall,"parsed")
   return(result)
 }
@@ -125,35 +126,57 @@ geneDisParams <- function(source,dis,min) {list(
   #Specifying parameters of the GDA network to be imported
 
 # METADATA ============================================================================================================================
-metadata <- "metadata.txt"
-file.create(metadata)
+sysdatetime <- Sys.time()
+datetime <- format(sysdatetime, format = "%Y-%m-%d_%Hh%M")
+file.create(sprintf("Metadata/metadata_%s.txt",datetime))
+  #Creating a new metadata file with the current date and time as suffix for easier organisation
+  #Such a metadata file should be generated every time this script is ran to record parameters and versions of functions or databases, including the time avoids files being overwritten if the script is run multiple times a day (can even include seconds if script is ran multiple times per minute)
 metadata.add <- function(info) {
-  write(as.character(info), "metadata.txt",append=TRUE, sep = "\n")
+  write(sapply(info, as.character), sprintf("Metadata/metadata_%s.txt",datetime),append=TRUE, sep = "\n")
 }
+metadata.add(sysdatetime)
 metadata.add(Sys.timezone())
-metadata.add(Sys.time())
+metadata.add("")
+  #Adding the timezone, date, and time to the metadata 
 # SCHIZOPHRENIA =======================================================================================================================
 ## IMPORTING AND MERGING ---------------------------------------------------------------------------------------------------------------
 
 genedisparams.scz.df <- read.table("CSVs/disgenetparams-scz.txt",header=TRUE,sep = "\t")
   #Loading relevant gene-disease networks from DisGeNET
   #Networks of interest manually added into tsv where it is easier to adjust filters
+disgeneturl <- c()
+  #Preparing container for DisGeNET URL to be saved for addition to metadata file
 apply(genedisparams.scz.df,1,function(row) {
   gdp <- geneDisParams(row["source"],row["dis"],row["min"])
-  geneDisResult <- disgenetRestCall("gene-disease-net",gdp)
+  disgeneturl <<- disgenetRestUrl(net)
+    #Fetching the DisGeNET URL used to make this call 
+  geneDisResult <- disgenetRestCall(net,gdp)
+    #Executing the DisGeNET query
   createNodeSource("DisGeNET")
     #Adding information about data source to each node
   mapToEnsembl("geneName","HGNC")
     #Mapping the HGNC gene name from the geneName column in the node table to Ensembl identifiers
-})
+})  
   #Importing networks from DisGeNET
+metadata.add(paste("DisGeNET URL:",disgeneturl))
+metadata.add(paste("DisGeNET net type:",net))
+metadata.add("")
+  #Adding the DisGeNET URL and net type used to add networks to the metadata file
+
+
 wpids <- c("4875","5412","4222","4942","5408","5402","5346","5405","5406","5407","4940","4905","5398","5399","4906","4657","4932")
 sczcnv <- sapply(wpids, function(k) paste0("WP",k))
   #Manually adding relevant SCZ CNV pathways from WikiPathways
 
-getPathways.wp("Schizophrenia")
+keyword.wp <- "Schizophrenia"
+getPathways.wp(keyword.wp)
 lapply(c(Schizophrenia_wpids,sczcnv), import)
   #Importing WP pathways (both manually added and by keyword). Also adds "WikiPathways" as NodeSource column to node table
+metadata.add(paste("WikiPathways keywords:",keyword.wp))
+metadata.add(paste("WikiPathways manually by ID:",paste(wpids,collapse =", ")))
+metadata.add(paste("WikiPathways queried species:",paste(queryspecies.wp,collapse = ", ")))
+  #Adding the keyword and species used to filter the WikiPathways query to the metadata file
+metadata.add("")
 
 commandsRun(sprintf("network import file columnTypeList='sa,sa,source,sa,sa,sa,sa' file=%s firstRowAsColumnNames=true rootNetworkList=-- Create new network collection -- startLoadRow=1", paste0(getwd(),"/CSVs/scz2022-Extended-Data-Table1.txt")))
   #Importing network from file
@@ -164,6 +187,8 @@ createNodeSource("Literature")
   #Adding literature as  source to all imported nodes 
 renameNetwork("Trubetskoy risk genes")
   #Renaming the newly imported network
+metadata.add("Literature")
+metadata.add("Trubetskoy et al. doi: 10.1038/s41586-022-04434-5")
 
 
 networklist.dup <- getNetworkList()
@@ -192,6 +217,8 @@ snw_scz <- getNetworkName()
   #Getting the name of the unified network to preserve it from deletion
 lapply(networklist[networklist != snw_scz],deleteNetwork)
   #Deleting all networks besides newly generated unified network
+exportNetwork(filename=paste0("Sessions/Networks/Schizophrenia/",paste(snw_scz,datetime, sep = " - ")),"CX", network = snw_scz, overwriteFile=FALSE)
+  #Exporting the supernetwork as cx file and tagging it with the time and date made to match with metadata file
 
 ## CTL EXTENSION ----------------------------------------------------------------------------------------------------------------------
 setCurrentNetwork(snw_scz)
@@ -204,10 +231,12 @@ commandsRun(CTLextend.cmd)
 layoutNetwork()
   #Adding basic network layout
 snw_scz_ext <- getNetworkName()
-  
+exportNetwork(filename=paste0("Sessions/Networks/Schizophrenia/",paste(snw_scz_ext,datetime, sep = " - ")),"CX", network = snw_scz_ext, overwriteFile=FALSE)
+  #Exporting the CTL extended supernetwork as cx file and tagging it with the time and date made to match with metadata file
+
 ## STRINGIFY --------------------------------------------------------------------------------------------------------------------------
 setCurrentNetwork(snw_scz)
-commandsRun("string stringify column=Ensembl compoundQuery=TRUE cutoff=0.4 includeNotMapped=false networkNoGui=current networkType='full STRING network' species='Homo sapiens'")
+commandsRun("string stringify column=Ensembl includeNotMapped=false  networkType='full STRING network' species='Homo sapiens' networkNoGui=current")
   #compoundQuery=false for now due to problem connecting to STITCH
 ## SAVING ------------------------------------------------------------------------------------------------------------------------------
 
@@ -281,9 +310,9 @@ setCurrentNetwork(snw_adc)
 commandsRun("string stringify column=name compoundQuery=false cutoff=0.4 includeNotMapped=false networkNoGui=current networkType='full STRING network' species='Homo sapiens'")
 ## PharmGKB ----------------------------------------------------------------------------------------------------------------------------
 pgkb.import <- function(pgkb_id,pgkb_name) {
-  url = sprintf("https://api.pharmgkb.org/v1/download/pathway/%s?format=.tsv", pgkb_id)
+  pgkburl = sprintf("https://api.pharmgkb.org/v1/download/pathway/%s?format=.tsv", pgkb_id)
   pgkb_name <- paste0(pgkb_name,".tsv")
-  download.file(url, sprintf("PharmGKB pathways/%s",pgkb_name))
+  download.file(pgkburl, sprintf("PharmGKB pathways/%s",pgkb_name))
   commandsRun(sprintf("network import file indexColumnSourceInteraction=From indexColumnTargetInteraction=To file=PharmGKB pathways/%s",pgkb_name))
 }
 pgkb.import("PA166170742","Antipsychotics pathway")
