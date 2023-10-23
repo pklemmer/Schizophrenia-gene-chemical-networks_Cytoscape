@@ -1,9 +1,11 @@
 # SETUP -----------------------------------------------------------------------------------------------------------------------
+setwd("~/GitHub/SCZ-CNV")
 sessionInfo()
   #Requires R 4.1.3 and Rtools 4.0
   #dplyr 1.1.2; httr 1.4.7;jsonlite 1.8.4; BiocManager 1.30.22; rWikiPathways 1.14.0; RCy3 2.14.2
   #Cytoscape 3.10.1
-setwd("~/GitHub/SCZ-CNV")
+file.create("sessioninfo.txt")
+writeLines(capture.output(sessionInfo()),"sessionInfo.txt")
 packages <- c("dplyr","httr","jsonlite")
 installed_packages <- packages %in% rownames(installed.packages())
 if (any(installed_packages == FALSE)) {
@@ -122,6 +124,14 @@ geneDisParams <- function(source,dis,min) {list(
 )}
   #Specifying parameters of the GDA network to be imported
 
+# METADATA ============================================================================================================================
+metadata <- "metadata.txt"
+file.create(metadata)
+metadata.add <- function(info) {
+  write(as.character(info), "metadata.txt",append=TRUE, sep = "\n")
+}
+metadata.add(Sys.timezone())
+metadata.add(Sys.time())
 # SCHIZOPHRENIA =======================================================================================================================
 ## IMPORTING AND MERGING ---------------------------------------------------------------------------------------------------------------
 
