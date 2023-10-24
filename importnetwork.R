@@ -55,31 +55,41 @@ getPathways.wp<- function(i) {
 }
   #Function to query WikiPathways using keyword and to extract WP IDs for the import function
 
-createNodeSource <- function(source) {
+createNodeSource <- function(source,doi=NULL) {
   networkname <- getNetworkName()
   nodetable <- paste0(networkname," default node")
-  #Getting the name of the node table of the previously imported network with following nomenclature [Network name default node] (note the single space between "default" and "node")
+    #Getting the name of the node table of the previously imported network with following nomenclature [Network name default node] (note the single space between "default" and "node")
   commandsRun(sprintf("table create column columnName=WikiPathways table=%s type=string",nodetable))
   commandsRun(sprintf("table create column columnName=DisGeNET table=%s type=string",nodetable))
   commandsRun(sprintf("table create column columnName=PharmGKB table=%s type=string",nodetable))
   commandsRun(sprintf("table create column columnName=Literature table=%s type=string",nodetable))
-  #Creating a new column for each source used for all networks
+  commandsRun(sprintf("table create column columnName=Literature.doi table=%s type=string",nodetable))
+    #Creating a new column for each source used for all networks
   commandsRun(sprintf("table set values columnName=%1$s handleEquations=false rowList=all table=%2$s value=1",source,nodetable))
-  #Filling the new column of the corresponding source with 1 to indicate which source the node is imported from 
+    #Filling the new column of the corresponding source with 1 to indicate which source the node is imported from 
+  if (!is.null(doi)) {
+  commandsRun(sprintf("table set values columnName=Literature.doi handleEquations=false rowList=all table=%1$s value=%2$s",nodetable,doi))
+    #Adding doi for literature used if provided
+  }
 }
   #Function to create new column in node table specifying origin of network/node
 
-createNodeSource.wp <- function(source) {
+createNodeSource.wp <- function(source,doi=NULL) {
   networkname <- getNetworkName()
   nodetable <- paste0(networkname," default  node")
-  #Getting the name of the node table of the previously imported network with following nomenclature [Network name default  node] (note the two spaces between "default" and "node")
+    #Getting the name of the node table of the previously imported network with following nomenclature [Network name default  node] (note the two spaces between "default" and "node")
   commandsRun(sprintf("table create column columnName=WikiPathways table=%s type=string",nodetable))
   commandsRun(sprintf("table create column columnName=DisGeNET table=%s type=string",nodetable))
   commandsRun(sprintf("table create column columnName=PharmGKB table=%s type=string",nodetable))
   commandsRun(sprintf("table create column columnName=Literature table=%s type=string",nodetable))
-  #Creating a new column for each source used for all networks
+  commandsRun(sprintf("table create column columnName=Literature.doi table=%s type=string",nodetable))
+    #Creating a new column for each source used for all networks
   commandsRun(sprintf("table set values columnName=%1$s handleEquations=false rowList=all table=%2$s value=1",source,nodetable))
-  #Filling the new column of the corresponding source with 1 to indicate which source the node is imported from 
+    #Filling the new column of the corresponding source with 1 to indicate which source the node is imported from
+  if (!is.null(doi)) {
+  commandsRun(sprintf("table set values columnName=Literature.doi handleEquations=false rowList=all table=%1$s value=%2$s",nodetable,doi))
+    #Adding doi for literature used if provided
+  }
 }
   #Same function, but for WikiPathways imports as these have a typo in the designation of node tables
 
@@ -183,8 +193,8 @@ commandsRun(sprintf("network import file columnTypeList='sa,sa,source,sa,sa,sa,s
   #List of 120 genes implicated in Trubetskoy et al., doi: 10.1038/s41586-022-04434-5
 commandsRun("table rename column columnName=Ensembl.ID newColumnName=Ensembl table=scz2022-Extended-Data-Table1.txt default node")
   #Renaming the Ensembl.ID column from the dataset to Ensembl for coherence with networks from other sources
-createNodeSource("Literature")
-  #Adding literature as  source to all imported nodes 
+createNodeSource("Literature","10.1038/s41586-022-04434-5")
+  #Adding literature as  source to all imported nodes and adding the doi of the corresponding paper
 renameNetwork("Trubetskoy risk genes")
   #Renaming the newly imported network
 metadata.add("Literature")
@@ -225,7 +235,8 @@ setCurrentNetwork(snw_scz)
 hsa <- file.path(getwd(), "Linksets", "wikipathways-20220511-hsa-WP.xgmml")
 hsa_react <- file.path(getwd(), "Linksets", "wikipathways-20220511-hsa-REACTOME.xgmml")
   #Loading the WikiPathways linksets available at https://cytargetlinker.github.io/pages/linksets/wikipathways
-CTLextend.cmd = paste('cytargetlinker extend idAttribute="XrefId" linkSetFiles="', hsa, ',', hsa_react, '" network=current direction=TARGETS', sep="")
+CTLextend.cmd = paste('cytargetlinker extend idAttribute="Ensembl" linkSetFiles="', hsa, ',', hsa_react, '" network=current direction=TARGETS', sep="")
+  #Extending the network using the previously loaded linksets
 commandsRun(CTLextend.cmd)
   #Extending the network with previously loaded linksets
 layoutNetwork()
@@ -233,6 +244,8 @@ layoutNetwork()
 snw_scz_ext <- getNetworkName()
 exportNetwork(filename=paste0("Sessions/Networks/Schizophrenia/",paste(snw_scz_ext,datetime, sep = " - ")),"CX", network = snw_scz_ext, overwriteFile=FALSE)
   #Exporting the CTL extended supernetwork as cx file and tagging it with the time and date made to match with metadata file
+metadata.add("CyTargetLinker linksets: wikipathways-20220511-hsa-WP.xgmml, wikipathways-20220511-hsa-REACTOME.xgmml")
+  #Adding information about the CTL extension to the metadata file
 
 ## STRINGIFY --------------------------------------------------------------------------------------------------------------------------
 setCurrentNetwork(snw_scz)
