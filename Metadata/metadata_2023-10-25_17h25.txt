@@ -1,0 +1,21 @@
+2023-10-25 17:25:47
+Europe/Berlin
+
+DisGeNET URL: http://127.0.0.1:1234/disgenet/v7/gene-disease-net
+DisGeNET net type: gene-disease-net
+
+WikiPathways keywords: Schizophrenia
+WikiPathways manually by ID: 4875, 5412, 4222, 4942, 5408, 5402, 5346, 5405, 5406, 5407, 4940, 4905, 5398, 5399, 4906, 4657, 4932
+WikiPathways queried species: Homo sapiens, Rattus norvegicus, Mus musculus
+
+Literature
+Trubetskoy et al. doi: 10.1038/s41586-022-04434-5
+DisGeNET URL: http://127.0.0.1:1234/disgenet/v7/gene-disease-net
+DisGeNET net type: gene-disease-net
+
+WikiPathways keywords: Schizophrenia
+WikiPathways manually by ID: 4875, 5412, 4222, 4942, 5408, 5402, 5346, 5405, 5406, 5407, 4940, 4905, 5398, 5399, 4906, 4657, 4932
+WikiPathways queried species: Homo sapiens, Rattus norvegicus, Mus musculus
+
+Literature
+Trubetskoy et al. doi: 10.1038/s41586-022-04434-5

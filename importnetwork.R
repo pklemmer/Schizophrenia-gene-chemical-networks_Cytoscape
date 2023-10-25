@@ -4,8 +4,9 @@ sessionInfo()
   #Requires R 4.1.3 and Rtools 4.0
   #dplyr 1.1.2; httr 1.4.7;jsonlite 1.8.4; BiocManager 1.30.22; rWikiPathways 1.14.0; RCy3 2.14.2
   #Cytoscape 3.10.1
-file.create("sessioninfo.txt")
+invisible(file.create("sessioninfo.txt"))
 writeLines(capture.output(sessionInfo()),"sessionInfo.txt")
+
 packages <- c("dplyr","httr","jsonlite")
 installed_packages <- packages %in% rownames(installed.packages())
 if (any(installed_packages == FALSE)) {
@@ -22,24 +23,35 @@ if(!"RCy3" %in% installed.packages()){
   BiocManager::install("RCy3")
 }
   #Checking if required packages are installed and installing if not
+  #Different structure for rWikiPathways and RCy3 packages as these are not installed directly but via the BiocManager package
 invisible(lapply(c(packages,"rWikiPathways","RCy3"), require, character.only = TRUE))
   #Loading libraries
 
 cytoscapePing()
 cytoscapeVersionInfo()
   #Checking if Cytoscape is running and version info
-installApp('WikiPathways')
-  #v. 3.3.10
-installApp('DisGeNET-app')
-  #Using DisGeNET app for the first time requires the user to define the directory for the database file
-  #v. 7.3.0
-installApp('CyTargetLinker')
-  #v. 4.1.0
-installApp('stringApp')
-  #v. 2.0.1
-installApp('BridgeDb')
-  #v. 1.2.0
-  #Using the Homo sapiens 'Hs_Derby_Ensembl_108' from 2023-03-31 from BridgeDb
+
+checkinstall.app <- function(app) {
+  status_string <- getAppStatus(app)
+    #Getting install status of app
+  words <- strsplit(status_string, " ")[[1]]
+  last_word <- tail(words, 1)
+    #getAppStatus returns a character string instead of a logical value, so the last word (usually either "Installed" or "Uninstalled") from the output is checked
+  if (last_word == "Installed") {
+    print("App(s) already installed.")
+  } else {
+    installApp(app)
+    print("Installed app(s).")
+    }
+}
+  #Function to check whether required Cytoscape apps are installed and installing them if not
+applist <- c("Wikipathways", "DisGeNET-app", "CyTargetLinker","stringApp","BridgeDb")
+  #WikiPathways v.3.3.10
+  #DisGeNET-app v.7.3.0
+  #CyTargetLinker v. 4.1.0
+  #stringApp v. 2.0.1
+  #BridgeDb v.1.2.0
+lapply(applist,checkinstall.app)
 
 
 # FUNCTION DICTIONARY-------------------------------------------------------------------------------------------------------------------
@@ -56,9 +68,16 @@ getPathways.wp<- function(i) {
   #Function to query WikiPathways using keyword and to extract WP IDs for the import function
 
 createNodeSource <- function(source,doi=NULL) {
+  if (source == "WikiPathways") {
   networkname <- getNetworkName()
-  nodetable <- paste0(networkname," default node")
-    #Getting the name of the node table of the previously imported network with following nomenclature [Network name default node] (note the single space between "default" and "node")
+  nodetable <- paste0(networkname," default  node") 
+  } 
+    #Networks imported from WikiPathways have a type in the node table designations, as they have 2 spaces between "default" and "node" instead of one
+    #This check determines which node table name format is to be applied depending on the source (WikiPathways or other)
+  else {
+    networkname <- getNetworkName()
+    nodetable <- paste0(networkname," default node") 
+    }
   commandsRun(sprintf("table create column columnName=WikiPathways table=%s type=string",nodetable))
   commandsRun(sprintf("table create column columnName=DisGeNET table=%s type=string",nodetable))
   commandsRun(sprintf("table create column columnName=PharmGKB table=%s type=string",nodetable))
@@ -74,25 +93,6 @@ createNodeSource <- function(source,doi=NULL) {
 }
   #Function to create new column in node table specifying origin of network/node
 
-createNodeSource.wp <- function(source,doi=NULL) {
-  networkname <- getNetworkName()
-  nodetable <- paste0(networkname," default  node")
-    #Getting the name of the node table of the previously imported network with following nomenclature [Network name default  node] (note the two spaces between "default" and "node")
-  commandsRun(sprintf("table create column columnName=WikiPathways table=%s type=string",nodetable))
-  commandsRun(sprintf("table create column columnName=DisGeNET table=%s type=string",nodetable))
-  commandsRun(sprintf("table create column columnName=PharmGKB table=%s type=string",nodetable))
-  commandsRun(sprintf("table create column columnName=Literature table=%s type=string",nodetable))
-  commandsRun(sprintf("table create column columnName=Literature.doi table=%s type=string",nodetable))
-    #Creating a new column for each source used for all networks
-  commandsRun(sprintf("table set values columnName=%1$s handleEquations=false rowList=all table=%2$s value=1",source,nodetable))
-    #Filling the new column of the corresponding source with 1 to indicate which source the node is imported from
-  if (!is.null(doi)) {
-  commandsRun(sprintf("table set values columnName=Literature.doi handleEquations=false rowList=all table=%1$s value=%2$s",nodetable,doi))
-    #Adding doi for literature used if provided
-  }
-}
-  #Same function, but for WikiPathways imports as these have a typo in the designation of node tables
-
 mapToEnsembl <- function(col,from) {
   mapTableColumn(col,"Human",from,"Ensembl")
 }
@@ -101,7 +101,7 @@ mapToEnsembl <- function(col,from) {
 import <- function(j) {
   commandsRun(paste0('wikipathways import-as-network id=', j))
     #Pasting WikiPathways IDs into a Cytoscape command line prompt to import as networks
-  createNodeSource.wp("WikiPathways")
+  createNodeSource("WikiPathways")
     #Filling the 'WikiPathways' column with 1 to indicate the source
 }
   #Importing pathways from WikiPathways by pathway ID
@@ -230,6 +230,13 @@ lapply(networklist[networklist != snw_scz],deleteNetwork)
 exportNetwork(filename=paste0("Sessions/Networks/Schizophrenia/",paste(snw_scz,datetime, sep = " - ")),"CX", network = snw_scz, overwriteFile=FALSE)
   #Exporting the supernetwork as cx file and tagging it with the time and date made to match with metadata file
 
+## FILTERING NETWORK ------------------------------------------------------------------------------------------------------------------
+createColumnFilter(filter.name="type.label",column="Type","Label","IS")
+createColumnFilter(filter.name="type.anchor",column="Type","Anchor","IS")
+createColumnFilter(filter.name="type.group",column="Type","Group","IS")
+createColumnFilter(filter.name="disease.name",column="diseaseName","Schizophrenia","IS")
+createCompositeFilter(filter.name="type.label.anchor.group",c("type.label","type.anchor","type.group","disease.name"),"ANY")
+deleteSelectedNodes()
 ## CTL EXTENSION ----------------------------------------------------------------------------------------------------------------------
 setCurrentNetwork(snw_scz)
 hsa <- file.path(getwd(), "Linksets", "wikipathways-20220511-hsa-WP.xgmml")
