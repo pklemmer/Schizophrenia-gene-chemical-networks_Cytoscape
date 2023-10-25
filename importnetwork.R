@@ -237,6 +237,11 @@ createColumnFilter(filter.name="type.group",column="Type","Group","IS")
 createColumnFilter(filter.name="disease.name",column="diseaseName","Schizophrenia","IS")
 createCompositeFilter(filter.name="type.label.anchor.group",c("type.label","type.anchor","type.group","disease.name"),"ANY")
 deleteSelectedNodes()
+renameNetwork("Schizophrenia supernetwork - filtered")
+snw_scz_filtered <- getNetworkName()
+exportNetwork(filename=paste0("Sessions/Networks/Schizophrenia/",paste(snw_scz_filtered,datetime, sep = " - ")),"CX", network = snw_scz_filtered, overwriteFile=FALSE)
+#Exporting the filtered supernetwork as cx file and tagging it with the time and date made to match with metadata file
+
 ## CTL EXTENSION ----------------------------------------------------------------------------------------------------------------------
 setCurrentNetwork(snw_scz)
 hsa <- file.path(getwd(), "Linksets", "wikipathways-20220511-hsa-WP.xgmml")
