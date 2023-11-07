@@ -19,3 +19,4 @@ WikiPathways queried species: Homo sapiens, Rattus norvegicus, Mus musculus
 
 Literature
 Trubetskoy et al. doi: 10.1038/s41586-022-04434-5
+CyTargetLinker linksets: wikipathways-20220511-hsa-WP.xgmml, wikipathways-20220511-hsa-REACTOME.xgmml

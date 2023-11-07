@@ -1,0 +1,13 @@
+2023-11-07 21:49:02
+Europe/Berlin
+
+      apiVersion cytoscapeVersion 
+            "v1"         "3.10.1" 
+Required Cytoscape apps and versions:
+App: WikiPathways, description: WikiPathways web service client and GPML file format importer, version: 3.3.10
+App: DisGeNET-app, description: The App is designed to visualize, query and analyse a network representation of DisGeNET data, version: 7.3.0
+App: CyTargetLinker, description: Flexible network extension app, version: 4.1.0
+App: stringApp, description: Import and augment Cytoscape networks from STRING, version: 2.0.1
+App: BridgeDb, description: Performs ID mapping using BridgeDb and other public or custom database sources., version: 1.2.0
+App: clusterMaker2, description: Multi-algorithm clustering app for Cytoscape, version: 2.3.4
+
