@@ -120,11 +120,6 @@ createNodeSource <- function(source,doi=NULL) {
 }
   #Function to create new column in node table specifying origin of network/node
 
-mapToEnsembl <- function(col,from) {
-  mapTableColumn(col,"Human",from,"Ensembl")
-}
-  #Mapping node table columns such as name to Ensembl identifiers for consistent merging 
-
 import <- function(j) {
   commandsRun(paste0('wikipathways import-as-network id=', j))
     #Pasting WikiPathways IDs into a Cytoscape command line prompt to import as networks
@@ -179,10 +174,10 @@ apply(genedisparams.scz.df,1,function(row) {
     #Executing the DisGeNET query
   createNodeSource("DisGeNET")
     #Adding information about data source to each node
-  mapToEnsembl("geneName","HGNC")
+  mapTableColumn("geneName","Human","HGNC","Ensembl")
     #Mapping the HGNC gene name from the geneName column in the node table to Ensembl identifiers
   mapTableColumn("geneName","Human","Entrez Gene","Ensembl")
-  #Mapping Entrez Gene IDs to Ensembl IDs
+    #Mapping Entrez Gene IDs to Ensembl IDs
 })  
   #Importing networks from DisGeNET
 
@@ -262,11 +257,14 @@ exportNetwork(filename=paste0(nw_savepath,paste(snw_scz_filtered,datetime, sep =
   #Exporting the filtered supernetwork as cx file and tagging it with the time and date made to match with metadata file
 
 ## STRING --------------------------------------------------------------------------------------------------------------------------
-commandsRun('string stringify colDisplayName=Name2 column=Ensembl compoundQuery=true cutoff=0.9 includeNotMapped=true  networkType="full STRING network" species="Homo sapiens" networkNoGui=current')
+commandsRun('string stringify colDisplayName=name column=Ensembl compoundQuery=true cutoff=0.9 includeNotMapped=true  networkType="full STRING network" species="Homo sapiens" networkNoGui=current')
 commandsRun('string expand additionalNodes=100 network=current nodeTypes="Homo sapiens" selectivityAlpha=0.9')
   #STRINGifying and expanding the network with a 0.9 confidence cutoff (curated information)
 mapTableColumn("stringdb::canonical name","Human","Uniprot-TrEMBL","Ensembl")
   #Mapping stringdb canonical names (Uniprot-TrEMBL identifiers) to Ensembl gene identifiers
+  #This step generates a second Ensembl column ('Ensembl (1)') with ENSG identifiers for the STRING-imported nodes
+renameTableColumn("Ensembl (1)","Ensembldup")
+  #Renaming the duplicate Ensembl column for easier handling
 mapTableColumn("Ensembl","Human","Ensembl","HGNC")
   #Generating a new column 'HGNC' from Ensembl identifiers - easier and less error-prone than merging various name columns from different import sources
 renameTableColumn("HGNC","Name2")
@@ -286,11 +284,20 @@ renameTableColumn('__glayCluster','gLayCluster')
 commandsRun(sprintf('table export options=CSV outputFile=%1$s table="%2$s default  node"',clustered_nodetable,snw_scz_filtered_string_clustered))
   #Exporting the node table as .csv file to the current session's "Network" folder (note again the double space between 'node' and 'table' in the table name)
   #The node table contains the GLay cluster number for every node which is then used as reference for gene ontology tools
+gene_cluster <- read.csv(clustered_nodetable)
+gene_cluster$Ensembl <- ifelse(gene_cluster$Ensembl == gene_cluster$Ensembldup, as.character(gene_cluster$Ensembl),
+                               ifelse(is.na(gene_cluster$Ensembl) | gene_cluster$Ensembl =="",as.character(gene_cluster$Ensembldup),
+                                      ifelse(is.na(gene_cluster$Ensembldup) | gene_cluster$Ensembldup=="",as.character(gene_cluster$Ensembl),"No Match")))
+  #As the identifier mapping from STRING ENSP to ENSG identifiers generates a second Ensembl column, they are merged into the originial Ensembl column if the contents of the cell match or either is blank
+gene_cluster = subset(gene_cluster,select= -Ensembldup)
+  #Removing the duplicate Ensembl column from the table
+write.csv(gene_cluster, file=clustered_nodetable)
+  #Overwriting the previously exported table with the version containing the merged Ensembl column
+loadTableData(gene_cluster,data.key.column = "Ensembl",table.key.column = "Ensembl")
 exportNetwork(filename=paste0(nw_savepath,paste(snw_scz_filtered_string_clustered,datetime,sep= " - ")),"CX",network=snw_scz_filtered_string_clustered,overwriteFile=FALSE)
   #Exporting the filtered, stringified, clustered supernetwork as cx file and tagging it with the time and data to match with the metadata file
 
 ## GENE ONTOLOGY ANALYSIS -----------------------------------------------------------------------------------------------------------
-gene_cluster <- read.csv(clustered_nodetable)
 gene_cluster %>% select(c('gLayCluster','Ensembl'))
   #Reading the node table exported earlier for processing with gprofiler and selecting relevant columns
 split_df <- split(gene_cluster$Ensembl,gene_cluster$gLayCluster)
