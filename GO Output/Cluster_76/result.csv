@@ -1,0 +1,2 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+GO:0038062,0.0496548984556533,TRUE,2,1,1,GO:MF,protein tyrosine kinase collagen receptor activity,20139,5546,GO:0004714|GO:0038064,TRUE

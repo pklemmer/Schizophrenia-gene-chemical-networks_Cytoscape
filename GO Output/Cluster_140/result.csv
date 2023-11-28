@@ -1,0 +1,4 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+GO:0180015,0.0495795652862702,TRUE,1,1,1,GO:BP,nucleoside import across plasma membrane,21010,21110,GO:0098657|GO:0098739|GO:1901642,TRUE
+HP:0032573,0.0498840694227146,TRUE,1,1,1,HP,Elevated urinary cytidine,4962,12569,HP:0033162,FALSE
+HP:0032574,0.0498840694227146,TRUE,1,1,1,HP,Elevated urinary uridine level,4962,12570,HP:0033162,FALSE

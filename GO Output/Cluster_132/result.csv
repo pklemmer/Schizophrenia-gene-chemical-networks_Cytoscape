@@ -1,0 +1,2 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+HP:0009745,0.0498840694227146,TRUE,1,1,1,HP,Spinal arachnoid cyst,4962,6247,HP:0010303|HP:0100702,FALSE

@@ -1,0 +1,3 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+GO:0060094,0.0495795652862702,TRUE,1,1,1,GO:BP,"positive regulation of synaptic transmission, glycinergic",21010,15080,GO:0050806|GO:0060012|GO:0060092,TRUE
+GO:0042941,0.0495795652862702,TRUE,1,1,1,GO:BP,D-alanine transport,21010,10959,GO:0032328|GO:0042940,TRUE

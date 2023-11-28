@@ -1,0 +1,5 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+GO:0000773,0.0248274492279377,TRUE,1,1,1,GO:MF,phosphatidyl-N-methylethanolamine N-methyltransferase activity,20139,95,GO:0008170|GO:0008757,TRUE
+GO:0080101,0.0248274492279377,TRUE,1,1,1,GO:MF,phosphatidyl-N-dimethylethanolamine N-methyltransferase activity,20139,8978,GO:0008170|GO:0008757,TRUE
+GO:0004608,0.0248274492279377,TRUE,1,1,1,GO:MF,phosphatidylethanolamine N-methyltransferase activity,20139,922,GO:0008170|GO:0008757,TRUE
+WP:WP528,0.0386473429951589,TRUE,7,1,1,WP,Acetylcholine synthesis,8625,558,WP:000000,FALSE

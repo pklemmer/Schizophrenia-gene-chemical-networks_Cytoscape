@@ -1,0 +1,2 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+MIRNA:kshv-miR-K12-11-3p,0.0205003250765918,TRUE,7,1,1,MIRNA,kshv-miR-K12-11-3p,14846,2616,MIRNA:000000,FALSE

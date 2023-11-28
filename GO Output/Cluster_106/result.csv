@@ -1,0 +1,5 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+GO:0009317,0.00997122305027718,TRUE,1,1,1,GO:CC,acetyl-CoA carboxylase complex,22090,526,GO:0005737|GO:1902494,TRUE
+GO:0004658,0.0496548984556533,TRUE,2,1,1,GO:MF,propionyl-CoA carboxylase activity,20139,964,GO:0016421,TRUE
+WP:WP5031,0.0496894409937795,TRUE,9,1,1,WP,"Biotin metabolism, including IMDs",8625,641,WP:000000,FALSE
+CORUM:7057,0.0499316934433554,TRUE,2,1,1,CORUM,Propionyl-CoA carboxylase,3383,2554,CORUM:0000000,FALSE

@@ -1,0 +1,6 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+WP:WP5315,0.0276052449965488,TRUE,5,1,1,WP,Sebaleic acid formation and metabolism,8625,806,WP:000000,FALSE
+WP:WP4586,0.0331262939958565,TRUE,6,1,1,WP,Metabolism of alpha-linolenic acid,8625,230,WP:000000,FALSE
+WP:WP4853,0.0331262939958565,TRUE,6,1,1,WP,Linoleic acid metabolism affected by SARS-CoV-2,8625,576,WP:000000,FALSE
+GO:0016213,0.0496548984556533,TRUE,2,1,1,GO:MF,linoleoyl-CoA desaturase activity,20139,2745,GO:0016215,TRUE
+KEGG:00592,0.0499354871917405,TRUE,26,1,1,KEGG,alpha-Linolenic acid metabolism,8161,94,KEGG:00000,FALSE

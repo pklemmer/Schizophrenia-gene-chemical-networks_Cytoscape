@@ -1,0 +1,5 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+HPA:0260152,0.0249614096606684,TRUE,10,1,1,HPA,hypothalamus; synapses[≥Medium],11006,405,HPA:0260151,FALSE
+HPA:0260151,0.0299536915928021,TRUE,12,1,1,HPA,hypothalamus; synapses[≥Low],11006,404,HPA:0260000,FALSE
+HPA:0260143,0.0399382554570634,TRUE,16,1,1,HPA,hypothalamus; neuronal projections[High],11006,403,HPA:0260142,FALSE
+HPA:0020063,0.0474266783552669,TRUE,19,1,1,HPA,adrenal gland; medullary cells[High],11006,21,HPA:0020062,FALSE

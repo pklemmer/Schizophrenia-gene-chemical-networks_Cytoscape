@@ -1,0 +1,2 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+GO:0071348,0.0495795652862702,TRUE,1,1,1,GO:BP,cellular response to interleukin-11,21010,17410,GO:0071105|GO:0071345,TRUE

@@ -1,0 +1,3 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+GO:0005814,0.00910931301841463,TRUE,156,2,2,GO:CC,centriole,22090,367,GO:0005815|GO:0043232,TRUE
+WP:WP4657,0.00942015077804326,TRUE,128,2,2,WP,22q11.2 copy number variation syndrome,8625,444,WP:000000,FALSE

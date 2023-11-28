@@ -1,0 +1,9 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+REAC:R-HSA-1251985,0.00214123077940595,TRUE,31,2,2,REAC,Nuclear signaling by ERBB4,10835,1542,REAC:R-HSA-1236394,FALSE
+HPA:0090972,0.00262004396834449,TRUE,231,4,3,HPA,cerebellum; granular cells - cytoplasm/membrane[≥Medium],11006,141,HPA:0090971,FALSE
+HPA:0090971,0.00555922527363927,TRUE,297,4,3,HPA,cerebellum; granular cells - cytoplasm/membrane[≥Low],11006,140,HPA:0090000,FALSE
+REAC:R-HSA-1236394,0.00658946504372027,TRUE,54,2,2,REAC,Signaling by ERBB4,10835,2130,REAC:R-HSA-9006934,FALSE
+WP:WP2064,0.0220895481890085,TRUE,101,3,2,WP,Neural crest differentiation,8625,9,WP:000000,FALSE
+HPA:0090983,0.026125501990151,TRUE,86,4,2,HPA,cerebellum; granular cells - nucleus[High],11006,145,HPA:0090982,FALSE
+GO:0014015,0.0404467420590229,TRUE,67,4,2,GO:BP,positive regulation of gliogenesis,21010,4672,GO:0014013|GO:0042063|GO:0050769,TRUE
+HPA:0091023,0.045882744821578,TRUE,114,4,2,HPA,cerebellum; processes in granular layer[High],11006,160,HPA:0091022,FALSE

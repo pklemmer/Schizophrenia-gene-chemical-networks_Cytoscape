@@ -1,0 +1,2 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+CORUM:7275,0.0249658467216871,TRUE,1,1,1,CORUM,BCL2-CISD2 complex,3383,2739,CORUM:0000000,FALSE

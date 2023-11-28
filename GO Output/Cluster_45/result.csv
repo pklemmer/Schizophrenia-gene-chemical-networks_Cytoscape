@@ -1,0 +1,3 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+GO:0042720,0.0199424461006033,TRUE,2,1,1,GO:CC,mitochondrial inner membrane peptidase complex,22090,1835,GO:0098800|GO:1902494,TRUE
+KEGG:03060,0.0441737002080782,TRUE,23,1,1,KEGG,Protein export,8161,217,KEGG:00000,FALSE

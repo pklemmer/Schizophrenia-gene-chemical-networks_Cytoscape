@@ -1,0 +1,4 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+GO:0000514,0.0496548984556533,TRUE,2,1,1,GO:MF,"3-sulfino-L-alanine: proton, glutamate antiporter activity",20139,86,GO:0015078|GO:0015175|GO:0015179|GO:0042887|GO:0072349|GO:0140848|GO:1901680|GO:1901702,TRUE
+GO:0000515,0.0496548984556533,TRUE,2,1,1,GO:MF,"aspartate:glutamate, proton antiporter activity",20139,87,GO:0005310|GO:0015078|GO:0015556|GO:0042887|GO:0140848|GO:1901702,TRUE
+HP:0032656,0.0498840694227146,TRUE,1,1,1,HP,Febrile status epilepticus,4962,12652,HP:0002133|HP:0011172,FALSE

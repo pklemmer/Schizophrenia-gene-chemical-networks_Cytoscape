@@ -1,0 +1,2 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+GO:0008650,0.0496548984556533,TRUE,2,1,1,GO:MF,rRNA (uridine-2'-O-)-methyltransferase activity,20139,1808,GO:0016436|GO:0062105,TRUE

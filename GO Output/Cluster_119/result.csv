@@ -1,0 +1,4 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+KEGG:03267,0.00768238264488423,TRUE,4,1,1,KEGG,Virion - Adenovirus,8161,229,KEGG:00000,FALSE
+GO:0086082,0.0248274492279377,TRUE,1,1,1,GO:MF,cell adhesive protein binding involved in AV node cell-bundle of His cell communication,20139,9026,GO:0086080,TRUE
+GO:0086072,0.0495795652862702,TRUE,1,1,1,GO:BP,AV node cell-bundle of His cell adhesion involved in cell communication,21010,18772,GO:0034113|GO:0086042|GO:0086067,TRUE

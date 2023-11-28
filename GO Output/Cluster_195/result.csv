@@ -1,0 +1,2 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+HP:0020120,0.0498840694227146,TRUE,1,1,1,HP,Retinal nerve fiber edema,4962,9358,HP:0020119,FALSE

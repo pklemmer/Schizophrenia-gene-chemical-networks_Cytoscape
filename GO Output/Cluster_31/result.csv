@@ -1,0 +1,10 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+GO:0062076,0.0248274492279377,TRUE,1,1,1,GO:MF,acyl-CoA delta5-desaturase activity,20139,8605,GO:0016215,TRUE
+GO:0045485,0.0248274492279377,TRUE,1,1,1,GO:MF,omega-6 fatty acid desaturase activity,20139,6153,GO:0016705,TRUE
+WP:WP5315,0.0276052449965488,TRUE,5,1,1,WP,Sebaleic acid formation and metabolism,8625,806,WP:000000,FALSE
+WP:WP4853,0.0331262939958565,TRUE,6,1,1,WP,Linoleic acid metabolism affected by SARS-CoV-2,8625,576,WP:000000,FALSE
+WP:WP4586,0.0331262939958565,TRUE,6,1,1,WP,Metabolism of alpha-linolenic acid,8625,230,WP:000000,FALSE
+MIRNA:hsa-miR-671-3p,0.0439292680212579,TRUE,15,1,1,MIRNA,hsa-miR-671-3p,14846,2051,MIRNA:000000,FALSE
+GO:0070704,0.0496548984556533,TRUE,2,1,1,GO:MF,sterol desaturase activity,20139,8777,GO:0016705,FALSE
+GO:0000248,0.0496548984556533,TRUE,2,1,1,GO:MF,C-5 sterol desaturase activity,20139,47,GO:0016717|GO:0070704,TRUE
+GO:0016213,0.0496548984556533,TRUE,2,1,1,GO:MF,linoleoyl-CoA desaturase activity,20139,2745,GO:0016215,TRUE

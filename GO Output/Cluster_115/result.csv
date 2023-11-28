@@ -1,0 +1,2 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+CORUM:6545,0.0499316934433554,TRUE,2,1,1,CORUM,DCDC2-MAPK8IP1 complex,3383,2213,CORUM:0000000,FALSE

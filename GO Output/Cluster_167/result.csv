@@ -1,0 +1,5 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+GO:0060488,0.0495795652862702,TRUE,1,1,1,GO:BP,orthogonal dichotomous subdivision of terminal units involved in lung branching morphogenesis,21010,15416,GO:0060448,TRUE
+GO:0060490,0.0495795652862702,TRUE,1,1,1,GO:BP,lateral sprouting involved in lung morphogenesis,21010,15418,GO:0060441|GO:0060601,TRUE
+GO:0060489,0.0495795652862702,TRUE,1,1,1,GO:BP,planar dichotomous subdivision of terminal units involved in lung branching morphogenesis,21010,15417,GO:0060448,TRUE
+HP:0033986,0.0498840694227146,TRUE,1,1,1,HP,Tortuous lymphatic vessels,4962,13968,HP:0100766,FALSE

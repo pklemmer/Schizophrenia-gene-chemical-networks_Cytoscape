@@ -1,0 +1,3 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+GO:0004823,0.0496548984556533,TRUE,2,1,1,GO:MF,leucine-tRNA ligase activity,20139,1098,GO:0004812,TRUE
+HP:0025643,0.0498840694227146,TRUE,1,1,1,HP,Tarlov cyst,4962,10052,HP:0030724,FALSE

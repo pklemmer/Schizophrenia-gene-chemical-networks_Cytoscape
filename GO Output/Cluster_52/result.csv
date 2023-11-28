@@ -1,0 +1,2 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+GO:0097442,0.0199424461006033,TRUE,2,1,1,GO:CC,CA3 pyramidal cell dendrite,22090,3008,GO:0030425,TRUE

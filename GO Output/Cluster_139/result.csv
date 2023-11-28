@@ -1,0 +1,6 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+GO:1904493,0.0248274492279377,TRUE,1,1,1,GO:MF,tetrahydrofolyl-poly(glutamate) polymer binding,20139,11031,GO:0005488,TRUE
+GO:1904492,0.0248274492279377,TRUE,1,1,1,GO:MF,Ac-Asp-Glu binding,20139,11030,GO:0043168|GO:1900750,TRUE
+GO:1900750,0.0248274492279377,TRUE,1,1,1,GO:MF,oligopeptide binding,20139,10937,GO:0042277,FALSE
+TF:M06350,0.0249862575583681,TRUE,2,1,1,TF,Factor: ZNF449; motif: NTGGGCGTAGGA,20011,10296,TF:M00000,FALSE
+KEGG:04977,0.0460942958692984,TRUE,24,1,1,KEGG,Vitamin digestion and absorption,8161,401,KEGG:00000,FALSE

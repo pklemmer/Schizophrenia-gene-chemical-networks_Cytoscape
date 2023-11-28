@@ -1,0 +1,5 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+TF:M10142,0.0124931287791563,TRUE,1,1,1,TF,Factor: ZNF331; motif: GGCTGGGCTCAGCTGGGTGG,20011,9994,TF:M00000,FALSE
+HPA:0260133,0.0174729867624709,TRUE,7,1,1,HPA,hypothalamus; neuronal cells[High],11006,400,HPA:0260132,FALSE
+HPA:0260143,0.0399382554570634,TRUE,16,1,1,HPA,hypothalamus; neuronal projections[High],11006,403,HPA:0260142,FALSE
+MIRNA:hsa-miR-4479,0.0468578858893321,TRUE,16,1,1,MIRNA,hsa-miR-4479,14846,1103,MIRNA:000000,FALSE

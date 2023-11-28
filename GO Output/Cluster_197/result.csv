@@ -1,0 +1,4 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+TF:M10972,0.0374793863375522,TRUE,3,1,1,TF,Factor: ARGFX; motif: NTAATYTAATTAR,20011,192,TF:M00000,FALSE
+MIRNA:hsa-miR-5708,0.0380720322850853,TRUE,13,1,1,MIRNA,hsa-miR-5708,14846,1841,MIRNA:000000,FALSE
+MIRNA:hsa-miR-339-3p,0.041000650153174,TRUE,14,1,1,MIRNA,hsa-miR-339-3p,14846,693,MIRNA:000000,FALSE

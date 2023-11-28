@@ -1,0 +1,4 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+GO:0001512,0.0248274492279377,TRUE,1,1,1,GO:MF,dihydronicotinamide riboside quinone reductase activity,20139,188,GO:0016679,TRUE
+GO:1904408,0.0248274492279377,TRUE,1,1,1,GO:MF,melatonin binding,20139,11028,GO:0033218|GO:0097159|GO:1901363,TRUE
+GO:1905594,0.0496548984556533,TRUE,2,1,1,GO:MF,resveratrol binding,20139,11065,GO:0097159,TRUE

@@ -1,0 +1,7 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+GO:0008111,0.0248274492279377,TRUE,1,1,1,GO:MF,alpha-methylacyl-CoA racemase activity,20139,1558,GO:0016854,TRUE
+KEGG:00120,0.0326501262407519,TRUE,17,1,1,KEGG,Primary bile acid biosynthesis,8161,14,KEGG:00000,FALSE
+HP:0030516,0.0498840694227146,TRUE,1,1,1,HP,Homonymous hemianopia,4962,10626,HP:0012377,FALSE
+HP:0034448,0.0498840694227146,TRUE,1,1,1,HP,Abnormal phytanic acid:pristanic acid ratio,4962,14427,HP:0010964,FALSE
+HP:0034449,0.0498840694227146,TRUE,1,1,1,HP,Increased phytanic acid:pristanic acid ratio,4962,14428,HP:0034448,FALSE
+TF:M04113,0.0499725151167085,TRUE,4,1,1,TF,Factor: GMEB2; motif: WACGTAACCACGTA,20011,3238,TF:M00000,FALSE

@@ -1,0 +1,2 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+GO:0008903,0.0248274492279377,TRUE,1,1,1,GO:MF,hydroxypyruvate isomerase activity,20139,2020,GO:0016861,TRUE

@@ -1,0 +1,3 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+TF:M08641_1,0.0124931287791563,TRUE,1,1,1,TF,Factor: TEF-3:HES-7; motif: RCATWCCNNCRCGTGNN; match class: 1,20011,8477,TF:M08641,FALSE
+TF:M08746_1,0.0499725151167085,TRUE,4,1,1,TF,Factor: TEF-3:FOXI1; motif: GGWATGYGTMAACA; match class: 1,20011,8473,TF:M08746,FALSE

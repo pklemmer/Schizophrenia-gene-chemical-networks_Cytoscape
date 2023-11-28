@@ -1,0 +1,2 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+WP:WP2276,0.0441683919944771,TRUE,8,1,1,WP,Glial cell differentiation,8625,413,WP:000000,FALSE

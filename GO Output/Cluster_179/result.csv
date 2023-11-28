@@ -1,0 +1,2 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+TF:M05867,0.0124931287791563,TRUE,1,1,1,TF,Factor: ZNF100; motif: NGYGTCGGTAGA,20011,9416,TF:M00000,FALSE

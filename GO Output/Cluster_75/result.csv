@@ -1,0 +1,2 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+TF:M01890_1,0.0249862575583681,TRUE,2,1,1,TF,Factor: STAT5A; motif: NNNTTTCTNRGAA; match class: 1,20011,8137,TF:M01890,FALSE

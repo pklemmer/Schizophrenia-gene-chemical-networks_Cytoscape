@@ -1,0 +1,2 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+GO:0080021,0.0495795652862702,TRUE,1,1,1,GO:BP,response to benzoic acid,21010,18615,GO:0014070|GO:1901700|GO:1902074,TRUE

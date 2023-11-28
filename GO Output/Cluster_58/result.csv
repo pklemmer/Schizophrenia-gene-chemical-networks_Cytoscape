@@ -1,0 +1,3 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+GO:1903840,0.0495795652862702,TRUE,1,1,1,GO:BP,response to arsenite(3-),21010,24283,GO:1903842,FALSE
+GO:1903841,0.0495795652862702,TRUE,1,1,1,GO:BP,cellular response to arsenite(3-),21010,24284,GO:1903840|GO:1903843,TRUE

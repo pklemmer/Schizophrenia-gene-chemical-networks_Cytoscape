@@ -1,0 +1,2 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+GO:0032299,0.0299136691508315,TRUE,3,1,1,GO:CC,ribonuclease H2 complex,22090,1290,GO:0140535|GO:1902494,TRUE

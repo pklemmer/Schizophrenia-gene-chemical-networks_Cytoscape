@@ -1,0 +1,5 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+HP:0012555,0.0498840694227146,TRUE,1,1,1,HP,Absent nail of hallux,4962,8942,HP:0001802,FALSE
+HP:0009657,0.0498840694227146,TRUE,1,1,1,HP,Triangular shaped thumb phalanx,4962,6162,HP:0009602,FALSE
+HP:0009648,0.0498840694227146,TRUE,1,1,1,HP,Triangular shaped distal phalanx of the thumb,4962,6154,HP:0009617|HP:0009657|HP:0009875,FALSE
+HP:0009693,0.0498840694227146,TRUE,1,1,1,HP,Pseudoepiphysis of the thumb,4962,6197,HP:0009599|HP:0010235,FALSE

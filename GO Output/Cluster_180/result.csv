@@ -1,0 +1,3 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+TF:M06212,0.0499725151167085,TRUE,4,1,1,TF,Factor: ZNF33b; motif: NGGTAAAGCASM,20011,10024,TF:M00000,FALSE
+TF:M06211,0.0499725151167085,TRUE,4,1,1,TF,Factor: ZNF33a; motif: NGGTAAAGCASM,20011,10020,TF:M00000,FALSE

@@ -1,0 +1,7 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+GO:0016287,0.0248274492279377,TRUE,1,1,1,GO:MF,glycerone-phosphate O-acyltransferase activity,20139,2766,GO:0016413,TRUE
+REAC:R-HSA-75896,0.0374162810711142,TRUE,3,1,1,REAC,Plasmalogen biosynthesis,10835,1678,REAC:R-HSA-8848584,FALSE
+HP:0003901,0.0498840694227146,TRUE,1,1,1,HP,Stippled calcification of the humeral epiphyses,4962,2761,HP:0003891,FALSE
+HP:0008838,0.0498840694227146,TRUE,1,1,1,HP,Stippled calcification proximal humeral epiphyses,4962,5550,HP:0003901,FALSE
+HP:4000165,0.0498840694227146,TRUE,1,1,1,HP,Decreased circulating plasmalogen concentration,4962,17333,HP:0040176,FALSE
+CORUM:635,0.0499316934433554,TRUE,2,1,1,CORUM,AGPS-GNPAT complex,3383,352,CORUM:0000000,FALSE

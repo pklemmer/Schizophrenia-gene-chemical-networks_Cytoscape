@@ -1,0 +1,3 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+GO:0008946,0.0248274492279377,TRUE,1,1,1,GO:MF,oligonucleotidase activity,20139,2057,GO:0004518,FALSE
+GO:0034611,0.0248274492279377,TRUE,1,1,1,GO:MF,oligoribonucleotidase activity,20139,5091,GO:0004540|GO:0008946,TRUE

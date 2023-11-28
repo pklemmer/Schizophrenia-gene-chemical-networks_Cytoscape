@@ -1,0 +1,2 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+MIRNA:hsa-miR-6068,0.0146430893404193,TRUE,5,1,1,MIRNA,hsa-miR-6068,14846,1892,MIRNA:000000,FALSE

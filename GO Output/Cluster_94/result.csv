@@ -1,0 +1,5 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+GO:0008528,0.0139831626349419,TRUE,107,2,2,GO:MF,G protein-coupled peptide receptor activity,20139,1784,GO:0001653|GO:0004930,TRUE
+GO:0007218,0.0141477221139415,TRUE,110,2,2,GO:BP,neuropeptide signaling pathway,21010,2821,GO:0007186,TRUE
+GO:0001653,0.0156031481491646,TRUE,113,2,2,GO:MF,peptide receptor activity,20139,231,GO:0038023,FALSE
+GO:0030273,0.0496548984557088,TRUE,1,2,1,GO:MF,melanin-concentrating hormone receptor activity,20139,3895,GO:0004930|GO:0016500,TRUE

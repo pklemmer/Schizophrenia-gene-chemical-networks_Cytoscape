@@ -1,0 +1,7 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+GO:0047352,0.0248274492279377,TRUE,1,1,1,GO:MF,adenylylsulfate-ammonia adenylyltransferase activity,20139,6669,GO:0070566,TRUE
+GO:0047627,0.0248274492279377,TRUE,1,1,1,GO:MF,adenylylsulfatase activity,20139,6934,GO:0016819,TRUE
+GO:0016819,0.0248274492279377,TRUE,1,1,1,GO:MF,"hydrolase activity, acting on acid anhydrides, in sulfonyl-containing anhydrides",20139,3016,GO:0016817,FALSE
+GO:0015962,0.0495795652862702,TRUE,1,1,1,GO:BP,diadenosine triphosphate metabolic process,21010,5129,GO:0015959,FALSE
+GO:0015964,0.0495795652862702,TRUE,1,1,1,GO:BP,diadenosine triphosphate catabolic process,21010,5131,GO:0015961|GO:0015962,TRUE
+GO:0047710,0.0496548984556533,TRUE,2,1,1,GO:MF,bis(5'-adenosyl)-triphosphatase activity,20139,7015,GO:0016462,TRUE

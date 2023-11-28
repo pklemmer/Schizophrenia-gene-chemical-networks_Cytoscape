@@ -1,0 +1,4 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+HP:0025681,0.0498840694227146,TRUE,1,1,1,HP,Distal clavicular thinning,4962,10087,HP:0006645,FALSE
+HP:0005621,0.0498840694227146,TRUE,1,1,1,HP,Trapezoidal vertebral body,4962,3796,HP:0003312,FALSE
+REAC:R-HSA-5658034,0.0498883747614705,TRUE,4,1,1,REAC,HHAT G278V doesn't palmitoylate Hh-Np,10835,1050,REAC:R-HSA-5387390,FALSE

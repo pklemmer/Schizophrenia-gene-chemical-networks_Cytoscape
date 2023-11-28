@@ -1,0 +1,4 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+GO:0140794,0.0496548984556533,TRUE,2,1,1,GO:MF,histone arginine deiminase activity,20139,10729,GO:0004668|GO:0140993,FALSE
+GO:0140798,0.0496548984556533,TRUE,2,1,1,GO:MF,histone H3R26 arginine deiminase activity,20139,10733,GO:0141057,FALSE
+GO:0141057,0.0496548984556533,TRUE,2,1,1,GO:MF,histone H3 arginine deiminase activity,20139,10877,GO:0140794,TRUE

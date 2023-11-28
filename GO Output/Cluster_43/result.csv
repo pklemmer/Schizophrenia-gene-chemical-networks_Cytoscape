@@ -1,0 +1,6 @@
+term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
+GO:0009438,4.95583260037986e-05,TRUE,7,2,2,GO:BP,methylglyoxal metabolic process,21010,3542,GO:0006081|GO:0042180,TRUE
+KEGG:00620,0.000828201639680504,TRUE,47,2,2,KEGG,Pyruvate metabolism,8161,99,KEGG:00000,FALSE
+GO:0006749,0.00325197015396354,TRUE,53,2,2,GO:BP,glutathione metabolic process,21010,2486,GO:0071704,TRUE
+GO:0006081,0.00569920749043684,TRUE,70,2,2,GO:BP,cellular aldehyde metabolic process,21010,1975,GO:0044237|GO:0071704,FALSE
+GO:0004462,0.0496548984557088,TRUE,1,2,1,GO:MF,lactoylglutathione lyase activity,20139,801,GO:0016846,TRUE
