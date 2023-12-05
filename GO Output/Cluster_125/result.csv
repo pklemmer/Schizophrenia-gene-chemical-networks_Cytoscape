@@ -1,2 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-GO:1901588,0.0299136691508315,TRUE,3,1,1,GO:CC,dendritic microtubule,22090,3628,GO:0005874|GO:0030425,TRUE

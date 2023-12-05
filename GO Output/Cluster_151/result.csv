@@ -1,6 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-GO:0004310,0.0248274492279377,TRUE,1,1,1,GO:MF,farnesyl-diphosphate farnesyltransferase activity,20139,677,GO:0004311,TRUE
-GO:0051996,0.0248274492279377,TRUE,1,1,1,GO:MF,squalene synthase activity,20139,8139,GO:0004311,TRUE
-KEGG:00100,0.0384119132244124,TRUE,20,1,1,KEGG,Steroid biosynthesis,8161,13,KEGG:00000,FALSE
-HP:0033146,0.0498840694227146,TRUE,1,1,1,HP,Elevated circulating methylsuccinic acid concentration,4962,13133,HP:0010995,FALSE
-HP:0033083,0.0498840694227146,TRUE,1,1,1,HP,Increased circulating farnesol concentration,4962,13070,HP:0003119,FALSE

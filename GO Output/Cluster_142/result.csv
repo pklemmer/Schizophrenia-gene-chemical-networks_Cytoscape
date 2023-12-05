@@ -1,2 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-CORUM:6637,0.0499316934433554,TRUE,2,1,1,CORUM,USP46-UAF1 complex,3383,2269,CORUM:0000000,FALSE

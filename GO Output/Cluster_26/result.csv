@@ -1,7 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-WP:WP4342,0.0165631469979177,TRUE,3,1,1,WP,Vitamins A and D - action mechanisms,8625,272,WP:000000,FALSE
-GO:1902098,0.0248274492279377,TRUE,1,1,1,GO:MF,calcitriol binding,20139,10981,GO:1902271,TRUE
-GO:0038186,0.0248274492279377,TRUE,1,1,1,GO:MF,lithocholic acid receptor activity,20139,5564,GO:0038181,TRUE
-GO:1902121,0.0248274492279377,TRUE,1,1,1,GO:MF,lithocholic acid binding,20139,10983,GO:0005496|GO:0032052,TRUE
-MIRNA:hsa-miR-6749-5p,0.0351434144170015,TRUE,12,1,1,MIRNA,hsa-miR-6749-5p,14846,2114,MIRNA:000000,FALSE
-WP:WP5273,0.0441683919944771,TRUE,8,1,1,WP,Effect of intestinal microbiome on anticoagulant response of vitamin K antagonists,8625,343,WP:000000,FALSE

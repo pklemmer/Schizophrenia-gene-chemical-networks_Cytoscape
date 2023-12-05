@@ -1,6 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-HPA:0411243,0.0274575506267353,TRUE,11,1,1,HPA,retina; inner plexiform layer[High],11006,583,HPA:0411242,FALSE
-HPA:0411242,0.0449305373892001,TRUE,18,1,1,HPA,retina; inner plexiform layer[≥Medium],11006,582,HPA:0411241,FALSE
-HPA:0411253,0.0449305373892001,TRUE,18,1,1,HPA,retina; nerve fiber layer[High],11006,589,HPA:0411252,FALSE
-HPA:0411263,0.0474266783552669,TRUE,19,1,1,HPA,retina; outer plexiform layer[High],11006,592,HPA:0411262,FALSE
-GO:0007634,0.0495795652862702,TRUE,1,1,1,GO:BP,optokinetic behavior,21010,3143,GO:0007632,TRUE

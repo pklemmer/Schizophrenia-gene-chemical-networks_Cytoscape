@@ -1,4 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-WP:WP5190,0.0276052449965488,TRUE,5,1,1,WP,Creatine pathway,8625,622,WP:000000,FALSE
-MIRNA:hsa-miR-551a,0.0292861786808386,TRUE,10,1,1,MIRNA,hsa-miR-551a,14846,1757,MIRNA:000000,FALSE
-TF:M04023,0.0499725151167085,TRUE,4,1,1,TF,Factor: MEF-2B; motif: RCTAWAAATAGC,20011,5030,TF:M00000,FALSE

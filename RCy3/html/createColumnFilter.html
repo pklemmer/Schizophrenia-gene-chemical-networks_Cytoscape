@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Create Column Filter</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table width="100%" summary="page for createColumnFilter {RCy3}"><tr><td>createColumnFilter {RCy3}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Create Column Filter</h2>
+
+<h3>Description</h3>
+
+<p>Creates a filter to control node or edge selection. Works on
+columns of boolean, string, numeric and lists. Note the unique restrictions
+for criterion and predicate depending on the type of column being filtered.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+createColumnFilter(
+  filter.name,
+  column,
+  criterion,
+  predicate,
+  caseSensitive = FALSE,
+  anyMatch = TRUE,
+  type = "nodes",
+  hide = FALSE,
+  network = NULL,
+  base.url = .defaultBaseUrl,
+  apply = TRUE
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>filter.name</code></td>
+<td>
+<p>Name for filter.</p>
+</td></tr>
+<tr valign="top"><td><code>column</code></td>
+<td>
+<p>Table column to base filter upon.</p>
+</td></tr>
+<tr valign="top"><td><code>criterion</code></td>
+<td>
+<p>For boolean columns: TRUE or FALSE. For string columns: a 
+string value, e.g., &quot;hello&quot;. If the predicate is REGEX then this can be a 
+regular expression as accepted by the Java Pattern class 
+(https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html). For 
+numeric columns: If the predicate is BETWEEN or IS_NOT_BETWEEN then this is 
+a two-element vector of numbers, example: c(1,5), otherwise a single number.</p>
+</td></tr>
+<tr valign="top"><td><code>predicate</code></td>
+<td>
+<p>For boolean columns: IS, IS_NOT. For string columns: IS, 
+IS_NOT, CONTAINS, DOES_NOT_CONTAIN, REGEX. For numeric columns: IS, IS_NOT, 
+GREATER_THAN, GREATER_THAN_OR_EQUAL, LESS_THAN, LESS_THAN_OR_EQUAL, BETWEEN, 
+IS_NOT_BETWEEN</p>
+</td></tr>
+<tr valign="top"><td><code>caseSensitive</code></td>
+<td>
+<p>(optional) If string matching should be case sensitive. 
+Default is FALSE.</p>
+</td></tr>
+<tr valign="top"><td><code>anyMatch</code></td>
+<td>
+<p>(optional) Only applies to List columns. If true then at least 
+one element in the list must pass the filter, if false then all the elements 
+in the list must pass the filter. Default is TRUE.</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p>(optional) Apply filter to &quot;nodes&quot; (default) or &quot;edges&quot;.</p>
+</td></tr>
+<tr valign="top"><td><code>hide</code></td>
+<td>
+<p>Whether to hide filtered out nodes and edges. Default is FALSE.
+Ignored if all nodes or edges are filtered out. This is an alternative to 
+filtering for node and edge selection.</p>
+</td></tr>
+<tr valign="top"><td><code>network</code></td>
+<td>
+<p>(optional) Name or SUID of the network. Default is the 
+&quot;current&quot; network active in Cytoscape.</p>
+</td></tr>
+<tr valign="top"><td><code>base.url</code></td>
+<td>
+<p>(optional) Ignore unless you need to specify a custom domain,
+port or version to connect to the CyREST API. Default is http://localhost:1234
+and the latest version of the CyREST API supported by this version of RCy3.</p>
+</td></tr>
+<tr valign="top"><td><code>apply</code></td>
+<td>
+<p>(bool) True to execute filter immediately (default); False to
+define filter but not execute it (available in Cytoscape 3.9+).</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>List of selected nodes and edges.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+createColumnFilter('myFilter', 'log2FC', c(-1,1), "IS_NOT_BETWEEN")
+createColumnFilter('myFilter', 'pValue', 0.05, "LESS_THAN")
+createColumnFilter('myFilter', 'function', "kinase", "CONTAINS", FALSE)
+createColumnFilter('myFilter', 'name', "^Y.*C$", "REGEX")
+createColumnFilter('myFilter', 'isTarget', TRUE , "IS", apply=FALSE)
+createColumnFilter('myFilter', 'isTarget', TRUE , "IS", hide=TRUE)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RCy3</em> version 2.14.2 <a href="00Index.html">Index</a>]</div>
+</div></body></html>

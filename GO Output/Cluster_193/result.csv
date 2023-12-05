@@ -1,5 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-MIRNA:hsa-miR-3687,0.0380720322850853,TRUE,13,1,1,MIRNA,hsa-miR-3687,14846,806,MIRNA:000000,FALSE
-HP:0032521,0.0498840694227146,TRUE,1,1,1,HP,Self hugging,4962,12518,HP:4000079|HP:5200019,FALSE
-HP:0032509,0.0498840694227146,TRUE,1,1,1,HP,Onychotillomania,4962,12507,HP:5200065,FALSE
-HP:0032508,0.0498840694227146,TRUE,1,1,1,HP,Polyembolokoilamania,4962,12506,HP:5200065,FALSE

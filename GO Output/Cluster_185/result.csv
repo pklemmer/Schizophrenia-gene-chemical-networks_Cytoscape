@@ -1,2 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-REAC:R-HSA-5660489,0.0374162810711142,TRUE,3,1,1,REAC,MTF1 activates gene expression,10835,1324,REAC:R-HSA-5660526,FALSE

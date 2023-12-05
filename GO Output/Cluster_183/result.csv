@@ -1,2 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-GO:0097457,0.0498561152513859,TRUE,5,1,1,GO:CC,hippocampal mossy fiber,22090,3022,GO:0044302,TRUE

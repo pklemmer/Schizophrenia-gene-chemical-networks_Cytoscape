@@ -1,4 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-KEGG:00470,0.0115235739673246,TRUE,6,1,1,KEGG,D-Amino acid metabolism,8161,60,KEGG:00000,FALSE
-GO:0008445,0.0248274492279377,TRUE,1,1,1,GO:MF,D-aspartate oxidase activity,20139,1720,GO:0003884,TRUE
-GO:0003884,0.0496548984556533,TRUE,2,1,1,GO:MF,D-amino-acid oxidase activity,20139,424,GO:0008131,FALSE

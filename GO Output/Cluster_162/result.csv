@@ -1,2 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-TF:M08778,0.0124931287791563,TRUE,1,1,1,TF,Factor: REVERB-beta; motif: TRGGTYAGTRGGTCA,20011,5924,TF:M00000,FALSE

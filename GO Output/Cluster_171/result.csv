@@ -1,4 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-MIRNA:hsa-miR-1973,0.017571707208508,TRUE,6,1,1,MIRNA,hsa-miR-1973,14846,372,MIRNA:000000,FALSE
-TF:M05910,0.0249862575583681,TRUE,2,1,1,TF,Factor: ZNF335; motif: AGGTGGSACGGTGGCCTC,20011,10002,TF:M00000,FALSE
-TF:M11500,0.0249862575583681,TRUE,2,1,1,TF,Factor: OC-2; motif: KTATTGATCCGT,20011,6188,TF:M00000,FALSE

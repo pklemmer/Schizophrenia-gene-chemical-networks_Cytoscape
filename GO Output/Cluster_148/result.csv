@@ -1,4 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-GO:0003948,0.0248274492279377,TRUE,1,1,1,GO:MF,N4-(beta-N-acetylglucosaminyl)-L-asparaginase activity,20139,463,GO:0016811,TRUE
-KEGG:00511,0.0345707219019721,TRUE,18,1,1,KEGG,Other glycan degradation,8161,64,KEGG:00000,FALSE
-HP:0012068,0.0498840694227146,TRUE,1,1,1,HP,Aspartylglucosaminuria,4962,8465,HP:0012067,FALSE

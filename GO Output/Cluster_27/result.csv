@@ -1,9 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-MIRNA:hsa-miR-614,0.0263575608127499,TRUE,9,1,1,MIRNA,hsa-miR-614,14846,1933,MIRNA:000000,FALSE
-MIRNA:hsa-miR-8053,0.0439292680212579,TRUE,15,1,1,MIRNA,hsa-miR-8053,14846,2511,MIRNA:000000,FALSE
-GO:0003070,0.0495795652862702,TRUE,1,1,1,GO:BP,regulation of systemic arterial blood pressure by neurotransmitter,21010,1535,GO:0001976|GO:0003044,FALSE
-GO:0003069,0.0495795652862702,TRUE,1,1,1,GO:BP,acetylcholine-mediated vasodilation involved in regulation of systemic arterial blood pressure,21010,1534,GO:0003068|GO:0003085|GO:0042311,FALSE
-GO:0003068,0.0495795652862702,TRUE,1,1,1,GO:BP,regulation of systemic arterial blood pressure by acetylcholine,21010,1533,GO:0003070,TRUE
-GO:1905932,0.0495795652862702,TRUE,1,1,1,GO:BP,positive regulation of vascular associated smooth muscle cell differentiation involved in phenotypic switching,21010,26064,GO:1905065|GO:1905420|GO:1905917|GO:1905930,TRUE
-GO:0048773,0.0495795652862702,TRUE,1,1,1,GO:BP,erythrophore differentiation,21010,13674,GO:0050931,TRUE
-GO:1905917,0.0495795652862702,TRUE,1,1,1,GO:BP,positive regulation of cell differentiation involved in phenotypic switching,21010,26055,GO:0045597|GO:0090679|GO:1905915,FALSE

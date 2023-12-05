@@ -1,3 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-GO:0140225,0.0199424461006033,TRUE,2,1,1,GO:CC,DNA topoisomerase III-beta-TDRD3 complex,22090,3542,GO:0032991,TRUE
-CORUM:7407,0.0499316934433554,TRUE,2,1,1,CORUM,TOP3B-c complex,3383,2823,CORUM:0000000,FALSE

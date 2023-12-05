@@ -1,2 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-TF:M06463_1,0.0124931287791563,TRUE,1,1,1,TF,Factor: ZNF595; motif: NGKGGCGGCMGM; match class: 1,20011,10739,TF:M06463,FALSE

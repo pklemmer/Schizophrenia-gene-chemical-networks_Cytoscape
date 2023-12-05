@@ -1,2 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-HP:4000169,0.0498840694227146,TRUE,1,1,1,HP,Pontine T2 hypointensity,4962,17337,HP:0007361,FALSE

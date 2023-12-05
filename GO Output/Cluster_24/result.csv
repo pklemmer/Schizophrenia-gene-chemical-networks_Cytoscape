@@ -1,4 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-GO:0047860,0.0248274492279377,TRUE,1,1,1,GO:MF,diiodophenylpyruvate reductase activity,20139,7159,GO:0016616,TRUE
-GO:0047995,0.0248274492279377,TRUE,1,1,1,GO:MF,hydroxyphenylpyruvate reductase activity,20139,7290,GO:0016616,TRUE
-KEGG:04964,0.0441737002080782,TRUE,23,1,1,KEGG,Proximal tubule bicarbonate reclamation,8161,392,KEGG:00000,FALSE

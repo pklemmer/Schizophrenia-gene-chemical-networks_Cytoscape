@@ -1,4 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-KEGG:00920,0.0192059566122088,TRUE,10,1,1,KEGG,Sulfur metabolism,8161,140,KEGG:00000,FALSE
-GO:0018549,0.0248274492279377,TRUE,1,1,1,GO:MF,methanethiol oxidase activity,20139,3309,GO:0016670,TRUE
-CORUM:6540,0.0499316934433554,TRUE,2,1,1,CORUM,GPX1-SBP1 complex,3383,2212,CORUM:0000000,FALSE

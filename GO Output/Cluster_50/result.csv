@@ -1,2 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-HP:0011651,0.0498840694227146,TRUE,1,1,1,HP,Double outlet right ventricle with doubly committed ventricular septal defect and pulmonary stenosis,4962,8053,HP:0001719,FALSE

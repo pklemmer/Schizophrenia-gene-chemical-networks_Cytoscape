@@ -1,5 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-GO:0050795,0.0065487787933591,TRUE,75,2,2,GO:BP,regulation of behavior,21010,13921,GO:0007610|GO:0051239,TRUE
-GO:0007218,0.0141477221139415,TRUE,110,2,2,GO:BP,neuropeptide signaling pathway,21010,2821,GO:0007186,TRUE
-GO:2000292,0.0495795652864437,TRUE,1,2,1,GO:BP,regulation of defecation,21010,26696,GO:0030421|GO:0044058|GO:0044062,FALSE
-GO:2000293,0.0495795652864437,TRUE,1,2,1,GO:BP,negative regulation of defecation,21010,26697,GO:0030421|GO:0051048|GO:0060457|GO:2000292,TRUE

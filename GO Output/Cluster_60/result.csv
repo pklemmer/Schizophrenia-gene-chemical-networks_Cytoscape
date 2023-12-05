@@ -1,3 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-MIRNA:hsa-miR-196b-3p,0.0468578858893321,TRUE,16,1,1,MIRNA,hsa-miR-196b-3p,14846,367,MIRNA:000000,FALSE
-GO:0031499,0.0498561152513859,TRUE,5,1,1,GO:CC,TRAMP complex,22090,1148,GO:0140513,TRUE

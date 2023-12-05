@@ -1,3 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-HP:0033668,0.0498840694227146,TRUE,1,1,1,HP,Abnormal amygdala morphology,4962,13650,HP:0007343,FALSE
-HP:0025444,0.0498840694227146,TRUE,1,1,1,HP,Reduced amygdala volume,4962,9870,HP:0033668,FALSE

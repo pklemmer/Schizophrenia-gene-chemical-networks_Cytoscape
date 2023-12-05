@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Command Run File</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table width="100%" summary="page for commandRunFile {RCy3}"><tr><td>commandRunFile {RCy3}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Command Run File</h2>
+
+<h3>Description</h3>
+
+<p>The run command will execute a command script from the file pointed 
+to by the file argument, which should contain Cytoscape commands, one per line. 
+Arguments to the script are provided by the args argument
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+commandRunFile(file, args = NULL, base.url = .defaultBaseUrl)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>file</code></td>
+<td>
+<p>Path to command script file</p>
+</td></tr>
+<tr valign="top"><td><code>args</code></td>
+<td>
+<p>The script arguments as key:value pairs separated by commas</p>
+</td></tr>
+<tr valign="top"><td><code>base.url</code></td>
+<td>
+<p>(optional) Ignore unless you need to specify a custom domain, 
+port or version to connect to the CyREST API. Default is http://localhost:1234 
+and the latest version of the CyREST API supported by this version of RCy3.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>None
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+commandRunFile('/path/to/my/file.txt')
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RCy3</em> version 2.14.2 <a href="00Index.html">Index</a>]</div>
+</div></body></html>

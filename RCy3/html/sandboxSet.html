@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: sandboxSet</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table width="100%" summary="page for sandboxSet {RCy3}"><tr><td>sandboxSet {RCy3}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>sandboxSet</h2>
+
+<h3>Description</h3>
+
+<p>Set a new default sandbox, creating it if necessary.
+A sandbox is the root for the file system used for all file operations. When running standalone
+on the same workstation as Cytoscape, the default sandbox is the directory that's current for
+the R kernel. When running in a Notebook or remote server, the default sandbox is the
+'default_sandbox' created automatically under the under the filetransfer directory in the
+CytoscapeConfiguration directory. Naming a sandbox with this function creates a new
+sub-directory as a sibling to 'default_sandbox' and uses it for subsequent file operations.
+Setting a None sandbox uses the default sandbox instead.
+Sandboxes are highly recommended as an aid to creating workflows that can be shared with
+others.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+sandboxSet(
+  sandboxName,
+  copySamples = TRUE,
+  reinitialize = TRUE,
+  base.url = .defaultBaseUrl
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>sandboxName</code></td>
+<td>
+<p>Name of new default sandbox. None means to use the original default sandbox</p>
+</td></tr>
+<tr valign="top"><td><code>copySamples</code></td>
+<td>
+<p>True to copy the Cytoscape sampleData into the sandbox</p>
+</td></tr>
+<tr valign="top"><td><code>reinitialize</code></td>
+<td>
+<p>True to delete sandbox contents (if any) if sandbox already exists</p>
+</td></tr>
+<tr valign="top"><td><code>base.url</code></td>
+<td>
+<p>Ignore unless you need to specify a custom domain, port or version to connect to the CyREST API. Default is http://127.0.0.1:1234 and the latest version of the CyREST API supported by this version of RCy3.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>sandbox path in Cytoscape workstation's file system
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+sandboxSet()
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RCy3</em> version 2.14.2 <a href="00Index.html">Index</a>]</div>
+</div></body></html>

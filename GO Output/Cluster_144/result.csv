@@ -1,8 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-GO:0061631,0.00130190616668124,TRUE,33,2,2,GO:MF,ubiquitin conjugating enzyme activity,20139,8498,GO:0004842|GO:0061650,TRUE
-GO:0061650,0.00164217709660929,TRUE,37,2,2,GO:MF,ubiquitin-like protein conjugating enzyme activity,20139,8502,GO:0019787,FALSE
-REAC:R-HSA-8866652,0.00200308685815396,TRUE,30,2,2,REAC,Synthesis of active ubiquitin: roles of E1 and E2 enzymes,10835,2288,REAC:R-HSA-8852135,FALSE
-WP:WP4932,0.00644969722930742,TRUE,106,2,2,WP,7q11.23 copy number variation syndrome,8625,30,WP:000000,FALSE
-GO:0070936,0.00727091440084301,TRUE,79,2,2,GO:BP,protein K48-linked ubiquitination,21010,17187,GO:0000209,TRUE
-KEGG:04120,0.00745458090110202,TRUE,140,2,2,KEGG,Ubiquitin mediated proteolysis,8161,265,KEGG:00000,FALSE
-REAC:R-HSA-8852135,0.0138282065173249,TRUE,78,2,2,REAC,Protein ubiquitination,10835,1734,REAC:R-HSA-597592,FALSE

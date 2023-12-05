@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Cybrowser Dialog</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table width="100%" summary="page for cybrowserDialog {RCy3}"><tr><td>cybrowserDialog {RCy3}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Cybrowser Dialog</h2>
+
+<h3>Description</h3>
+
+<p>Launch Cytoscape's internal web browser in a separate window. 
+Provide an id for the window if you want subsequent control of the window e.g., 
+via cybrowser hide.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+cybrowserDialog(
+  id = NULL,
+  text = NULL,
+  title = NULL,
+  url = NULL,
+  base.url = .defaultBaseUrl
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>id</code></td>
+<td>
+<p>(optional) The identifier for the browser window</p>
+</td></tr>
+<tr valign="top"><td><code>text</code></td>
+<td>
+<p>(optional) HTML text to initially load into the browser</p>
+</td></tr>
+<tr valign="top"><td><code>title</code></td>
+<td>
+<p>(optional) Text to be shown in the title bar of the browser window</p>
+</td></tr>
+<tr valign="top"><td><code>url</code></td>
+<td>
+<p>(optional) The URL the browser should load</p>
+</td></tr>
+<tr valign="top"><td><code>base.url</code></td>
+<td>
+<p>(optional) Ignore unless you need to specify a custom domain, 
+port or version to connect to the CyREST API. Default is http://localhost:1234 
+and the latest version of the CyREST API supported by this version of RCy3.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>None
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="../../RCy3/help/cybrowserShow.html">cybrowserShow</a>
+</p>
+<p><a href="../../RCy3/help/cybrowserHide.html">cybrowserHide</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+cybrowserDialog(url='http://cytoscape.org')
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RCy3</em> version 2.14.2 <a href="00Index.html">Index</a>]</div>
+</div></body></html>

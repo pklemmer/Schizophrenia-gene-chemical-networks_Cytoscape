@@ -1,7 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-GO:0071244,0.0495795652862702,TRUE,1,1,1,GO:BP,cellular response to carbon dioxide,21010,17314,GO:0010037|GO:0071241|GO:1901701,TRUE
-GO:0048892,0.0495795652862702,TRUE,1,1,1,GO:BP,lateral line nerve development,21010,13784,GO:0021545|GO:0048925,FALSE
-GO:0048894,0.0495795652862702,TRUE,1,1,1,GO:BP,efferent axon development in a lateral line nerve,21010,13786,GO:0021955|GO:0048892,TRUE
-GO:0061452,0.0495795652862702,TRUE,1,1,1,GO:BP,retrotrapezoid nucleus neuron differentiation,21010,16270,GO:0021953|GO:0061451,TRUE
-GO:0061451,0.0495795652862702,TRUE,1,1,1,GO:BP,retrotrapezoid nucleus development,21010,16269,GO:0021550|GO:0048857,FALSE
-GO:0021723,0.0495795652862702,TRUE,1,1,1,GO:BP,medullary reticular formation development,21010,6610,GO:0021550|GO:0048856,TRUE

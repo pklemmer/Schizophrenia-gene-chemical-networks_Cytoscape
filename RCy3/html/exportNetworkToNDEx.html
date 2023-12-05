@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Export Network To NDEx</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table width="100%" summary="page for exportNetworkToNDEx {RCy3}"><tr><td>exportNetworkToNDEx {RCy3}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Export Network To NDEx</h2>
+
+<h3>Description</h3>
+
+<p>Send a copy of a Cytoscape network to NDEx as a new submission.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+exportNetworkToNDEx(
+  username,
+  password,
+  isPublic,
+  network = NULL,
+  metadata = NULL,
+  ndex.url = "http://ndexbio.org",
+  ndex.version = "v2",
+  base.url = .defaultBaseUrl
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>username</code></td>
+<td>
+<p>NDEx account username</p>
+</td></tr>
+<tr valign="top"><td><code>password</code></td>
+<td>
+<p>NDEx account password</p>
+</td></tr>
+<tr valign="top"><td><code>isPublic</code></td>
+<td>
+<p>(Boolean) Whether to make the network publicly 
+accessible at NDEx.</p>
+</td></tr>
+<tr valign="top"><td><code>network</code></td>
+<td>
+<p>(optional) Name or SUID of the network. Default is the &quot;current&quot; 
+network active in Cytoscape.</p>
+</td></tr>
+<tr valign="top"><td><code>metadata</code></td>
+<td>
+<p>(optional) A list of structured information describing the network</p>
+</td></tr>
+<tr valign="top"><td><code>ndex.url</code></td>
+<td>
+<p>(optional) For alternative instances or deployments of NDEx; 
+default is &quot;http://ndexbio.org&quot;</p>
+</td></tr>
+<tr valign="top"><td><code>ndex.version</code></td>
+<td>
+<p>(optional) For alternative versions of the NDEx API; 
+default is &quot;v2&quot;</p>
+</td></tr>
+<tr valign="top"><td><code>base.url</code></td>
+<td>
+<p>(optional) Ignore unless you need to specify a custom domain,
+port or version to connect to the CyREST API. Default is http://localhost:1234
+and the latest version of the CyREST API supported by this version of RCy3.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>NDEx identifier (<code>externalId</code>) for new submission
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+exportNetworkToNDEx("user", "pass", TRUE)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RCy3</em> version 2.14.2 <a href="00Index.html">Index</a>]</div>
+</div></body></html>

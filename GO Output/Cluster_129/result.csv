@@ -1,3 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-HP:0025501,0.0498840694227146,TRUE,1,1,1,HP,Class III obesity,4962,9923,HP:0001513,FALSE
-HP:0033759,0.0498840694227146,TRUE,1,1,1,HP,Impaired renal tubular reabsorption of magnesium,4962,13741,HP:0011038,FALSE

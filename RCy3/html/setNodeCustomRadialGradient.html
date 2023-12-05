@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Set Node Custom Radial Gradient</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table width="100%" summary="page for setNodeCustomRadialGradient {RCy3}"><tr><td>setNodeCustomRadialGradient {RCy3}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Set Node Custom Radial Gradient</h2>
+
+<h3>Description</h3>
+
+<p>Makes a gradient fill per node by setting a default custom 
+graphic style.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+setNodeCustomRadialGradient(
+  colors = c("#DDDDDD", "#888888"),
+  anchors = c(0, 1),
+  xCenter = 0.5,
+  yCenter = 0.5,
+  slot = 1,
+  style.name = NULL,
+  base.url = .defaultBaseUrl
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>colors</code></td>
+<td>
+<p>(optional) List of colors to define gradient</p>
+</td></tr>
+<tr valign="top"><td><code>anchors</code></td>
+<td>
+<p>(optional) Position of colors from 0.0 to 1.0.</p>
+</td></tr>
+<tr valign="top"><td><code>xCenter</code></td>
+<td>
+<p>(optional) X position for center of radial effect from 0.0 
+to 1.0. Default is 0.5.</p>
+</td></tr>
+<tr valign="top"><td><code>yCenter</code></td>
+<td>
+<p>(optional) Y position for center of radial effect from 0.0 
+to 1.0. Default is 0.5.</p>
+</td></tr>
+<tr valign="top"><td><code>slot</code></td>
+<td>
+<p>(optional) Which custom graphics slot to modify. Slots 1-9 are 
+available for independent charts, gradients and images. Default is 1.</p>
+</td></tr>
+<tr valign="top"><td><code>style.name</code></td>
+<td>
+<p>(optional) Name of style; default is &quot;default&quot; style</p>
+</td></tr>
+<tr valign="top"><td><code>base.url</code></td>
+<td>
+<p>(optional) Ignore unless you need to specify a custom domain,
+port or version to connect to the CyREST API. Default is http://localhost:1234
+and the latest version of the CyREST API supported by this version of RCy3.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>None
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+setNodeCustomRadialGradient()
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RCy3</em> version 2.14.2 <a href="00Index.html">Index</a>]</div>
+</div></body></html>

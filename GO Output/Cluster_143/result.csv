@@ -1,6 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-REAC:R-HSA-171286,0.0124720936903864,TRUE,1,1,1,REAC,Synthesis and processing of ENV and VPU,10835,2256,REAC:R-HSA-175474,FALSE
-WP:WP5065,0.0276052449965488,TRUE,5,1,1,WP,SARS-CoV-2 altering angiogenesis via NRP1,8625,816,WP:000000,FALSE
-GO:0090472,0.0495795652862702,TRUE,1,1,1,GO:BP,dibasic protein processing,21010,19183,GO:0016485,TRUE
-REAC:R-HSA-167060,0.0498883747614705,TRUE,4,1,1,REAC,NGF processing,10835,1448,REAC:R-HSA-9036866,FALSE
-REAC:R-HSA-9036866,0.0498883747614705,TRUE,4,1,1,REAC,Expression and Processing of Neurotrophins,10835,844,REAC:R-HSA-166520,FALSE

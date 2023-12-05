@@ -1,14 +1,14 @@
 ## SETUP -----------------------------------------------------------------------------------------------------------------------
 
-#Requires R 4.1.3 and Rtools 4.0
-#dplyr 1.1.2; httr 1.4.7; BiocManager 1.30.22; rWikiPathways 1.14.0; RCy3 2.14.2
+#Requires R 4.3.2 and Rtools 4.3
+#dplyr 1.1.4; httr 1.4.7; BiocManager 1.30.22; rWikiPathways 1.22.1; RCy3 2.22.1
 #Cytoscape 3.10.1
 
 setwd("~/GitHub/SCZ-CNV")
   #Setting working directory
 rm(list=ls())
   #Cleaning up workspace
-packages <- c("dplyr","httr","stringr")
+packages <- c("dplyr","httr","stringr","gprofiler2")
 installed_packages <- packages %in% rownames(installed.packages())
 if (any(installed_packages == FALSE)) {
   install.packages(packages[!installed_packages])
@@ -29,7 +29,7 @@ invisible(lapply(c(packages,"rWikiPathways","RCy3"), require, character.only = T
   #Loading libraries
 
 sysdatetime <- Sys.time()
-datetime <- format(sysdatetime, format = "%d-%m-%Y_%Hh%M")
+datetime <- format(sysdatetime, format = "%Y-%m-%d_%Hh%M")
 dir.create("Outputs")
 dir.create(sprintf("Outputs/Session-%s",datetime))
 dir.create(sprintf("Outputs/Session-%s/Networks",datetime))
@@ -84,6 +84,73 @@ invisible(metadata.add(print(lapply(applist,getAppInformation))))
 metadata.add("")
 
 # FUNCTION DICTIONARY-------------------------------------------------------------------------------------------------------------------
+.defaultBaseUrl <- 'http://127.0.0.1:1234/v1'
+  #Defining the default base URL found in the RCy3 source as R object for altmergeNetworks
+altmergeNetworks <- function(               sources = NULL,
+                                            title = NULL,
+                                            operation = "union",
+                                            nodeKeys = NULL,
+                                            nodeMergeMap = NULL,
+                                            nodesOnly = FALSE,
+                                            edgeKeys = NULL,
+                                            edgeMergeMap = NULL,
+                                            networkMergeMap = NULL,
+                                            inNetworkMerge = TRUE,
+                                            base.url = .defaultBaseUrl) {
+  cmd.string <- 'network merge' # a good start
+  
+  # sources must be suppled
+  if(is.null(sources)) {
+    message("Missing sources!")
+    return(NULL)
+  } else {
+    sources.str <- paste(sources, collapse = ",")
+    cmd.string <- paste0(cmd.string,' sources="',sources.str,'"')
+  }
+  
+  # defaults
+  cmd.string <- paste0(cmd.string,' operation=',operation)
+  cmd.string <- paste0(cmd.string,' nodesOnly=',nodesOnly)
+  cmd.string <- paste0(cmd.string,' inNetworkMerge=',inNetworkMerge)
+  
+  # optional args
+  if(!is.null(title))
+    cmd.string <- paste0(cmd.string,' netName="',title,'"')
+  if(!is.null(nodeKeys))
+    cmd.string <- paste0(cmd.string,' nodeKeys="',paste(nodeKeys, collapse = ","),'"')
+  if(!is.null(edgeKeys))
+    cmd.string <- paste0(cmd.string,' edgeKeys="',paste(edgeKeys, collapse = ","),'"')
+  if(!is.null(nodeMergeMap)){
+    nodeMergeMap.str <- paste(nodeMergeMap, collapse = ",")
+    nodeMergeMap.str <- gsub("c\\(", "{", nodeMergeMap.str)
+    nodeMergeMap.str <- gsub("\\)", "}", nodeMergeMap.str)
+    cmd.string <- paste0(cmd.string,' nodeMergeMap="',nodeMergeMap.str,'"')
+  }
+  if(!is.null(edgeMergeMap)){
+    edgeMergeMap.str <- paste(edgeMergeMap, collapse = ",")
+    edgeMergeMap.str <- gsub("c\\(", "{", edgeMergeMap.str)
+    edgeMergeMap.str <- gsub("\\)", "}", edgeMergeMap.str)
+    cmd.string <- paste0(cmd.string,' edgeMergeMap="',edgeMergeMap.str,'"')
+  }
+  if(!is.null(networkMergeMap)){
+    networkMergeMap.str <- paste(networkMergeMap, collapse = ",")
+    networkMergeMap.str <- gsub("c\\(", "{", networkMergeMap.str)
+    networkMergeMap.str <- gsub("\\)", "}", networkMergeMap.str)
+    cmd.string <- paste0(cmd.string,' networkMergeMap="',networkMergeMap.str,'"')
+  }
+  
+  res.data <- commandsPOST(cmd.string, base.url = base.url)
+  
+  if(!is.null(res.data$SUID))
+    return(res.data$SUID)
+  else
+    return(res.data)
+}
+  #Normally, RCy3's 'mergeNetworks' function would be used to unify imported networks into one supernetwork
+  #This function does however not work on the latest RCy3 release (v.2.22.1), but does work when running the script on RCy3 v.2.14.2
+  #RCy3 2.14.2 requires R v.4.1.3, requiring the entire script to run on an old version of R for one function that is used once
+  #Here, we redefine the function using the source code from RCy3 v.2.14.2 and simply use this alternate function to merge networks
+
 queryspecies.wp <- c("Homo sapiens","Rattus norvegicus","Mus musculus")
 getPathways.wp <- function(i) {
   pw <- findPathwaysByText(i)
@@ -203,6 +270,9 @@ metadata.add(paste("WikiPathways queried species:",paste(queryspecies.wp,collaps
   #Adding the keyword and species used to filter the WikiPathways query to the metadata file
 metadata.add("")
 
+Sys.sleep(2)
+  #Pausing the script for 2 seconds - when letting the script run without this, the literature source creation fails
+
 commandsRun(sprintf("network import file columnTypeList='sa,sa,source,sa,sa,sa,sa' file=%s firstRowAsColumnNames=true rootNetworkList=-- Create new network collection -- startLoadRow=1", paste0(getwd(),"/CSVs/scz2022-Extended-Data-Table1.txt")))
   #Importing network from file
   #List of 120 genes implicated in Trubetskoy et al., doi: 10.1038/s41586-022-04434-5
@@ -234,7 +304,7 @@ networklist <- getNetworkList()
 setCurrentNetwork(networklist[[1]])
 for(i in 1:length(networklist)) {
   current <- getNetworkName()
-  mergeNetworks(c(current,networklist[[i]]), paste(current,networklist[[i]]),"union",inNetworkMerge = TRUE,nodeKeys=c("Ensembl","Ensembl"))
+  altmergeNetworks(c(current,networklist[[i]]), paste(current,networklist[[i]]),"union",inNetworkMerge = TRUE,nodeKeys=c("Ensembl","Ensembl"))
 }
   #Looping through the network list to merge all currently open networks with each other, creating one large unified network
 renameNetwork("Schizophrenia supernetwork")
@@ -243,8 +313,8 @@ snw_scz <- getNetworkName()
   #Getting the name of the unified network to preserve it from deletion
 lapply(networklist[networklist != snw_scz],deleteNetwork)
   #Deleting all networks besides newly generated unified network
-exportNetwork(filename=paste0(nw_savepath,paste(snw_scz,datetime, sep = " - ")),"CX", network = snw_scz, overwriteFile=TRUE)
-  #Exporting the supernetwork as cx file and tagging it with the time and date made to match with metadata file
+exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW"),"CX", network = snw_scz, overwriteFile=TRUE)
+  #Exporting the supernetwork as cx file
 
 ## FILTERING NETWORK ------------------------------------------------------------------------------------------------------------------
 createColumnFilter(filter.name="type.label",column="Type","Label","IS")
@@ -254,9 +324,9 @@ createColumnFilter(filter.name="disease.name",column="diseaseName","Schizophreni
 createCompositeFilter(filter.name="type.label.anchor.group",c("type.label","type.anchor","type.group","disease.name"),"ANY")
 deleteSelectedNodes()
   #Creating filters and deleting columns in the node table that are not relevant to the supernetwork (leftovers from import sources)
-renameNetwork("Schizophrenia supernetwork - filtered")
+renameNetwork("SCZ_SNW_filtered")
 snw_scz_filtered <- getNetworkName()
-exportNetwork(filename=paste0(nw_savepath,paste(snw_scz_filtered,datetime, sep = " - ")),"CX", network = snw_scz_filtered, overwriteFile=TRUE)
+exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW_filtered"),"CX", network = snw_scz_filtered, overwriteFile=TRUE)
   #Exporting the filtered supernetwork as cx file and tagging it with the time and date made to match with metadata file
 
 ## STRING --------------------------------------------------------------------------------------------------------------------------
@@ -268,10 +338,11 @@ mapTableColumn("stringdb::canonical name","Human","Uniprot-TrEMBL","Ensembl",for
   #This step generates a second Ensembl column ('Ensembl (1)') with ENSG identifiers for the STRING-imported nodes
 renameTableColumn("Ensembl (1)","Ensembldup")
   #Renaming the duplicate Ensembl column for easier handling
+renameNetwork("SCZ_SNW_filtered_STRING")
 snw_scz_filtered_string <- getNetworkName()
-stringified_nodetable <- paste0(nw_savepath,sprintf("/%s node table.csv",snw_scz_filtered_string))
+stringified_nodetable <- paste0(nw_savepath,sprintf("%s node table.csv",snw_scz_filtered_string))
   #Saving the file path to the node table for easier reading
-commandsRun(sprintf('table export options=CSV outputFile=%1$s table="%2$s default node"',stringified_nodetable,snw_scz_filtered_string))
+commandsRun(sprintf('table export options=CSV outputFile=%1$s table="%2$s default  node"',stringified_nodetable,snw_scz_filtered_string))
   #Exporting the node table as .csv file to the current session's "Network" folder
 read_stringified_nodetable <- read.csv(stringified_nodetable)
   #saving the node table as object
@@ -291,7 +362,7 @@ mapTableColumn("Ensembl","Human","Ensembl","HGNC")
   #Generating a new column 'HGNC' from Ensembl identifiers - easier and less error-prone than merging various name columns from different import sources
 renameTableColumn("HGNC","Name2")
   #Renaming the new 'HGNC' column to 'Name2', which is now to be used as default name column. ('shared name' and 'name' columns are immutable and cannot be deleted or renamed)
-exportNetwork(filename=paste0(nw_savepath,paste(snw_scz_filtered_string,datetime,sep= " - ")),"CX",network=snw_scz_filtered_string,overwriteFile=TRUE)
+exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW_filtered_STRING"),"CX",network=snw_scz_filtered_string,overwriteFile=TRUE)
   #Exporting the filtered, stringified supernetwork as cx file and tagging it with the time and data to match with the metadata file
 
 ## CLUSTERING ----------------------------------------------------------------------------------------------------------------------
@@ -306,6 +377,7 @@ lapply(marked_cols, function(column) {
 metadata.add("GLay Clustering")
 metadata.add(capture.output(commandsRun('cluster glay clusterAttribute=__glayCluster createGroups=false network=current restoreEdges=true showUI=true undirectedEdges=true')))
   #Clustering the network using the GLay community cluster from the clusterMaker Cytoscape app and recording outcome to metadata
+renameNetwork("SCZ_SNW_filtered_STRING_clustered")
 renameTableColumn('__glayCluster','gLayCluster') 
   #Renaming the newly generated gLayCluster column as the original name with two underscores is not recognized during gene ontology
 snw_scz_filtered_string_clustered <- getNetworkName()
@@ -313,57 +385,144 @@ clustered_nodetable <- paste0(nw_savepath,sprintf("/%s node table.csv",snw_scz_f
   #Saving the file path to the node table for easier reading (note the double space between node and table)
 commandsRun(sprintf('table export options=CSV outputFile=%1$s table="%2$s default  node"',clustered_nodetable,snw_scz_filtered_string_clustered))
   #Exporting the node table as .csv file to the current session's "Network" folder
-exportNetwork(filename=paste0(nw_savepath,paste(snw_scz_filtered_string_clustered,datetime,sep= " - ")),"CX",network=snw_scz_filtered_string_clustered,overwriteFile=TRUE)
+exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW_filtered_STRING_clustered"),"CX",network=snw_scz_filtered_string_clustered,overwriteFile=TRUE)
   #Exporting the filtered, stringified, clustered supernetwork as cx file and tagging it with the time and data to match with the metadata file
 
-dir.create("temp")
-writeLines(clustered_nodetable, "temp/clustered_nodetable_path.txt", sep="")
-writeLines(paste0(nw_savepath,paste(paste(snw_scz_filtered_string_clustered,datetime,sep= " - "),".cx",sep="")),"temp/clustered_network_path.txt")
-  #Creating a temporary directory in which the paths to the node table and associated network for GO analysis are stored for easier access with the GO script
 
-### GO ANALYSIS IS NOW DONE IN THE geneontology.R SCRIPT, AFTER WHOSE COMPLETION THE NEXT LINES CAN BE RUN ###
+read_clustered_nodetable <- read.csv(clustered_nodetable)
+  #Reading the exported csv
+split_df <- split(read_clustered_nodetable$Ensembl,read_clustered_nodetable$gLayCluster)
+  #Splitting the node table by cluster
+nodecount <- sapply(split_df, length)
+  #Counting how many nodes are in each cluster
+countmatrix <- matrix(seq(1,length(nodecount)), ncol=1)
+countmatrix <- cbind(countmatrix,as.numeric(nodecount))
+  #Construcing a matrix showing how many nodes are in each cluster
+invalidclusters <- as.list(countmatrix[countmatrix[, 2] < 5, 1])
+  #Getting which clusters have fewer than 5 nodes associated with them 
+valid_clustered_nodetable <- read_clustered_nodetable[!read_clustered_nodetable$gLayCluster %in% invalidclusters, ]
+  #Generating a new df containing only nodes associated with clusters that had 5 or more nodes
+split_tbl <- split(valid_clustered_nodetable, valid_clustered_nodetable$gLayCluster)
+sourcecount <- function(cluster) {
+  wpcount <- sum(split_tbl[[cluster]][["WikiPathways"]] == 1, na.rm = TRUE)
+  dgcount <- sum(split_tbl[[cluster]][["DisGeNET"]] == 1, na.rm = TRUE)
+  litcount <- sum(split_tbl[[cluster]][["Literature"]] == 1, na.rm = TRUE)
+  wpdgcount <- sum(split_tbl[[cluster]][["WikiPathways"]] == 1 &
+                     split_tbl[[cluster]][["DisGeNET"]] == 1,na.rm = TRUE)
+  wplitcount <- sum(split_tbl[[cluster]][["WikiPathways"]] == 1 &
+                      split_tbl[[cluster]][["Literature"]] == 1, na.rm = TRUE)
+  dglitcount <- sum(split_tbl[[cluster]][["DisGeNET"]] == 1 &
+                      split_tbl[[cluster]][["Literature"]] == 1, na.rm = TRUE)
+  wpdglitcount <- sum(split_tbl[[cluster]][["DisGeNET"]] == 1 &
+                        split_tbl[[cluster]][["Literature"]] == 1 &
+                        split_tbl[[cluster]][["WikiPathways"]] == 1, na.rm = TRUE)
+  result_df <- data.frame(
+    gLayCluster = split_tbl[[cluster]][["gLayCluster"]][1],
+    WikiPathways_source = wpcount,
+    DisGeNET_source = dgcount, 
+    Literature_source = litcount, 
+    WikiPathways_AND_DisGeNET_source = wpdgcount,
+    WikiPathways_AND_Literature_source = wplitcount, 
+    DisGeNET_AND_Literature_source = dglitcount,
+    DisGeNET_AND_Literature_AND_WikiPathways_source = wpdglitcount
+  )
+}
+sources_count <- do.call(rbind, lapply(seq_along(split_tbl),sourcecount))
+  #For each cluster, counting how many nodes are associated with which sources
 
 ## GO ANALYSIS ------------------------------------------------------------------------------------------------------------------------
-importNetworkFromFile(file=readLines("temp/clustered_network_path.txt"))
-go_list <- readRDS("~/GitHub/SCZ-CNV/GO Output/go_list.rds")
-  #Reading the df containing the gprofiler analysis generated from the geneontology.R script
+valid_clustered_nodetable %>% select(c('gLayCluster','Ensembl'))
+  #Selecting relevant columns
+split_df <- split(valid_clustered_nodetable$Ensembl,valid_clustered_nodetable$gLayCluster)
+split_list <- lapply(split_df, as.vector)
+  #Splitting the node table by cluster number, i.e. lists of Ensembl IDs are created per cluster
+go <- function(cluster) {
+  gost(
+    query = cluster,
+    organism = "hsapiens",
+    ordered_query = FALSE,
+    multi_query = TRUE,
+    significant = TRUE,
+    exclude_iea = FALSE,
+    measure_underrepresentation = FALSE,
+    evcodes = FALSE,
+    user_threshold = 0.05,
+    correction_method = "g_SCS",
+    domain_scope ="annotated",
+    custom_bg = NULL,
+    numeric_ns = "",
+    sources = NULL,
+    as_short_link = FALSE,
+    highlight = TRUE
+  )
+}
+go_list <- lapply(split_list,go)
+  #Iterating the gost GO function over all clusters
+saveRDS(go_list, file=paste0(nw_savepath,"/go_list.rds"))
+  #Saving the entire generated GO analysis as R object locally
 get_top_terms <- function(cluster) {
-  topterms <- toString(go_list[[cluster]][["result"]][["term_name"]][1:5])
+  terms <- toString(go_list[[cluster]][["result"]][["term_name"]][1:5])
     #Extracting the top 5 term names associated with each cluster
   pval <- toString(go_list[[cluster]][["result"]][["p_values"]][1:5])
     #Extracting the p-values for the corresponding top 5 term names
   result_df <- data.frame(
     gLayCluster = cluster, 
-    GO_Terms = topterms, 
+    GO_Terms = terms, 
     GO_Pvals = pval
     )
 }
-output_df <- do.call(rbind, lapply(seq_along(go_list),get_top_terms))
-  #Getting top 5 term names and corresponding p-values for each cluster and storing in output_df
-#write.csv(output_df, file="~/GitHub/SCZ-CNV/GO Output/topterms.csv")
-  #Writing the df as .csv
-loadTableData(output_df,data.key.column="gLayCluster",table.key.column="gLayCluster")
+topterms_df <- do.call(rbind, lapply(seq_along(go_list),get_top_terms))
+  #Getting top 5 term names and corresponding p-values for each cluster and storing in topterms_df
+loadTableData(topterms_df,data.key.column="gLayCluster",table.key.column="gLayCluster")
   #Loading the generated top terms and p-values back to the supernetwork; every gene belonging to cluster x is now associated with the top terms of cluster x
 renameNetwork(title=paste0(getNetworkName(),"-GO"))
 snw_scz_filtered_string_clustered_go <- getNetworkName()
   #Renaming and saving the network name to indicate addition of GO information
-exportNetwork(filename=paste0(nw_savepath,paste(snw_scz_filtered_string_clustered_go,datetime,sep= " - ")),"CX",network=snw_scz_filtered_string_clustered_go,overwriteFile=TRUE)
+exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW_filtered_STRING_clustered_GO"),"CX",network=snw_scz_filtered_string_clustered_go,overwriteFile=TRUE)
   #Exporting the filtered, stringified, clustered supernetwork after GO as cx file and tagging it with the time and data to match with the metadata file
 
 ##VISUALISATION -----------------------------------------------------------------------------------------------------------------------
-createclusternodes <- function(cluster) {
-  addCyNodes(node.names = sprintf("cluster_%s",cluster))
-    #Creating a new 'summary node' for each cluster
-  selectNodes()
-  
+go_list_filtered <- go_list[sapply(go_list, function(x) !is.null(x))] 
+  #Removing all clusters from the list for which no GO analysis could be done
+get_top_terms_filtered <- function(cluster) {
+  topterms <- paste(go_list_filtered[[cluster]][["result"]][["term_name"]][1:5],collapse=",")
+  #Extracting the top 5 term names associated with each cluster
+  pval <- paste(go_list_filtered[[cluster]][["result"]][["p_values"]][1:5],collapse=",")
+  #Extracting the p-values for the corresponding top 5 term names
+  nodes <- paste(go_list_filtered[[cluster]][["meta"]][["query_metadata"]][["queries"]][["query_1"]],collapse=",")
+  #Extracing the number of nodes/genes contained in each cluster
+  nnodes <- str_count(toString(go_list_filtered[[cluster]][["meta"]][["query_metadata"]][["queries"]][["query_1"]]),"\\S+")
+  result_df_filtered <- data.frame(
+    gLayCluster = names(go_list_filtered)[cluster], 
+    GO_Terms = topterms, 
+    GO_Pvals = pval,
+    Nodes = nodes,
+    N_nodes = nnodes
+  )
 }
-#Make cluster node for each cluster 
-#add info: - n nodes per cluster -GO terms per cluster 
-#Make new subnetwork and visualise 
+go_vis <- do.call(rbind, lapply(seq_along(go_list_filtered),get_top_terms_filtered))
+  #Creating a new df containing the cluster and its corresponding GO terms, pvals, as well as the nodes and number of nodes making up the cluster
+go_vis <- cbind(go_vis,sources_count)
+  #joining the cluster table and the table detailing the amount of sources per cluster
+go_vis <- go_vis[,-6]
+  #Removing duplicate gLayCluster column
+write.table(go_vis, file=paste0(getwd(),"/CSVs/GO-clusters-vis.tsv"), sep = "\t",row.names=FALSE,quote=FALSE)
+  #Writing the table to file for Cytoscape import
+commandsRun(sprintf("network import file columnTypeList='s,sa,sa,sa,sa,sa,sa,sa,sa,sa,sa,sa' file=%s firstRowAsColumnNames=true delimiters=\\t rootNetworkList=-- Create new network collection -- startLoadRow=1", paste0(getwd(),"/CSVs/GO-clusters-vis.tsv")))
+  #Importing the previoulsy generated table 'go_vis_filered' back to Cytoscape as new network
+  #Essential to use .tsv and importing as such to avoid conflicts generated by .csv - commas separating terms in a string are interpreted as different columns by Cytoscape
+renameNetwork("GO_Visualisation_SCZ_SNW")
 
 
 
-## CTL EXTENSION ----------------------------------------------------------------------------------------------------------------------
+go_vis_nw <- getNetworkName()
+exportNetwork(filename=paste0(nw_savepath,"GO_Visualisation_SCZ_SNW"),"CX",network=go_vis,overwriteFile=TRUE)
+
+
+
+
+
+ ## CTL EXTENSION ----------------------------------------------------------------------------------------------------------------------
 hsa <- file.path(getwd(), "Linksets", "wikipathways-20220511-hsa-WP.xgmml")
 hsa_react <- file.path(getwd(), "Linksets", "wikipathways-20220511-hsa-REACTOME.xgmml")
   #Loading the WikiPathways linksets available at https://cytargetlinker.github.io/pages/linksets/wikipathways

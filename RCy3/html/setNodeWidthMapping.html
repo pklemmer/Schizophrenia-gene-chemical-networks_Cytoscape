@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Set Node Width Mapping</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table width="100%" summary="page for setNodeWidthMapping {RCy3}"><tr><td>setNodeWidthMapping {RCy3}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Set Node Width Mapping</h2>
+
+<h3>Description</h3>
+
+<p>Map table column values to the node widths.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+setNodeWidthMapping(
+  table.column,
+  table.column.values = NULL,
+  widths = NULL,
+  mapping.type = "c",
+  default.width = NULL,
+  style.name = NULL,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>table.column</code></td>
+<td>
+<p>Name of Cytoscape table column to map values from</p>
+</td></tr>
+<tr valign="top"><td><code>table.column.values</code></td>
+<td>
+<p>List of values from Cytoscape table to be used 
+in mapping. Leave NULL to perform an automatic mapping to all column values.</p>
+</td></tr>
+<tr valign="top"><td><code>widths</code></td>
+<td>
+<p>List of width values to map to table.column.values. A range
+of 10 to 100 is used by default for automatic mapping.</p>
+</td></tr>
+<tr valign="top"><td><code>mapping.type</code></td>
+<td>
+<p>(char) continuous, discrete or passthrough (c,d,p); 
+default is continuous</p>
+</td></tr>
+<tr valign="top"><td><code>default.width</code></td>
+<td>
+<p>Size value to set as default</p>
+</td></tr>
+<tr valign="top"><td><code>style.name</code></td>
+<td>
+<p>Name of style; default is &quot;default&quot; style</p>
+</td></tr>
+<tr valign="top"><td><code>network</code></td>
+<td>
+<p>(optional) Name or SUID of the network. 
+Default is the &quot;current&quot; network active in Cytoscape.</p>
+</td></tr>
+<tr valign="top"><td><code>base.url</code></td>
+<td>
+<p>(optional) Ignore unless you need to specify a custom domain,
+port or version to connect to the CyREST API. Default is http://localhost:1234
+and the latest version of the CyREST API supported by this version of RCy3.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>None
+#' @details Using this function will unlock node width and height to use  
+separate values.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+setNodeWidthMapping('score')
+setNodeWidthMapping('score', widths=c(30,80))
+setNodeWidthMapping('score', c(0,30), c(35,55))
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RCy3</em> version 2.14.2 <a href="00Index.html">Index</a>]</div>
+</div></body></html>

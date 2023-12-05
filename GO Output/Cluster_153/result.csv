@@ -1,3 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-GO:1904617,0.0495795652862702,TRUE,1,1,1,GO:BP,negative regulation of actin binding,21010,24954,GO:0032091|GO:1904616,FALSE
-GO:1904530,0.0495795652862702,TRUE,1,1,1,GO:BP,negative regulation of actin filament binding,21010,24883,GO:1904529|GO:1904617,TRUE

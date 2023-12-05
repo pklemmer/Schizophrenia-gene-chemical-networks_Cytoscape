@@ -1,3 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-WP:WP4883,0.0386473429951589,TRUE,7,1,1,WP,SARS-CoV-2 and ACE2 receptor: molecular mechanisms,8625,36,WP:000000,FALSE
-KEGG:04614,0.0441737002080782,TRUE,23,1,1,KEGG,Renin-angiotensin system,8161,318,KEGG:00000,FALSE

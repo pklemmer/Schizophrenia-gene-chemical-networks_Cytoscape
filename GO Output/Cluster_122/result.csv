@@ -1,5 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-GO:0005371,0.0248274492279377,TRUE,1,1,1,GO:MF,tricarboxylate secondary active transmembrane transporter activity,20139,1452,GO:0015291|GO:0046943,FALSE
-GO:0071913,0.0248274492279377,TRUE,1,1,1,GO:MF,citrate secondary active transmembrane transporter activity,20139,8880,GO:0005371|GO:0015137,TRUE
-GO:1990546,0.0495795652862702,TRUE,1,1,1,GO:BP,mitochondrial tricarboxylic acid transmembrane transport,21010,26259,GO:0035674,FALSE
-GO:0006843,0.0495795652862702,TRUE,1,1,1,GO:BP,mitochondrial citrate transmembrane transport,21010,2550,GO:0015746|GO:1990546,TRUE

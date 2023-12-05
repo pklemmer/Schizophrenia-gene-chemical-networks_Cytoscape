@@ -1,0 +1,104 @@
+## ---- echo = FALSE------------------------------------------------------------
+knitr::opts_chunk$set(
+  eval=FALSE
+)
+
+## -----------------------------------------------------------------------------
+#  if(!"RCy3" %in% installed.packages()){
+#      install.packages("BiocManager")
+#      BiocManager::install("RCy3")
+#  }
+#  library(RCy3)
+#  
+
+## -----------------------------------------------------------------------------
+#  cytoscapePing()
+#  cytoscapeVersionInfo ()
+
+## ----Create data frames and graph in Cytoscape--------------------------------
+#  net.nodes <- c("ALK", "ALK p Y1078", "ALK p Y1096", "ALK p Y1586", "CTNND1", "CTNND1 p Y193", "CTNND1 p Y217", "CTNND1 p Y228", "CTNND1 p Y241", "CTNND1 p Y248", "CTNND1 p Y302", "CTNND1 p Y904", "CTTN", "CTTN ack K107", "CTTN ack K124", "CTTN ack K147", "CTTN ack K161", "CTTN ack K235", "CTTN ack K390", "CTTN ack K87", "CTTN p S113", "CTTN p S224", "CTTN p Y104", "CTTN p Y154", "CTTN p Y162", "CTTN p Y228", "CTTN p Y334", "CTTN p Y421", "IRS1", "IRS1 p Y632", "IRS1 p Y941", "IRS1 p Y989", "NPM1", "NPM1 ack K154", "NPM1 ack K223", "NPM1 p S214", "NPM1 p S218")
+#  net.genes <- sapply(net.nodes,  function (x) unlist(strsplit(x, " ",  fixed=TRUE))[1])
+#  parent <- c("", "ALK", "ALK", "ALK", "", "CTNND1", "CTNND1", "CTNND1", "CTNND1", "CTNND1", "CTNND1", "CTNND1", "", "CTTN", "CTTN", "CTTN", "CTTN", "CTTN", "CTTN", "CTTN", "CTTN", "CTTN", "CTTN", "CTTN", "CTTN", "CTTN", "CTTN", "CTTN", "", "IRS1", "IRS1", "IRS1", "", "NPM1", "NPM1", "NPM1", "NPM1")
+#  nodeType <- c("protein", "modification", "modification", "modification", "protein", "modification", "modification", "modification", "modification", "modification", "modification", "modification", "protein", "modification", "modification", "modification", "modification", "modification", "modification", "modification", "modification", "modification", "modification", "modification", "modification", "modification", "modification", "modification", "protein", "modification", "modification", "modification", "protein", "modification", "modification", "modification", "modification")
+#  netnodes.df <- data.frame(id=net.nodes, Gene.Name=net.genes, parent, nodeType, stringsAsFactors = FALSE)
+#  
+#  # Define edge data
+#  source.nodes <- c("ALK", "ALK", "ALK", "CTNND1", "CTNND1", "CTNND1", "CTNND1", "CTNND1", "CTNND1", "CTNND1", "CTTN", "CTTN", "CTTN", "CTTN", "CTTN", "CTTN", "CTTN", "CTTN", "CTTN", "CTTN", "CTTN", "CTTN", "CTTN", "CTTN", "CTTN", "IRS1", "IRS1", "IRS1", "NPM1", "NPM1", "NPM1", "NPM1", "ALK p Y1096", "CTNND1 p Y193", "CTNND1 p Y193", "CTNND1 p Y228", "CTNND1 p Y904", "CTNND1 p Y217", "CTNND1 p Y241", "CTNND1 p Y248", "ALK p Y1078", "ALK p Y1096", "ALK p Y1586", "IRS1 p Y941", "CTTN ack K147", "CTTN ack K107", "CTTN ack K235", "CTTN ack K87", "CTTN ack K147", "CTTN ack K124", "CTTN ack K147", "CTTN ack K235", "CTTN ack K161", "CTTN ack K390", "NPM1 ack K223", "NPM1 ack K154", "NPM1 ack K223", "ALK", "CTNND1", "CTNND1", "CTTN", "IRS1")
+#  target.nodes <- c("ALK p Y1078", "ALK p Y1096", "ALK p Y1586", "CTNND1 p Y193", "CTNND1 p Y217", "CTNND1 p Y228", "CTNND1 p Y241", "CTNND1 p Y248", "CTNND1 p Y302", "CTNND1 p Y904", "CTTN ack K107", "CTTN ack K124", "CTTN ack K147", "CTTN ack K161", "CTTN ack K235", "CTTN ack K390", "CTTN ack K87", "CTTN p S113", "CTTN p S224", "CTTN p Y104", "CTTN p Y154", "CTTN p Y162", "CTTN p Y228", "CTTN p Y334", "CTTN p Y421", "IRS1 p Y632", "IRS1 p Y941", "IRS1 p Y989", "NPM1 ack K154", "NPM1 ack K223", "NPM1 p S214", "NPM1 p S218", "ALK p Y1586", "CTNND1 p Y228", "CTNND1 p Y302", "CTNND1 p Y302", "CTTN p Y154", "CTTN p Y162", "CTTN p Y162", "CTTN p Y334", "IRS1 p Y632", "IRS1 p Y989", "IRS1 p Y989", "IRS1 p Y989", "CTTN p S113", "CTTN p S224", "CTTN p S224", "CTTN p S224", "CTTN p Y104", "CTTN p Y228", "CTTN p Y228", "CTTN p Y228", "CTTN p Y421", "CTTN p Y421", "NPM1 p S214", "NPM1 p S218", "NPM1 p S218", "IRS1", "CTTN", "IRS1", "NPM1", "NPM1")
+#  Weight <- c(100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 0.8060606, 0.7575758, 0.7454545, 0.9393939, 0.8949096, 0.7329699, 0.7553845, 0.7866191, 0.775, 0.6969697, 0.7818182, 0.8424242, -0.7714286, -0.8385965, -0.5017544, -0.7473684, -0.5252838, -0.9428571, -0.8285714, -0.6713287, -0.5508772, -0.9428571, -0.8857143, -0.6310881, -0.8285714, 0.6123365, 2.115272, 0.002461723, 0.3354451, 0.5661711)
+#  netedges.df <- data.frame(source=source.nodes, target=target.nodes, Weight, stringsAsFactors = FALSE)
+#  
+#  #create network from data frames
+#  net.suid <- createNetworkFromDataFrames(netnodes.df, netedges.df, title=paste(paste("Group Nodes Test"), 1+length(getNetworkList())), collection = "RCy3 Vignettes")
+#  
+#  # Make sure nodes are spread out sufficiently
+#  layoutNetwork('force-directed defaultSpringCoefficient=0.00001 defaultSpringLength=50 defaultNodeMass=5')
+
+## ----Define nodes as proteins or modifications--------------------------------
+#  nodedata <- getTableColumns("node")
+#  edgedata <- getTableColumns("edge")
+#  genes <- netnodes.df[grep("protein", netnodes.df$nodeType), "id"]
+#  
+#  #select by gene SUIDs
+#  geneSUIDs <- nodedata[grep("protein", nodedata$nodeType), 1]
+#  selectNodes(geneSUIDs, preserve.current.selection = FALSE)
+
+## -----------------------------------------------------------------------------
+#  # or by names in the "id" column
+#  selectNodes(c("ALK","IRS1"), by.col="id", preserve.current.selection = FALSE)
+
+## -----------------------------------------------------------------------------
+#  # or by names based on dataframe subsetting
+#  modifications <- netnodes.df[grep("modification", netnodes.df$nodeType), "id"]
+#  selectNodes(modifications, by='id', pre=FALSE)
+
+## -----------------------------------------------------------------------------
+#  # Now select one protein and all its modifications
+#  deltacatnodes <- netnodes.df[grep("CTNND1", netnodes.df$Gene.Name), "id"]
+#  selectNodes(deltacatnodes, by.col="id", preserve=FALSE)
+
+## ----Create a group.----------------------------------------------------------
+#  createGroup("delta catenin group")
+#  collapseGroup("delta catenin group")
+
+## -----------------------------------------------------------------------------
+#  expandGroup("delta catenin group")
+
+## ----Create groups for all proteins - loop version----------------------------
+#  deleteGroup("delta catenin group")
+#  for(i in 1:length(genes)) {
+#      print(genes[i])
+#      selectNodes(netnodes.df[grep(genes[i], netnodes.df$Gene.Name), "id"], by.col="id", preserve=FALSE)
+#      createGroup(genes[i])
+#      collapseGroup(genes[i])
+#  }
+#  groups.1 <- listGroups()
+#  groups.1
+#  # should see 5 group SUIDs reported
+
+## -----------------------------------------------------------------------------
+#  expandGroup(genes)
+
+## ----Alternative methods for creating groups----------------------------------
+#  deleteGroup(genes)
+#  for(i in 1:length(genes)) {
+#      print(genes[i])
+#      createGroup(genes[i], nodes=netnodes.df[grep(genes[i], netnodes.df$Gene.Name), "id"], nodes.by.col = "id")
+#  }
+#  collapseGroup(genes)
+#  expandGroup(genes)
+
+## ----Create groups using data frame and get group info------------------------
+#  deleteGroup(genes)
+#  sapply(genes, function(x) createGroup(x, nodes=netnodes.df[grep(x, netnodes.df$Gene.Name), "id"], nodes.by.col = "id"))
+#  collapseGroup(genes)
+
+## -----------------------------------------------------------------------------
+#  getGroupInfo("ALK")
+#  expandGroup("ALK")
+#  
+#  # Get all groups' info
+#  group.info <- list()
+#  group.info <- lapply(listGroups()$groups, getGroupInfo)
+#  print(group.info)
+

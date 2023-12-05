@@ -1,4 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-HP:0008835,0.0498840694227146,TRUE,1,1,1,HP,Multicentric femoral head ossification,4962,5549,HP:0009107,FALSE
-HP:0006450,0.0498840694227146,TRUE,1,1,1,HP,Multicentric ossification of proximal femoral epiphyses,4962,4214,HP:0009107|HP:0010574,FALSE
-HP:0004997,0.0498840694227146,TRUE,1,1,1,HP,Multicentric ossification of proximal humeral epiphyses,4962,3412,HP:0003897,FALSE

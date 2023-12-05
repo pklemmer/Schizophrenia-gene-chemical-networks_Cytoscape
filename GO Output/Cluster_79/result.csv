@@ -1,6 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-GO:0140412,0.0248274492279377,TRUE,1,1,1,GO:MF,zinc:bicarbonate symporter activity,20139,10584,GO:0046915|GO:0140410,TRUE
-GO:1990540,0.0495795652862702,TRUE,1,1,1,GO:BP,mitochondrial manganese ion transmembrane transport,21010,26254,GO:0071421,TRUE
-GO:0097080,0.0495795652862702,TRUE,1,1,1,GO:BP,plasma membrane selenite transport,21010,19356,GO:0055085,TRUE
-GO:0015694,0.0495795652862702,TRUE,1,1,1,GO:BP,mercury ion transport,21010,4900,GO:0000041|GO:0050787|GO:0098655|GO:0098662,TRUE
-HP:0032098,0.0498840694227146,TRUE,1,1,1,HP,Hypomanganesemia,4962,12118,HP:0032096,FALSE

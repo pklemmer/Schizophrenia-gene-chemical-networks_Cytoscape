@@ -1,2 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-TF:M07604_1,0.0374793863375522,TRUE,3,1,1,TF,Factor: Evi-1; motif: AAWGACAAGATAN; match class: 1,20011,2341,TF:M07604,FALSE

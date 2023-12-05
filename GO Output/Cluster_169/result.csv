@@ -1,2 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-TF:M08583_1,0.0499725151167085,TRUE,4,1,1,TF,Factor: GCMa:Max; motif: ATGCGGGTNNNNNNCACGTGN; match class: 1,20011,3063,TF:M08583,FALSE

@@ -1,3 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-TF:M06759,0.0249862575583681,TRUE,2,1,1,TF,Factor: znf646; motif: NGKGCTGATGATSAGGCGM,20011,10864,TF:M00000,FALSE
-GO:1990696,0.0398848922011332,TRUE,4,1,1,GO:CC,USH2 complex,22090,3985,GO:0032991,TRUE

@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: sandboxRemove</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table width="100%" summary="page for sandboxRemove {RCy3}"><tr><td>sandboxRemove {RCy3}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>sandboxRemove</h2>
+
+<h3>Description</h3>
+
+<p>Delete sandbox contents and remove its directory.
+If the current sandbox is the entire file system on a Cytoscape workstation, trying to delete it
+is an error. Otherwise, deleting the current sandbox results in the default sandbox becoming the
+new current sandbox. When running standalone on the same workstation as Cytoscape, the default
+sandbox is the entire file system on the Cytoscape workstation. When running in a Notebook or
+remote server, the default sandbox is the 'default_sandbox' created automatically under the
+under the filetransfer directory in the CytoscapeConfiguration directory. If that sandbox is
+deleted, it will be re-created so that subsequent file operations can complete successfully.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+sandboxRemove(sandboxName = NULL, base.url = .defaultBaseUrl)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>sandboxName</code></td>
+<td>
+<p>Name of sandbox to delete. None means to delete the current sandbox. If that sandbox is the default sandbox, it is automatically re-created.</p>
+</td></tr>
+<tr valign="top"><td><code>base.url</code></td>
+<td>
+<p>Ignore unless you need to specify a custom domain, port or version to connect to the CyREST API. Default is http://127.0.0.1:1234 and the latest version of the CyREST API supported by this version of RCy3.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>dict: 'sandboxPath': &lt;directory on Cytoscape workstation&gt;, 'existed': &lt;True if sandbox existed&gt;
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+sandboxRemove()
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RCy3</em> version 2.14.2 <a href="00Index.html">Index</a>]</div>
+</div></body></html>

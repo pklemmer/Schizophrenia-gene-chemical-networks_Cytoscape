@@ -1,0 +1,533 @@
+.exportShowImage        .exportShowImage
+.getDefaultSandbox      .getDefaultSandbox
+.getRequester           .getRequester
+AddToGroup              Add to Group
+RCy3                    RCy3: Functions to Access and Control Cytoscape
+RemoveFromGroup         Remove from Group
+UpdateAnnotationBoundedText
+                        Update Bounded Text Annotation
+addAnnotationBoundedText
+                        Add Bounded Text Annotation
+addAnnotationImage      Add Image Annotation
+addAnnotationShape      Add Shape Annotation
+addAnnotationText       Add Text Annotation
+addCyEdges              Add CyEdges
+addCyNodes              Add CyNodes
+analyzeNetwork          Analyze Network
+applyFilter             Apply Filter
+bundleEdges             Bundle Edges
+checkNotebookIsRunning
+                        checkNotebookIsRunning
+checkRunningRemote      checkRunningRemote
+clearEdgeBends          Clear Edge Bends
+clearEdgePropertyBypass
+                        Clear Edge Property Bypass
+clearNetworkCenterBypass
+                        Clear Network Center Bypass
+clearNetworkPropertyBypass
+                        Clear Network Property Bypass
+clearNetworkZoomBypass
+                        Clear Network Zoom Bypass
+clearNodeOpacityBypass
+                        Clear Node Opacity Bypass
+clearNodePropertyBypass
+                        Clear Node Property Bypass
+clearSelection          Clear Selection
+cloneNetwork            Clone a Cytoscape Network
+closeSession            Close Session
+collapseGroup           Collapse Group
+commandEcho             Command Echo
+commandOpenDialog       Command Open Dialog
+commandPause            Command Pause
+commandQuit             Command Quit
+commandRunFile          Command Run File
+commandSleep            Command Sleep
+commandsAPI             Open Swagger docs for CyREST Commands API
+commandsGET             Commands GET
+commandsHelp            Commands Help
+commandsPOST            Commands POST
+commandsRun             Run a Command
+copyVisualStyle         Copy Visual Style
+createColumnFilter      Create Column Filter
+createCompositeFilter   Create Composite Filter
+createDegreeFilter      Create Degree Filter
+createGraphFromNetwork
+                        createGraphFromNetwork
+createGroup             Create Group
+createGroupByColumn     Create Group by Column
+createIgraphFromNetwork
+                        Create an igraph network from a Cytoscape
+                        network
+createNetworkFromDataFrames
+                        Create a network from data frames
+createNetworkFromGraph
+                        Create Network From Graph
+createNetworkFromIgraph
+                        Create a Cytoscape network from an igraph
+                        network
+createSubnetwork        Create subnetwork from existing network
+createVisualStyle       Create a visual style from components
+cybrowserClose          Cybrowser Close
+cybrowserDialog         Cybrowser Dialog
+cybrowserHide           Cybrowser Hide
+cybrowserList           Cybrowser List
+cybrowserSend           Cybrowser Send
+cybrowserShow           Cybrowser Show
+cybrowserVersion        Cybrowser Version
+cyrestAPI               Open Swagger docs for CyREST API
+cyrestDELETE            CyREST DELETE
+cyrestGET               CyREST GET
+cyrestPOST              CyREST POST
+cyrestPUT               CyREST PUT
+cytoscapeApiVersions    Available CyREST API Versions
+cytoscapeFreeMemory     Free Up Unused Memory for Cytoscape
+cytoscapeMemoryStatus   Memory Available to Cytoscape
+cytoscapeNumberOfCores
+                        Number of Processors Available to Cytoscape
+cytoscapePing           Ping Cytoscape
+cytoscapeVersionInfo    Cytoscape and CyREST API Versions
+deleteAllNetworks       Delete All Networks
+deleteAnnotation        Delete Annotation
+deleteDuplicateEdges    Delete Duplicate Edges
+deleteGroup             Delete (or Ungroup) a Group
+deleteNetwork           Delete Network
+deleteSelectedEdges     Delete Selected Edges
+deleteSelectedNodes     Delete Selected Nodes
+deleteSelfLoops         Delete Self Loops
+deleteStyleMapping      Delete Style Mapping
+deleteTableColumn       Delete a table column
+deleteVisualStyle       Delete Visual Style
+diffusionAdvanced       Diffusion Advanced
+diffusionBasic          Diffusion Basic
+disableApp              Disable App
+doInitializeSandbox     doInitializeSandbox
+doRequestRemote         doRequestRemote
+doSetSandbox            doSetSandbox
+dockPanel               Dock Panel
+enableApp               Enable App
+expandGroup             Expand Group
+exportFilters           Export Filters
+exportImage             Export Image
+exportNetwork           Export Network
+exportNetworkToNDEx     Export Network To NDEx
+exportVisualStyles      Export Visual Styles
+findRemoteCytoscape     findRemoteCytoscape
+fitContent              Fit Content
+floatPanel              Float Panel
+getAbsSandboxPath       getAbsSandboxPath
+getAllEdges             Get All Edges
+getAllNodes             Get All Nodes
+getAllStyleMappings     Get All Style Mappings
+getAnnotationList       Get Annotation List
+getAppInformation       Get App Information
+getAppStatus            App Status
+getAppUpdates           List Apps With Updates
+getArrowShapes          Get Arrow Shapes
+getAvailableApps        List Available Apps
+getBackgroundColorDefault
+                        Get Background Color Default
+getBrowserClientChannel
+                        getBrowserClientChannel
+getBrowserClientJs      getBrowserClientJs
+getCollectionList       Get Collection List
+getCollectionName       Get Collection Name
+getCollectionNetworks   Get Collection Networks
+getCollectionSuid       Get Collection Suid
+getCurrentSandbox       getCurrentSandbox
+getCurrentSandboxName   getCurrentSandboxName
+getCurrentSandboxPath   getCurrentSandboxPath
+getCurrentStyle         Get Current Style
+getDefaultSandbox       getDefaultSandbox
+getDefaultSandboxPath   getDefaultSandboxPath
+getDisabledApps         List Disabled Apps
+getEdgeColor            Get Edge Color
+getEdgeCount            Get Edge Count
+getEdgeInfo             Get Edge Information
+getEdgeLineStyle        Get Edge Line Style
+getEdgeLineWidth        Get Edge Line Width
+getEdgeProperty         Get Edge Property Values
+getEdgeSelectionColorDefault
+                        Get Edge Selection Color Default
+getEdgeTargetArrowShape
+                        Get Edge Target Arrow Shape
+getFilterList           Get Filter List
+getFirstNeighbors       Get list of nodes neighboring provided list
+getGroupInfo            Get Group Information
+getInstalledApps        List Installed Apps
+getJupyterBridgeURL     getJupyterBridgeURL
+getLayoutNameMapping    Get Layout Name Mapping
+getLayoutNames          Get Layout Names
+getLayoutPropertyNames
+                        Get Layout Property Names
+getLayoutPropertyType   Get Layout Property Type
+getLayoutPropertyValue
+                        Get Layout Property Value
+getLineStyles           Get Line Styles
+getNetworkCenter        Get Network Center
+getNetworkCount         Get the number of Cytoscape networks
+getNetworkList          Get the list of Cytoscape networks
+getNetworkNDExId        Get Network NDEx Id
+getNetworkName          Get the name of a network
+getNetworkProperty      Get Network Property Values
+getNetworkSuid          Get the SUID of a network
+getNetworkViewSuid      Get the SUID of a network view
+getNetworkViews         Get Network Views
+getNetworkZoom          Get Network Zoom
+getNodeColor            Get Node Color
+getNodeCount            Get Node Count
+getNodeHeight           Get Node Height
+getNodePosition         Get Node Position
+getNodeProperty         Get Node Property Values
+getNodeSelectionColorDefault
+                        Get Node Selection Color Default
+getNodeShapes           Get Node Shapes
+getNodeSize             Get Node Size
+getNodeWidth            Get Node Width
+getNotebookIsRunning    getNotebookIsRunning
+getSandboxReinitialize
+                        getSandboxReinitialize
+getSelectedEdgeCount    Get Selected Edge Count
+getSelectedEdges        Get Selected Edges
+getSelectedNodeCount    Get Selected Node Count
+getSelectedNodes        Get Selected Nodes
+getStyleDependencies    Get the values of dependencies in a style
+getStyleMapping         Get Style Mapping
+getTableColumnNames     Get Table Column Names
+getTableColumnTypes     Get Table Column Types
+getTableColumns         Get table column values
+getTableValue           Get table cell value
+getUninstalledApps      List Uninstalled Apps
+getVisualPropertyDefault
+                        Get Visual Property Default
+getVisualPropertyNames
+                        Get Visual Property Names
+getVisualStyleNames     Get Visual Style Names
+groupAnnotation         Group Annotation
+hideAllPanels           Hide All Panels
+hideEdges               Hide Edges
+hideNodes               Hide Nodes
+hidePanel               Hide Panel
+hideSelectedEdges       Hide Selected Edges
+hideSelectedNodes       Hide Selected Nodes
+importFilters           Import Filters
+importNetworkFromFile   Import Network From File
+importNetworkFromNDEx   Import Network From NDEx
+importVisualStyles      Import Visual Styles
+installApp              Install App
+invertEdgeSelection     Invert Edge Selection
+invertNodeSelection     Invert Node Selection
+layoutCopycat           Copy a layout from one network to another
+layoutNetwork           Apply a layout to a network
+listGroups              List Groups
+loadTableData           Loads data into Cytoscape tables keyed by row
+lockNodeDimensions      Lock Node Dimensions
+makeSimpleGraph         Make Simple Graph
+makeSimpleIgraph        Make Simple Igraph
+mapTableColumn          Map Table Column
+mapVisualProperty       Creates a mapping between an attribute and a
+                        visual property
+matchArrowColorToEdge   Match Arrow Color To Edge
+mergeNetworks           Merge Networks
+notebookExportShowImage
+                        notebookExportShowImage
+notebookShowImage       notebookShowImage
+openAppStore            Open App Store Page
+openSession             Open Session File or URL
+paletteColorBrewerAccent
+                        paletteColorBrewerAccent Qualitative
+paletteColorBrewerBlues
+                        paletteColorBrewerBlues Sequential
+paletteColorBrewerBrBG
+                        paletteColorBrewerBrBG Divergent
+paletteColorBrewerBuGn
+                        paletteColorBrewerBuGn Sequential
+paletteColorBrewerBuPu
+                        paletteColorBrewerBuPu Sequential
+paletteColorBrewerDark2
+                        paletteColorBrewerDark2 Qualitative
+paletteColorBrewerGnBu
+                        paletteColorBrewerGnBu Sequential
+paletteColorBrewerGreens
+                        paletteColorBrewerGreens Sequential
+paletteColorBrewerGreys
+                        paletteColorBrewerGreys Sequential
+paletteColorBrewerOrRd
+                        paletteColorBrewerOrRd Sequential
+paletteColorBrewerOranges
+                        paletteColorBrewerOranges Sequential
+paletteColorBrewerPRGn
+                        paletteColorBrewerPRGn Divergent
+paletteColorBrewerPaired
+                        paletteColorBrewerPaired Qualitative
+paletteColorBrewerPastel1
+                        paletteColorBrewerPastel1 Qualitative
+paletteColorBrewerPastel2
+                        paletteColorBrewerPastel2 Qualitative
+paletteColorBrewerPiYG
+                        paletteColorBrewerPiYG Divergent
+paletteColorBrewerPuBu
+                        paletteColorBrewerPuBu Sequential
+paletteColorBrewerPuBuGn
+                        paletteColorBrewerPuBuGn Sequential
+paletteColorBrewerPuOr
+                        paletteColorBrewerPuOr Divergent
+paletteColorBrewerPuRd
+                        paletteColorBrewerPuRd Sequential
+paletteColorBrewerPurples
+                        paletteColorBrewerPurples Sequential
+paletteColorBrewerRdBu
+                        paletteColorBrewerRdBu Divergent
+paletteColorBrewerRdPu
+                        paletteColorBrewerRdPu Sequential
+paletteColorBrewerRdYlBu
+                        paletteColorBrewerRdYlBu Divergent
+paletteColorBrewerReds
+                        paletteColorBrewerReds Sequential
+paletteColorBrewerSet1
+                        paletteColorBrewerSet1 Qualitative
+paletteColorBrewerSet2
+                        paletteColorBrewerSet2 Qualitative
+paletteColorBrewerSet3
+                        paletteColorBrewerSet3 Qualitative
+paletteColorBrewerYlGn
+                        paletteColorBrewerYlGn Sequential
+paletteColorBrewerYlGnBu
+                        paletteColorBrewerYlGnBu Sequential
+paletteColorBrewerYlOrBr
+                        paletteColorBrewerYlOrBr Sequential
+paletteColorBrewerYlOrRd
+                        paletteColorBrewerYlOrRd Sequential
+paletteColorRandom      paletteColorRandom Qualitative
+removeNodeCustomGraphics
+                        Remove Node Custom Graphics
+renameNetwork           Rename a network
+renameTableColumn       Rename Table Column
+resetDefaultSandbox     resetDefaultSandbox
+runningRemoteCheck      runningRmoteCheck
+sandboxGetFileInfo      sandboxGetFileInfo
+sandboxGetFrom          sandboxGetFrom
+sandboxInitializer      sandboxInitializer
+sandboxRemove           sandboxRemove
+sandboxRemoveFile       sandboxRemoveFile
+sandboxSendTo           sandboxSendTo
+sandboxSet              sandboxSet
+sandboxUrlTo            sandboxUrlTo
+saveSession             Save Session to File
+selectAllEdges          Select all edges
+selectAllNodes          Select all nodes
+selectEdges             Select Edges
+selectEdgesAdjacentToSelectedNodes
+                        Select Edges Adjacent To Selected Nodes
+selectEdgesConnectingSelectedNodes
+                        Select the edges connecting selected nodes in
+                        Cytoscape Network
+selectFirstNeighbors    Select first neighbor nodes
+selectNodes             Select Nodes
+selectNodesConnectedBySelectedEdges
+                        Select Nodes Connected By Selected Edges
+setBackgroundColorDefault
+                        Set Background Color Default
+setCatchupFilterSecs    Set Catchup Filter Delay
+setCatchupNetworkSecs   Set Catchup Network Delay
+setCurrentNetwork       Set current network
+setCurrentSandbox       setCurrentSandbox
+setCurrentView          Set Current View
+setDefaultSandbox       setDefaultSandbox
+setDefaultSandboxPath   setDefaultSandboxPath
+setEdgeColorBypass      Set Edge Color Bypass
+setEdgeColorDefault     Set Edge Color Default
+setEdgeColorMapping     Set Edge Color Mapping
+setEdgeFontFaceBypass   Set Edge Font Face Bypass
+setEdgeFontFaceDefault
+                        Set Edge Font Face Default
+setEdgeFontFaceMapping
+                        Set Edge Font Face Mapping
+setEdgeFontSizeBypass   Set Edge Font Size Bypass
+setEdgeFontSizeDefault
+                        Set Edge Font Size Default
+setEdgeFontSizeMapping
+                        Set Edge Font Size Mapping
+setEdgeLabelBypass      Set Edge Label Bypass
+setEdgeLabelColorBypass
+                        Set Edge Label Color Bypass
+setEdgeLabelColorDefault
+                        Set Edge Label Color Default
+setEdgeLabelColorMapping
+                        Set Edge Label Color Mapping
+setEdgeLabelDefault     Set Edge Label Default
+setEdgeLabelMapping     Set Edge Label Mapping
+setEdgeLabelOpacityBypass
+                        Set Edge Label Opacity Bypass
+setEdgeLabelOpacityDefault
+                        Set Edge Label Opacity Default
+setEdgeLabelOpacityMapping
+                        Set Edge Label Opacity Mapping
+setEdgeLineStyleBypass
+                        Set Edge Line Style Bypass
+setEdgeLineStyleDefault
+                        Set Edge Line Style Default
+setEdgeLineStyleMapping
+                        Set Edge Line Style Mapping
+setEdgeLineWidthBypass
+                        Set Edge Line Width Bypass
+setEdgeLineWidthDefault
+                        Set Edge Line Width Default
+setEdgeLineWidthMapping
+                        Set Edge Line Width Mapping
+setEdgeOpacityBypass    Set Edge Opacity Bypass
+setEdgeOpacityDefault   Set Edge Opacity Default
+setEdgeOpacityMapping   Set Edge Opacity Mapping
+setEdgePropertyBypass   Set Edge Property Bypass
+setEdgeSelectionColorDefault
+                        Set Edge Selection Color Default
+setEdgeSourceArrowColorBypass
+                        Set Edge Source Arrow Color Bypass
+setEdgeSourceArrowColorDefault
+                        Set Edge Source Arrow Color Default
+setEdgeSourceArrowColorMapping
+                        Set Edge Source Arrow Color Mapping
+setEdgeSourceArrowMapping
+                        Set Edge Source Arrow Mapping
+setEdgeSourceArrowShapeBypass
+                        Set Edge Source Arrow Shape Bypass
+setEdgeSourceArrowShapeDefault
+                        Set Edge Source Arrow Shape Default
+setEdgeSourceArrowShapeMapping
+                        Set Edge Source Arrow Shape Mapping
+setEdgeTargetArrowColorBypass
+                        Set Edge Target Arrow Color Bypass
+setEdgeTargetArrowColorDefault
+                        Set Edge Target Arrow Color Default
+setEdgeTargetArrowColorMapping
+                        Set Edge Target Arrow Color Mapping
+setEdgeTargetArrowMapping
+                        Set Edge Target Arrow Mapping
+setEdgeTargetArrowShapeBypass
+                        Set Edge Target Arrow Shape Bypass
+setEdgeTargetArrowShapeDefault
+                        Set Edge Target Arrow Shape Default
+setEdgeTargetArrowShapeMapping
+                        Set Edge Target Arrow Shape Mapping
+setEdgeTooltipBypass    Set Edge Tooltip Bypass
+setEdgeTooltipDefault   Set Edge Tooltip Default
+setEdgeTooltipMapping   Set Edge Tooltip Mapping
+setLayoutProperties     Set Layout Properties
+setModelPropagationSecs
+                        Set Model Propagation Delay
+setNetworkCenterBypass
+                        Set Network Center Bypass
+setNetworkPropertyBypass
+                        Set Network Property Bypass
+setNetworkZoomBypass    Set Network Zoom Bypass
+setNodeBorderColorBypass
+                        Set Node Border Color Bypass
+setNodeBorderColorDefault
+                        Set Node Border Color Default
+setNodeBorderColorMapping
+                        Set Node Border Color Mapping
+setNodeBorderOpacityBypass
+                        Set Node Border Opacity Bypass
+setNodeBorderOpacityDefault
+                        Set Node Border Opacity Default
+setNodeBorderOpacityMapping
+                        Set Node Border Opacity Mapping
+setNodeBorderWidthBypass
+                        Set Node Border Width Bypass
+setNodeBorderWidthDefault
+                        Set Node Border Width Default
+setNodeBorderWidthMapping
+                        Set Node Border Width Mapping
+setNodeColorBypass      Set Node Color Bypass
+setNodeColorDefault     Set Node Color Default
+setNodeColorMapping     Set Node Color Mapping
+setNodeComboOpacityMapping
+                        Set Node Combo Opacity Mapping
+setNodeCustomBarChart   Set Node Custom Bar Chart
+setNodeCustomBoxChart   Set Node Custom Box Chart
+setNodeCustomHeatMapChart
+                        Set Node Custom HeatMap Chart
+setNodeCustomLineChart
+                        Set Node Custom Line Chart
+setNodeCustomLinearGradient
+                        Set Node Custom Linear Gradient
+setNodeCustomPieChart   Set Node Custom Pie Chart
+setNodeCustomPosition   Set Node Custom Position
+setNodeCustomRadialGradient
+                        Set Node Custom Radial Gradient
+setNodeCustomRingChart
+                        Set Node Custom Ring Chart
+setNodeFillOpacityBypass
+                        Set Node Fill Opacity Bypass
+setNodeFillOpacityDefault
+                        Set Node Fill Opacity Default
+setNodeFillOpacityMapping
+                        Set Node Fill Opacity Mapping
+setNodeFontFaceBypass   Set Node Font Face Bypass
+setNodeFontFaceDefault
+                        Set Node Font Face Default
+setNodeFontFaceMapping
+                        Set Node Font Face Mapping
+setNodeFontSizeBypass   Set Node Font Size Bypass
+setNodeFontSizeDefault
+                        Set Node Font Size Default
+setNodeFontSizeMapping
+                        Set Node Font Size Mapping
+setNodeHeightBypass     Set Node Height Bypass
+setNodeHeightDefault    Set Node Height Default
+setNodeHeightMapping    Set Node Height Mapping
+setNodeLabelBypass      Set Node Label Bypass
+setNodeLabelColorBypass
+                        Set Node Label Color Bypass
+setNodeLabelColorDefault
+                        Set Node Label Color Default
+setNodeLabelColorMapping
+                        Set Node Label Color Mapping
+setNodeLabelDefault     Set Node Label Default
+setNodeLabelMapping     Set Node Label Mapping
+setNodeLabelOpacityBypass
+                        Set Node Label Opacity Bypass
+setNodeLabelOpacityDefault
+                        Set Node Label Opacity Default
+setNodeLabelOpacityMapping
+                        Set Node Label Opacity Mapping
+setNodeOpacityBypass    Set Node Opacity Bypass
+setNodePropertyBypass   Set Node Property Bypass
+setNodeSelectionColorDefault
+                        Set Node Selection Color Default
+setNodeShapeBypass      Set Node Shape Bypass
+setNodeShapeDefault     Set Node Shape Default
+setNodeShapeMapping     Set Node Shape Mapping
+setNodeSizeBypass       Set Node Size Bypass
+setNodeSizeDefault      Set Node Size Default
+setNodeSizeMapping      Set Node Size Mapping
+setNodeTooltipBypass    Set Node Tooltip Bypass
+setNodeTooltipDefault   Set Node Tooltip Default
+setNodeTooltipMapping   Set Node Tooltip Mapping
+setNodeWidthBypass      Set Node Width Bypass
+setNodeWidthDefault     Set Node Width Default
+setNodeWidthMapping     Set Node Width Mapping
+setNotebookIsRunning    setNotebookIsRunning
+setSandboxReinitialize
+                        setSandboxReinitialize
+setStyleDependencies    Set Style Dependencies
+setVisualPropertyDefault
+                        Set Visual Property Default
+setVisualStyle          Set Visual Style
+spoofResponse-class     spoofResponse
+syncNodeCustomGraphicsSize
+                        Sync Node Custom Graphics Size
+toggleGraphicsDetails   Toggle Graphics Details
+ungroupAnnotation       Ungroup Annotation Group
+unhideAll               Unhide All
+unhideEdges             Unhide Edges
+unhideNodes             Unhide Nodes
+uninstallApp            Uninstall App
+updateAnnotationImage   Update Image Annotation
+updateAnnotationShape   Update Shape Annotation
+updateAnnotationText    Update Text Annotation
+updateApp               Update App
+updateGroupAnnotation   Update Group Annotation
+updateNetworkInNDEx     Update Network In NDEx
+updateStyleDefaults     Updates the default values of visual properties
+                        in a style
+updateStyleMapping      Updates a visual property mapping in a style

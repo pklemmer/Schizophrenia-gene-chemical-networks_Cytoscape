@@ -1,0 +1,299 @@
+Changes in version 2.14.0
++ Cleaned up dependencies, dramatically reducing RCy3 package installation time
++ New functions:
+  - add and update Annotations
+  - uniqueList parameter added to edgeNameToEdgeSUID and nodeNameToNodeSUID, #139
++ Bug fixes:
+  - loadTableData now works with tibbles, #143
+  - sandboxSendTo now works with cys and png, #138
+  - .verifySupportedVersions fixed comparisons, #152
+Changes in version 2.12.x
++ Doc fixes
+  - note about metabolite databases, #146
++ Bug fixes
+  - createVisualStyle for notebooks, #145
+  - regression bug for relative paths, #141
+  - filepath handling in export functions, #122
+  - Sys.sleep added to setVisualStyle, #137
+Changes in version 2.12.0
++ New support for cloud-hosted Jupyter notebooks!
+  - Jyputer notebooks running RCy3 in the cloud can communicate with local Cytoscape instances
+  - Includes a Sandbox mechanism to manage file transfers between cloud and local dir
++ New functions:
+  - addAnnotationText
+  - getAnnotationList
+  - deleteAnnotation
+  - setters for Filter, Model Propagation and Catchup delays
+  - many sandbox-related functions
+  - getStyleMapping
+  - getAllStyleMappings
+  - paletteColorRandom
+  - paletteColorBrewer* (33 in total!)
+  - internal mapping value generators for color, opacity, dimension, line styles, arrows and shapes
++ New parameters:
+  - overwrite_file added to export functions
+  - apply added to create_*_filter functions
+  - ndex.url and ndex.version added to CyNDEx functions
++ Consistent interchangeable handling of node|edge|network names and SUIDs
++ createNetworkFromDataframes plays nice with tibbles
++ Bug fixes:
+  - .edgeNameToEdgeSUID revamped to better handle duplicate edge names
+Changes in version 2.10.0
++ New functions:
+  - getCurrentStyle, #15
++ Added Sys.sleep to buggy CyREST steps in...
+  - createNetworkFromDataFrames, #98
+  - importNetworkFromFile
+  - importNetworkFromNDEx
+  - exportNetworkToNDEx
+  - updateNetworkInNDEx
+  - importFilters
+  - create***Filter
+  - applyFilter
+  - updateStyleMapping
+  - setVisualPropertyDefault
++ Refactored getNetworkViewSuid
++ Handled special 404 cases in .cyError
++ Bug fix #94: added base.url param
++ Overhauled error handling and messaging
+Changes in version 2.8.0
++ New functions:
+  - mergeNetworks
+  - analyzeNetwork
++ Better messaging for...
+  - App-related functions, like installApp
+  - When style changes are applied to "default" style
+Changes in version 2.6.x
++ Doc Fixes
+  - Roxygen update and man pages
+  - Fixes to unitTests
++ Bug Fixes
+  - getSelectedNodes/Edges -- #82 fixed missing param in usage
+  - added missing base.url args -- #88
+Changes in version 2.6.0
++ New functions: 
+  - createGroupByColumn
+  - clearEdgeBends
+  - getNodePosition
++ New parameter to return SUIDs for
+  - getSelectedNodes
+  - getSelectedEdges
++ Node and edge property values returned as named lists
++ Faster results for getting all node and edge property values, #78
++ More robust handling of file type in export functions
++ More robust handling of dataframes in createNetworkFromDataFrames
++ New support for loading list data
++ Doc Fixes
+  - added Filters to Overview vignette
+  - improved file type handling descriptions
+Changes in version 2.4.4
++ Bug Fixes
+  - filter functions -- #73 wrong params
+Changes in version 2.4.3
++ Bug Fixes
+  - import functions -- #62 fixed default directory
+Changes in version 2.4.2
++ Bug Fixes
+  - getEdgeInfo -- #61 missing function
+Changes in version 2.4.1
++ Bug Fixes
+  - getLayoutPropertyNames -- #59 fixed returned values
+  - createNetworkFromIgraph -- #58 flatten list attributes to strings
+Changes in version 2.4.0
++ New style setting functions
+  - setEdgeFontFaceDefault
+  - setEdgeFontFaceMapping
+  - setEdgeFontSizeMapping
+  - setEdgeLabelDefault
+  - setEdgeLabelColorDefault
+  - setEdgeLabelColorMapping
+  - setEdgeLabelOpacityDefault
+  - setEdgeLabelOpacityMapping
+  - setEdgeOpacityDefault
+  - setEdgeSourceArrowShapeMapping
+  - setEdgeTargetArrowShapeMapping
+  - setEdgeTooltipDefault
+  - setNodeBorderOpacityDefault
+  - setNodeBorderOpacityMapping
+  - setNodeFillOpacityDefault
+  - setNodeFillOpacityMapping
+  - setNodeFontFaceDefault
+  - setNodeFontFaceBypass
+  - setNodeFontFaceMapping
+  - setNodeFontSizeMapping
+  - setNodeHeightDefault
+  - setNodeHeightMapping
+  - setNodeLabelDefault
+  - setNodeLabelColorMapping
+  - setNodeLabelOpacityDefault
+  - setNodeLabelOpactiyMapping
+  - setNodeTooltipDefault
+  - setNodeTooltipBypass
+  - setNodeWidthDefault
+  - setNodeWidthMapping
++ Bug Fixes
+  - createSubnetwork -- #43 network suids i/o names
+  - openSession works with current working directory -- #50
++ Doc Fixes
+  - improved visual.prop handling in mapVisualProperty -- #49,#53 user report
+  - added file overwrite warnings to all export and save functions
+Changes in version 2.2.7
++ Doc Fixes
+  - vignette for phylogenetic trees
+Changes in version 2.2.6
++ Bug Fixes
+  - saveSession, exportXXX -- #39 default to working directory
+  - createNetworkFromDataFrame and .edgeNameToSuids -- #41 multigraph support
+  - BiocCheck errors and warnings -- #42
++ Doc Fixes
+  - added tests for multigraphs
+Changes in version 2.2.5
++ Bug Fixes
+  - createXXXFilter and applyFilter -- #40 network arg 
++ Doc Fixes
+  - new filters vignette
+Changes in version 2.2.4
++ Doc Fixes
+   - vignettes
+Changes in version 2.2.3
++ Doc Fixes
+  - vignettes
+Changes in version 2.2.2
++ Doc Fixes
+  - new custom graphics vignette
+Changes in version 2.2.1
++ Doc Fixes
+  - vignettes, readme and test
+Changes in version 2.2.0
++ New functions to remove duplicate edges
+  - deleteDuplicateEdges
+  - deleteSelfLoops
++ New node selection function
+  - selectNodesConnectedBySelectedEdges
++ New visual style management functions
+  - importVisualStyles
+  - deleteVisualStyle
+  - deleteStyleMapping
++ New edge bundling function
+  - bundleEdges
++ New custom graphics options for nodes
+  - setNodeCustomBarChart
+  - setNodeCustomBoxChart
+  - setNodeCustomHeatMapChart
+  - setNodeCustomLineChart
+  - setNodeCustomPieChart
+  - setNodeCustomRingChart
+  - setNodeCustomLinearGradient
+  - setNodeCustomRadialGradient
+  - setNodeCustomPosition
+  - removeNodeCustomGraphics
++ New filter functions
+  - applyFilter
+  - createColumnFilter
+  - createCompositeFilter
+  - createDegreeFilter
+  - getFilterList
+  - exportFilters
+  - importFilters
++ Improved speed on bulk node and edge property bypasses
++ Bug Fixes
+  - selectEdgesConnectingSelectedNodes -- set default by.col = 'name'
+  - setEdgeLineWidthMapping -- fixes input type
+  - getGroupInfo -- works without collapsing first
+  - getTableColumns -- work with List type columns
++ For Developers
+  - Updated many functions to properly pass the base.url parameter to functions like getNetworkSuid. Please be aware and vigilent about this with future development.
+  - Adopted use of seq_len(). Please be aware and vigilent.
+  - Replaced all but one case of sapply() with vapply().
++ Deprecated
+  - Nothing
++ Defunct
+  - Previously deprecated functions in v2.0 from older 1.x version of the package
+
+Changes in version 2.0.0
++ New converter functions between Cytoscape and iGraph
+  - createIgraphFromNetwork
+  - createNetworkFromIgraph
++ New converter functions between Cytoscape and R data.frames
+  - createNetworkFromDataFrames
++ New converter functions between Cytoscape and Bioconductor GraphNEL
+  - createNetworkFromGraph
+  - createGraphFromNetwork
+  - addGraphToNetwork
++ Fixed visual style "Direct" functions to set persistent bypass values
+  - setNodePropertyBypass
+  - setEdgePropertyBypass
+  - see all setNode***Bypass and setEdge***Bypass functions
++ Streamlined interfaces to CyREST and Commands API
+  - cyrestGET
+  - cyrestPUT
+  - cyrestPOST
+  - cyrestDELETE
+  - cyrestAPI
+  - commandsGET
+  - commandsPOST
+  - commandsAPI
+  - commandsHelp
++ Optional network parameter supports calls to "current" or specified Cytoscape network by name or SUID
++ New functions for importing/exporting tabular data into/out of Cytoscape
+  - getTableColumns
+  - loadTableData
++ New function for batch setting visual style property mappings
+  - mapVisualProperty
++ Access to Cytoscape System information
+  - cytoscapeVersionInfo
+  - cytoscapeApiVersions
+  - cytoscapeNumberOfCores
+  - cytoscapeMemoryStatus
+  - cytoscapeFreeMemory
++ Updated layoutCopyCat feature
++ Update network management functions
+  - createSubnetwork
+  - cloneNetwork
+  - renameNetwork
+  - importNetworkFromFile
++ Updated selection features
+  - selectFirstNeighbors
+  - selectEdgesConnectingSelectedNodes
+  - selectEdgesAdjacentToSelectedNodes
++ New Cytoscape session functions
+  - openSession
+  - closeSession
++ Overhauled visual style settings to match Cytoscape's Defaults, Mappings, and Bypasses
++ Added style dependency functions, in addition to lockNodeDimensions
+  - matchArrowColorToEdge
+  - syncNodeCustomGraphicsSize
++ New set of functions for retrieving current visual property Values for nodes, edges and networks.
++ New functions for network-level Visual Property Defaults, Bypasses and Values.
++ Streamlined data table loading and retrieval
++ New functions for installing and managing Cytoscape Apps, e.g.,
+  - installApp
+  - uninstallApp
+  - udpateApp
+  - getInstalledApps
+  - getAvailableApps
+  - getAppUpdates
+  - getAppStatus
++ New functions for network Collections
+  - getCollectionList
+  - getCollectionName
+  - getCollectionSuid
+  - getCollectionNetworks
++ New functions for accessing NDEx via CyNDEx2
+  - importNetworkFromNDEx
+  - exportNetworkToNDEx
+  - updateNetworkInNDEx
+  - getNetworkNDExId
++ For Developers
+  - Reorganized functions into files corresponding to CyREST API, e.g., Collections, CytoscapeSystem, Layouts, Networks, etc.
++ Normalized all documentation using roxygen2
++ Streamlined interfaces to CyREST and Commands API (see above), greatly facilitating the implementation of any new functions matching CyREST or Command API additions
++ Reverted all single-instance methods to simple functions, replacing class-based signatures with simple default values
++ Established handy functions for validating network and view SUIDs
+  - getNetworkName
+  - getNetworkSuid
+  - getNetworkViewSuid
++ Deprecated
+  - Outdated function names
++ Defunct
+  - CytoscapeConnection and CytoscapeWindow classes, functions and parameters

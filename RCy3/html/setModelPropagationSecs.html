@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Set Model Propagation Delay</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table width="100%" summary="page for setModelPropagationSecs {RCy3}"><tr><td>setModelPropagationSecs {RCy3}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Set Model Propagation Delay</h2>
+
+<h3>Description</h3>
+
+<p>This function sets an internal delay variable that allows
+Cytoscape to &quot;catchup&quot; prior to subsequent functions. Call without specifying
+<code>secs</code> to restore default value.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+setModelPropagationSecs(secs = 5)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>secs</code></td>
+<td>
+<p>Number of seconds to delay.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This delay is only necessary while concurrency bugs exist in the
+Cytoscape application. This delay may need to be increased from the default
+value in certain use cases, e.g., larger networks.
+</p>
+
+
+<h3>Value</h3>
+
+<p>None
+</p>
+
+
+<h3>See Also</h3>
+
+<p>setCatchupFilterSecs, setCatchupNetworkSecs
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+{
+setModelPropagationSecs(2)
+setModelPropagationSecs() #restores default delay
+}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RCy3</em> version 2.14.2 <a href="00Index.html">Index</a>]</div>
+</div></body></html>

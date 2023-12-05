@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Export Filters</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table width="100%" summary="page for exportFilters {RCy3}"><tr><td>exportFilters {RCy3}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Export Filters</h2>
+
+<h3>Description</h3>
+
+<p>Saves filters to file in JSON format.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+exportFilters(
+  filename = "filters.json",
+  base.url = .defaultBaseUrl,
+  overwriteFile = TRUE
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>filename</code></td>
+<td>
+<p>(char) Full path or path relavtive to current 
+working directory, in addition to the name of the file. Default is 
+&quot;filters.json&quot;</p>
+</td></tr>
+<tr valign="top"><td><code>base.url</code></td>
+<td>
+<p>(optional) Ignore unless you need to specify a custom domain,
+port or version to connect to the CyREST API. Default is http://localhost:1234
+and the latest version of the CyREST API supported by this version of RCy3.</p>
+</td></tr>
+<tr valign="top"><td><code>overwriteFile</code></td>
+<td>
+<p>(optional) FALSE allows an error to be generated if the file already exists;
+TRUE allows Cytoscape to overwrite it without asking. Default value is TRUE.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Unlike other export functions, Cytoscape will automatically
+overwrite files with the same name. You will not be prompted to confirm
+or reject overwrite. Use carefully!
+</p>
+
+
+<h3>Value</h3>
+
+<p>None
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+exportFilters()
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RCy3</em> version 2.14.2 <a href="00Index.html">Index</a>]</div>
+</div></body></html>

@@ -1,4 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-GO:0047066,0.0496548984556533,TRUE,2,1,1,GO:MF,phospholipid-hydroperoxide glutathione peroxidase activity,20139,6393,GO:0004601,TRUE
-HP:0004863,0.0498840694227146,TRUE,1,1,1,HP,Compensated hemolytic anemia,4962,3325,HP:0001878,FALSE
-CORUM:6540,0.0499316934433554,TRUE,2,1,1,CORUM,GPX1-SBP1 complex,3383,2212,CORUM:0000000,FALSE

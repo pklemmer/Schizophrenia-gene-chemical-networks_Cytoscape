@@ -1,4 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-KEGG:00785,0.00768238264488423,TRUE,4,1,1,KEGG,Lipoic acid metabolism,8161,124,KEGG:00000,FALSE
-REAC:R-HSA-177162,0.0249441873807278,TRUE,2,1,1,REAC,Conjugation of phenylacetate with glutamine,10835,380,REAC:R-HSA-159424,FALSE
-GO:0018874,0.0495795652862702,TRUE,1,1,1,GO:BP,benzoate metabolic process,21010,5679,GO:0032787|GO:0042537,TRUE

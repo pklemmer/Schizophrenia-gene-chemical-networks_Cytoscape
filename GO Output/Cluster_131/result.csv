@@ -1,6 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-REAC:R-HSA-6806664,0.0374162810711142,TRUE,3,1,1,REAC,Metabolism of vitamin K,10835,1371,REAC:R-HSA-6806667,FALSE
-GO:0042371,0.0495795652862702,TRUE,1,1,1,GO:BP,vitamin K biosynthetic process,21010,10630,GO:0042362|GO:0042373|GO:1901663,TRUE
-GO:0032194,0.0495795652862702,TRUE,1,1,1,GO:BP,"ubiquinone biosynthetic process via 3,4-dihydroxy-5-polyprenylbenzoate",21010,7753,GO:0006744,TRUE
-GO:0009234,0.0495795652862702,TRUE,1,1,1,GO:BP,menaquinone biosynthetic process,21010,3456,GO:0009233|GO:1901663,TRUE
-GO:0002083,0.0496548984556533,TRUE,2,1,1,GO:MF,4-hydroxybenzoate decaprenyltransferase activity,20139,299,GO:0002094,TRUE

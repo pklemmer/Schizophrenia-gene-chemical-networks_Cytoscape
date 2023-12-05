@@ -1,2 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-GO:0022852,0.0496548984556533,TRUE,2,1,1,GO:MF,glycine-gated chloride ion channel activity,20139,3811,GO:0005254|GO:0022824|GO:0099095,TRUE

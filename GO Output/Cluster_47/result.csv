@@ -1,5 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-WP:WP5346,0.00159706788535232,TRUE,53,2,2,WP,8p23.1 copy number variation syndrome,8625,281,WP:000000,FALSE
-REAC:R-HSA-1461957,0.00377593384755459,TRUE,41,2,2,REAC,Beta defensins,10835,201,REAC:R-HSA-1461973,FALSE
-REAC:R-HSA-1461973,0.00587111665320988,TRUE,51,2,2,REAC,Defensins,10835,688,REAC:R-HSA-6803157,FALSE
-REAC:R-HSA-6803157,0.0209978760303036,TRUE,96,2,2,REAC,Antimicrobial peptides,10835,151,REAC:R-HSA-168249,FALSE

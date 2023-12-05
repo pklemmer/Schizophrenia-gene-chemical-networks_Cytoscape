@@ -1,2 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-HP:0005033,0.0498840694227146,TRUE,1,1,1,HP,Distal ulnar hypoplasia,4962,3428,HP:0003022,FALSE

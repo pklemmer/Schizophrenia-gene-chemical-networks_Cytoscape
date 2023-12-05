@@ -1,6 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-REAC:R-HSA-77042,0.0249441873807278,TRUE,2,1,1,REAC,Formation of editosomes by ADAR proteins,10835,916,REAC:R-HSA-75064,FALSE
-REAC:R-HSA-75064,0.0249441873807278,TRUE,2,1,1,REAC,mRNA Editing: A to I Conversion,10835,2582,REAC:R-HSA-75072,FALSE
-REAC:R-HSA-75102,0.0249441873807278,TRUE,2,1,1,REAC,C6 deamination of adenosine,10835,252,REAC:R-HSA-75064,FALSE
-GO:0021566,0.0495795652862702,TRUE,1,1,1,GO:BP,hypoglossal nerve development,21010,6454,GO:0021545,FALSE
-GO:0021618,0.0495795652862702,TRUE,1,1,1,GO:BP,hypoglossal nerve morphogenesis,21010,6505,GO:0021566|GO:0021602,TRUE

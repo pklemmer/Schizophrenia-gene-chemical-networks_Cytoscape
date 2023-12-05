@@ -1,2 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-REAC:R-HSA-5619089,0.0124720936903864,TRUE,1,1,1,REAC,Defective SLC6A5 causes hyperekplexia 3 (HKPX3),10835,654,REAC:R-HSA-5619102,FALSE

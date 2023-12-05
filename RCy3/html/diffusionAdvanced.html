@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Diffusion Advanced</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table width="100%" summary="page for diffusionAdvanced {RCy3}"><tr><td>diffusionAdvanced {RCy3}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Diffusion Advanced</h2>
+
+<h3>Description</h3>
+
+<p>Diffusion will send the selected network view and its selected nodes 
+to a web-based REST service to calculate network propagation. Results are returned 
+and represented by columns in the node table. Advanced operation supports
+parameters.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+diffusionAdvanced(
+  heat.column.name = NULL,
+  time = NULL,
+  base.url = .defaultBaseUrl
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>heat.column.name</code></td>
+<td>
+<p>(optional) A node column name intended to override the 
+default table column 'diffusion_input'. This represents the query vector and 
+corresponds to h in the diffusion equation.</p>
+</td></tr>
+<tr valign="top"><td><code>time</code></td>
+<td>
+<p>(optional) The extent of spread over the network. This corresponds 
+to t in the diffusion equation.</p>
+</td></tr>
+<tr valign="top"><td><code>base.url</code></td>
+<td>
+<p>(optional) Ignore unless you need to specify a custom domain, 
+port or version to connect to the CyREST API. Default is http://localhost:1234 
+and the latest version of the CyREST API supported by this version of RCy3.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Columns are created for each execution of Diffusion and their names 
+are returned in the response. The nodes you would like to use as input should 
+be selected. This will be used to generate the contents of the diffusion_input 
+column, which represents the query vector and corresponds to h in the diffusion
+equation.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Version number
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+diffusionAdvanced()
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RCy3</em> version 2.14.2 <a href="00Index.html">Index</a>]</div>
+</div></body></html>

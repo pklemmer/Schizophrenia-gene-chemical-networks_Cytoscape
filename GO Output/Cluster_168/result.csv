@@ -1,4 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-REAC:R-HSA-350864,0.0374162810711142,TRUE,3,1,1,REAC,Regulation of thyroid hormone activity,10835,1952,REAC:R-HSA-209968,FALSE
-GO:0042404,0.0495795652862702,TRUE,1,1,1,GO:BP,thyroid hormone catabolic process,21010,10651,GO:0019336|GO:0042219|GO:0042403|GO:0042447,TRUE
-GO:0033798,0.0496548984556533,TRUE,2,1,1,GO:MF,thyroxine 5-deiodinase activity,20139,4728,GO:0016491,TRUE

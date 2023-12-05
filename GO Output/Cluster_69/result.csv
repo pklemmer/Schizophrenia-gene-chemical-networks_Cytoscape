@@ -1,2 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-REAC:R-HSA-9037628,0.0249441873807278,TRUE,2,1,1,REAC,Rhesus blood group biosynthesis,10835,1997,REAC:R-HSA-9033658,FALSE

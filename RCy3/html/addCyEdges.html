@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Add CyEdges</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table width="100%" summary="page for addCyEdges {RCy3}"><tr><td>addCyEdges {RCy3}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Add CyEdges</h2>
+
+<h3>Description</h3>
+
+<p>Add one or more edges to a Cytoscape network by listing source and 
+target node pairs.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+addCyEdges(
+  source.target.list,
+  edgeType = "interacts with",
+  directed = FALSE,
+  network = NULL,
+  base.url = .defaultBaseUrl
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>source.target.list</code></td>
+<td>
+<p>A <code>list</code> (or <code>list of lists</code>) of source 
+and target node name or SUID pairs</p>
+</td></tr>
+<tr valign="top"><td><code>edgeType</code></td>
+<td>
+<p>The type of interaction. Default is 'interacts with'.</p>
+</td></tr>
+<tr valign="top"><td><code>directed</code></td>
+<td>
+<p><code>boolean</code> for whether interactions are directed. Default is <code>FALSE</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>network</code></td>
+<td>
+<p>(optional) Name or SUID of the network. Default is the &quot;current&quot; network active in Cytoscape.</p>
+</td></tr>
+<tr valign="top"><td><code>base.url</code></td>
+<td>
+<p>(optional) Ignore unless you need to specify a custom domain,
+port or version to connect to the CyREST API. Default is http://localhost:1234
+and the latest version of the CyREST API supported by this version of RCy3.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A <code>list</code> of <code>named lists</code> of SUID, source and target for each edge added.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+addCyEdges(c('sourceNode','targetNode'))
+addCyEdges(list(c('s1','t1'),c('s2','t2')))
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>RCy3</em> version 2.14.2 <a href="00Index.html">Index</a>]</div>
+</div></body></html>

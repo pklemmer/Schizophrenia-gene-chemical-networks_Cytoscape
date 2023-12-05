@@ -1,5 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-GO:0036105,0.0248274492279377,TRUE,1,1,1,GO:MF,peroxisome membrane class-1 targeting sequence binding,20139,5426,GO:0033328,TRUE
-GO:1900131,0.0495795652862702,TRUE,1,1,1,GO:BP,negative regulation of lipid binding,21010,21225,GO:0051100|GO:1900130,TRUE
-GO:1900130,0.0495795652862702,TRUE,1,1,1,GO:BP,regulation of lipid binding,21010,21224,GO:0051098,FALSE
-GO:0033328,0.0496548984556533,TRUE,2,1,1,GO:MF,peroxisome membrane targeting sequence binding,20139,4562,GO:0000268,FALSE

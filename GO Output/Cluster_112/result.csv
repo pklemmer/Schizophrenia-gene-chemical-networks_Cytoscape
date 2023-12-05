@@ -1,4 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-TF:M11232,0.0249862575583681,TRUE,2,1,1,TF,Factor: CREBL1; motif: TGCCACGTCAYC,20011,346,TF:M00000,FALSE
-GO:2000383,0.0495795652862702,TRUE,1,1,1,GO:BP,regulation of ectoderm development,21010,26781,GO:0007398|GO:0050793,FALSE
-GO:2000384,0.0495795652862702,TRUE,1,1,1,GO:BP,negative regulation of ectoderm development,21010,26782,GO:0007398|GO:0051093|GO:2000383,TRUE

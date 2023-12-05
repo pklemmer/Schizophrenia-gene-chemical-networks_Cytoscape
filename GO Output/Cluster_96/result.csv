@@ -1,2 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-GO:1990716,0.0398848922011332,TRUE,4,1,1,GO:CC,axonemal central apparatus,22090,3991,GO:0005930|GO:0110165,TRUE

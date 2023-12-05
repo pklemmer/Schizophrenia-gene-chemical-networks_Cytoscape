@@ -1,2 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-REAC:R-HSA-888593,0.0498883747614705,TRUE,4,1,1,REAC,Reuptake of GABA,10835,1991,REAC:R-HSA-888590,FALSE

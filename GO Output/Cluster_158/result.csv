@@ -1,2 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-KEGG:00592,0.0499354871917405,TRUE,26,1,1,KEGG,alpha-Linolenic acid metabolism,8161,94,KEGG:00000,FALSE

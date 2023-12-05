@@ -1,3 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-HP:0004532,0.0498840694227146,TRUE,1,1,1,HP,Sacral hypertrichosis,4962,3164,HP:0000998,FALSE
-HP:0011290,0.0498840694227146,TRUE,1,1,1,HP,EEG with frontal sharp slow waves,4962,7700,HP:0011195|HP:0033716,FALSE

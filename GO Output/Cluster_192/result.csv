@@ -1,4 +1,0 @@
-term_id,p_values,significant,term_size,query_sizes,intersection_sizes,source,term_name,effective_domain_size,source_order,parents,highlighted
-HP:0000650,0.0498840694227146,TRUE,1,1,1,HP,Abnormal amplitude of pattern reversal visual evoked potentials,4962,507,HP:0100289,FALSE
-HP:0006366,0.0498840694227146,TRUE,1,1,1,HP,Adductor longus contractures,4962,4162,HP:0005750,FALSE
-HP:0100289,0.0498840694227146,TRUE,1,1,1,HP,Abnormality of pattern reversal visual evoked potentials,4962,15804,HP:0030455,FALSE
