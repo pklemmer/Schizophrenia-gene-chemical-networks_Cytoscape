@@ -176,12 +176,17 @@ createNodeSource <- function(source,doi=NULL) {
     }
   commandsRun(sprintf("table create column columnName=WikiPathways table=%s type=string",nodetable))
   commandsRun(sprintf("table create column columnName=DisGeNET table=%s type=string",nodetable))
-  commandsRun(sprintf("table create column columnName=PharmGKB table=%s type=string",nodetable))
   commandsRun(sprintf("table create column columnName=Literature table=%s type=string",nodetable))
   commandsRun(sprintf("table create column columnName=Literature.doi table=%s type=string",nodetable))
+  commandsRun(sprintf("table create column columnName=STRINGnode table=%s type=string",nodetable))
     #Creating a new column for each source used for all networks
+  if ( source == "STRINGnode") {
+    commandsRun(sprintf('table set values columnName=%1$s handleEquations=false rowList="selected:true" table=%2$s value=1',source,nodetable))
+  }
+  else {
   commandsRun(sprintf("table set values columnName=%1$s handleEquations=false rowList=all table=%2$s value=1",source,nodetable))
     #Filling the new column of the corresponding source with 1 to indicate which source the node is imported from 
+  }
   if (!is.null(doi)) {
   commandsRun(sprintf("table set values columnName=Literature.doi handleEquations=false rowList=all table=%1$s value=%2$s",nodetable,doi))
     #Adding doi for literature used if provided
@@ -317,9 +322,9 @@ exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW"),"CX", network = snw_scz, ov
   #Exporting the supernetwork as cx file
 
 ## FILTERING NETWORK ------------------------------------------------------------------------------------------------------------------
-createColumnFilter(filter.name="type.label",column="Type","Label","IS")
-createColumnFilter(filter.name="type.anchor",column="Type","Anchor","IS")
-createColumnFilter(filter.name="type.group",column="Type","Group","IS")
+createColumnFilter(filter.name="type.label",column="Type","Label","IS",apply=FALSE)
+createColumnFilter(filter.name="type.anchor",column="Type","Anchor","IS",apply=FALSE)
+createColumnFilter(filter.name="type.group",column="Type","Group","IS",apply=FALSE)
 createColumnFilter(filter.name="disease.name",column="diseaseName","Schizophrenia","IS")
 createCompositeFilter(filter.name="type.label.anchor.group",c("type.label","type.anchor","type.group","disease.name"),"ANY")
 deleteSelectedNodes()
@@ -333,6 +338,8 @@ exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW_filtered"),"CX", network = sn
 commandsRun('string stringify colDisplayName=name column=Ensembl compoundQuery=true cutoff=0.9 includeNotMapped=true  networkType="full STRING network" species="Homo sapiens" networkNoGui=current')
 commandsRun('string expand additionalNodes=1000 network=current nodeTypes="Homo sapiens" selectivityAlpha=0.9')
   #STRINGifying and expanding the network with a 0.9 confidence cutoff (curated information)
+createNodeSource("STRINGnode")
+  #Tagging the newly added nodes as having been sourced from STRING
 mapTableColumn("stringdb::canonical name","Human","Uniprot-TrEMBL","Ensembl",force.single=TRUE)
   #Mapping stringdb canonical names (Uniprot-TrEMBL identifiers) to Ensembl gene identifiers
   #This step generates a second Ensembl column ('Ensembl (1)') with ENSG identifiers for the STRING-imported nodes
@@ -369,7 +376,7 @@ exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW_filtered_STRING"),"CX",networ
 createColumnFilter(filter.name="delete.noensembl", column="Ensembl","ENSG","DOES_NOT_CONTAIN")
 deleteSelectedNodes()
   #Filtering out nodes that do not have an ENSG Ensembl identifier mapped to them
-marked_cols <- as.list(getTableColumnNames()[!(getTableColumnNames() %in% c("selected","name.copy" ,"SUID","shared name","name","Name2","DisGeNET","WikiPathways","Ensembl","Literature","Literature.doi"))])
+marked_cols <- as.list(getTableColumnNames()[!(getTableColumnNames() %in% c("selected","name.copy" ,"SUID","shared name","name","Name2","DisGeNET","WikiPathways","Ensembl","Literature","Literature.doi","STRINGnode"))])
 lapply(marked_cols, function(column) {
   deleteTableColumn(column=column)
 })
@@ -407,32 +414,19 @@ sourcecount <- function(cluster) {
   wpcount <- sum(split_tbl[[cluster]][["WikiPathways"]] == 1, na.rm = TRUE)
   dgcount <- sum(split_tbl[[cluster]][["DisGeNET"]] == 1, na.rm = TRUE)
   litcount <- sum(split_tbl[[cluster]][["Literature"]] == 1, na.rm = TRUE)
-  wpdgcount <- sum(split_tbl[[cluster]][["WikiPathways"]] == 1 &
-                     split_tbl[[cluster]][["DisGeNET"]] == 1,na.rm = TRUE)
-  wplitcount <- sum(split_tbl[[cluster]][["WikiPathways"]] == 1 &
-                      split_tbl[[cluster]][["Literature"]] == 1, na.rm = TRUE)
-  dglitcount <- sum(split_tbl[[cluster]][["DisGeNET"]] == 1 &
-                      split_tbl[[cluster]][["Literature"]] == 1, na.rm = TRUE)
-  wpdglitcount <- sum(split_tbl[[cluster]][["DisGeNET"]] == 1 &
-                        split_tbl[[cluster]][["Literature"]] == 1 &
-                        split_tbl[[cluster]][["WikiPathways"]] == 1, na.rm = TRUE)
+  stringcount <- sum(split_tbl[[cluster]][["STRINGnode"]] == 1, na.rm = TRUE)
   result_df <- data.frame(
     gLayCluster = split_tbl[[cluster]][["gLayCluster"]][1],
     WikiPathways_source = wpcount,
     DisGeNET_source = dgcount, 
     Literature_source = litcount, 
-    WikiPathways_AND_DisGeNET_source = wpdgcount,
-    WikiPathways_AND_Literature_source = wplitcount, 
-    DisGeNET_AND_Literature_source = dglitcount,
-    DisGeNET_AND_Literature_AND_WikiPathways_source = wpdglitcount
+    STRING_source = stringcount
   )
 }
 sources_count <- do.call(rbind, lapply(seq_along(split_tbl),sourcecount))
   #For each cluster, counting how many nodes are associated with which sources
 
 ## GO ANALYSIS ------------------------------------------------------------------------------------------------------------------------
-valid_clustered_nodetable %>% select(c('gLayCluster','Ensembl'))
-  #Selecting relevant columns
 split_df <- split(valid_clustered_nodetable$Ensembl,valid_clustered_nodetable$gLayCluster)
 split_list <- lapply(split_df, as.vector)
   #Splitting the node table by cluster number, i.e. lists of Ensembl IDs are created per cluster
@@ -465,71 +459,144 @@ get_top_terms <- function(cluster) {
     #Extracting the top 5 term names associated with each cluster
   pval <- toString(go_list[[cluster]][["result"]][["p_values"]][1:5])
     #Extracting the p-values for the corresponding top 5 term names
+  nodes <- paste(go_list[[cluster]][["meta"]][["query_metadata"]][["queries"]][["query_1"]],collapse=",")
+  nnodes <- str_count(toString(go_list[[cluster]][["meta"]][["query_metadata"]][["queries"]][["query_1"]]),"\\S+")
+    #Extracing the number of nodes/genes contained in each cluster
   result_df <- data.frame(
     gLayCluster = cluster, 
     GO_Terms = terms, 
-    GO_Pvals = pval
+    GO_Pvals = pval,
+    Nodes = nodes, 
+    N_nodes = nnodes
     )
 }
-topterms_df <- do.call(rbind, lapply(seq_along(go_list),get_top_terms))
+topterms_df <- do.call(rbind, lapply(names(go_list),get_top_terms))
   #Getting top 5 term names and corresponding p-values for each cluster and storing in topterms_df
+topterms_df <- cbind(topterms_df,sources_count)
+  #joining the cluster table and the table detailing the amount of sources per cluster
+write.table(topterms_df, file=paste0(getwd(),"/CSVs/GO-clusters-vis.tsv"), sep = "\t",row.names=FALSE,quote=FALSE)
+  #Writing the table to file for Cytoscape import during visualisation
 loadTableData(topterms_df,data.key.column="gLayCluster",table.key.column="gLayCluster")
   #Loading the generated top terms and p-values back to the supernetwork; every gene belonging to cluster x is now associated with the top terms of cluster x
 renameNetwork(title=paste0(getNetworkName(),"-GO"))
 snw_scz_filtered_string_clustered_go <- getNetworkName()
   #Renaming and saving the network name to indicate addition of GO information
+
+compare_term_id_lists <- function(list1, list2) {
+  common_elements <- intersect(list1, list2)
+  return(length(common_elements))
+}
+  #Setting up a function to get intersections between cluster term IDs
+match_df <- data.frame(Cluster1 = character(),
+                        Cluster2 = character(),
+                        Matches = numeric(),
+                        stringsAsFactors = FALSE)
+  #Setting up a df to store output in 
+for (i in 1:(length(go_list) - 1)) {
+  for (j in (i + 1):length(go_list)) {
+    term_id_i <- go_list[[i]][["result"]][["term_id"]]
+    term_id_j <- go_list[[j]][["result"]][["term_id"]]
+    
+    matches <- compare_term_id_lists(term_id_i, term_id_j)
+    
+    match_df <- rbind(match_df, data.frame(Cluster1 = names(go_list)[i],
+                                             Cluster2 = names(go_list)[j],
+                                             Matches = matches))
+    #Iterating over go_list to compare GO term IDs between every cluster and store number of overlaps
+  }
+}
+colnames(match_df) <- c("source","target","GO_term_matches")
+  #Renaming columns
+write.table(match_df, file=paste0(getwd(),"/CSVs/match_df.tsv"), sep = "\t",row.names=FALSE,quote=FALSE)
 exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW_filtered_STRING_clustered_GO"),"CX",network=snw_scz_filtered_string_clustered_go,overwriteFile=TRUE)
   #Exporting the filtered, stringified, clustered supernetwork after GO as cx file and tagging it with the time and data to match with the metadata file
 
 ##VISUALISATION -----------------------------------------------------------------------------------------------------------------------
-go_list_filtered <- go_list[sapply(go_list, function(x) !is.null(x))] 
-  #Removing all clusters from the list for which no GO analysis could be done
-get_top_terms_filtered <- function(cluster) {
-  topterms <- paste(go_list_filtered[[cluster]][["result"]][["term_name"]][1:5],collapse=",")
-  #Extracting the top 5 term names associated with each cluster
-  pval <- paste(go_list_filtered[[cluster]][["result"]][["p_values"]][1:5],collapse=",")
-  #Extracting the p-values for the corresponding top 5 term names
-  nodes <- paste(go_list_filtered[[cluster]][["meta"]][["query_metadata"]][["queries"]][["query_1"]],collapse=",")
-  #Extracing the number of nodes/genes contained in each cluster
-  nnodes <- str_count(toString(go_list_filtered[[cluster]][["meta"]][["query_metadata"]][["queries"]][["query_1"]]),"\\S+")
-  result_df_filtered <- data.frame(
-    gLayCluster = names(go_list_filtered)[cluster], 
-    GO_Terms = topterms, 
-    GO_Pvals = pval,
-    Nodes = nodes,
-    N_nodes = nnodes
-  )
-}
-go_vis <- do.call(rbind, lapply(seq_along(go_list_filtered),get_top_terms_filtered))
-  #Creating a new df containing the cluster and its corresponding GO terms, pvals, as well as the nodes and number of nodes making up the cluster
-go_vis <- cbind(go_vis,sources_count)
-  #joining the cluster table and the table detailing the amount of sources per cluster
-go_vis <- go_vis[,-6]
-  #Removing duplicate gLayCluster column
-write.table(go_vis, file=paste0(getwd(),"/CSVs/GO-clusters-vis.tsv"), sep = "\t",row.names=FALSE,quote=FALSE)
-  #Writing the table to file for Cytoscape import
 commandsRun(sprintf("network import file columnTypeList='s,sa,sa,sa,sa,sa,sa,sa,sa,sa,sa,sa' file=%s firstRowAsColumnNames=true delimiters=\\t rootNetworkList=-- Create new network collection -- startLoadRow=1", paste0(getwd(),"/CSVs/GO-clusters-vis.tsv")))
   #Importing the previoulsy generated table 'go_vis_filered' back to Cytoscape as new network
   #Essential to use .tsv and importing as such to avoid conflicts generated by .csv - commas separating terms in a string are interpreted as different columns by Cytoscape
 renameNetwork("GO_Visualisation_SCZ_SNW")
+loadTableData(
+  data = read.table(file=paste0(getwd(),"/CSVs/summary_go_terms.txt"),header=TRUE, sep ="\t"),
+  data.key.column = "gLayCluster",
+  table.key.column = "gLayCluster"
+)
+  #Loading an additional column into the network containing manually created summaries of GO terms based on biological knowledge
+commandsRun(sprintf("network import file columnTypeList='s,t,ea' file=%s firstRowAsColumnNames=true delimiters=\\t startLoadRow=1", paste0(getwd(),"/CSVs/match_df.tsv")))
+  #Loading edge information (i.e. intersections between GO terms for each cluster)
 
-
-
+setVisualStyle("default")
+layoutNetwork("force-directed")
+  #Applying a basic visual style and layout to the network 
+setNodeSizeMapping(
+  table.column = "N_nodes",
+  sizes = c(50,200),
+  mapping.type = "c"
+)
+  #Setting the node size proportional to the number of nodes making up a cluster, e.g. a cluster containing more nodes is bigger
+setNodeCustomPieChart(
+  columns = c("DisGeNET_source","Literature_source","WikiPathways_source","STRING_source"),
+  colors = paletteColorBrewerAccent(value.count = 8)
+)
+  #Turning nodes into pie charts showing which sources make up the proportions of the nodes in them
+setNodeFillOpacityDefault(
+  new.opacity = 0
+)
+  #Removing node background
+setNodeLabelMapping(
+  table.column = "summary_term"
+)
+  #Changing node label to the processes/terms the nodes represent
+setNodeLabelPositionDefault(
+  new.nodeAnchor = "S",
+  new.graphicAnchor = "S",
+  new.justification = "c",
+  new.xOffset = "0",
+  new.yOffset = "30"
+)
+  #Moving label
+setEdgeLineWidthMapping(
+  table.column = "GO_term_matches",
+  table.column.values = c(0,861),
+  widths = c(0,50),
+  mapping.type = "c"
+)
+layoutNetwork("degree-circle")
+  #Adding network layout
 go_vis_nw <- getNetworkName()
-exportNetwork(filename=paste0(nw_savepath,"GO_Visualisation_SCZ_SNW"),"CX",network=go_vis,overwriteFile=TRUE)
+exportNetwork(filename=paste0(nw_savepath,"GO_Visualisation_SCZ_SNW"),"CX",network=go_vis_nw,overwriteFile=TRUE)
+
+##EXTENSION ---------------------------------------------------------------------------------------------------------------------------
+createColumnFilter(
+  filter.name = "has_GO_result",
+  column = "N_nodes",
+  criterion = 0,
+  predicate = "GREATER_THAN",
+  anyMatch = TRUE,
+  apply = TRUE
+)
+  #Selecting nodes included in a 'valid' cluster, i.e. clusters with 5 or more nodes (GO analysis only performed for these)
+  #N_nodes is only generated for 'valid' clusters, so good column to filter by
+invertNodeSelection()
+deleteSelectedNodes()
+  #Inverting the selection and deleting these nodes: now, the network contains only the nodes that make up the clusters fed into the GO analysis
+  #Nodes not associated to a large enoug cluster/GO term are likely not involved in any significant SCZ-contributing way 
+  #The idea is to link GO terms (formed by clusters/genes) to risk factors, so it wouldn't make sense to also link non-cluster/GO associated nodes
+CTD_linkset <- file.path(getwd(), "Linksets", "CTD_ChemGene_Jan2021.xgmml")
+drugbank_linkset <- file.path(getwd(), "Linksets", "drugbank4-2-approved.xgmml")
+chembl_linkset <-  file.path(getwd(), "Linksets", "chembl_23_hsa_20180126.xgmml")
+  #Loading CTD, approved Drugbank, and chEMBL linksets available at https://cytargetlinker.github.io/pages/linksets.html from local file
+linksets <- c(CTD_linkset,drugbank_linkset,chembl_linkset)
+extend <- function(linkset, network=snw_scz_filtered_string_clustered_go) {
+commandsRun(sprintf('cytargetlinker extend direction=SOURCES  idAttribute=Ensembl linkSetFiles=%1$s network=%2$s',linkset,network))
+}
+extend(drugbank_linkset)
 
 
 
+lapply(linksets,extend)
 
 
- ## CTL EXTENSION ----------------------------------------------------------------------------------------------------------------------
-hsa <- file.path(getwd(), "Linksets", "wikipathways-20220511-hsa-WP.xgmml")
-hsa_react <- file.path(getwd(), "Linksets", "wikipathways-20220511-hsa-REACTOME.xgmml")
-  #Loading the WikiPathways linksets available at https://cytargetlinker.github.io/pages/linksets/wikipathways
-CTLextend.cmd = paste('cytargetlinker extend idAttribute="Ensembl" linkSetFiles="', hsa, ',', hsa_react, '" network=current direction=TARGETS', sep="")
-  #Extending the network using the previously loaded linksets
-commandsRun(CTLextend.cmd)
-  #Extending the network with previously loaded linksets
 layoutNetwork()
   #Adding basic network layout
 snw_scz_ext <- getNetworkName()
@@ -538,124 +605,9 @@ exportNetwork(filename=paste0(nw_savepath,paste(snw_scz_ext,datetime, sep = " - 
 metadata.add("CyTargetLinker linksets: wikipathways-20220511-hsa-WP.xgmml, wikipathways-20220511-hsa-REACTOME.xgmml")
   #Adding information about the CTL extension to the metadata file
 
-## SAVING ------------------------------------------------------------------------------------------------------------------------------
-
-preserve <- c(snw_scz, snw_scz_ext)
-
-# ADDICTION ===========================================================================================================================
-## IMPORTING AND MERGING --------------------------------------------------------------------------------------------------------------
-genedisparams.adc.df <- read.table("CSVs/disgenetparams-adc.txt",header=TRUE,sep = "\t")
-  #Loading relevant gene-disease networks from DisGeNET
-  #Networks of interest manually added into tsv where it is easier to adjust filters
-apply(genedisparams.adc.df,1,function(row) {
-  gdp <- geneDisParams(row["source"],row["dis"],row["min"])
-  geneDisResult <- disgenetRestCall("gene-disease-net",gdp)
-  createNodeSource("DisGeNET")
-  mapToEnsembl("geneName","HGNC")
-})
-
-getPathways.wp("Dopamine")
-getPathways.wp("Addiction")
-lapply(c(Dopamine_wpids,Addiction_wpids), import)
-
-networklist.dup <- getNetworkList()
-dup.filter <- function(input,suffix) {
-  filtered_list <- input[substr(input, nchar(input) - 1,nchar(input))==suffix]
-}
-duplicates <- dup.filter(networklist.dup,"_1")
-  #Getting duplicate networks (Cytoscape marks duplicate networks with a "_1" suffix to the network name)
-delete.dupes <- function(nw) {
-  setCurrentNetwork(nw)
-  deleteNetwork()
-}
-lapply(duplicates,delete.dupes)
-  #Selecting and deleting duplicate networks
-
-networklist <- getNetworkList()
-networklist <- networklist[!networklist %in% preserve]
-  #Getting all networks besides the big SCZ networks
-setCurrentNetwork(networklist[[1]])
-for(i in 1:length(networklist)) tryCatch({
-  current <- getNetworkName()
-  mergeNetworks(c(current,networklist[[i]]), paste(current,networklist[[i]]),"union",inNetworkMerge = TRUE,nodeKeys=c("Ensembl","Ensembl"))
-}, error = function(e) {
-  cat("An error occured:\n")
-  cat("Error message: ", conditionMessage(e),"\n")
-  cat("Call stack:\n")
-  print(sys.calls())
-})
-#Looping through the network list to merge all currently open networks with each other, creating one large unified network
-
-renameNetwork("Addiction supernetwork")
-networklist <- getNetworkList()
-snw_adc <- getNetworkName()
-  #Getting the name of the unified network to preserve it from deletion
-lapply(networklist[networklist != snw_adc ],deleteNetwork)
-  #Deleting all networks besides newly generated unified networks
-
-## CTL EXTENSION -----------------------------------------------------------------------------------------------------------------------
-
-hsa <- file.path(getwd(), "Linksets", "wikipathways-20220511-hsa-WP.xgmml")
-hsa_react <- file.path(getwd(), "Linksets", "wikipathways-20220511-hsa-REACTOME.xgmml")
-  #Loading the WikiPathways linksets available at https://cytargetlinker.github.io/pages/linksets/wikipathways
-CTLextend.cmd = paste('cytargetlinker extend idAttribute="XrefId" linkSetFiles="', hsa, ',', hsa_react, '" network=current direction=TARGETS', sep="")
-commandsRun(CTLextend.cmd)
-  #Extending the network with previously loaded linksets
-layoutNetwork()
-  #Adding basic network layout
-snw_adc_ext <- getNetworkName()
-
-## STRINGIFY ---------------------------------------------------------------------------------------------------------------------------
-setCurrentNetwork(snw_adc)
-commandsRun("string stringify column=name compoundQuery=false cutoff=0.4 includeNotMapped=false networkNoGui=current networkType='full STRING network' species='Homo sapiens'")
-## PharmGKB ----------------------------------------------------------------------------------------------------------------------------
-pgkb.import <- function(pgkb_id,pgkb_name) {
-  pgkburl = sprintf("https://api.pharmgkb.org/v1/download/pathway/%s?format=.tsv", pgkb_id)
-  pgkb_name <- paste0(pgkb_name,".tsv")
-  download.file(pgkburl, sprintf("PharmGKB pathways/%s",pgkb_name))
-  commandsRun(sprintf("network import file indexColumnSourceInteraction=From indexColumnTargetInteraction=To file=PharmGKB pathways/%s",pgkb_name))
-}
-pgkb.import("PA166170742","Antipsychotics pathway")
-## SAVING ------------------------------------------------------------------------------------------------------------------------------
-
-preserve <- c(snw_scz, snw_scz_ext,snw_adc,snw_adc_ext)
-
-# WIP ==================================================================================================================================
 
 
-## INTERSECTION -----------------------------------------------------------------------------------------------------------------------
 
-scz_pathways.names <- paste(scz_pathways$name, scz_pathways$species, sep = " - ")
-adc_pathways.names <- paste(adc_pathways$name, adc_pathways$species, sep = " - ")
-  #Getting the names of the pathways as shown in Cytoscape, which includes the species 
-
-intersect_df <- expand.grid(scz_pathways.names, adc_pathways.names)
-intersect_df <- as.data.frame(lapply(intersect_df, as.character))
-  #Matching every SCZ pathway against every addiction pathway to detect all interactions and forcing entries to be characters (required for mergeNetwork)
-intersect <- function(row) {
-  col1 <- row[1]
-  col2 <- row[2]
-  mergeNetworks(c(col1,col2),(paste(col1,col2, sep =  " - ")),"intersection")
-  getIntersections <- as.character(getAllNodes())
-  #Getting the nodes resulting in the intersection networks
-  list(intersection_names = paste(getIntersections,collapse = ", "))
-  #Extracting the names of these nodes and making them more legible
-    #Merging networks with 'intersect' parameter
-}
-df_results <- apply(intersect_df,1,intersect)
-intersection_names <- sapply(df_results, function(x) x$intersection_names)
-intersect_df$intersection_names <- intersection_names
-  #Adding the intersections to a new column in the df 
-intersect_df <- intersect_df %>% mutate_all(~na_if(.,""))
-  #Some pathways do not have any overlaps, so the field in the df is marked as NA
-intersect_df <- cbind(intersect_df, scz_pathways.ids, adc_pathways.ids)
-intersect_df <- intersect_df %>%
-  select (scz_pathways.ids,Var1, adc_pathways.ids,Var2,intersection_names)
-names(intersect_df) <- c("SCZ WP ID","SCZ pathway","ADC WP ID","Addiction pathway", "Intersections")
-  #Reordering and renaming the df columns for easier reading
-
-View(intersect_df)
-write.csv(intersect_df, file = "CSVs/Intersections.csv")
 
 
 
