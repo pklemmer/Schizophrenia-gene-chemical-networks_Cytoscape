@@ -176,8 +176,8 @@ createNodeSource <- function(source,doi=NULL) {
     }
   commandsRun(sprintf("table create column columnName=WikiPathways table=%s type=string",nodetable))
   commandsRun(sprintf("table create column columnName=DisGeNET table=%s type=string",nodetable))
-  commandsRun(sprintf("table create column columnName=Literature table=%s type=string",nodetable))
-  commandsRun(sprintf("table create column columnName=Literature.doi table=%s type=string",nodetable))
+  commandsRun(sprintf("table create column columnName=Publication table=%s type=string",nodetable))
+  commandsRun(sprintf("table create column columnName=Publication.doi table=%s type=string",nodetable))
   commandsRun(sprintf("table create column columnName=STRINGnode table=%s type=string",nodetable))
     #Creating a new column for each source used for all networks
   if ( source == "STRINGnode") {
@@ -188,7 +188,7 @@ createNodeSource <- function(source,doi=NULL) {
     #Filling the new column of the corresponding source with 1 to indicate which source the node is imported from 
   }
   if (!is.null(doi)) {
-  commandsRun(sprintf("table set values columnName=Literature.doi handleEquations=false rowList=all table=%1$s value=%2$s",nodetable,doi))
+  commandsRun(sprintf("table set values columnName=Publication.doi handleEquations=false rowList=all table=%1$s value=%2$s",nodetable,doi))
     #Adding doi for literature used if provided
   }
 }
@@ -276,18 +276,18 @@ metadata.add(paste("WikiPathways queried species:",paste(queryspecies.wp,collaps
 metadata.add("")
 
 Sys.sleep(1)
-  #Pausing the script for 1 second - when letting the script run without this, the literature source creation fails
+  #Pausing the script for 1 second - when letting the script run without this, the publication source creation fails
 
 commandsRun(sprintf("network import file columnTypeList='sa,sa,source,sa,sa,sa,sa' file=%s firstRowAsColumnNames=true rootNetworkList=-- Create new network collection -- startLoadRow=1", paste0(getwd(),"/CSVs/scz2022-Extended-Data-Table1.txt")))
   #Importing network from file
   #List of 120 genes implicated in Trubetskoy et al., doi: 10.1038/s41586-022-04434-5
 commandsRun("table rename column columnName=Ensembl.ID newColumnName=Ensembl table=scz2022-Extended-Data-Table1.txt default node")
   #Renaming the Ensembl.ID column from the dataset to Ensembl for coherence with networks from other sources
-createNodeSource("Literature","10.1038/s41586-022-04434-5")
+createNodeSource("Publication","10.1038/s41586-022-04434-5")
   #Adding literature as  source to all imported nodes and adding the doi of the corresponding paper
 renameNetwork("Trubetskoy risk genes")
   #Renaming the newly imported network
-metadata.add("Literature")
+metadata.add("Publications")
 metadata.add("Trubetskoy et al. doi: 10.1038/s41586-022-04434-5")
 metadata.add("")
 
@@ -376,7 +376,7 @@ exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW_filtered_STRING"),"CX",networ
 createColumnFilter(filter.name="delete.noensembl", column="Ensembl","ENSG","DOES_NOT_CONTAIN")
 deleteSelectedNodes()
   #Filtering out nodes that do not have an ENSG Ensembl identifier mapped to them
-marked_cols <- as.list(getTableColumnNames()[!(getTableColumnNames() %in% c("selected","name.copy" ,"SUID","shared name","name","Name2","DisGeNET","WikiPathways","Ensembl","Literature","Literature.doi","STRINGnode"))])
+marked_cols <- as.list(getTableColumnNames()[!(getTableColumnNames() %in% c("selected","name.copy" ,"SUID","shared name","name","Name2","DisGeNET","WikiPathways","Ensembl","Publication","Publication.doi","STRINGnode"))])
 lapply(marked_cols, function(column) {
   deleteTableColumn(column=column)
 })
@@ -413,13 +413,13 @@ split_tbl <- split(valid_clustered_nodetable, valid_clustered_nodetable$gLayClus
 sourcecount <- function(cluster) {
   wpcount <- sum(split_tbl[[cluster]][["WikiPathways"]] == 1, na.rm = TRUE)
   dgcount <- sum(split_tbl[[cluster]][["DisGeNET"]] == 1, na.rm = TRUE)
-  litcount <- sum(split_tbl[[cluster]][["Literature"]] == 1, na.rm = TRUE)
+  litcount <- sum(split_tbl[[cluster]][["Publication"]] == 1, na.rm = TRUE)
   stringcount <- sum(split_tbl[[cluster]][["STRINGnode"]] == 1, na.rm = TRUE)
   result_df <- data.frame(
     gLayCluster = split_tbl[[cluster]][["gLayCluster"]][1],
     WikiPathways_source = wpcount,
     DisGeNET_source = dgcount, 
-    Literature_source = litcount, 
+    Publication_source = litcount, 
     STRING_source = stringcount
   )
 }
@@ -478,7 +478,9 @@ write.table(topterms_df, file=paste0(getwd(),"/CSVs/GO-clusters-vis.tsv"), sep =
   #Writing the table to file for Cytoscape import during visualisation
 loadTableData(topterms_df,data.key.column="gLayCluster",table.key.column="gLayCluster")
   #Loading the generated top terms and p-values back to the supernetwork; every gene belonging to cluster x is now associated with the top terms of cluster x
-renameNetwork(title=paste0(getNetworkName(),"-GO"))
+deleteTableColumn('gLayCluster.1')
+  #Deleting duplicate gLayCluster column that appears after importing top terms data back to network 
+renameNetwork(title=paste0(getNetworkName(),"_GO"))
 snw_scz_filtered_string_clustered_go <- getNetworkName()
   #Renaming and saving the network name to indicate addition of GO information
 
@@ -514,7 +516,7 @@ exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW_filtered_STRING_clustered_GO"
 
 ##VISUALISATION -----------------------------------------------------------------------------------------------------------------------
 commandsRun(sprintf("network import file columnTypeList='s,sa,sa,sa,sa,sa,sa,sa,sa,sa,sa,sa' file=%s firstRowAsColumnNames=true delimiters=\\t rootNetworkList=-- Create new network collection -- startLoadRow=1", paste0(getwd(),"/CSVs/GO-clusters-vis.tsv")))
-  #Importing the previoulsy generated table 'go_vis_filered' back to Cytoscape as new network
+  #Importing the previoulsy generated table 'GO-clusters-vis' back to Cytoscape as new network
   #Essential to use .tsv and importing as such to avoid conflicts generated by .csv - commas separating terms in a string are interpreted as different columns by Cytoscape
 Sys.sleep(1)
 renameNetwork("GO_Visualisation_SCZ_SNW")
@@ -538,7 +540,7 @@ setNodeSizeMapping(
 )
   #Setting the node size proportional to the number of nodes making up a cluster, e.g. a cluster containing more nodes is bigger
 setNodeCustomPieChart(
-  columns = c("DisGeNET_source","Literature_source","WikiPathways_source","STRING_source"),
+  columns = c("DisGeNET_source","Publication_source","WikiPathways_source","STRING_source"),
   colors = paletteColorBrewerPaired(value.count = 8),
   style.name= "GO_vis"
 )
@@ -604,34 +606,95 @@ createColumnFilter(
   anyMatch = TRUE,
   apply = TRUE
 )
-#Selecting nodes included in a 'valid' cluster, i.e. clusters with 5 or more nodes (GO analysis only performed for these)
-#N_nodes is only generated for 'valid' clusters, so good column to filter by
+  #Selecting nodes included in a 'valid' cluster, i.e. clusters with 5 or more nodes (GO analysis only performed for these)
+  #N_nodes is only generated for 'valid' clusters, so good column to filter by
 invertNodeSelection()
 deleteSelectedNodes()
-#Inverting the selection and deleting these nodes: now, the network contains only the nodes that make up the clusters fed into the GO analysis
-#Nodes not associated to a large enoug cluster/GO term are likely not involved in any significant SCZ-contributing way 
-#The idea is to link GO terms (formed by clusters/genes) to risk factors, so it wouldn't make sense to also link non-cluster/GO associated nodes
-commandsRun(sprintf('network import file columnTypeList="ea,s,t" file=%s firstRowAsColumnNames=true startLoadRow=1 rootNetworkList=-- Create new network collection --',paste0(getwd(),"/CSVs/KERList.tsv")))
-#Importing a new edge network from a csv obtained from AOPwiki through a SPARQL query
-#The csv contains key-event relationships from AOPs containing AOs relating to manually selected neural/psychological outcomes
-#The exported csv from the AOPwiki SPARQL endpoint has quotation marks around each element, hindering mapping
-#The quotation marks are removed using a text editor (Notepad++ here)
-commandsRun(sprintf('table import file dataTypeTargetForNetworkCollection="Node Table Columns" delimiters=\\t file=%s firstRowAsColumnNames=true keyColumnForMapping="shared name" keyColumnIndex=1 startLoadRow=1',paste0(getwd(),"/CSVs/KEMap.tsv")))
-#Loading a KE mapping file generated from a second SPARQL query that fetches all KE URIs and their titles from AOPwiki
-#This file also had quotation marks removed using a text editor
-commandsRun(sprintf('table import file dataTypeTargetForNetworkCollection="Node Table Columns" delimiters=\\t file=%s firstRowAsColumnNames=true keyColumnForMapping="shared name" keyColumnIndex=1 startLoadRow=1',paste0(getwd(),"/CSVs/KEEnsembl.tsv")))
+  #Inverting the selection and deleting these nodes: now, the network contains only the nodes that make up the clusters fed into the GO analysis
+  #Nodes not associated to a large enough cluster/GO term are likely not involved in any significant SCZ-contributing way 
+  #The idea is to link GO terms (formed by clusters/genes) to risk factors, so it wouldn't make sense to also link non-cluster/GO associated nodes
 
 
+KERList <-  read.table(file=paste0(getwd(),"/CSVs/AOP/KERList.tsv"),header=TRUE, sep ="\t")
+  #Reading a tsv obtained from AOPwiki through a SPARQL query
+  #The tsv contains key-event relationships from AOPs containing AOs relating to manually selected neural/psychological outcomes
+  #The exported tsv from the AOPwiki SPARQL endpoint has quotation marks around each element, hindering mapping
+  #The quotation marks are removed using a text editor (Notepad++ here)
+KEEnsembl <- read.table(file=paste0(getwd(),"/CSVs/AOP/KEEnsembl.tsv"),header=TRUE, sep ="\t")
+  #Reading a tsv from AOPWiki SPARQL endpoint containing all KEs and the ENSG IDs they are associated with
+  #For easier merging of ENSG IDs to the manually selected KEs contained in KERList, this file needs to be filtered
+allKEsFromList <- data.frame(allKEs = c(KERList$KEup,KERList$KEdown))
+  #Combining both up- and downregulated KEs into a single column 
+filtered_KEEnsembl <- subset(KEEnsembl, ke %in% allKEsFromList$allKEs)
+  #Removing KE-Ensembl rows that are not found in the selected KEs
+write.table(filtered_KEEnsembl, file=paste0(getwd(),"/CSVs/AOP/KEEnsembl_filtered.tsv"), quote=FALSE,row.names=FALSE,sep="\t" )
+  #Writing the filtered KE-ENSG list to file for Cytoscape loading
+
+commandsRun(sprintf('network import file columnTypeList="ea,s,t" file=%s firstRowAsColumnNames=true startLoadRow=1 rootNetworkList=-- Create new network collection --',paste0(getwd(),"/CSVs/AOP/KERList.tsv")))
+  #Loading selected KERs into Cytoscape as new network
+commandsRun(sprintf('table import file dataTypeTargetForNetworkCollection="Node Table Columns" delimiters=\\t file=%s firstRowAsColumnNames=true keyColumnForMapping="shared name" keyColumnIndex=1 startLoadRow=1',paste0(getwd(),"/CSVs/AOP/KEMap.tsv")))
+  #Loading a KE mapping file generated from a second SPARQL query that fetches all KE URIs and their titles from AOPwiki into the KER network
+  #This file also had quotation marks removed using a text editor
+commandsRun(sprintf('network import file columnTypeList="s,t" file=%s firstRowAsColumnNames=true startLoadRow=1 rootNetworkList=-- Create new network collection --',paste0(getwd(),"/CSVs/AOP/KEEnsembl_filtered.tsv")))
+  #Loading the filtered KE-ENSG list as new network into Cytoscape
+altmergeNetworks(sources = c('KERList.tsv','KEEnsembl_filtered.tsv'),
+              title='KEs relating to neurological/psychiatric adverse outcomes',
+              operation='union'
+              )
+  #Merging the manually curated KERList network and the KE-ENSG list to extend the selected KEs with associated genes
+deleteNetwork(network='KERList.tsv')
+deleteNetwork(network='KEEnsembl_filtered.tsv')
+  #Deleting networks used to make merged network 
+mapTableColumn(
+  column = 'name',
+  species= 'Human',
+  map.from = 'Ensembl',
+  map.to = 'HGNC',
+  force.single = 'true'
+)
+renameTableColumn('HGNC','Name2')
+commandsRun(sprintf('table export options=CSV outputFile=%s table="KEs relating to neurological/psychiatric adverse outcomes default node"', paste0(getwd(),"/CSVs/AOP/KE_table.csv")))
+  #Exporting the node table for manipulation via R
+KE_table <- read.csv(paste0(getwd(),"/CSVs/AOP/KE_table.csv"))
+  #Loading the previously exported node table as R object
+KE_table <- KE_table %>%
+  mutate(Ensembl=ifelse(grepl("ENSG",name),name,NA))
+  #Getting and transposing ENSG IDs from the name col to a new 'Ensembl' col to be used as key
+KE_table <- KE_table %>%
+  mutate(KE_URI=ifelse(!grepl("ENSG",name),name,NA))
+  #Getting and transposing KE URIs (all rows not containing 'ENSG') from the name col to a new 'KE_URI' col
+  #These two steps are done as the 'name' and 'shared name' columns will be difficult to work with since they mix both ENSG and other data types
+KE_table <- KE_table %>%
+  mutate(AOPwiki_source=1)
+  #Adding a new column to the node table indicating that the gene nodes in the KE network are imported from AOPwiki
+KE_table <- KE_table %>%
+  select(-shared.name)
+  #Loading the node table in R changes the name the 'shared name' column to 'shared.name' to avoid a space, this results in a duplicate 'shared.name' column when importing the table back to Cytoscape
+  #For this reason, 'shared.name'/'shared name' is simply removed from the df as 'names' can also be used for mapping and contains the same information anyways
+write.csv(KE_table, file=paste0(getwd(),"/CSVs/AOP/KE_table.csv"), row.names=FALSE)
+  #Overwriting the previously exported node table with the updated version
+loadTableData(
+  data = read.table(file=paste0(getwd(),"/CSVs/AOP/KE_table.csv"),header=TRUE, sep =","),
+  data.key.column = "name",
+  table.key.column = "name"
+)
+  #Loading the updated node table back to the network
+
+commandsRun(sprintf('table export options=CSV outputFile=%s table="SCZ_SNW_filtered_STRING_clustered_GO default  node"', paste0(getwd(),"/CSVs/AOP/SNW_table.csv")))
+  #Exporting the node table of the supernetwork 
+SNW_table <- read.csv(paste0(getwd(),"/CSVs/AOP/SNW_table.csv"))
+  #Reading supernetwork node table as R object
+common_ensg <- SNW_table$Ensembl %in% KE_table$Ensembl
+overlap_df <- SNW_table[common_ensg, ]
+  #Detecting and extracting shared ENSG IDs between the SNW and the KE network
+
+df1 <- KE_table[!common_ensg | is.na(common_ensg), ]
 
 
-
-
-
-
-
-
-
-
+altmergeNetworks(sources=c('KEs relating to neurological/psychiatric adverse outcomes','SCZ_SNW_filtered_STRING_clustered-GO'),
+                 title='SCZ_SNW_fitlered_STRING_clustered_GO_AOP',
+                 operation='union',
+                 nodeKeys='Ensembl')
 
 
 
