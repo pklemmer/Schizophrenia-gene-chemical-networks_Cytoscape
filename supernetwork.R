@@ -597,7 +597,7 @@ layoutNetwork('force-directed')
 go_vis_nw <- getNetworkName()
 exportNetwork(filename=paste0(nw_savepath,"GO_Visualisation_SCZ_SNW"),"CX",network=go_vis_nw,overwriteFile=TRUE)
 
-##EXTENSION ---------------------------------------------------------------------------------------------------------------------------
+##AOP ---------------------------------------------------------------------------------------------------------------------------
 createColumnFilter(
   filter.name = "has_GO_result",
   column = "N_nodes",
@@ -638,7 +638,7 @@ commandsRun(sprintf('table import file dataTypeTargetForNetworkCollection="Node 
 commandsRun(sprintf('network import file columnTypeList="s,t" file=%s firstRowAsColumnNames=true startLoadRow=1 rootNetworkList=-- Create new network collection --',paste0(getwd(),"/CSVs/AOP/KEEnsembl_filtered.tsv")))
   #Loading the filtered KE-ENSG list as new network into Cytoscape
 altmergeNetworks(sources = c('KERList.tsv','KEEnsembl_filtered.tsv'),
-              title='KEs relating to neurological/psychiatric adverse outcomes',
+              title='KERs',
               operation='union'
               )
   #Merging the manually curated KERList network and the KE-ENSG list to extend the selected KEs with associated genes
@@ -653,7 +653,7 @@ mapTableColumn(
   force.single = 'true'
 )
 renameTableColumn('HGNC','Name2')
-commandsRun(sprintf('table export options=CSV outputFile=%s table="KEs relating to neurological/psychiatric adverse outcomes default node"', paste0(getwd(),"/CSVs/AOP/KE_table.csv")))
+commandsRun(sprintf('table export options=CSV outputFile=%s table="KERs default node"', paste0(getwd(),"/CSVs/AOP/KE_table.csv")))
   #Exporting the node table for manipulation via R
 KE_table <- read.csv(paste0(getwd(),"/CSVs/AOP/KE_table.csv"))
   #Loading the previously exported node table as R object
@@ -665,7 +665,7 @@ KE_table <- KE_table %>%
   #Getting and transposing KE URIs (all rows not containing 'ENSG') from the name col to a new 'KE_URI' col
   #These two steps are done as the 'name' and 'shared name' columns will be difficult to work with since they mix both ENSG and other data types
 KE_table <- KE_table %>%
-  mutate(AOPwiki_source=1)
+  mutate(AOPwiki=1)
   #Adding a new column to the node table indicating that the gene nodes in the KE network are imported from AOPwiki
 KE_table <- KE_table %>%
   select(-shared.name)
@@ -679,22 +679,54 @@ loadTableData(
   table.key.column = "name"
 )
   #Loading the updated node table back to the network
-
-commandsRun(sprintf('table export options=CSV outputFile=%s table="SCZ_SNW_filtered_STRING_clustered_GO default  node"', paste0(getwd(),"/CSVs/AOP/SNW_table.csv")))
-  #Exporting the node table of the supernetwork 
-SNW_table <- read.csv(paste0(getwd(),"/CSVs/AOP/SNW_table.csv"))
-  #Reading supernetwork node table as R object
-common_ensg <- SNW_table$Ensembl %in% KE_table$Ensembl
-overlap_df <- SNW_table[common_ensg, ]
-  #Detecting and extracting shared ENSG IDs between the SNW and the KE network
-
-df1 <- KE_table[!common_ensg | is.na(common_ensg), ]
-
-
-altmergeNetworks(sources=c('KEs relating to neurological/psychiatric adverse outcomes','SCZ_SNW_filtered_STRING_clustered-GO'),
-                 title='SCZ_SNW_fitlered_STRING_clustered_GO_AOP',
+altmergeNetworks(sources = c('SCZ_SNW_filtered_STRING_clustered_GO','KERs'),
+                 title='SCZ_SNW_filtered_STRING_clustered_GO_KER',
                  operation='union',
-                 nodeKeys='Ensembl')
+                 nodeKeys = c('Ensembl','Ensembl')
+)
+  #Merging the KER network with the supernetwork based on Ensembl ID
+  #As this is an union merge, all nodes from the KER network are introduced to the SNW, but the goal was simply to annotate existing genes in the SNW with KEs
+  #Therefore, some filtering is needed
+
+commandsRun(sprintf('table export options=CSV outputFile=%s table="SCZ_SNW_filtered_STRING_clustered_GO_KER default node"', paste0(getwd(),"/CSVs/AOP/SNW_KER_node.csv")))
+SNW_KER_node <- read.csv(paste0(getwd(),"/CSVs/AOP/SNW_KER_node.csv"))
+  #Saving the SNW node table to file and loading it as R object
+KE_only_nodes <- SNW_KER_node %>%
+  filter(AOPwiki == 1 & is.na(DisGeNET) & is.na(WikiPathways) & is.na(Publication) & is.na(STRINGnode)) %>%
+  pull(Ensembl)
+  #Getting a list of nodes that only have AOPwiki as source
+  #This implies that these nodes were not already present in the network since they would've been merged to existing nodes that already had at least one source prior
+  #It is not desired to add new gene nodes to the network from the KER network; gene nodes serve only as references for connecting KEs to already existing genes in the supernetwork
+selectNodes(nodes=KE_only_nodes,
+            by.col="Ensembl")
+deleteSelectedNodes()
+  #Selecting and deleting nodes based on the prior criteria
+
+commandsRun(sprintf('table export options=CSV outputFile=%s table="SCZ_SNW_filtered_STRING_clustered_GO_KER default edge"', paste0(getwd(),"/CSVs/AOP/SNW_KER_edge.csv")))
+SNW_KER_edge <- read.csv(paste0(getwd(),"/CSVs/AOP/SNW_KER_edge.csv"))
+  #Exporting the SNW edge table to file and loading it as R object
+valid_KE_ensg <- SNW_KER_edge[grepl("ENSG", SNW_KER_edge$name) & grepl("aop.events", SNW_KER_edge$name),]
+  #Getting a list of KEs that do have interactions with genes
+valid_KE <- str_extract(valid_KE_ensg$name, "https://identifiers.org/aop.events/\\S+")
+valid_KE <- unique(valid_KE)
+  #Getting the URIs of the KEs that have interactions with genes
+bad_KE_df <- SNW_KER_edge %>%
+  filter(
+    grepl("aop\\.events", name, ignore.case=TRUE) &
+      !grepl(paste(valid_KE, collapse="|"), name)
+  )
+  #Getting a list of the remaining KEs that are not associated with a gene or with a KE that is associated with a gene (to preserve KERs)
+bad_KE_list <- str_extract_all(bad_KE_df$name, "https://identifiers\\.org/aop\\.events/\\d+")
+bad_KE <- unique(unlist(bad_KE_list))
+  #Getting a list of unique bad KEs
+selectNodes(nodes=bad_KE, by.col="name")
+deleteSelectedNodes()
+
+    #make flow chart to explain this process, easier to check if logic is right. not sure how to qc this
+
+
+
+
 
 
 
