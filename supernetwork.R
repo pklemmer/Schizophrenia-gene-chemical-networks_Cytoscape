@@ -73,7 +73,7 @@ applist <- c("Wikipathways", "DisGeNET-app", "CyTargetLinker","stringApp","Bridg
   #WikiPathways v.3.3.10
   #DisGeNET-app v.7.3.0
   #CyTargetLinker v. 4.1.0
-  #stringApp v. 2.0.1
+  #stringApp v. 2.0.2
   #BridgeDb v.1.2.0
   #clusterMaker2 v.2.3.4
 lapply(applist,checkinstall.app)
@@ -562,16 +562,16 @@ setNodeLabelMapping(
 )
   #Changing node label to the processes/terms the nodes represent
 setNodeFontSizeDefault(
-  new.size = 18,
+  new.size = 16.5,
   style.name= "GO_vis"
 )
   #Setting node font size
 setNodeLabelPositionDefault(
   new.nodeAnchor = "S",
-  new.graphicAnchor = "S",
+  new.graphicAnchor = "N",
   new.justification = "c",
   new.xOffset = "0",
-  new.yOffset = "50",
+  new.yOffset = "0",
   style.name= "GO_vis"
 )
   #Moving label
@@ -591,12 +591,18 @@ setEdgeOpacityDefault(
 setEdgeColorDefault('#DD3497',
                     style.name= "GO_vis")
   #Changing edge color
-commandsRun('layout force-directed defaultEdgeWeight=0.5 defaultNodeMass=3 defaultSpringCoefficient=1e-4 edgeAttribute="GO_term_matches" defaultSpringLength=300 isDeterministic=true maxWeightCutoff=1.79769E308 minWeightCutoff=0E0 numIterations=100 type=Heuristic')
+commandsRun('layout force-directed defaultEdgeWeight=0.5 defaultNodeMass=3 defaultSpringCoefficient=1e-4 edgeAttribute="GO_term_matches" defaultSpringLength=300 isDeterministic=true maxWeightCutoff=1.79769E308 minWeightCutoff=0E0 numIterations=200 type=Heuristic')
 layoutNetwork('force-directed')  
   #Adding network layout
+#scaleLayout(axis="Both Axes", scaleFactor = 0.95)
+  #Not working as requires Cytoscape v.3.10.2 which does not seem available yet?
+renameNetwork("Supernetwork functional analysis")
+deleteNetwork(network="GO_Visualisation_SCZ_SNW")
 go_vis_nw <- getNetworkName()
 exportNetwork(filename=paste0(nw_savepath,"GO_Visualisation_SCZ_SNW"),"CX",network=go_vis_nw,overwriteFile=TRUE)
-
+fitContent()
+exportImage(filename = paste0(getwd(),"/Visualisations/SNW_functional_analysis"),type="SVG", overwriteFile=TRUE, zoom="200")
+  #Exporting the visualisation as network and as svg
 ##AOP ---------------------------------------------------------------------------------------------------------------------------
 createColumnFilter(
   filter.name = "has_GO_result",
@@ -722,43 +728,39 @@ bad_KE <- unique(unlist(bad_KE_list))
 selectNodes(nodes=bad_KE, by.col="name")
 deleteSelectedNodes()
 
-    #make flow chart to explain this process, easier to check if logic is right. not sure how to qc this
-
-
-
-
-
-
-
-
-#CTD_linkset <- file.path(getwd(), "Linksets", "CTD_ChemGene_Jan2021.xgmml")
-#drugbank_linkset <- file.path(getwd(), "Linksets", "drugbank4-2-approved.xgmml")
-#chembl_linkset <-  file.path(getwd(), "Linksets", "chembl_23_hsa_20180126.xgmml")
-#Loading CTD, approved Drugbank, and chEMBL linksets available at https://cytargetlinker.github.io/pages/linksets.html from local file
-#linksets <- c(CTD_linkset,drugbank_linkset,chembl_linkset)
-#extend <- function(linkset, network=snw_scz_filtered_string_clustered_go) {
-#commandsRun(sprintf('cytargetlinker extend direction=SOURCES  idAttribute=Ensembl linkSetFiles=%1$s network=%2$s',linkset,network))
-#}
-#extend(drugbank_linkset)
-
-
-
-#lapply(linksets,extend)
-
-
-#layoutNetwork()
-#Adding basic network layout
-#snw_scz_ext <- getNetworkName()
-#exportNetwork(filename=paste0(nw_savepath,paste(snw_scz_ext,datetime, sep = " - ")),"CX", network = snw_scz_ext, overwriteFile=FALSE)
-#Exporting the CTL extended supernetwork as cx file and tagging it with the time and date made to match with metadata file
-#metadata.add("CyTargetLinker linksets: wikipathways-20220511-hsa-WP.xgmml, wikipathways-20220511-hsa-REACTOME.xgmml")
-#Adding information about the CTL extension to the metadata file
-
-
-
-
-
-
+commandsRun(sprintf('network import file columnTypeList="s,ta,t,x,x" file=%s firstRowAsColumnNames=true startLoadRow=1 rootNetworkList="-- Create new network collection --" delimiters=\\t', paste0(getwd(),"/CSVs/AOP/AOPs_AOs_for_selected_KEs.tsv")))
+  #Importing a list of AOPs associated with selected KEs that have prior been imported to the SNW  
+  #The network contains numerous duplicate edges resulting from the way the SPARQL query is formulated
+Sys.sleep(1)
+commandsRun('analyzer remove duplicated edges createColumn=false ignoreDirection=false network=current')
+  #Removing duplicate edges from current network
+  #RCy3 has a deleteDuplicateEdges function but it seems bugged since it always just removes 1 duplicate edge at a time
+  #Using the command line function removes all duplicate edges right away and avoids having to run a filter to select duplicate edges which is much slower
+renameNetwork("KE-AOP")
+commandsRun(sprintf('network import file columnTypeList="x,sa,s,ta,t" file=%s firstRowAsColumnNames=true startLoadRow=1 rootNetworkList="-- Create new network collection --" delimiters=\\t',paste0(getwd(), "/CSVs/AOP/AOPs_AOs_for_selected_KEs.tsv")))
+commandsRun('analyzer remove duplicated edges createColumn=false ignoreDirection=false network=current')
+  #Removing duplicate edges from current network
+renameNetwork("AOP-AO")
+altmergeNetworks(sources=c("KE-AOP","AOP-AO"),
+                 title='KE-AOP-AO',
+                 operation='union',
+                 nodeKeys=c('name','name'))
+  #Merging the AO and AOP networks 
+  #Necessary to first import as separate networks and then merge as only one source and target col can be selected during network import
+altmergeNetworks(sources=c('KE-AOP-AO','SCZ_SNW_filtered_STRING_clustered_GO_KER'),
+                 title='SCZ_SNW_filtered_STRING_clustered_GO_AOP',
+                 operation='union',
+                 nodeKeys=c('name','name'))
+  #Merging the AOP-AO network to the SNW-KE network to extend KEs connected to risk genes with corresponding AOPs/AOs
+deleteNetwork(network='KE-AOP-AO')
+deleteNetwork(network='KERs')
+deleteNetwork(network='SCZ_SNW_filtered_STRING_clustered_GO_KER')
+deleteNetwork(network='KE-AOP')
+deleteNetwork(network='AOP-AO')
+  #Deleting networks that are no longer needed, used to generate SNW-AOP network
+SNW_AOP <- getNetworkName()
+exportNetwork(filename=paste0(nw_savepath,SNW_AOP),"CX",network=SNW_AOP)
+  #Exporting the SNW containing the AOP extension
 
 
 
