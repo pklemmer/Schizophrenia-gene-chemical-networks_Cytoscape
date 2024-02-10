@@ -72,10 +72,14 @@ checkinstall.app <- function(app) {
 applist <- c("Wikipathways", "DisGeNET-app", "CyTargetLinker","stringApp","BridgeDb","clusterMaker2")
   #WikiPathways v.3.3.10
   #DisGeNET-app v.7.3.0
+    #Note that for DisGeNET-app to properly function, users must do the following after first install of the app:
+        #In the Cytoscape GUI: Apps -> DisGeNET -> Start DisGeNET and wait for the database to be downloaded and unpacked
+        # Optionally also change the folder the DisGeNET database is downloaded to
   #CyTargetLinker v. 4.1.0
-  #stringApp v. 2.0.2
+  #stringApp v. 2.0.3
   #BridgeDb v.1.2.0
   #clusterMaker2 v.2.3.4
+  #yFiles Layout Algorithms v.1.1.3 (core app, no express need to install)
 lapply(applist,checkinstall.app)
   #Checking and installing (if required) necessary Cytoscape apps
 lapply(applist,getAppInformation)
