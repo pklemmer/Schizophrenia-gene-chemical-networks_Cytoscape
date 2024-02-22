@@ -1,0 +1,35 @@
+Endpoint : https://sparql.wikipathways.org/sparql/
+Queried on 21/02/24
+
+1. Get IDs of WikiPathways pathways containing 'Schizophrenia' : 
+
+select distinct ?PWID ?Pathwaytitle  where {
+    ?pathway a wp:Pathway ; dc:title ?Pathwaytitle ;?predicate ?object ; dc:identifier ?PWID ; wp:organismName "Homo sapiens".
+  FILTER regex (?object , "Schizophrenia", "i") }
+
+2. Get list of genes associated with pathway IDs returned by prior query + manually selected pathway IDs:
+
+select distinct ?PWID ?Pathwaytitle ?geneProduct ?nodename ?Ensembl (GROUP_CONCAT(distinct ?type; separator="|") as ?types) where {
+  VALUES ?PWID { <https://identifiers.org/wikipathways/WP4083> <https://identifiers.org/wikipathways/WP3584> <https://identifiers.org/wikipathways/WP5398> }
+
+  ?pathway a wp:Pathway ; dc:title ?Pathwaytitle ;?predicate ?object ; dc:identifier ?PWID.
+    ?geneProduct a ?type ; rdfs:label ?nodename ; dcterms:isPartOf ?pathway .
+  OPTIONAL {?geneProduct wp:bdbEnsembl ?Ensembl}
+}
+
+3. Get edges associated with pathway IDs returned by prior query + manually selected pathway IDs: 
+
+select distinct ?PWID ?source ?target where {
+  VALUES ?PWID { <https://identifiers.org/wikipathways/WP4083> <https://identifiers.org/wikipathways/WP3584> <https://identifiers.org/wikipathways/WP5398> }
+
+  ?pathway a wp:Pathway ; dc:title ?Pathwaytitle ;?predicate ?object ; dc:identifier ?PWID.
+?interaction dcterms:isPartOf ?pathway ;			
+             a wp:DirectedInteraction ;
+	           wp:source ?source ;
+	           wp:target ?target .  
+}
+
+
+Query results are downloaded in the .tsv format from the endpoint for smooth importing to Cytoscape
+Before import, quoutation marks are removed from the entire file
+Identifiers are cleaned up by removing 'https://identifiers.org/xyz/' from the entire file, in which 'xyz' is variable using this regex in Notepad++: https:\/\/identifiers\.org\/([^\/]+)\/
