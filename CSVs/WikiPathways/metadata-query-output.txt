@@ -1,0 +1,11 @@
+dataset
+http://data.wikipathways.org/20231210/rdf/
+
+title
+WikiPathways RDF 20231210
+
+date
+2023-12-10T00:49:27.872Z
+
+license
+http://creativecommons.org/publicdomain/zero/1.0/

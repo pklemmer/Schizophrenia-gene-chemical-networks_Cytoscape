@@ -280,14 +280,34 @@ metadata.add("")
 wp_nodelist <- read.delim(file=paste0(getwd(),"/CSVs/WikiPathways/nodelist.tsv"),header=TRUE,sep="\t",)
   #Loading a TSV file resulting of a SPARQL query made to the WikiPathways endpoint
   #The file contains all nodes associated with given pathway IDs relating to schizophrenia or CNVs 
-wp_nodelist$CNVassociated <- ifelse(grepl("copy number | CNV",wp_nodelist$Pathwaytitle), 1, 0)
+if (any(grepl("identifiers\\.org", wp_nodelist$Identifier))) {
+  # Checking whether the 'Identifier' column contains the identifiers.org URL
+  #This is to avoid issues later when the identifiers.org part is removed and the code is reran
+  wp_nodelist$NodeIDType <- gsub(".*/([^/]+)/.*", "\\1", wp_nodelist$Identifier)
+  #If 'identifiers.org' is still in the column, extract part of the string into a new column to see what type the identifier is
+} else {
+  # If 'identifiers.org' is not found, do nothing
+}
+wp_nodelist[] <- lapply(wp_nodelist, function(x) str_replace_all(x, "https://identifiers\\.org/([^/]+)/", ""))
+  #Selecting and removing "https://identifiers.org/xyz" from every row in the df for improved readability
+wp_nodelist$CNVassociated <- ifelse(grepl("copy number | CNV",wp_nodelist$PathwayTitle), 1, 0)
   #Adding a new binary column showing if a given node is associated with a CNV based on pathway title
+wp_nodelist$NodeID <- wp_nodelist$Identifier
+  #Generating a duplicate node identifier column since the original column will be lost during Cytoscape import due to it being selected as source column
 write.table(wp_nodelist, file=paste0(getwd(),"/CSVs/WikiPathways/nodelist.tsv"), quote=FALSE, sep="\t", row.names=FALSE)
-commandsRun(sprintf('network import file columnTypeList="sa,sa,s,sa,sa,sa,sa" file=%s firstRowAsColumnNames=true rootNetworkList=-- Create new network collection -- startLoadRow=1', paste0(getwd(),"/CSVs/WikiPathways/nodelist.tsv")))
+  #Writing the modified file for Cytoscape import
+commandsRun(sprintf('network import file columnTypeList="sa,sa,s,sa,sa,sa,sa,sa" file=%s firstRowAsColumnNames=true rootNetworkList=-- Create new network collection -- startLoadRow=1 delimiters=\\t', paste0(getwd(),"/CSVs/WikiPathways/nodelist.tsv")))
   #Importing a list of nodes from the output of a WikiPathways SPARQL query (get all nodes in pathways matching the keyword 'Schizophrenia' and some manually selected pathways)
 Sys.sleep(0.5)
   #Adding sys.sleep to give Cytoscape sufficient time to import the file as network; otherwise, renaming doesn't always work since no network is selected until the import is complete
 renameNetwork("WikiPathways nodes")
+
+wp_edgelist <-  read.delim(file=paste0(getwd(),"/CSVs/WikiPathways/edgelist.tsv"),header=TRUE,sep="\t",)
+  #Loading a TSV of ource-target pairs from selected pathways from the ouput of a WikiPathways SPARQL query
+wp_edgelist[] <- lapply(wp_edgelist, function(x) str_replace_all(x, "https://identifiers\\.org/([^/]+)/", ""))
+  #Selecting and removing "https://identifiers.org/xyz" from every row in the df for improved readability
+write.table(wp_edgelist, file=paste0(getwd(),"/CSVs/WikiPathways/edgelist.tsv"), quote=FALSE, sep="\t", row.names=FALSE)
+  #Writing the modified file for Cytoscape import
 commandsRun(sprintf('network import file columnTypeList="sa,s,t" file=%s firstRowAsColumnNames=true rootNetworkList=-- Create new network collection -- startLoadRow=1', paste0(getwd(),"/CSVs/WikiPathways/edgelist.tsv")))
   #Importing a list of source-target pairs from selected pathways from the ouput of a WikiPathways SPARQL query 
 Sys.sleep(0.5)
@@ -296,7 +316,7 @@ renameNetwork("WikiPathways edges")
 altmergeNetworks(sources = c("WikiPathways nodes","WikiPathways edges"),
                  title = "WikiPathways networks",
                  operation = "union",
-                 nodeKeys=c("name","name"))
+                 nodeKeys=c("NodeID","name"))
   #Union merging the node and edge networks to extend the node list with corresponding edges
 createNodeSource("fromWikiPathways")
 deleteNetwork('WikiPathways nodes')
