@@ -306,13 +306,45 @@ wp_edgelist <-  read.delim(file=paste0(getwd(),"/CSVs/WikiPathways/edgelist.tsv"
   #Loading a TSV of ource-target pairs from selected pathways from the ouput of a WikiPathways SPARQL query
 wp_edgelist[] <- lapply(wp_edgelist, function(x) str_replace_all(x, "https://identifiers\\.org/([^/]+)/", ""))
   #Selecting and removing "https://identifiers.org/xyz" from every row in the df for improved readability
+edge_df <- wp_edgelist[grepl("Interaction",wp_edgelist$source) | grepl("Interaction",wp_edgelist$target),]
+  #Extracting rows containing "Interaction" in either the source or target column
+  #Interaction nodes represent phosphorylation and the like and are not suitable for the network
+  #They can still provide information about the connection of gene or other nodes so they can't just be deleted either
+  #If an Interaction node is connected to two or more non-interaction nodes, these nodes should be connected to each other, and the interaction node can be deleted
+interaction_freq <- table(edge_df$target)
+edge_df_filtered <- edge_df[edge_df$target %in% names(interaction_freq[interaction_freq > 1]),]
+  #Counting if a certain interaction occurs more than once; this implies that it is connected to more than one non-interaction node
+unique_targets <- unique(edge_df_filtered$target)
+for (target_val in unique_targets) {
+  # Identify rows with duplicate target values
+  rows_with_duplicate_target <- which(edge_df_filtered$target == target_val)
+  
+  if (length(rows_with_duplicate_target) > 1) {
+    # Select one of the source values
+    source_val_to_transpose <- edge_df_filtered$source[rows_with_duplicate_target[1]]
+    
+    # Transpose the source value to the target column in the row of the remaining source value
+    edge_df_filtered$target[rows_with_duplicate_target[-1]] <- source_val_to_transpose
+    
+    # Remove duplicate rows
+    edge_df_filtered <- edge_df_filtered[-rows_with_duplicate_target[1], ]
+  }
+}
+  #Transposing the non-identifier nodes for source-target pairs; if two nodes are associated with the same interaction, they become source-target pairs
+wp_edgelist <- wp_edgelist <- wp_edgelist[!grepl(".*interaction.*", wp_edgelist$source, ignore.case = TRUE) & 
+                                            !grepl(".*interaction.*", wp_edgelist$target, ignore.case = TRUE), ]
+  #Removing any row containing "Interaction"
+wp_edgelist <- rbind(wp_edgelist,edge_df_filtered)
+  #Appending the new source-target pairs to the original edge list
+
 write.table(wp_edgelist, file=paste0(getwd(),"/CSVs/WikiPathways/edgelist.tsv"), quote=FALSE, sep="\t", row.names=FALSE)
   #Writing the modified file for Cytoscape import
-commandsRun(sprintf('network import file columnTypeList="sa,s,t" file=%s firstRowAsColumnNames=true rootNetworkList=-- Create new network collection -- startLoadRow=1', paste0(getwd(),"/CSVs/WikiPathways/edgelist.tsv")))
+commandsRun(sprintf('network import file columnTypeList="sa,s,t" file=%s firstRowAsColumnNames=true rootNetworkList=-- Create new network collection -- startLoadRow=1 delimiters=\\t', paste0(getwd(),"/CSVs/WikiPathways/edgelist.tsv")))
   #Importing a list of source-target pairs from selected pathways from the ouput of a WikiPathways SPARQL query 
 Sys.sleep(0.5)
   #Adding sys.sleep to give Cytoscape sufficient time to import the file as network; otherwise, renaming doesn't always work since no network is selected until the import is complete
 renameNetwork("WikiPathways edges")
+
 altmergeNetworks(sources = c("WikiPathways nodes","WikiPathways edges"),
                  title = "WikiPathways networks",
                  operation = "union",
