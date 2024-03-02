@@ -8,7 +8,7 @@ setwd("~/GitHub/SCZ-CNV")
   #Setting working directory
 rm(list=ls())
   #Cleaning up workspace
-packages <- c("dplyr","httr","stringr","gprofiler2")
+packages <- c("dplyr","httr","stringr","gprofiler2","rvest")
 installed_packages <- packages %in% rownames(installed.packages())
 if (any(installed_packages == FALSE)) {
   install.packages(packages[!installed_packages])
@@ -151,17 +151,29 @@ altmergeNetworks <- function(               sources = NULL,
   #RCy3 2.14.2 requires R v.4.1.3, requiring the entire script to run on an old version of R for one function that is used once
   #Here, we redefine the function using the source code from RCy3 v.2.14.2 and simply use this alternate function to merge networks
 
-queryspecies.wp <- c("Homo sapiens","Rattus norvegicus","Mus musculus")
-getPathways.wp <- function(i) {
-  pw <- findPathwaysByText(i)
-  pw <- pw %>%
-    dplyr::filter(species %in% queryspecies.wp)
-    #Filtering by species
-  pw.ids <- paste0(i, "_wpids")
-  assign(pw.ids, as.character(pw$id),envir = .GlobalEnv)
-    #Extracting WP IDs
+
+sparqlquery <- function(queryfile,output) {
+  file_path <- paste0(getwd(),sprintf("/CSVs/WikiPathways/%s",queryfile))
+    #Specifying file path to the .txt file containing the query
+  querybody <- paste(readLines(file_path), collapse = "")
+  #Reading a text file containing a SPARQL query stored in the repo
+  encoded_query <- URLencode(querybody)
+  #Encoding the query as URL
+  base_url <- "https://sparql.wikipathways.org/sparql/?default-graph-uri=&query="
+  #Defining the base URL preceding all SPARQL URLs for the endpoint
+  full_url <- paste0(base_url, encoded_query, "&format=text/html&timeout=0&signal_void=on")
+  #Joining the query from the text file and the base URL and adding that output is desired as HTML
+  html <- read_html(full_url)
+  #Sending the query to the SPARQL endpoint and extracting as HTML
+  tablebody <- html %>% 
+    html_element("body") %>%
+    html_element("div") %>%
+    html_element("table")
+  #Navigating to the table output by the SPARQL query
+  assign(output, html_table(tablebody), envir=.GlobalEnv)
+  #Getting the output as tibble
 }
-  #Function to query WikiPathways using keyword and to extract WP IDs for the import function
+  #Function to send a SPARQL query defined in a local text file to the endpoint and extract to desired dataframe
 
 createNodeSource <- function(source,doi=NULL) {
   if (source == "WikiPathways") {
@@ -194,14 +206,6 @@ createNodeSource <- function(source,doi=NULL) {
 }
   #Function to create new column in node table specifying origin of network/node
 
-#import <- function(j) {
-  #commandsRun(paste0('wikipathways import-as-network id=', j))
-    #Pasting WikiPathways IDs into a Cytoscape command line prompt to import as networks
-  #createNodeSource("WikiPathways")
-    #Filling the 'WikiPathways' column with 1 to indicate the source
-#}
-  #Importing pathways from WikiPathways by pathway ID
-
 disgenetRestUrl<-function(netType,host="127.0.0.1",port=1234,version="v7"){
   if(is.null(netType)){
     print("Network type not specified.")
@@ -230,6 +234,26 @@ geneDisParams <- function(source,dis,min) {list(
   finalScoreValue = "1.0"
 )}
   #Specifying parameters of the GDA network to be imported
+
+#queryspecies.wp <- c("Homo sapiens","Rattus norvegicus","Mus musculus")
+#getPathways.wp <- function(i) {
+#pw <- findPathwaysByText(i)
+#pw <- pw %>%
+#dplyr::filter(species %in% queryspecies.wp)
+#Filtering by species
+# pw.ids <- paste0(i, "_wpids")
+# assign(pw.ids, as.character(pw$id),envir = .GlobalEnv)
+#Extracting WP IDs
+#}
+#Function to query WikiPathways using keyword and to extract WP IDs for the import function
+
+#import <- function(j) {
+#commandsRun(paste0('wikipathways import-as-network id=', j))
+#Pasting WikiPathways IDs into a Cytoscape command line prompt to import as networks
+#createNodeSource("WikiPathways")
+#Filling the 'WikiPathways' column with 1 to indicate the source
+#}
+#Importing pathways from WikiPathways by pathway ID
 
 
 # SCHIZOPHRENIA =======================================================================================================================
@@ -260,23 +284,9 @@ metadata.add(paste("DisGeNET net type:",net))
 metadata.add("")
   #Adding the DisGeNET URL and net type used to add networks to the metadata file
 
-
-#wpids <- c("4875","5412","4222","4942","5408","5402","5346","5405","5406","5407","4940","4905","5398","5399","4906","4657","4932")
-#sczcnv <- sapply(wpids, function(k) paste0("WP",k))
-  #Manually adding relevant SCZ CNV pathways from WikiPathways
-
-#keyword.wp <- "Schizophrenia"
-#getPathways.wp(keyword.wp)
-#lapply(c(Schizophrenia_wpids,sczcnv), import)
-  #Importing WP pathways (both manually added and by keyword). Also adds "WikiPathways" as NodeSource column to node table
-#metadata.add(paste("WikiPathways keywords:",keyword.wp))
-#metadata.add(paste("WikiPathways manually by ID:",paste(wpids,collapse =", ")))
-#metadata.add(paste("WikiPathways queried species:",paste(queryspecies.wp,collapse = ", ")))
-  #Adding the keyword and species used to filter the WikiPathways query to the metadata file
-#metadata.add("")
-
-
-
+sparqlquery("nodequery.txt","wp_nodelist")
+  #Making a SPARQL query to the endpoint to get all nodes associated with a list of pathways
+  #Output of the query is saved to the wp_nodelist df
 wp_nodelist <- read.delim(file=paste0(getwd(),"/CSVs/WikiPathways/nodelist.tsv"),header=TRUE,sep="\t",)
   #Loading a TSV file resulting of a SPARQL query made to the WikiPathways endpoint
   #The file contains all nodes associated with given pathway IDs relating to schizophrenia or CNVs 
@@ -399,6 +409,21 @@ lapply(networklist[networklist != snw_scz],deleteNetwork)
   #Deleting all networks besides newly generated unified network
 exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW"),"CX", network = snw_scz, overwriteFile=TRUE)
   #Exporting the supernetwork as cx file
+
+
+#wpids <- c("4875","5412","4222","4942","5408","5402","5346","5405","5406","5407","4940","4905","5398","5399","4906","4657","4932")
+#sczcnv <- sapply(wpids, function(k) paste0("WP",k))
+#Manually adding relevant SCZ CNV pathways from WikiPathways
+
+#keyword.wp <- "Schizophrenia"
+#getPathways.wp(keyword.wp)
+#lapply(c(Schizophrenia_wpids,sczcnv), import)
+#Importing WP pathways (both manually added and by keyword). Also adds "WikiPathways" as NodeSource column to node table
+#metadata.add(paste("WikiPathways keywords:",keyword.wp))
+#metadata.add(paste("WikiPathways manually by ID:",paste(wpids,collapse =", ")))
+#metadata.add(paste("WikiPathways queried species:",paste(queryspecies.wp,collapse = ", ")))
+#Adding the keyword and species used to filter the WikiPathways query to the metadata file
+#metadata.add("")
 
 ## FILTERING NETWORK ------------------------------------------------------------------------------------------------------------------
 createColumnFilter(filter.name="type.label",column="Type","Label","IS",apply=FALSE)
