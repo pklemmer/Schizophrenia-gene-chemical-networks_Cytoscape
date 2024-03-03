@@ -1,0 +1,3 @@
+select distinct ?PWID where {
+    ?pathway a wp:Pathway ; dc:title ?Pathwaytitle ;?predicate ?object ; dc:identifier ?PWID ; wp:organismName "Homo sapiens".
+  FILTER regex (?object , "Schizophrenia", "i") }

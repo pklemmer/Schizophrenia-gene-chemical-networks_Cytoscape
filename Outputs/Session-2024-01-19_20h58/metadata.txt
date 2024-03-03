@@ -1,5 +1,0 @@
-2024-01-19 20:58:37.907486
-Europe/Berlin
-
-      apiVersion cytoscapeVersion 
-            "v1"         "3.10.1" 
