@@ -301,10 +301,9 @@ apply(genedisparams.scz.df,1,function(row) {
     #Executing the DisGeNET query
   createNodeSource("fromDisGeNET")
     #Adding information about data source to each node
-  mapTableColumn("geneName","Human","HGNC","Ensembl")
-    #Mapping the HGNC gene name from the geneName column in the node table to Ensembl identifiers
-  mapTableColumn("geneName","Human","Entrez Gene","Ensembl")
+  mapTableColumn("geneId","Human","Entrez Gene","Ensembl")
     #Mapping Entrez Gene IDs to Ensembl IDs
+  renameTableColumn("geneName","DisGeNETname")
 })  
   #Importing networks from DisGeNET
 
@@ -319,7 +318,7 @@ sparqlquery("wp","nodequery.txt","wp_nodelist")
 if (any(grepl("identifiers\\.org", wp_nodelist$Identifier))) {
   # Checking whether the 'Identifier' column contains the identifiers.org URL
   #This is to avoid issues later when the identifiers.org part is removed and the code is reran
-  wp_nodelist$NodeIDType <- gsub(".*/([^/]+)/.*", "\\1", wp_nodelist$Identifier)
+  wp_nodelist$WPNodeIDType <- gsub(".*/([^/]+)/.*", "\\1", wp_nodelist$Identifier)
   #If 'identifiers.org' is still in the column, extract part of the string into a new column to see what type the identifier is
 } else {
   # If 'identifiers.org' is not found, do nothing
@@ -328,8 +327,13 @@ wp_nodelist[] <- lapply(wp_nodelist, function(x) str_replace_all(x, "https://ide
   #Selecting and removing "https://identifiers.org/xyz" from every row in the df for improved readability
 wp_nodelist$CNVassociated <- ifelse(grepl("copy number | CNV",wp_nodelist$PathwayTitle), 1, 0)
   #Adding a new binary column showing if a given node is associated with a CNV based on pathway title
-wp_nodelist$NodeID <- wp_nodelist$Identifier
+wp_nodelist$WPNodeID <- wp_nodelist$Identifier
   #Generating a duplicate node identifier column since the original column will be lost during Cytoscape import due to it being selected as source column
+linebreakrows <- grep("\n",wp_nodelist$name)
+  #Some nodes have line breaks in their labels which causes issues in the Cytoscape import
+  #The line breaks have been removed, but the problem will persist until the new version of the WikiPathways RDF is released which the SPARQL query accesses
+wp_nodelist <- wp_nodelist[-linebreakrows,]
+  #Rows with linebreaks are simply removed from the data for now
 write.table(wp_nodelist, file=paste0(getwd(),"/Data/WikiPathways/nodelist.tsv"), quote=FALSE, sep="\t", row.names=FALSE)
   #Writing the modified file for Cytoscape import
 commandsRun(sprintf('network import file columnTypeList="sa,sa,s,sa,sa,sa,sa,sa" file=%s firstRowAsColumnNames=true rootNetworkList=-- Create new network collection -- startLoadRow=1 delimiters=\\t', paste0(getwd(),"/Data/WikiPathways/nodelist.tsv")))
@@ -384,8 +388,9 @@ renameNetwork("WikiPathways edges")
 altmergeNetworks(sources = c("WikiPathways nodes","WikiPathways edges"),
                  title = "WikiPathways networks",
                  operation = "union",
-                 nodeKeys=c("NodeID","name"))
+                 nodeKeys=c("WPNodeID","name"))
   #Union merging the node and edge networks to extend the node list with corresponding edges
+Sys.sleep(0.5)
 createNodeSource("fromWikiPathways")
 deleteNetwork('WikiPathways nodes')
 deleteNetwork('WikiPathways edges')
@@ -396,8 +401,9 @@ Sys.sleep(1)
 commandsRun(sprintf("network import file columnTypeList='sa,sa,source,sa,sa,sa,sa' file=%s firstRowAsColumnNames=true rootNetworkList=-- Create new network collection -- startLoadRow=1", paste0(getwd(),"/Data/Publications/Trubetskoy.txt")))
   #Importing network from file
   #List of 120 genes implicated in Trubetskoy et al., doi: 10.1038/s41586-022-04434-5
-commandsRun("table rename column columnName=Ensembl.ID newColumnName=Ensembl table=scz2022-Extended-Data-Table1.txt default node")
+commandsRun("table rename column columnName=Ensembl.ID newColumnName=Ensembl table=Trubetskoy.txt default node")
   #Renaming the Ensembl.ID column from the dataset to Ensembl for coherence with networks from other sources
+commandsRun("table rename column columnName=Index.SNP newColumnName=snpID table=Trubetskoy.txt default node")
 createNodeSource("fromPublication","10.1038/s41586-022-04434-5")
   #Adding literature as  source to all imported nodes and adding the doi of the corresponding paper
 renameNetwork("Trubetskoy risk genes")
@@ -407,17 +413,17 @@ metadata.add("Trubetskoy et al. doi: 10.1038/s41586-022-04434-5")
 metadata.add("")
 
 
-networklist.dup <- getNetworkList()
-dup.filter <- function(input,suffix) {
-  filtered_list <- input[substr(input, nchar(input) - 1,nchar(input))==suffix]
-}
-duplicates <- dup.filter(networklist.dup,"_1")
+#networklist.dup <- getNetworkList()
+#dup.filter <- function(input,suffix) {
+#  filtered_list <- input[substr(input, nchar(input) - 1,nchar(input))==suffix]
+#}
+#duplicates <- dup.filter(networklist.dup,"_1")
   #Getting duplicate networks (Cytoscape marks duplicate networks with a "_1" suffix to the network name)
-delete.dupes <- function(nw) {
-  setCurrentNetwork(nw)
-  deleteNetwork()
-}
-lapply(duplicates,delete.dupes)
+#delete.dupes <- function(nw) {
+#  setCurrentNetwork(nw)
+#  deleteNetwork()
+#}
+#lapply(duplicates,delete.dupes)
   #Selecting and deleting duplicate networks
 
 networklist <- getNetworkList()
@@ -452,53 +458,58 @@ exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW"),"CX", network = snw_scz, ov
 #metadata.add("")
 
 ## FILTERING NETWORK ------------------------------------------------------------------------------------------------------------------
-createColumnFilter(filter.name="type.label",column="Type","Label","IS",apply=FALSE)
-createColumnFilter(filter.name="type.anchor",column="Type","Anchor","IS",apply=FALSE)
-createColumnFilter(filter.name="type.group",column="Type","Group","IS",apply=FALSE)
-createColumnFilter(filter.name="disease.name",column="diseaseName","Schizophrenia","IS")
-createCompositeFilter(filter.name="type.label.anchor.group",c("type.label","type.anchor","type.group","disease.name"),"ANY")
-deleteSelectedNodes()
+#createColumnFilter(filter.name="type.label",column="Type","Label","IS",apply=FALSE)
+#createColumnFilter(filter.name="type.anchor",column="Type","Anchor","IS",apply=FALSE)
+#createColumnFilter(filter.name="type.group",column="Type","Group","IS",apply=FALSE)
+#createColumnFilter(filter.name="disease.name",column="diseaseName","Schizophrenia","IS")
+#createCompositeFilter(filter.name="type.label.anchor.group",c("type.label","type.anchor","type.group","disease.name"),"ANY")
+#deleteSelectedNodes()
   #Creating filters and deleting columns in the node table that are not relevant to the supernetwork (leftovers from import sources)
-renameNetwork("SCZ_SNW_filtered")
-snw_scz_filtered <- getNetworkName()
-exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW_filtered"),"CX", network = snw_scz_filtered, overwriteFile=TRUE)
+#renameNetwork("SCZ_SNW_filtered")
+#snw_scz_filtered <- getNetworkName()
+#exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW_filtered"),"CX", network = snw_scz_filtered, overwriteFile=TRUE)
   #Exporting the filtered supernetwork as cx file and tagging it with the time and date made to match with metadata file
 
 ## STRING --------------------------------------------------------------------------------------------------------------------------
 commandsRun('string stringify colDisplayName=name column=Ensembl compoundQuery=true cutoff=0.9 includeNotMapped=true  networkType="full STRING network" species="Homo sapiens" networkNoGui=current')
-commandsRun('string expand additionalNodes=1000 network=current nodeTypes="Homo sapiens" selectivityAlpha=0.9')
-  #STRINGifying and expanding the network with a 0.9 confidence cutoff (curated information)
-createNodeSource("fromSTRING")
-  #Tagging the newly added nodes as having been sourced from STRING
-mapTableColumn("stringdb::canonical name","Human","Uniprot-TrEMBL","Ensembl",force.single=TRUE)
-  #Mapping stringdb canonical names (Uniprot-TrEMBL identifiers) to Ensembl gene identifiers
-  #This step generates a second Ensembl column ('Ensembl (1)') with ENSG identifiers for the STRING-imported nodes
-renameTableColumn("Ensembl (1)","Ensembldup")
-  #Renaming the duplicate Ensembl column for easier handling
-renameNetwork("SCZ_SNW_filtered_STRING")
-snw_scz_filtered_string <- getNetworkName()
-stringified_nodetable <- paste0(nw_savepath,sprintf("%s node table.csv",snw_scz_filtered_string))
-  #Saving the file path to the node table for easier reading
-commandsRun(sprintf('table export options=CSV outputFile=%1$s table="%2$s default  node"',stringified_nodetable,snw_scz_filtered_string))
-  #Exporting the node table as .csv file to the current session's "Network" folder
-read_stringified_nodetable <- read.csv(stringified_nodetable)
-  #saving the node table as object
-read_stringified_nodetable$Ensembl <- ifelse(read_stringified_nodetable$Ensembl == read_stringified_nodetable$Ensembldup, as.character(read_stringified_nodetable$Ensembl),
-                               ifelse(is.na(read_stringified_nodetable$Ensembl) | read_stringified_nodetable$Ensembl =="",as.character(read_stringified_nodetable$Ensembldup),
-                                      ifelse(is.na(read_stringified_nodetable$Ensembldup) | read_stringified_nodetable$Ensembldup=="",as.character(read_stringified_nodetable$Ensembl),"No Match")))
-  #As the identifier mapping from STRING ENSP to ENSG identifiers generates a second Ensembl column, they are merged into the originial Ensembl column if the contents of the cell match or either is blank
-read_stringified_nodetable = subset(read_stringified_nodetable,select= -Ensembldup)
-  #Removing the duplicate Ensembl column from the table
-write.csv(read_stringified_nodetable, file=stringified_nodetable)
-  #Overwriting the previously exported table with the version containing the merged Ensembl column
-renameTableColumn("@id","X.id")
-  #Renaming the '@id' column in the Cytoscape table to avoid issues when reimporting the .csv (@id is automatically converted to X.id in the CSV)
-loadTableData(read_stringified_nodetable,data.key.column="X.id",table.key.column="X.id")
-  #Reimporting the .csv with the merged Ensembl column to the network as to have ENSG identifiers for almost all nodes 
+# commandsRun('string expand additionalNodes=1000 network=current nodeTypes="Homo sapiens" selectivityAlpha=0.9')
+#   #STRINGifying and expanding the network with a 0.9 confidence cutoff (curated information)
+# createNodeSource("fromSTRING")
+#   #Tagging the newly added nodes as having been sourced from STRING
+# mapTableColumn("stringdb::canonical name","Human","Uniprot-TrEMBL","Ensembl",force.single=TRUE)
+#   #Mapping stringdb canonical names (Uniprot-TrEMBL identifiers) to Ensembl gene identifiers
+#   #This step generates a second Ensembl column ('Ensembl (1)') with ENSG identifiers for the STRING-imported nodes
+# renameTableColumn("Ensembl (1)","Ensembldup")
+#   #Renaming the duplicate Ensembl column for easier handling
+# renameNetwork("SCZ_SNW_filtered_STRING")
+# snw_scz_filtered_string <- getNetworkName()
+# stringified_nodetable <- paste0(nw_savepath,sprintf("%s node table.csv",snw_scz_filtered_string))
+#   #Saving the file path to the node table for easier reading
+# commandsRun(sprintf('table export options=CSV outputFile=%1$s table="%2$s default  node"',stringified_nodetable,snw_scz_filtered_string))
+#   #Exporting the node table as .csv file to the current session's "Network" folder
+# read_stringified_nodetable <- read.csv(stringified_nodetable)
+#   #saving the node table as object
+# read_stringified_nodetable$Ensembl <- ifelse(read_stringified_nodetable$Ensembl == read_stringified_nodetable$Ensembldup, as.character(read_stringified_nodetable$Ensembl),
+#                                ifelse(is.na(read_stringified_nodetable$Ensembl) | read_stringified_nodetable$Ensembl =="",as.character(read_stringified_nodetable$Ensembldup),
+#                                       ifelse(is.na(read_stringified_nodetable$Ensembldup) | read_stringified_nodetable$Ensembldup=="",as.character(read_stringified_nodetable$Ensembl),"No Match")))
+#   #As the identifier mapping from STRING ENSP to ENSG identifiers generates a second Ensembl column, they are merged into the originial Ensembl column if the contents of the cell match or either is blank
+# read_stringified_nodetable = subset(read_stringified_nodetable,select= -Ensembldup)
+#   #Removing the duplicate Ensembl column from the table
+# write.csv(read_stringified_nodetable, file=stringified_nodetable)
+#   #Overwriting the previously exported table with the version containing the merged Ensembl column
+# renameTableColumn("@id","X.id")
+#   #Renaming the '@id' column in the Cytoscape table to avoid issues when reimporting the .csv (@id is automatically converted to X.id in the CSV)
+# loadTableData(read_stringified_nodetable,data.key.column="X.id",table.key.column="X.id")
+#   #Reimporting the .csv with the merged Ensembl column to the network as to have ENSG identifiers for almost all nodes 
 mapTableColumn("Ensembl","Human","Ensembl","HGNC")
-  #Generating a new column 'HGNC' from Ensembl identifiers - easier and less error-prone than merging various name columns from different import sources
+#   #Generating a new column 'HGNC' from Ensembl identifiers - easier and less error-prone than merging various name columns from different import sources
 renameTableColumn("HGNC","Name2")
   #Renaming the new 'HGNC' column to 'Name2', which is now to be used as default name column. ('shared name' and 'name' columns are immutable and cannot be deleted or renamed)
+marked_cols <- as.list(getTableColumnNames()[!(getTableColumnNames() %in% c("selected","name.copy" ,"SUID","shared name","name","fromDisGeNET","fromWikiPathways","Ensembl","fromPublication","Publication.doi","fromSTRING","CNVassociated","PathwayID","NodeID","NodeIDType","snpID","Name2","DisGeNETname"))])
+lapply(marked_cols, function(column) {
+  deleteTableColumn(column=column)
+})
+  #Filtering columns
 exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW_filtered_STRING"),"CX",network=snw_scz_filtered_string,overwriteFile=TRUE)
   #Exporting the filtered, stringified supernetwork as cx file and tagging it with the time and data to match with the metadata file
 
@@ -506,10 +517,10 @@ exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW_filtered_STRING"),"CX",networ
 createColumnFilter(filter.name="delete.noensembl", column="Ensembl","ENSG","DOES_NOT_CONTAIN")
 deleteSelectedNodes()
   #Filtering out nodes that do not have an ENSG Ensembl identifier mapped to them
-marked_cols <- as.list(getTableColumnNames()[!(getTableColumnNames() %in% c("selected","name.copy" ,"SUID","shared name","name","Name2","fromDisGeNET","fromWikiPathways","Ensembl","fromPublication","Publication.doi","fromSTRING","CNVassociated"))])
-lapply(marked_cols, function(column) {
-  deleteTableColumn(column=column)
-})
+# marked_cols <- as.list(getTableColumnNames()[!(getTableColumnNames() %in% c("selected","name.copy" ,"SUID","shared name","name","Name2","fromDisGeNET","fromWikiPathways","Ensembl","fromPublication","Publication.doi","fromSTRING","CNVassociated"))])
+# lapply(marked_cols, function(column) {
+#   deleteTableColumn(column=column)
+# })
   #Deleting all the columns besides immutable columns, Ensembl, name, and source columns
 metadata.add("GLay Clustering")
 metadata.add(capture.output(commandsRun('cluster glay clusterAttribute=__glayCluster createGroups=false network=current restoreEdges=true showUI=true undirectedEdges=true')))
