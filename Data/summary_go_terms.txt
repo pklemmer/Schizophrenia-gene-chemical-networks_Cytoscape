@@ -1,25 +1,26 @@
 gLayCluster	summary_term
-1	Cell communication
-2	Cellular junctions
-3	Carboxylic acid metabolism
-4	Positive regulation of macromolecule/nitrogen metabolic processes
-5	Chromosome cohesion and organization
-6	Antigen processing and presentation
-7	Dystrophin-associated glycoprotein complex
-8	Centrosome and microtubule organization
-9	"SWI/SNF complex, cell cycle"
-10	TOR signaling
-11	Glycoprotein metabolism and glycolysation
-12	Mitochondrial processes
-13	Autophagy
-14	Phosphodiesterase activity
-15	Ubiquitin ligase complex
-16	Glycosylation and glycan biosynthesis
-17	Septin complex and cytoskeleton
-18	Axon growth inhibition and regulation
-20	RET signaling and NCAM signaling
-21	Vesicular transport
-178	Acetylcholine channel activity
-181	10q22q23 CNV
-245	Kainate selective glutamate receptor activity
-272	Serotonin-activated channels and receptors
+155	Synpatic signaling
+157	Cell communication, signal transduction
+159	Antigen processing
+160	Cell junctions
+163	Synaptic membrane and junctions, GABA receptor complex
+164	Positive regulation of macromolecule and metabolic processes
+165	Autophagy, nutrient response
+168	Radial spoke head
+171	SWI/SNF complex, chromatin
+172	RNA binding and transport
+178	Chromosome organisation and structure
+181	BMP signaling, skeletal system development
+182	15q11.2 CNV, microtubule organisation
+187	ATP synthesis, citric acid cycle
+192	Amino acid metabolic processes
+195	NPHP1 deletion syndrome
+196	13q12.12 CNV, glycoprotein complex
+198	NOTCH signaling
+199	Phosphodiesterase activity
+201	ESCRT-1 complex, GAG protein activity
+245	Double-strand break repair regulation
+282	Clathrin and AP-3 mediated vesicle loading
+292	7q11.23 CNV, microtubule organisation
+299	Serotonin-gated channel and receptor activity
+387	NAD(P)H oxidase activity

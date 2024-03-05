@@ -412,18 +412,16 @@ metadata.add("Publications")
 metadata.add("Trubetskoy et al. doi: 10.1038/s41586-022-04434-5")
 metadata.add("")
 
-
-#networklist.dup <- getNetworkList()
-#dup.filter <- function(input,suffix) {
-#  filtered_list <- input[substr(input, nchar(input) - 1,nchar(input))==suffix]
-#}
-#duplicates <- dup.filter(networklist.dup,"_1")
-  #Getting duplicate networks (Cytoscape marks duplicate networks with a "_1" suffix to the network name)
-#delete.dupes <- function(nw) {
+# networklist.dup <- getNetworkList()
+# dup.filter <- function(input,suffix) {
+#   filtered_list <- input[substr(input, nchar(input) - 1,nchar(input))==suffix]}
+# duplicates <- dup.filter(networklist.dup,"_1") 
+#   #Getting duplicate networks (Cytoscape marks duplicate networks with a "_1" suffix to the network name)
+# delete.dupes <- function(nw) {
 #  setCurrentNetwork(nw)
-#  deleteNetwork()
-#}
-#lapply(duplicates,delete.dupes)
+#   deleteNetwork()
+# }
+# lapply(duplicates,delete.dupes)
   #Selecting and deleting duplicate networks
 
 networklist <- getNetworkList()
@@ -458,11 +456,11 @@ exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW"),"CX", network = snw_scz, ov
 #metadata.add("")
 
 ## FILTERING NETWORK ------------------------------------------------------------------------------------------------------------------
-#createColumnFilter(filter.name="type.label",column="Type","Label","IS",apply=FALSE)
-#createColumnFilter(filter.name="type.anchor",column="Type","Anchor","IS",apply=FALSE)
-#createColumnFilter(filter.name="type.group",column="Type","Group","IS",apply=FALSE)
-#createColumnFilter(filter.name="disease.name",column="diseaseName","Schizophrenia","IS")
-#createCompositeFilter(filter.name="type.label.anchor.group",c("type.label","type.anchor","type.group","disease.name"),"ANY")
+# createColumnFilter(filter.name="type.label",column="Type","Label","IS",apply=FALSE)
+# createColumnFilter(filter.name="type.anchor",column="Type","Anchor","IS",apply=FALSE)
+# createColumnFilter(filter.name="type.group",column="Type","Group","IS",apply=FALSE)
+# createColumnFilter(filter.name="disease.name",column="diseaseName","Schizophrenia","IS")
+# createCompositeFilter(filter.name="type.label.anchor.group",c("type.label","type.anchor","type.group","disease.name"),"ANY")
 #deleteSelectedNodes()
   #Creating filters and deleting columns in the node table that are not relevant to the supernetwork (leftovers from import sources)
 #renameNetwork("SCZ_SNW_filtered")
@@ -510,7 +508,9 @@ lapply(marked_cols, function(column) {
   deleteTableColumn(column=column)
 })
   #Filtering columns
-exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW_filtered_STRING"),"CX",network=snw_scz_filtered_string,overwriteFile=TRUE)
+renameNetwork("SCZ_SNW_STRING")
+scz_snw_string <- getNetworkName()
+exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW__STRING"),"CX",network=scz_snw_string,overwriteFile=TRUE)
   #Exporting the filtered, stringified supernetwork as cx file and tagging it with the time and data to match with the metadata file
 
 ## CLUSTERING ----------------------------------------------------------------------------------------------------------------------
