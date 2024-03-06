@@ -684,6 +684,38 @@ deleteSelectedNodes()
   #Nodes not associated to a large enough cluster/GO term are likely not involved in any significant SCZ-contributing way 
   #The idea is to link GO terms (formed by clusters/genes) to risk factors, so it wouldn't make sense to also link non-cluster/GO associated nodes
 
+sparqlquery("AOP-Wiki","newAOPquery.txt","keensgpairs")
+for (i in 1:ncol(keensgpairs)) {
+  for (j in 1:nrow(keensgpairs)) {
+    keensgpairs[j, i] <- gsub('"', '', keensgpairs[j, i])
+  }
+}
+  #Removing quotation marks from the df
+
+separate_keensgpairs <- separate_rows(keensgpairs,Ensembl,sep="; ")
+keensgpairs_byensg <- separate_keensgpairs %>%
+  group_by(Ensembl) %>%
+  summarise(KEid = paste(KEid, collapse="; "),
+            KEtitle = paste(KEtitle, collapse="; "),
+            AOid = paste(AOid, collapse="; "),
+            AOtitle = paste(AOtitle, collapse = "; "),
+            AOPid = paste(AOPid, collapse="; "),
+            AOPtitle =paste(AOPtitle, collapse="; "))                        
+
+keensgpairs_byensg_save <- paste0(getwd(),"/Data/AOP-Wiki/keensgpairs_byensg.tsv")
+write.table(keensgpairs_byensg, file=keensgpairs_byensg_save,quote=FALSE, sep="\t", row.names=FALSE)
+commandsRun(sprintf('table import file dataTypeTargetforNetworkCollection="Node Table Columns" delimiters=\\t file=%s firstRowAsColumnNames=true keyColumnForMapping="Ensembl" keyColumnIndex=1 startLoadRow=1',keensgpairs_byensg_save))
+
+
+
+
+
+
+
+
+
+
+
 sparqlquery("AOP-Wiki","KERKEquery.txt","KERList")
   #Sending a query to AOP-Wiki as specified in the query file to get KERs and corresponding KEs for selected AOs
 write.table(KERList, file=paste0(getwd(),"/Data/AOP-Wiki/KERList.tsv"),quote=FALSE,row.names=FALSE,sep="\t")
