@@ -722,7 +722,10 @@ deleteSelectedNodes()
   #Nodes not associated to a large enough cluster/GO term are likely not involved in any significant SCZ-contributing way 
   #The idea is to link GO terms (formed by clusters/genes) to risk factors, so it wouldn't make sense to also link non-cluster/GO associated nodes
 
-sparqlquery("AOP-Wiki","AO_KE_Ensembl_query.txt","keensgpairs")
+
+aopprocess <- function(input,tag) {
+
+sparqlquery("AOP-Wiki",input,"keensgpairs")
   #Querying AOP-Wiki for a list of all KEs and associated genes. KEs must be contained in an AOP that has an AO from a list of selected AOs
 for (i in 1:ncol(keensgpairs)) {
   for (j in 1:nrow(keensgpairs)) {
@@ -742,7 +745,7 @@ keensgpairs_byensg <- separate_keensgpairs %>%
             AOPid = paste(AOPid, collapse="; "),
             AOPtitle =paste(AOPtitle, collapse="; "))
   #Concateinating other variables based on unique Ensembl ID to get list of associated KEs, AOs, and AOPs per gene
-keensgpairs_byensg_save <- paste0(getwd(),"/Data/AOP-Wiki/keensgpairs_byensg.tsv")
+keensgpairs_byensg_save <- paste0(getwd(),sprintf("/Data/AOP-Wiki/keensgpairs_byensg_%s.tsv",tag))
   #Defining savepath for newly generated df
 write.table(keensgpairs_byensg, file=keensgpairs_byensg_save,quote=FALSE, sep="\t", row.names=FALSE)
   #Saving df containing gene-KE-AO-AOP associations to file as tsv for Cytoscape import
@@ -757,6 +760,20 @@ scz_snw_string_go_aop_node <- read.csv(file=paste0(nw_savepath,"SCZ_SNW_STRING_G
   #Reading the exported table as Cytoscape object
 aop_associated_genes <- scz_snw_string_go_aop_node[!(scz_snw_string_go_aop_node$KEid == ""), , drop=FALSE]
   #Getting which rows (=gene nodes) have info from AOP-Wiki associated to them
+
+
+objects <- c(keensgpairs,separate_keensgpairs,keensgpairs_byensg,keensgpairs_byensg_save,scz_snw_string_go_aop_node,aop_associated_genes)
+
+object_names <- paste0(deparse(substitute(objects)),'_')
+
+for (i in 1:length(object_names)) {
+  assign(paste0(object_names[i],tag),list(objects)[[i]],envir=.GlobalEnv)
+}
+result_names <- paste(object_names,tag)
+
+}
+
+aopprocess("AO_KE_Ensembl_query.txt","selected")
 
 
 importNetworkFromFile(file=paste0(nw_savepath,"SCZ_SNW_STRING_clustered_GO.cx"))
