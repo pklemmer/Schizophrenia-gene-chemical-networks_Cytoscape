@@ -1,10 +1,8 @@
-<https://identifiers.org/wikipathways/WP5412>
-<https://identifiers.org/wikipathways/WP5406>
-<https://identifiers.org/wikipathways/WP2781>
-<https://identifiers.org/wikipathways/WP408>
-<https://identifiers.org/wikipathways/WP3584>
-<https://identifiers.org/wikipathways/WP4083>
 <https://identifiers.org/wikipathways/WP5398>
+<https://identifiers.org/wikipathways/WP3584>
+<https://identifiers.org/wikipathways/WP408>
+<https://identifiers.org/wikipathways/WP5406>
+<https://identifiers.org/wikipathways/WP5412>
 <https://identifiers.org/wikipathways/WP4942>
 <https://identifiers.org/wikipathways/WP5402>
 <https://identifiers.org/wikipathways/WP5405>
