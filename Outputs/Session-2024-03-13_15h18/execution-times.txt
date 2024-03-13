@@ -1,0 +1,2 @@
+Importing and merging	16.13s
+STRING	14.25s

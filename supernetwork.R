@@ -204,10 +204,6 @@ sparqlquery <- function(endpoint,queryfile,output) {
   #Navigating to the table output by the SPARQL query
   assign(output, html_table(tablebody), envir=.GlobalEnv)
   #Getting the output as tibble
-  return(output)
-    #Returning the generated output to clearly define as R object
-  Sys.sleep(0.5)
-    #without adding a timeout, it can happen that the script proceeds faster than necessary objects can be created
 }
   #Function to send a SPARQL query defined in a local text file to the endpoint and extract to desired dataframe
 
@@ -271,25 +267,6 @@ geneDisParams <- function(source,dis,min) {list(
 )}
   #Specifying parameters of the GDA network to be imported
 
-#queryspecies.wp <- c("Homo sapiens","Rattus norvegicus","Mus musculus")
-#getPathways.wp <- function(i) {
-#pw <- findPathwaysByText(i)
-#pw <- pw %>%
-#dplyr::filter(species %in% queryspecies.wp)
-#Filtering by species
-# pw.ids <- paste0(i, "_wpids")
-# assign(pw.ids, as.character(pw$id),envir = .GlobalEnv)
-#Extracting WP IDs
-#}
-#Function to query WikiPathways using keyword and to extract WP IDs for the import function
-
-#import <- function(j) {
-#commandsRun(paste0('wikipathways import-as-network id=', j))
-#Pasting WikiPathways IDs into a Cytoscape command line prompt to import as networks
-#createNodeSource("WikiPathways")
-#Filling the 'WikiPathways' column with 1 to indicate the source
-#}
-#Importing pathways from WikiPathways by pathway ID
 
 
 # SCHIZOPHRENIA =======================================================================================================================
@@ -358,11 +335,6 @@ wp_nodelist$CNVassociated <- ifelse(grepl("copy number | CNV",wp_nodelist$Pathwa
   #Adding a new binary column showing if a given node is associated with a CNV based on pathway title
 wp_nodelist$WPNodeID <- wp_nodelist$Identifier
   #Generating a duplicate node identifier column since the original column will be lost during Cytoscape import due to it being selected as source column
-linebreakrows <- grep("\n",wp_nodelist$name)
-  #Some nodes have line breaks in their labels which causes issues in the Cytoscape import
-  #The line breaks have been removed, but the problem will persist until the new version of the WikiPathways RDF is released which the SPARQL query accesses
-wp_nodelist <- wp_nodelist[-linebreakrows,]
-  #Rows with linebreaks are simply removed from the data for now
 write.table(wp_nodelist, file=paste0(getwd(),"/Data/WikiPathways/nodelist.tsv"), quote=FALSE, sep="\t", row.names=FALSE)
   #Writing the modified file for Cytoscape import
 commandsRun(sprintf('network import file columnTypeList="sa,sa,s,sa,sa,sa,sa,sa" file=%s firstRowAsColumnNames=true rootNetworkList=-- Create new network collection -- startLoadRow=1 delimiters=\\t', paste0(getwd(),"/Data/WikiPathways/nodelist.tsv")))
@@ -441,18 +413,6 @@ metadata.add("Publications")
 metadata.add("Trubetskoy et al. doi: 10.1038/s41586-022-04434-5")
 metadata.add("")
 
-# networklist.dup <- getNetworkList()
-# dup.filter <- function(input,suffix) {
-#   filtered_list <- input[substr(input, nchar(input) - 1,nchar(input))==suffix]}
-# duplicates <- dup.filter(networklist.dup,"_1") 
-#   #Getting duplicate networks (Cytoscape marks duplicate networks with a "_1" suffix to the network name)
-# delete.dupes <- function(nw) {
-#  setCurrentNetwork(nw)
-#   deleteNetwork()
-# }
-# lapply(duplicates,delete.dupes)
-  #Selecting and deleting duplicate networks
-
 networklist <- getNetworkList()
 setCurrentNetwork(networklist[[1]])
 for(i in 1:length(networklist)) {
@@ -471,66 +431,9 @@ exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW"),"CX", network = snw_scz, ov
 
 end_section("Importing and merging")
 
-
-#wpids <- c("4875","5412","4222","4942","5408","5402","5346","5405","5406","5407","4940","4905","5398","5399","4906","4657","4932")
-#sczcnv <- sapply(wpids, function(k) paste0("WP",k))
-#Manually adding relevant SCZ CNV pathways from WikiPathways
-
-#keyword.wp <- "Schizophrenia"
-#getPathways.wp(keyword.wp)
-#lapply(c(Schizophrenia_wpids,sczcnv), import)
-#Importing WP pathways (both manually added and by keyword). Also adds "WikiPathways" as NodeSource column to node table
-#metadata.add(paste("WikiPathways keywords:",keyword.wp))
-#metadata.add(paste("WikiPathways manually by ID:",paste(wpids,collapse =", ")))
-#metadata.add(paste("WikiPathways queried species:",paste(queryspecies.wp,collapse = ", ")))
-#Adding the keyword and species used to filter the WikiPathways query to the metadata file
-#metadata.add("")
-
-## FILTERING NETWORK ------------------------------------------------------------------------------------------------------------------
-# createColumnFilter(filter.name="type.label",column="Type","Label","IS",apply=FALSE)
-# createColumnFilter(filter.name="type.anchor",column="Type","Anchor","IS",apply=FALSE)
-# createColumnFilter(filter.name="type.group",column="Type","Group","IS",apply=FALSE)
-# createColumnFilter(filter.name="disease.name",column="diseaseName","Schizophrenia","IS")
-# createCompositeFilter(filter.name="type.label.anchor.group",c("type.label","type.anchor","type.group","disease.name"),"ANY")
-#deleteSelectedNodes()
-  #Creating filters and deleting columns in the node table that are not relevant to the supernetwork (leftovers from import sources)
-#renameNetwork("SCZ_SNW_filtered")
-#snw_scz_filtered <- getNetworkName()
-#exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW_filtered"),"CX", network = snw_scz_filtered, overwriteFile=TRUE)
-  #Exporting the filtered supernetwork as cx file and tagging it with the time and date made to match with metadata file
-
 ## STRING --------------------------------------------------------------------------------------------------------------------------
 start_section("STRING")
 commandsRun('string stringify colDisplayName=name column=Ensembl compoundQuery=true cutoff=0.9 includeNotMapped=true  networkType="full STRING network" species="Homo sapiens" networkNoGui=current')
-# commandsRun('string expand additionalNodes=1000 network=current nodeTypes="Homo sapiens" selectivityAlpha=0.9')
-#   #STRINGifying and expanding the network with a 0.9 confidence cutoff (curated information)
-# createNodeSource("fromSTRING")
-#   #Tagging the newly added nodes as having been sourced from STRING
-# mapTableColumn("stringdb::canonical name","Human","Uniprot-TrEMBL","Ensembl",force.single=TRUE)
-#   #Mapping stringdb canonical names (Uniprot-TrEMBL identifiers) to Ensembl gene identifiers
-#   #This step generates a second Ensembl column ('Ensembl (1)') with ENSG identifiers for the STRING-imported nodes
-# renameTableColumn("Ensembl (1)","Ensembldup")
-#   #Renaming the duplicate Ensembl column for easier handling
-# renameNetwork("SCZ_SNW_filtered_STRING")
-# snw_scz_filtered_string <- getNetworkName()
-# stringified_nodetable <- paste0(nw_savepath,sprintf("%s node table.csv",snw_scz_filtered_string))
-#   #Saving the file path to the node table for easier reading
-# commandsRun(sprintf('table export options=CSV outputFile=%1$s table="%2$s default  node"',stringified_nodetable,snw_scz_filtered_string))
-#   #Exporting the node table as .csv file to the current session's "Network" folder
-# read_stringified_nodetable <- read.csv(stringified_nodetable)
-#   #saving the node table as object
-# read_stringified_nodetable$Ensembl <- ifelse(read_stringified_nodetable$Ensembl == read_stringified_nodetable$Ensembldup, as.character(read_stringified_nodetable$Ensembl),
-#                                ifelse(is.na(read_stringified_nodetable$Ensembl) | read_stringified_nodetable$Ensembl =="",as.character(read_stringified_nodetable$Ensembldup),
-#                                       ifelse(is.na(read_stringified_nodetable$Ensembldup) | read_stringified_nodetable$Ensembldup=="",as.character(read_stringified_nodetable$Ensembl),"No Match")))
-#   #As the identifier mapping from STRING ENSP to ENSG identifiers generates a second Ensembl column, they are merged into the originial Ensembl column if the contents of the cell match or either is blank
-# read_stringified_nodetable = subset(read_stringified_nodetable,select= -Ensembldup)
-#   #Removing the duplicate Ensembl column from the table
-# write.csv(read_stringified_nodetable, file=stringified_nodetable)
-#   #Overwriting the previously exported table with the version containing the merged Ensembl column
-# renameTableColumn("@id","X.id")
-#   #Renaming the '@id' column in the Cytoscape table to avoid issues when reimporting the .csv (@id is automatically converted to X.id in the CSV)
-# loadTableData(read_stringified_nodetable,data.key.column="X.id",table.key.column="X.id")
-#   #Reimporting the .csv with the merged Ensembl column to the network as to have ENSG identifiers for almost all nodes 
 mapTableColumn("Ensembl","Human","Ensembl","HGNC")
 #   #Generating a new column 'HGNC' from Ensembl identifiers - easier and less error-prone than merging various name columns from different import sources
 renameTableColumn("HGNC","Name2")
@@ -831,17 +734,18 @@ ke_freq_df_full <- merge(ke_freq_df, add_attributes,"KEtitle")
 
 aop_associated_genes_freq <- bind_rows(aop_freq_df_full,ao_freq_df_full,ke_freq_df_full)
 
-
+aop_link <- list()
 
 variables <- ls()
   #Getting a list of variables defined within the aopprocess function
-append_suffix <- function(variable, suffix) {
-  assign(paste0(variable,"_",suffix), get(variable), envir = .GlobalEnv)
-}
+#append_suffix <- function(variable, suffix) {
+  #assign(paste0(variable,"_",suffix), get(variable), envir = .GlobalEnv)
+#}
   #Defining a function to add a suffix to the variables created within the aopprocess function
 for (variable in variables) {
-  append_suffix (variable, tag)
+  aop_link[[variable]] <- get(variable)
 }
+return(aop_link)
   #Appending the given tag to every produced variable within the aopprocess function
   #Saving the resulting network
 }
@@ -849,168 +753,16 @@ for (variable in variables) {
   #the aopprocess function is used to be more flexible in defining the query file
   #as well as the suffix that is to be added so that the type of filter/query can be traced back
 
-aopprocess("AO_KE_Ensembl_query.txt","selected")
+aoplink_selected <- aopprocess("AO_KE_Ensembl_query.txt","selected")
   #Matching AOP information to risk genes in the network from selected adverse outcomes relating to neuronal development and psychiatric outcomes
-aopprocess("all_AO_KE_Ensembl_query.txt","all")
+aoplink_all <- aopprocess("all_AO_KE_Ensembl_query.txt","all")
   #Matching AOP information to risk genes in the network from all AOs available in AOP-Wiki
+
+
+
 
 end_section("AOP")
 
-
-
-
-
-
-
-
-
-# sparqlquery("AOP-Wiki","KERKEquery.txt","KERList")
-#   #Sending a query to AOP-Wiki as specified in the query file to get KERs and corresponding KEs for selected AOs
-# write.table(KERList, file=paste0(getwd(),"/Data/AOP-Wiki/KERList.tsv"),quote=FALSE,row.names=FALSE,sep="\t")
-#   #Writing to file
-# 
-# sparqlquery("AOP-Wiki","KEtitlequery.txt","KEMap")
-#   #Sending a query to AOP-Wiki to get KE and corresponding titles
-# write.table(KEMap,file=paste0(getwd(),"/Data/AOP-Wiki/KEMap.tsv"))
-#   #Writing to file
-# 
-# sparqlquery("AOP-Wiki","KEensemblquery.txt","KEEnsembl")
-#   #Sending a query to AOP-Wiki to get all KE-Ensembl ID pairings available
-# allKEsFromList <- data.frame(allKEs = c(KERList$KEup,KERList$KEdown))
-#   #Combining both up- and downregulated KEs into a single column 
-# filtered_KEEnsembl <- subset(KEEnsembl, KE %in% allKEsFromList$allKEs)
-#   #Removing KE-Ensembl rows that are not found in the selected KEs
-# write.table(filtered_KEEnsembl, file=paste0(getwd(),"/Data/AOP-Wiki/KEEnsembl_filtered.tsv"), quote=FALSE,row.names=FALSE,sep="\t" )
-#   #Writing the filtered KE-ENSG list to file for Cytoscape loading
-# 
-# commandsRun(sprintf('network import file columnTypeList="ea,s,t" file=%s firstRowAsColumnNames=true startLoadRow=1 rootNetworkList=-- Create new network collection --',paste0(getwd(),"/Data/AOP-Wiki/KERList.tsv")))
-#   #Loading selected KERs into Cytoscape as new network
-# commandsRun(sprintf('table import file dataTypeTargetForNetworkCollection="Node Table Columns" delimiters=\\t file=%s firstRowAsColumnNames=true keyColumnForMapping="shared name" keyColumnIndex=1 startLoadRow=1',paste0(getwd(),"/Data/AOP-Wiki/KEMap.tsv")))
-#   #Loading a KE mapping file generated from a second SPARQL query that fetches all KE URIs and their titles from AOPwiki into the KER network
-#   #This file also had quotation marks removed using a text editor
-# commandsRun(sprintf('network import file columnTypeList="s,t" file=%s firstRowAsColumnNames=true startLoadRow=1 rootNetworkList=-- Create new network collection --',paste0(getwd(),"/Data/AOP-Wiki/KEEnsembl_filtered.tsv")))
-#   #Loading the filtered KE-ENSG list as new network into Cytoscape
-# altmergeNetworks(sources = c('KERList.tsv','KEEnsembl_filtered.tsv'),
-#               title='KERs',
-#               operation='union'
-#               )
-#   #Merging the manually curated KERList network and the KE-ENSG list to extend the selected KEs with associated genes
-# deleteNetwork(network='KERList.tsv')
-# deleteNetwork(network='KEEnsembl_filtered.tsv')
-#   #Deleting networks used to make merged network 
-# mapTableColumn(
-#   column = 'name',
-#   species= 'Human',
-#   map.from = 'Ensembl',
-#   map.to = 'HGNC',
-#   force.single = 'true'
-# )
-# renameTableColumn('HGNC','Name2')
-# commandsRun(sprintf('table export options=CSV outputFile=%s table="KERs default node"', paste0(getwd(),"/Data/AOP-Wiki/KE_table.csv")))
-#   #Exporting the node table for manipulation via R
-# KE_table <- read.csv(paste0(getwd(),"/Data/AOP-Wiki/KE_table.csv"))
-#   #Loading the previously exported node table as R object
-# KE_table <- KE_table %>%
-#   mutate(Ensembl=ifelse(grepl("ENSG",name),name,NA))
-#   #Getting and transposing ENSG IDs from the name col to a new 'Ensembl' col to be used as key
-# KE_table <- KE_table %>%
-#   mutate(KE_URI=ifelse(!grepl("ENSG",name),name,NA))
-#   #Getting and transposing KE URIs (all rows not containing 'ENSG') from the name col to a new 'KE_URI' col
-#   #These two steps are done as the 'name' and 'shared name' columns will be difficult to work with since they mix both ENSG and other data types
-# KE_table <- KE_table %>%
-#   mutate(fromAOPwiki=1)
-#   #Adding a new column to the node table indicating that the gene nodes in the KE network are imported from AOPwiki
-# KE_table <- KE_table %>%
-#   select(-shared.name)
-#   #Loading the node table in R changes the name the 'shared name' column to 'shared.name' to avoid a space, this results in a duplicate 'shared.name' column when importing the table back to Cytoscape
-#   #For this reason, 'shared.name'/'shared name' is simply removed from the df as 'names' can also be used for mapping and contains the same information anyways
-# write.csv(KE_table, file=paste0(getwd(),"/Data/AOP-Wiki/KE_table.csv"), row.names=FALSE)
-#   #Overwriting the previously exported node table with the updated version
-# loadTableData(
-#   data = read.table(file=paste0(getwd(),"/Data/AOP-Wiki/KE_table.csv"),header=TRUE, sep =","),
-#   data.key.column = "name",
-#   table.key.column = "name"
-# )
-#   #Loading the updated node table back to the network
-# Sys.sleep(0.5)
-# altmergeNetworks(sources = c('SCZ_SNW_filtered_STRING_clustered_GO','KERs'),
-#                  title='SCZ_SNW_filtered_STRING_clustered_GO_KER',
-#                  operation='union',
-#                  nodeKeys = c('Ensembl','Ensembl')
-# )
-#   #Merging the KER network with the supernetwork based on Ensembl ID
-#   #As this is an union merge, all nodes from the KER network are introduced to the SNW, but the goal was simply to annotate existing genes in the SNW with KEs
-#   #Therefore, some filtering is needed
-# 
-# commandsRun(sprintf('table export options=CSV outputFile=%s table="SCZ_SNW_filtered_STRING_clustered_GO_KER default node"', paste0(getwd(),"/Data/AOP-Wiki/SNW_KER_node.csv")))
-# SNW_KER_node <- read.csv(paste0(getwd(),"/Data/AOP-Wiki/SNW_KER_node.csv"))
-#   #Saving the SNW node table to file and loading it as R object
-# KE_only_nodes <- SNW_KER_node %>%
-#   filter(fromAOPwiki == 1 & is.na(fromDisGeNET) & is.na(fromWikiPathways) & is.na(fromPublication) & is.na(fromSTRING)) %>%
-#   pull(Ensembl)
-#   #Getting a list of nodes that only have AOPwiki as source
-#   #This implies that these nodes were not already present in the network since they would've been merged to existing nodes that already had at least one source prior
-#   #It is not desired to add new gene nodes to the network from the KER network; gene nodes serve only as references for connecting KEs to already existing genes in the supernetwork
-# selectNodes(nodes=KE_only_nodes,
-#             by.col="Ensembl")
-# deleteSelectedNodes()
-#   #Selecting and deleting nodes based on the prior criteria
-# 
-# commandsRun(sprintf('table export options=CSV outputFile=%s table="SCZ_SNW_filtered_STRING_clustered_GO_KER default edge"', paste0(getwd(),"/Data/AOP-Wiki/SNW_KER_edge.csv")))
-# SNW_KER_edge <- read.csv(paste0(getwd(),"/Data/AOP-Wiki/SNW_KER_edge.csv"))
-#   #Exporting the SNW edge table to file and loading it as R object
-# valid_KE_ensg <- SNW_KER_edge[grepl("ENSG", SNW_KER_edge$name) & grepl("aop.events", SNW_KER_edge$name),]
-#   #Getting a list of KEs that do have interactions with genes
-# valid_KE <- str_extract(valid_KE_ensg$name, "https://identifiers.org/aop.events/\\S+")
-# valid_KE <- unique(valid_KE)
-#   #Getting the URIs of the KEs that have interactions with genes
-# bad_KE_df <- SNW_KER_edge %>%
-#   filter(
-#     grepl("aop\\.events", name, ignore.case=TRUE) &
-#       !grepl(paste(valid_KE, collapse="|"), name)
-#   )
-#   #Getting a list of the remaining KEs that are not associated with a gene or with a KE that is associated with a gene (to preserve KERs)
-# bad_KE_list <- str_extract_all(bad_KE_df$name, "https://identifiers\\.org/aop\\.events/\\d+")
-# bad_KE <- unique(unlist(bad_KE_list))
-#   #Getting a list of unique bad KEs
-# selectNodes(nodes=bad_KE, by.col="name")
-# deleteSelectedNodes()
-# 
-# sparqlquery("AOP-Wiki","AOPAOquery.txt","AOPs_AOs_for_selected_KEs")
-# write.table(AOPs_AOs_for_selected_KEs,file=paste0(getwd(),"/Data/AOP-Wiki/AOPs_AOs_for_selected_KEs.tsv"))
-# commandsRun(sprintf('network import file columnTypeList="s,ta,t,x,x" file=%s firstRowAsColumnNames=true startLoadRow=1 rootNetworkList="-- Create new network collection --" delimiters=\\t', paste0(getwd(),"/Data/AOP-Wiki/AOPs_AOs_for_selected_KEs.tsv")))
-#   #Importing a list of AOPs associated with selected KEs that have prior been imported to the SNW  
-#   #The network contains numerous duplicate edges resulting from the way the SPARQL query is formulated
-# Sys.sleep(1)
-# commandsRun('analyzer remove duplicated edges createColumn=false ignoreDirection=false network=current')
-#   #Removing duplicate edges from current network
-#   #RCy3 has a deleteDuplicateEdges function but it seems bugged since it always just removes 1 duplicate edge at a time
-#   #Using the command line function removes all duplicate edges right away and avoids having to run a filter to select duplicate edges which is much slower
-# renameNetwork("KE-AOP")
-# commandsRun(sprintf('network import file columnTypeList="x,sa,s,ta,t" file=%s firstRowAsColumnNames=true startLoadRow=1 rootNetworkList="-- Create new network collection --" delimiters=\\t',paste0(getwd(), "/Data/AOP-Wiki/AOPs_AOs_for_selected_KEs.tsv")))
-# commandsRun('analyzer remove duplicated edges createColumn=false ignoreDirection=false network=current')
-#   #Removing duplicate edges from current network
-# renameNetwork("AOP-AO")
-# altmergeNetworks(sources=c("KE-AOP","AOP-AO"),
-#                  title='KE-AOP-AO',
-#                  operation='union',
-#                  nodeKeys=c('name','name'))
-#   #Merging the AO and AOP networks 
-#   #Necessary to first import as separate networks and then merge as only one source and target col can be selected during network import
-# altmergeNetworks(sources=c('KE-AOP-AO','SCZ_SNW_filtered_STRING_clustered_GO_KER'),
-#                  title='SCZ_SNW_filtered_STRING_clustered_GO_AOP',
-#                  operation='union',
-#                  nodeKeys=c('name','name'))
-#   #Merging the AOP-AO network to the SNW-KE network to extend KEs connected to risk genes with corresponding AOPs/AOs
-# deleteNetwork(network='KE-AOP-AO')
-# deleteNetwork(network='KERs')
-# deleteNetwork(network='SCZ_SNW_filtered_STRING_clustered_GO_KER')
-# deleteNetwork(network='KE-AOP')
-# deleteNetwork(network='AOP-AO')
-#   #Deleting networks that are no longer needed, used to generate SNW-AOP network
-# SNW_AOP <- getNetworkName()
-# exportNetwork(filename=paste0(nw_savepath,SNW_AOP),"CX",network=SNW_AOP)
-#   #Exporting the SNW containing the AOP extension
 
 ##RAW SNW VISUALISATION --------------------------------------------------------------------------------------------------------------------------- 
 setCurrentNetwork(snw_scz_filtered_string_clustered_go)
@@ -1159,5 +911,242 @@ fitContent()
 exportImage(filename = paste0(getwd(),"/Visualisations/SNW_functional_analysis"),type="SVG", overwriteFile=TRUE, zoom="200")
 #Exporting the visualisation as network and as svg
 
+##DEPRECATED==========================================================================================================================================
 
+#storing code that has been replaced by other methods 
 
+#queryspecies.wp <- c("Homo sapiens","Rattus norvegicus","Mus musculus")
+#getPathways.wp <- function(i) {
+#pw <- findPathwaysByText(i)
+#pw <- pw %>%
+#dplyr::filter(species %in% queryspecies.wp)
+#Filtering by species
+# pw.ids <- paste0(i, "_wpids")
+# assign(pw.ids, as.character(pw$id),envir = .GlobalEnv)
+#Extracting WP IDs
+#}
+#Function to query WikiPathways using keyword and to extract WP IDs for the import function
+
+#import <- function(j) {
+#commandsRun(paste0('wikipathways import-as-network id=', j))
+#Pasting WikiPathways IDs into a Cytoscape command line prompt to import as networks
+#createNodeSource("WikiPathways")
+#Filling the 'WikiPathways' column with 1 to indicate the source
+#}
+#Importing pathways from WikiPathways by pathway ID
+
+# networklist.dup <- getNetworkList()
+# dup.filter <- function(input,suffix) {
+#   filtered_list <- input[substr(input, nchar(input) - 1,nchar(input))==suffix]}
+# duplicates <- dup.filter(networklist.dup,"_1") 
+#   #Getting duplicate networks (Cytoscape marks duplicate networks with a "_1" suffix to the network name)
+# delete.dupes <- function(nw) {
+#  setCurrentNetwork(nw)
+#   deleteNetwork()
+# }
+# lapply(duplicates,delete.dupes)
+#Selecting and deleting duplicate networks
+
+#wpids <- c("4875","5412","4222","4942","5408","5402","5346","5405","5406","5407","4940","4905","5398","5399","4906","4657","4932")
+#sczcnv <- sapply(wpids, function(k) paste0("WP",k))
+#Manually adding relevant SCZ CNV pathways from WikiPathways
+
+#keyword.wp <- "Schizophrenia"
+#getPathways.wp(keyword.wp)
+#lapply(c(Schizophrenia_wpids,sczcnv), import)
+#Importing WP pathways (both manually added and by keyword). Also adds "WikiPathways" as NodeSource column to node table
+#metadata.add(paste("WikiPathways keywords:",keyword.wp))
+#metadata.add(paste("WikiPathways manually by ID:",paste(wpids,collapse =", ")))
+#metadata.add(paste("WikiPathways queried species:",paste(queryspecies.wp,collapse = ", ")))
+#Adding the keyword and species used to filter the WikiPathways query to the metadata file
+#metadata.add("")
+
+# createColumnFilter(filter.name="type.label",column="Type","Label","IS",apply=FALSE)
+# createColumnFilter(filter.name="type.anchor",column="Type","Anchor","IS",apply=FALSE)
+# createColumnFilter(filter.name="type.group",column="Type","Group","IS",apply=FALSE)
+# createColumnFilter(filter.name="disease.name",column="diseaseName","Schizophrenia","IS")
+# createCompositeFilter(filter.name="type.label.anchor.group",c("type.label","type.anchor","type.group","disease.name"),"ANY")
+#deleteSelectedNodes()
+#Creating filters and deleting columns in the node table that are not relevant to the supernetwork (leftovers from import sources)
+#renameNetwork("SCZ_SNW_filtered")
+#snw_scz_filtered <- getNetworkName()
+#exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW_filtered"),"CX", network = snw_scz_filtered, overwriteFile=TRUE)
+#Exporting the filtered supernetwork as cx file and tagging it with the time and date made to match with metadata file
+
+# commandsRun('string expand additionalNodes=1000 network=current nodeTypes="Homo sapiens" selectivityAlpha=0.9')
+#   #STRINGifying and expanding the network with a 0.9 confidence cutoff (curated information)
+# createNodeSource("fromSTRING")
+#   #Tagging the newly added nodes as having been sourced from STRING
+# mapTableColumn("stringdb::canonical name","Human","Uniprot-TrEMBL","Ensembl",force.single=TRUE)
+#   #Mapping stringdb canonical names (Uniprot-TrEMBL identifiers) to Ensembl gene identifiers
+#   #This step generates a second Ensembl column ('Ensembl (1)') with ENSG identifiers for the STRING-imported nodes
+# renameTableColumn("Ensembl (1)","Ensembldup")
+#   #Renaming the duplicate Ensembl column for easier handling
+# renameNetwork("SCZ_SNW_filtered_STRING")
+# snw_scz_filtered_string <- getNetworkName()
+# stringified_nodetable <- paste0(nw_savepath,sprintf("%s node table.csv",snw_scz_filtered_string))
+#   #Saving the file path to the node table for easier reading
+# commandsRun(sprintf('table export options=CSV outputFile=%1$s table="%2$s default  node"',stringified_nodetable,snw_scz_filtered_string))
+#   #Exporting the node table as .csv file to the current session's "Network" folder
+# read_stringified_nodetable <- read.csv(stringified_nodetable)
+#   #saving the node table as object
+# read_stringified_nodetable$Ensembl <- ifelse(read_stringified_nodetable$Ensembl == read_stringified_nodetable$Ensembldup, as.character(read_stringified_nodetable$Ensembl),
+#                                ifelse(is.na(read_stringified_nodetable$Ensembl) | read_stringified_nodetable$Ensembl =="",as.character(read_stringified_nodetable$Ensembldup),
+#                                       ifelse(is.na(read_stringified_nodetable$Ensembldup) | read_stringified_nodetable$Ensembldup=="",as.character(read_stringified_nodetable$Ensembl),"No Match")))
+#   #As the identifier mapping from STRING ENSP to ENSG identifiers generates a second Ensembl column, they are merged into the originial Ensembl column if the contents of the cell match or either is blank
+# read_stringified_nodetable = subset(read_stringified_nodetable,select= -Ensembldup)
+#   #Removing the duplicate Ensembl column from the table
+# write.csv(read_stringified_nodetable, file=stringified_nodetable)
+#   #Overwriting the previously exported table with the version containing the merged Ensembl column
+# renameTableColumn("@id","X.id")
+#   #Renaming the '@id' column in the Cytoscape table to avoid issues when reimporting the .csv (@id is automatically converted to X.id in the CSV)
+# loadTableData(read_stringified_nodetable,data.key.column="X.id",table.key.column="X.id")
+#   #Reimporting the .csv with the merged Ensembl column to the network as to have ENSG identifiers for almost all nodes 
+
+# sparqlquery("AOP-Wiki","KERKEquery.txt","KERList")
+#   #Sending a query to AOP-Wiki as specified in the query file to get KERs and corresponding KEs for selected AOs
+# write.table(KERList, file=paste0(getwd(),"/Data/AOP-Wiki/KERList.tsv"),quote=FALSE,row.names=FALSE,sep="\t")
+#   #Writing to file
+# 
+# sparqlquery("AOP-Wiki","KEtitlequery.txt","KEMap")
+#   #Sending a query to AOP-Wiki to get KE and corresponding titles
+# write.table(KEMap,file=paste0(getwd(),"/Data/AOP-Wiki/KEMap.tsv"))
+#   #Writing to file
+# 
+# sparqlquery("AOP-Wiki","KEensemblquery.txt","KEEnsembl")
+#   #Sending a query to AOP-Wiki to get all KE-Ensembl ID pairings available
+# allKEsFromList <- data.frame(allKEs = c(KERList$KEup,KERList$KEdown))
+#   #Combining both up- and downregulated KEs into a single column 
+# filtered_KEEnsembl <- subset(KEEnsembl, KE %in% allKEsFromList$allKEs)
+#   #Removing KE-Ensembl rows that are not found in the selected KEs
+# write.table(filtered_KEEnsembl, file=paste0(getwd(),"/Data/AOP-Wiki/KEEnsembl_filtered.tsv"), quote=FALSE,row.names=FALSE,sep="\t" )
+#   #Writing the filtered KE-ENSG list to file for Cytoscape loading
+# 
+# commandsRun(sprintf('network import file columnTypeList="ea,s,t" file=%s firstRowAsColumnNames=true startLoadRow=1 rootNetworkList=-- Create new network collection --',paste0(getwd(),"/Data/AOP-Wiki/KERList.tsv")))
+#   #Loading selected KERs into Cytoscape as new network
+# commandsRun(sprintf('table import file dataTypeTargetForNetworkCollection="Node Table Columns" delimiters=\\t file=%s firstRowAsColumnNames=true keyColumnForMapping="shared name" keyColumnIndex=1 startLoadRow=1',paste0(getwd(),"/Data/AOP-Wiki/KEMap.tsv")))
+#   #Loading a KE mapping file generated from a second SPARQL query that fetches all KE URIs and their titles from AOPwiki into the KER network
+#   #This file also had quotation marks removed using a text editor
+# commandsRun(sprintf('network import file columnTypeList="s,t" file=%s firstRowAsColumnNames=true startLoadRow=1 rootNetworkList=-- Create new network collection --',paste0(getwd(),"/Data/AOP-Wiki/KEEnsembl_filtered.tsv")))
+#   #Loading the filtered KE-ENSG list as new network into Cytoscape
+# altmergeNetworks(sources = c('KERList.tsv','KEEnsembl_filtered.tsv'),
+#               title='KERs',
+#               operation='union'
+#               )
+#   #Merging the manually curated KERList network and the KE-ENSG list to extend the selected KEs with associated genes
+# deleteNetwork(network='KERList.tsv')
+# deleteNetwork(network='KEEnsembl_filtered.tsv')
+#   #Deleting networks used to make merged network 
+# mapTableColumn(
+#   column = 'name',
+#   species= 'Human',
+#   map.from = 'Ensembl',
+#   map.to = 'HGNC',
+#   force.single = 'true'
+# )
+# renameTableColumn('HGNC','Name2')
+# commandsRun(sprintf('table export options=CSV outputFile=%s table="KERs default node"', paste0(getwd(),"/Data/AOP-Wiki/KE_table.csv")))
+#   #Exporting the node table for manipulation via R
+# KE_table <- read.csv(paste0(getwd(),"/Data/AOP-Wiki/KE_table.csv"))
+#   #Loading the previously exported node table as R object
+# KE_table <- KE_table %>%
+#   mutate(Ensembl=ifelse(grepl("ENSG",name),name,NA))
+#   #Getting and transposing ENSG IDs from the name col to a new 'Ensembl' col to be used as key
+# KE_table <- KE_table %>%
+#   mutate(KE_URI=ifelse(!grepl("ENSG",name),name,NA))
+#   #Getting and transposing KE URIs (all rows not containing 'ENSG') from the name col to a new 'KE_URI' col
+#   #These two steps are done as the 'name' and 'shared name' columns will be difficult to work with since they mix both ENSG and other data types
+# KE_table <- KE_table %>%
+#   mutate(fromAOPwiki=1)
+#   #Adding a new column to the node table indicating that the gene nodes in the KE network are imported from AOPwiki
+# KE_table <- KE_table %>%
+#   select(-shared.name)
+#   #Loading the node table in R changes the name the 'shared name' column to 'shared.name' to avoid a space, this results in a duplicate 'shared.name' column when importing the table back to Cytoscape
+#   #For this reason, 'shared.name'/'shared name' is simply removed from the df as 'names' can also be used for mapping and contains the same information anyways
+# write.csv(KE_table, file=paste0(getwd(),"/Data/AOP-Wiki/KE_table.csv"), row.names=FALSE)
+#   #Overwriting the previously exported node table with the updated version
+# loadTableData(
+#   data = read.table(file=paste0(getwd(),"/Data/AOP-Wiki/KE_table.csv"),header=TRUE, sep =","),
+#   data.key.column = "name",
+#   table.key.column = "name"
+# )
+#   #Loading the updated node table back to the network
+# Sys.sleep(0.5)
+# altmergeNetworks(sources = c('SCZ_SNW_filtered_STRING_clustered_GO','KERs'),
+#                  title='SCZ_SNW_filtered_STRING_clustered_GO_KER',
+#                  operation='union',
+#                  nodeKeys = c('Ensembl','Ensembl')
+# )
+#   #Merging the KER network with the supernetwork based on Ensembl ID
+#   #As this is an union merge, all nodes from the KER network are introduced to the SNW, but the goal was simply to annotate existing genes in the SNW with KEs
+#   #Therefore, some filtering is needed
+# 
+# commandsRun(sprintf('table export options=CSV outputFile=%s table="SCZ_SNW_filtered_STRING_clustered_GO_KER default node"', paste0(getwd(),"/Data/AOP-Wiki/SNW_KER_node.csv")))
+# SNW_KER_node <- read.csv(paste0(getwd(),"/Data/AOP-Wiki/SNW_KER_node.csv"))
+#   #Saving the SNW node table to file and loading it as R object
+# KE_only_nodes <- SNW_KER_node %>%
+#   filter(fromAOPwiki == 1 & is.na(fromDisGeNET) & is.na(fromWikiPathways) & is.na(fromPublication) & is.na(fromSTRING)) %>%
+#   pull(Ensembl)
+#   #Getting a list of nodes that only have AOPwiki as source
+#   #This implies that these nodes were not already present in the network since they would've been merged to existing nodes that already had at least one source prior
+#   #It is not desired to add new gene nodes to the network from the KER network; gene nodes serve only as references for connecting KEs to already existing genes in the supernetwork
+# selectNodes(nodes=KE_only_nodes,
+#             by.col="Ensembl")
+# deleteSelectedNodes()
+#   #Selecting and deleting nodes based on the prior criteria
+# 
+# commandsRun(sprintf('table export options=CSV outputFile=%s table="SCZ_SNW_filtered_STRING_clustered_GO_KER default edge"', paste0(getwd(),"/Data/AOP-Wiki/SNW_KER_edge.csv")))
+# SNW_KER_edge <- read.csv(paste0(getwd(),"/Data/AOP-Wiki/SNW_KER_edge.csv"))
+#   #Exporting the SNW edge table to file and loading it as R object
+# valid_KE_ensg <- SNW_KER_edge[grepl("ENSG", SNW_KER_edge$name) & grepl("aop.events", SNW_KER_edge$name),]
+#   #Getting a list of KEs that do have interactions with genes
+# valid_KE <- str_extract(valid_KE_ensg$name, "https://identifiers.org/aop.events/\\S+")
+# valid_KE <- unique(valid_KE)
+#   #Getting the URIs of the KEs that have interactions with genes
+# bad_KE_df <- SNW_KER_edge %>%
+#   filter(
+#     grepl("aop\\.events", name, ignore.case=TRUE) &
+#       !grepl(paste(valid_KE, collapse="|"), name)
+#   )
+#   #Getting a list of the remaining KEs that are not associated with a gene or with a KE that is associated with a gene (to preserve KERs)
+# bad_KE_list <- str_extract_all(bad_KE_df$name, "https://identifiers\\.org/aop\\.events/\\d+")
+# bad_KE <- unique(unlist(bad_KE_list))
+#   #Getting a list of unique bad KEs
+# selectNodes(nodes=bad_KE, by.col="name")
+# deleteSelectedNodes()
+# 
+# sparqlquery("AOP-Wiki","AOPAOquery.txt","AOPs_AOs_for_selected_KEs")
+# write.table(AOPs_AOs_for_selected_KEs,file=paste0(getwd(),"/Data/AOP-Wiki/AOPs_AOs_for_selected_KEs.tsv"))
+# commandsRun(sprintf('network import file columnTypeList="s,ta,t,x,x" file=%s firstRowAsColumnNames=true startLoadRow=1 rootNetworkList="-- Create new network collection --" delimiters=\\t', paste0(getwd(),"/Data/AOP-Wiki/AOPs_AOs_for_selected_KEs.tsv")))
+#   #Importing a list of AOPs associated with selected KEs that have prior been imported to the SNW  
+#   #The network contains numerous duplicate edges resulting from the way the SPARQL query is formulated
+# Sys.sleep(1)
+# commandsRun('analyzer remove duplicated edges createColumn=false ignoreDirection=false network=current')
+#   #Removing duplicate edges from current network
+#   #RCy3 has a deleteDuplicateEdges function but it seems bugged since it always just removes 1 duplicate edge at a time
+#   #Using the command line function removes all duplicate edges right away and avoids having to run a filter to select duplicate edges which is much slower
+# renameNetwork("KE-AOP")
+# commandsRun(sprintf('network import file columnTypeList="x,sa,s,ta,t" file=%s firstRowAsColumnNames=true startLoadRow=1 rootNetworkList="-- Create new network collection --" delimiters=\\t',paste0(getwd(), "/Data/AOP-Wiki/AOPs_AOs_for_selected_KEs.tsv")))
+# commandsRun('analyzer remove duplicated edges createColumn=false ignoreDirection=false network=current')
+#   #Removing duplicate edges from current network
+# renameNetwork("AOP-AO")
+# altmergeNetworks(sources=c("KE-AOP","AOP-AO"),
+#                  title='KE-AOP-AO',
+#                  operation='union',
+#                  nodeKeys=c('name','name'))
+#   #Merging the AO and AOP networks 
+#   #Necessary to first import as separate networks and then merge as only one source and target col can be selected during network import
+# altmergeNetworks(sources=c('KE-AOP-AO','SCZ_SNW_filtered_STRING_clustered_GO_KER'),
+#                  title='SCZ_SNW_filtered_STRING_clustered_GO_AOP',
+#                  operation='union',
+#                  nodeKeys=c('name','name'))
+#   #Merging the AOP-AO network to the SNW-KE network to extend KEs connected to risk genes with corresponding AOPs/AOs
+# deleteNetwork(network='KE-AOP-AO')
+# deleteNetwork(network='KERs')
+# deleteNetwork(network='SCZ_SNW_filtered_STRING_clustered_GO_KER')
+# deleteNetwork(network='KE-AOP')
+# deleteNetwork(network='AOP-AO')
+#   #Deleting networks that are no longer needed, used to generate SNW-AOP network
+# SNW_AOP <- getNetworkName()
+# exportNetwork(filename=paste0(nw_savepath,SNW_AOP),"CX",network=SNW_AOP)
+#   #Exporting the SNW containing the AOP extension
