@@ -1,13 +1,13 @@
 PathwayID	PathwayTitle	Identifier	name	Ensembl	WPNodeIDType	CNVassociated	WPNodeID
 WP408	Oxidative stress response	50507	NOX4	ENSG00000086991	ncbigene	NA	50507
 WP5406	13q12.12 copy number variation	ENSG00000198947	DMD, DMD (+mutations)	ENSG00000198947	ensembl	1	ENSG00000198947
-WP5399	NPHP1 deletion syndrome	ENSG00000136068	FLNB	ENSG00000136068	ensembl	NA	ENSG00000136068
+WP5399	NPHP1 deletion syndrome	ENSG00000136068	FLNB	ENSG00000136068	ensembl	1	ENSG00000136068
 WP5408	15q25 copy number variation	ENSG00000169594	BNC1	ENSG00000169594	ensembl	1	ENSG00000169594
 WP3584	MECP2 and associated Rett syndrome	HMDB0000211	Myoinositol		hmdb	NA	HMDB0000211
 WP5412	8q11.23 (RB1CC1) copy number variation	ENSG00000139112	GABARAPL1	ENSG00000139112	ensembl	1	ENSG00000139112
 WP5406	13q12.12 copy number variation	ENSG00000134769	DTNA	ENSG00000134769	ensembl	1	ENSG00000134769
 WP5407	15q11q13 copy number variation	ENSG00000101222	SPEF1	ENSG00000101222	ensembl	1	ENSG00000101222
-WP3584, WP4222, WP4875	Disruption of postsynaptic signaling by CNV, MECP2 and associated Rett syndrome, Phosphodiesterases in neuronal function	ENSG00000070808	CAMK2A, CaMK2, CaMK2A	ENSG00000070808	ensembl	1	ENSG00000070808
+WP3584, WP4222, WP4875	Disruption of postsynaptic signaling by CNV, MECP2 and associated Rett syndrome, Phosphodiesterases in neuronal function	ENSG00000070808	CAMK2A, CaMK2, CaMK2A	ENSG00000070808	ensembl	NA	ENSG00000070808
 WP4906	3q29 copy number variation syndrome	ENSG00000161217	PCYT1A	ENSG00000161217	ensembl	1	ENSG00000161217
 WP4932	7q11.23 copy number variation syndrome	ENSG00000006704	GTF2IRD1	ENSG00000006704	ensembl	1	ENSG00000006704
 WP4932	7q11.23 copy number variation syndrome	ENSG00000176428	VPS37D	ENSG00000176428	ensembl	1	ENSG00000176428
@@ -20,7 +20,7 @@ WP3584	MECP2 and associated Rett syndrome	ENSG00000065978	YB1	ENSG00000065978	en
 WP5408	15q25 copy number variation	ENSG00000103723	AP3B2	ENSG00000103723	ensembl	1	ENSG00000103723
 WP5407	15q11q13 copy number variation	http://rdf.wikipathways.org/Pathway/WP5407_r129010/Complex/f1182	SMC5-SMC6 SUMO ligase complex		Complex	1	http://rdf.wikipathways.org/Pathway/WP5407_r129010/Complex/f1182
 WP5406, WP5412	13q12.12 copy number variation, 8q11.23 (RB1CC1) copy number variation	ENSG00000127191	TRAF2	ENSG00000127191	ensembl	1	ENSG00000127191
-WP5399	NPHP1 deletion syndrome	ENSG00000131697	NPHP4	ENSG00000131697	ensembl	NA	ENSG00000131697
+WP5399	NPHP1 deletion syndrome	ENSG00000131697	NPHP4	ENSG00000131697	ensembl	1	ENSG00000131697
 WP4905	1q21.1 copy number variation syndrome	ENSG00000121743	GJA3	ENSG00000121743	ensembl	1	ENSG00000121743
 WP5402	10q22q23 copy number variation	ENSG00000111834	RSPH4A	ENSG00000111834	ensembl	1	ENSG00000111834
 WP5405	13q12 or CRYL1 copy number variation	CHEBI:57655	3-dehydro-L-gulonate		chebi	1	CHEBI:57655
@@ -92,7 +92,7 @@ WP4906	3q29 copy number variation syndrome	ENSG00000174007	CEP19	ENSG00000174007
 WP5405	13q12 or CRYL1 copy number variation	ENSG00000165475	CRYL1	ENSG00000165475	ensembl	1	ENSG00000165475
 WP3584	MECP2 and associated Rett syndrome	ENSG00000128683	GAD1	ENSG00000128683	ensembl	NA	ENSG00000128683
 WP408	Oxidative stress response	4790	NF-kappa-B, NFKB, NFKB-p105, NFKB1, NFkB	ENSG00000109320	ncbigene	NA	4790
-WP5399	NPHP1 deletion syndrome	ENSG00000103494	RPGRIP1L	ENSG00000103494	ensembl	NA	ENSG00000103494
+WP5399	NPHP1 deletion syndrome	ENSG00000103494	RPGRIP1L	ENSG00000103494	ensembl	1	ENSG00000103494
 WP5407	15q11q13 copy number variation	Q96MF7	NSMCE2	ENSG00000156831	uniprot	1	Q96MF7
 WP5407	15q11q13 copy number variation	ENSG00000187123	LYPD6	ENSG00000187123	ensembl	1	ENSG00000187123
 WP5408	15q25 copy number variation	ENSG00000176371	ZSCAN2	ENSG00000176371	ensembl	1	ENSG00000176371
@@ -135,7 +135,7 @@ WP4657	22q11.2 copy number variation syndrome	ENSG00000070413	DGCR2	ENSG00000070
 WP408	Oxidative stress response	ENSG00000074771	NOX3	ENSG00000074771	ensembl	NA	ENSG00000074771
 WP3584	MECP2 and associated Rett syndrome	MIMAT0004514	hsa-miR-29b-1-5p		mirbase.mature	NA	MIMAT0004514
 WP3584, WP4222, WP4906, WP5398	3q29 copy number variation syndrome, MECP2 and associated Rett syndrome, NRXN1 deletion syndrome, Phosphodiesterases in neuronal function	ENSG00000155511	AMPA, GRIA1	ENSG00000155511	ensembl	1	ENSG00000155511
-WP4875	Disruption of postsynaptic signaling by CNV	ENSG00000145349	CAMK2D, CaMK2, CaMK2D	ENSG00000145349	ensembl	1	ENSG00000145349
+WP4875	Disruption of postsynaptic signaling by CNV	ENSG00000145349	CAMK2D, CaMK2, CaMK2D	ENSG00000145349	ensembl	NA	ENSG00000145349
 WP3584	MECP2 and associated Rett syndrome	MIMAT0000438	hsa-miR-152-3p		mirbase.mature	NA	MIMAT0000438
 WP5407	15q11q13 copy number variation	ENSG00000198668	CALM, CALM1, CAM, CaM, Calmodulin	ENSG00000198668	ensembl	1	ENSG00000198668
 WP4906	3q29 copy number variation syndrome	ENSG00000072274	TFR1, TFRC, TfR1 RNA	ENSG00000072274	ensembl	1	ENSG00000072274
@@ -160,7 +160,7 @@ WP4222	Phosphodiesterases in neuronal function	ENSG00000185527	PDE6G	ENSG0000018
 WP4657	22q11.2 copy number variation syndrome	WP2706	Activation of gene expression by SREBF (SREBP)		wikipathways	1	WP2706
 WP5408	15q25 copy number variation	ENSG00000118363	SPCS2	ENSG00000118363	ensembl	1	ENSG00000118363
 WP408	Oxidative stress response	2936	GSR	ENSG00000104687	ncbigene	NA	2936
-WP3584, WP5398	MECP2 and associated Rett syndrome, NRXN1 deletion syndrome	ENSG00000125675	GRIA3	ENSG00000125675	ensembl	NA	ENSG00000125675
+WP3584, WP5398	MECP2 and associated Rett syndrome, NRXN1 deletion syndrome	ENSG00000125675	GRIA3	ENSG00000125675	ensembl	1	ENSG00000125675
 WP4906	3q29 copy number variation syndrome	ENSG00000224652	LINC00885	ENSG00000224652	ensembl	1	ENSG00000224652
 WP4657	22q11.2 copy number variation syndrome	22833565	Heparin		pubchem.compound	1	22833565
 WP4906	3q29 copy number variation syndrome	CHEBI:57379	Palmitoyl-CoA, hexadecanoyl-CoA, palmitoyl-CoA(4−)		chebi	1	CHEBI:57379
@@ -215,7 +215,7 @@ WP4657	22q11.2 copy number variation syndrome	ENSG00000168505	GBX2	ENSG000001685
 WP4657	22q11.2 copy number variation syndrome	ENSG00000185608	MRPL40	ENSG00000185608	ensembl	1	ENSG00000185608
 WP4657	22q11.2 copy number variation syndrome	ENSG00000099949	LZTR1	ENSG00000099949	ensembl	1	ENSG00000099949
 WP3584	MECP2 and associated Rett syndrome	ENSG00000185591	SP1	ENSG00000185591	ensembl	NA	ENSG00000185591
-WP5398	NRXN1 deletion syndrome	ENSG00000179915	NRXN1	ENSG00000179915	ensembl	NA	ENSG00000179915
+WP5398	NRXN1 deletion syndrome	ENSG00000179915	NRXN1	ENSG00000179915	ensembl	1	ENSG00000179915
 WP3584	MECP2 and associated Rett syndrome	ENSG00000196712	NF1	ENSG00000196712	ensembl	NA	ENSG00000196712
 WP5407	15q11q13 copy number variation	ENSG00000154639	CAR CXADR, CXADR	ENSG00000154639	ensembl	1	ENSG00000154639
 WP4222	Phosphodiesterases in neuronal function	ENSG00000156973	PDE6D	ENSG00000156973	ensembl	NA	ENSG00000156973
@@ -242,7 +242,7 @@ WP5346	8p23.1 copy number variation syndrome	ENSG00000171060	C8orf74	ENSG0000017
 WP5408	15q25 copy number variation	ENSG00000197386	HTT	ENSG00000197386	ensembl	1	ENSG00000197386
 WP3584	MECP2 and associated Rett syndrome	ENSG00000171862	PTEN	ENSG00000171862	ensembl	NA	ENSG00000171862
 WP4657	22q11.2 copy number variation syndrome	WP4083	Reelin signaling pathway		wikipathways	1	WP4083
-WP4875	Disruption of postsynaptic signaling by CNV	ENSG00000170579	DLGAP1	ENSG00000170579	ensembl	1	ENSG00000170579
+WP4875	Disruption of postsynaptic signaling by CNV	ENSG00000170579	DLGAP1	ENSG00000170579	ensembl	NA	ENSG00000170579
 WP5346	8p23.1 copy number variation syndrome	CHEBI:33697	RNA, viral RNA		chebi	1	CHEBI:33697
 WP4906	3q29 copy number variation syndrome	ENSG00000232065	LINC01063	ENSG00000232065	ensembl	1	ENSG00000232065
 WP3584	MECP2 and associated Rett syndrome	MIMAT0004594	hsa-miR-132-5p, miR-132		mirbase.mature	NA	MIMAT0004594
@@ -300,14 +300,14 @@ WP4657	22q11.2 copy number variation syndrome	ENSG00000143365	RORC, RORgt, RORyt
 WP5346	8p23.1 copy number variation syndrome	ENSG00000154319	FAM167A	ENSG00000154319	ensembl	1	ENSG00000154319
 WP4905	1q21.1 copy number variation syndrome	ENSG00000163348	PYGO2	ENSG00000163348	ensembl	1	ENSG00000163348
 WP4932	7q11.23 copy number variation syndrome	ENSG00000120942	UBIAD1	ENSG00000120942	ensembl	1	ENSG00000120942
-WP4875	Disruption of postsynaptic signaling by CNV	ENSG00000197283	SYNGAP1	ENSG00000197283	ensembl	1	ENSG00000197283
+WP4875	Disruption of postsynaptic signaling by CNV	ENSG00000197283	SYNGAP1	ENSG00000197283	ensembl	NA	ENSG00000197283
 WP3584	MECP2 and associated Rett syndrome	ENSG00000106462	EZH2	ENSG00000106462	ensembl	NA	ENSG00000106462
 WP4932	7q11.23 copy number variation syndrome	ENSG00000159199	ATP5MC1	ENSG00000159199	ensembl	1	ENSG00000159199
 WP4657	22q11.2 copy number variation syndrome	WP35	G protein  signaling  pathways, G protein signaling, G protein signaling pathways, Gi Pathway, Gi/Go Pathway, Gi/Go pathway, Gq signaling pathway, Gq/G11 Pathway, Gq/G11 pathway, Gs Pathway, Gs pathway		wikipathways	1	WP35
 WP5408	15q25 copy number variation	CHEBI:61977	O-phospho-L-threonine residue		chebi	1	CHEBI:61977
 WP4657	22q11.2 copy number variation syndrome	ENSG00000099899	TRMT2A	ENSG00000099899	ensembl	1	ENSG00000099899
 WP4222, WP4875, WP5398	Disruption of postsynaptic signaling by CNV, NRXN1 deletion syndrome, Phosphodiesterases in neuronal function	ENSG00000105464	GRIN2D	ENSG00000105464	ensembl	1	ENSG00000105464
-WP4875	Disruption of postsynaptic signaling by CNV	57502	NLGN4X	ENSG00000146938	ncbigene	1	57502
+WP4875	Disruption of postsynaptic signaling by CNV	57502	NLGN4X	ENSG00000146938	ncbigene	NA	57502
 WP4222	Phosphodiesterases in neuronal function	HMDB0001847	Caffeine, caffeine		hmdb	NA	HMDB0001847
 WP5402	10q22q23 copy number variation	ENSG00000118007	STAG1	ENSG00000118007	ensembl	1	ENSG00000118007
 WP408	Oxidative stress response	ENSG00000165168	CYBB, NOX2	ENSG00000165168	ensembl	NA	ENSG00000165168
@@ -330,7 +330,7 @@ WP4906	3q29 copy number variation syndrome	ENSG00000091513	TF, foetal TF	ENSG000
 WP4657	22q11.2 copy number variation syndrome	WP3561	tRNA modification in the  nucleus and cytosol		wikipathways	1	WP3561
 WP4906, WP5346, WP5402	10q22q23 copy number variation, 3q29 copy number variation syndrome, 8p23.1 copy number variation syndrome	CHEBI:33019	6 PP, 7 PP, Diphosphate, Diphosphate(3−), diphosphate(3−), pyro- phosphate		chebi	1	CHEBI:33019
 WP4657	22q11.2 copy number variation syndrome	ENSG00000241973	PI4KA	ENSG00000241973	ensembl	1	ENSG00000241973
-WP4875	Disruption of postsynaptic signaling by CNV	9378	NRXN1	ENSG00000179915	ncbigene	1	9378
+WP4875	Disruption of postsynaptic signaling by CNV	9378	NRXN1	ENSG00000179915	ncbigene	NA	9378
 WP5407	15q11q13 copy number variation	Q8IX21	SLF2	ENSG00000119906	uniprot	1	Q8IX21
 WP4932	7q11.23 copy number variation syndrome	ENSG00000105953	OGDH	ENSG00000105953	ensembl	1	ENSG00000105953
 WP5346	8p23.1 copy number variation syndrome	ENSG00000144381	HSPD1	ENSG00000144381	ensembl	1	ENSG00000144381
@@ -352,7 +352,7 @@ WP4932	7q11.23 copy number variation syndrome	ENSG00000037965	HOXC8	ENSG00000037
 WP4657	22q11.2 copy number variation syndrome	ENSG00000135903	PAX3	ENSG00000135903	ensembl	1	ENSG00000135903
 WP5407	15q11q13 copy number variation	ENSG00000127022	CANX	ENSG00000127022	ensembl	1	ENSG00000127022
 WP4932	7q11.23 copy number variation syndrome	WP3965	Fatty Acid  Synthesis, Lipid Metabolism Pathway, Lipogenesis, Lipolysis		wikipathways	1	WP3965
-WP5399	NPHP1 deletion syndrome	ENSG00000196924	FLNA	ENSG00000196924	ensembl	NA	ENSG00000196924
+WP5399	NPHP1 deletion syndrome	ENSG00000196924	FLNA	ENSG00000196924	ensembl	1	ENSG00000196924
 WP4657	22q11.2 copy number variation syndrome	ENSG00000203618	GP1BB	ENSG00000203618	ensembl	1	ENSG00000203618
 WP5408	15q25 copy number variation	ENSG00000156218	ADAMTSL3	ENSG00000156218	ensembl	1	ENSG00000156218
 WP4906	3q29 copy number variation syndrome	ENSG00000126870	WDR60	ENSG00000126870	ensembl	1	ENSG00000126870
@@ -365,10 +365,10 @@ WP4942, WP5407	15q11q13 copy number variation, 15q13.3 copy number variation syn
 WP4932	7q11.23 copy number variation syndrome	ENSG00000166147	FBN1	ENSG00000166147	ensembl	1	ENSG00000166147
 WP5346	8p23.1 copy number variation syndrome	WP4725	Sphingolipid  metabolism, Sphingolipid metabolism, Sphingolipid metabolism overview (Homo sapiens)		wikipathways	1	WP4725
 WP4657	22q11.2 copy number variation syndrome	WP272	Blood Clotting  Cascade, Blood clotting  cascade, Blood clotting cascade		wikipathways	1	WP272
-WP5398	NRXN1 deletion syndrome	ENSG00000132535	DLG4, PSD95	ENSG00000132535	ensembl	NA	ENSG00000132535
+WP5398	NRXN1 deletion syndrome	ENSG00000132535	DLG4, PSD95	ENSG00000132535	ensembl	1	ENSG00000132535
 WP5405	13q12 or CRYL1 copy number variation	CHEBI:16908	NADH		chebi	1	CHEBI:16908
 WP5402	10q22q23 copy number variation	ENSG00000145491	ROPN1L	ENSG00000145491	ensembl	1	ENSG00000145491
-WP5398	NRXN1 deletion syndrome	ENSG00000146938	NLGN4X	ENSG00000146938	ensembl	NA	ENSG00000146938
+WP5398	NRXN1 deletion syndrome	ENSG00000146938	NLGN4X	ENSG00000146938	ensembl	1	ENSG00000146938
 WP5406	13q12.12 copy number variation	ENSG00000163069	SGCB	ENSG00000163069	ensembl	1	ENSG00000163069
 WP5346	8p23.1 copy number variation syndrome	ENSG00000143226	FCGR2A	ENSG00000143226	ensembl	1	ENSG00000143226
 WP4222	Phosphodiesterases in neuronal function	ENSG00000131771	DARPP-32, PPP1R1B	ENSG00000131771	ensembl	NA	ENSG00000131771
@@ -404,7 +404,7 @@ WP4940	15q11.2 copy number variation syndrome	ENSG00000130640	TUBGCP2	ENSG000001
 WP4657	22q11.2 copy number variation syndrome	ENSG00000111875	ASF1A	ENSG00000111875	ensembl	1	ENSG00000111875
 WP5346	8p23.1 copy number variation syndrome	ENSG00000173281	PPP1R3B	ENSG00000173281	ensembl	1	ENSG00000173281
 WP4657	22q11.2 copy number variation syndrome	ENSG00000181222	POLR2A	ENSG00000181222	ensembl	1	ENSG00000181222
-WP4875	Disruption of postsynaptic signaling by CNV	ENSG00000058404	CAMK2B, CaMK2B	ENSG00000058404	ensembl	1	ENSG00000058404
+WP4875	Disruption of postsynaptic signaling by CNV	ENSG00000058404	CAMK2B, CaMK2B	ENSG00000058404	ensembl	NA	ENSG00000058404
 WP4905	1q21.1 copy number variation syndrome	ENSG00000272443	OR13Z2P	ENSG00000272443	ensembl	1	ENSG00000272443
 WP5407	15q11q13 copy number variation	HMDB0000895	ACh, Acetylcholine		hmdb	1	HMDB0000895
 WP4657	22q11.2 copy number variation syndrome	ENSG00000077782	FGFR1, FGFR1c	ENSG00000077782	ensembl	1	ENSG00000077782
@@ -416,7 +416,7 @@ WP5408	15q25 copy number variation	ENSG00000140612	SEC11A	ENSG00000140612	ensemb
 WP3584	MECP2 and associated Rett syndrome	ENSG00000186895	FGF3	ENSG00000186895	ensembl	NA	ENSG00000186895
 WP3584	MECP2 and associated Rett syndrome	MIMAT0000092	hsa-miR-92a-3p		mirbase.mature	NA	MIMAT0000092
 WP4942, WP5407	15q11q13 copy number variation, 15q13.3 copy number variation syndrome	ENSG00000134160	TRPM1	ENSG00000134160	ensembl	1	ENSG00000134160
-WP5399	NPHP1 deletion syndrome	ENSG00000144061	NPHP1	ENSG00000144061	ensembl	NA	ENSG00000144061
+WP5399	NPHP1 deletion syndrome	ENSG00000144061	NPHP1	ENSG00000144061	ensembl	1	ENSG00000144061
 WP5346	8p23.1 copy number variation syndrome	ENSG00000197747	S100A10	ENSG00000197747	ensembl	1	ENSG00000197747
 WP4222	Phosphodiesterases in neuronal function	HMDB0001397	GMP, Guanosine monophosphate		hmdb	NA	HMDB0001397
 WP4906	3q29 copy number variation syndrome	ENSG00000079974	RABL2B	ENSG00000079974	ensembl	1	ENSG00000079974
@@ -428,7 +428,7 @@ WP5346	8p23.1 copy number variation syndrome	WP400	RAS-MAPK  pathway, p38 MAPK, 
 WP4657	22q11.2 copy number variation syndrome	ENSG00000100075	SLC25A1	ENSG00000100075	ensembl	1	ENSG00000100075
 WP4657	22q11.2 copy number variation syndrome	ENSG00000233471	KRT18P62	ENSG00000233471	ensembl	1	ENSG00000233471
 WP4906	3q29 copy number variation syndrome	ENSG00000138449	SLC40A1	ENSG00000138449	ensembl	1	ENSG00000138449
-WP5398	NRXN1 deletion syndrome	ENSG00000120251	GRIA2	ENSG00000120251	ensembl	NA	ENSG00000120251
+WP5398	NRXN1 deletion syndrome	ENSG00000120251	GRIA2	ENSG00000120251	ensembl	1	ENSG00000120251
 WP4906	3q29 copy number variation syndrome	ENSG00000185485	SDHAP1	ENSG00000185485	ensembl	1	ENSG00000185485
 WP4932	7q11.23 copy number variation syndrome	ENSG00000241709	RN7SL265P	ENSG00000241709	ensembl	1	ENSG00000241709
 WP4932	7q11.23 copy number variation syndrome	ENSG00000206709	RNU6-1080P	ENSG00000206709	ensembl	1	ENSG00000206709
@@ -474,7 +474,7 @@ WP4657	22q11.2 copy number variation syndrome	ENSG00000093009	CDC45	ENSG00000093
 WP4906	3q29 copy number variation syndrome	WP1887	Post-translational modification:  synthesis of GPI-anchored proteins		wikipathways	1	WP1887
 WP4657	22q11.2 copy number variation syndrome	ENSG00000107796	ACTA2	ENSG00000107796	ensembl	1	ENSG00000107796
 WP4657	22q11.2 copy number variation syndrome	ENSG00000126467	TSKS	ENSG00000126467	ensembl	1	ENSG00000126467
-WP4875	Disruption of postsynaptic signaling by CNV	9369	NRXN3	ENSG00000021645	ncbigene	1	9369
+WP4875	Disruption of postsynaptic signaling by CNV	9369	NRXN3	ENSG00000021645	ncbigene	NA	9369
 WP5406	13q12.12 copy number variation	CHEBI:17552	GDP, GDP [cytosol], GDP [plasma membrane]		chebi	1	CHEBI:17552
 WP408	Oxidative stress response	1432	MAPK14, p38, p38 MAPK, p38MAPK	ENSG00000112062	ncbigene	NA	1432
 WP4905	1q21.1 copy number variation syndrome	ENSG00000162836	ACP6	ENSG00000162836	ensembl	1	ENSG00000162836
@@ -496,14 +496,14 @@ WP4657	22q11.2 copy number variation syndrome	ENSG00000184702	SEPTIN5	ENSG000001
 WP3584	MECP2 and associated Rett syndrome	MIMAT0000088	hsa-miR-30a-3p		mirbase.mature	NA	MIMAT0000088
 WP4932	7q11.23 copy number variation syndrome	CHEBI:16680	2 * SAH, AdoHcy, S-Adenosylhomocysteine, S-adenosyl-L-homocysteine, SAH		chebi	1	CHEBI:16680
 WP4875, WP4905, WP5407	15q11q13 copy number variation, 1q21.1 copy number variation syndrome, Disruption of postsynaptic signaling by CNV	ENSG00000104067	TJP1	ENSG00000104067	ensembl	1	ENSG00000104067
-WP4875	Disruption of postsynaptic signaling by CNV	ENSG00000148660	CAMK2G, CaMK2G	ENSG00000148660	ensembl	1	ENSG00000148660
+WP4875	Disruption of postsynaptic signaling by CNV	ENSG00000148660	CAMK2G, CaMK2G	ENSG00000148660	ensembl	NA	ENSG00000148660
 WP4222	Phosphodiesterases in neuronal function	ENSG00000152402	GUCY1A2	ENSG00000152402	ensembl	NA	ENSG00000152402
 WP4222	Phosphodiesterases in neuronal function	ENSG00000121281	ADCY7	ENSG00000121281	ensembl	NA	ENSG00000121281
 WP4932	7q11.23 copy number variation syndrome	ENSG00000157168	NRG1	ENSG00000157168	ensembl	1	ENSG00000157168
 WP5346, WP5402	10q22q23 copy number variation, 8p23.1 copy number variation syndrome	CHEBI:15378	2 H+, 2H+, H, H+, H+ [extracellular region], Hydrogen		chebi	1	CHEBI:15378
 WP4942, WP5407	15q11q13 copy number variation, 15q13.3 copy number variation syndrome	ENSG00000261794	GOLGA8H	ENSG00000261794	ensembl	1	ENSG00000261794
 WP5408	15q25 copy number variation	ENSG00000156222	SLC28A1	ENSG00000156222	ensembl	1	ENSG00000156222
-WP4875	Disruption of postsynaptic signaling by CNV	ENSG00000152413	HOMER, HOMER1	ENSG00000152413	ensembl	1	ENSG00000152413
+WP4875	Disruption of postsynaptic signaling by CNV	ENSG00000152413	HOMER, HOMER1	ENSG00000152413	ensembl	NA	ENSG00000152413
 WP4222	Phosphodiesterases in neuronal function	ENSG00000078295	ADCY2	ENSG00000078295	ensembl	NA	ENSG00000078295
 WP4932	7q11.23 copy number variation syndrome	ENSG00000126803	HSPA2	ENSG00000126803	ensembl	1	ENSG00000126803
 WP4905	1q21.1 copy number variation syndrome	ENSG00000158769	F11R	ENSG00000158769	ensembl	1	ENSG00000158769
@@ -543,7 +543,7 @@ WP4940	15q11.2 copy number variation syndrome	ENSG00000137822	TUBGCP4	ENSG000001
 WP3584	MECP2 and associated Rett syndrome	ENSG00000198793	MTOR, mTOR, mTORC1	ENSG00000198793	ensembl	NA	ENSG00000198793
 WP5346	8p23.1 copy number variation syndrome	ENSG00000137462	TLR2	ENSG00000137462	ensembl	1	ENSG00000137462
 WP4932	7q11.23 copy number variation syndrome	ENSG00000106635	BCL7B	ENSG00000106635	ensembl	1	ENSG00000106635
-WP4875	Disruption of postsynaptic signaling by CNV	ENSG00000089169	RPH3A	ENSG00000089169	ensembl	1	ENSG00000089169
+WP4875	Disruption of postsynaptic signaling by CNV	ENSG00000089169	RPH3A	ENSG00000089169	ensembl	NA	ENSG00000089169
 WP4942	15q13.3 copy number variation syndrome	ENSG00000285077	ARHGAP11B	ENSG00000285077	ensembl	1	ENSG00000285077
 WP4657	22q11.2 copy number variation syndrome	HMDB0006285	4-oxo-Retinoic acid		hmdb	1	HMDB0006285
 WP4657	22q11.2 copy number variation syndrome	ENSG00000132341	RAN	ENSG00000132341	ensembl	1	ENSG00000132341
@@ -561,7 +561,7 @@ WP4657	22q11.2 copy number variation syndrome	CHEBI:15893	1-pyrroline-5-carboxyl
 WP4657	22q11.2 copy number variation syndrome	CHEBI:33568	Epinephrine		chebi	1	CHEBI:33568
 WP4657, WP4932	22q11.2 copy number variation syndrome, 7q11.23 copy number variation syndrome	ENSG00000165215	CLDN3	ENSG00000165215	ensembl	1	ENSG00000165215
 WP5346	8p23.1 copy number variation syndrome	ENSG00000154328	NEIL2	ENSG00000154328	ensembl	1	ENSG00000154328
-WP4875	Disruption of postsynaptic signaling by CNV	5595	ERK1, MAPK3, MAPKKK	ENSG00000102882	ncbigene	1	5595
+WP4875	Disruption of postsynaptic signaling by CNV	5595	ERK1, MAPK3, MAPKKK	ENSG00000102882	ncbigene	NA	5595
 WP4906	3q29 copy number variation syndrome	ENSG00000165806	CASP7	ENSG00000165806	ensembl	1	ENSG00000165806
 WP5346	8p23.1 copy number variation syndrome	ENSG00000102043	MTMR8	ENSG00000102043	ensembl	1	ENSG00000102043
 WP4932	7q11.23 copy number variation syndrome	ENSG00000196591	HDAC2	ENSG00000196591	ensembl	1	ENSG00000196591
@@ -634,7 +634,7 @@ WP4657	22q11.2 copy number variation syndrome	WP558	Blood coagulation, Coagulati
 WP3584	MECP2 and associated Rett syndrome	MIMAT0000421	hsa-miR-122-5p		mirbase.mature	NA	MIMAT0000421
 WP5407	15q11q13 copy number variation	CHEBI:49786	Ni2+		chebi	1	CHEBI:49786
 WP3584	MECP2 and associated Rett syndrome	ENSG00000078328	RBFOX1	ENSG00000078328	ensembl	NA	ENSG00000078328
-WP4875	Disruption of postsynaptic signaling by CNV	ENSG00000198576	ARC	ENSG00000198576	ensembl	1	ENSG00000198576
+WP4875	Disruption of postsynaptic signaling by CNV	ENSG00000198576	ARC	ENSG00000198576	ensembl	NA	ENSG00000198576
 WP4906	3q29 copy number variation syndrome	ENSG00000143315	PIGM	ENSG00000143315	ensembl	1	ENSG00000143315
 WP3584	MECP2 and associated Rett syndrome	MIMAT0000227	hsa-miR-197-3p		mirbase.mature	NA	MIMAT0000227
 WP4942, WP5407	15q11q13 copy number variation, 15q13.3 copy number variation syndrome	ENSG00000144554	FANCD2	ENSG00000144554	ensembl	1	ENSG00000144554
@@ -659,7 +659,7 @@ WP5346	8p23.1 copy number variation syndrome	ENSG00000164733	CTSB	ENSG0000016473
 WP4657	22q11.2 copy number variation syndrome	WP3310	Mitochondrial translation		wikipathways	1	WP3310
 WP3584	MECP2 and associated Rett syndrome	MIMAT0004614	hsa-miR-193a-5p		mirbase.mature	NA	MIMAT0004614
 WP3584, WP5402	10q22q23 copy number variation, MECP2 and associated Rett syndrome	ENSG00000108055	SMC3	ENSG00000108055	ensembl	1	ENSG00000108055
-WP4875	Disruption of postsynaptic signaling by CNV	5594	ERK2, MAPK, MAPK1, MAPK2	ENSG00000100030	ncbigene	1	5594
+WP4875	Disruption of postsynaptic signaling by CNV	5594	ERK2, MAPK, MAPK1, MAPK2	ENSG00000100030	ncbigene	NA	5594
 WP4905, WP4932, WP5346	1q21.1 copy number variation syndrome, 7q11.23 copy number variation syndrome, 8p23.1 copy number variation syndrome	ENSG00000168036	B-Catenin, CTNNB1	ENSG00000168036	ensembl	1	ENSG00000168036
 WP5408	15q25 copy number variation	ENSG00000114902	SPCS1	ENSG00000114902	ensembl	1	ENSG00000114902
 WP4657	22q11.2 copy number variation syndrome	WP411	mRNA Processing, mRNA processing Major splicing pathway		wikipathways	1	WP411
@@ -737,7 +737,7 @@ WP5408	15q25 copy number variation	ENSG00000138798	EGF	ENSG00000138798	ensembl	1
 WP4932	7q11.23 copy number variation syndrome	O00159	MYO1C	ENSG00000197879	uniprot	1	O00159
 WP4905	1q21.1 copy number variation syndrome	ENSG00000131781	FMO5	ENSG00000131781	ensembl	1	ENSG00000131781
 WP4906	3q29 copy number variation syndrome	ENSG00000119333	WDR34	ENSG00000119333	ensembl	1	ENSG00000119333
-WP3584, WP5398	MECP2 and associated Rett syndrome, NRXN1 deletion syndrome	ENSG00000152578	GRIA4	ENSG00000152578	ensembl	NA	ENSG00000152578
+WP3584, WP5398	MECP2 and associated Rett syndrome, NRXN1 deletion syndrome	ENSG00000152578	GRIA4	ENSG00000152578	ensembl	1	ENSG00000152578
 WP4222	Phosphodiesterases in neuronal function	ENSG00000129467	ADCY4	ENSG00000129467	ensembl	NA	ENSG00000129467
 WP4932, WP4942	15q13.3 copy number variation syndrome, 7q11.23 copy number variation syndrome	CHEBI:15355	ACh, AcCho, Acetylcholine, O-acetylcholine [clathrin-sculpted acetylcholine transport vesicle lumen]		chebi	1	CHEBI:15355
 WP4222	Phosphodiesterases in neuronal function	CHEBI:37565	GTP, GTP(4 - )		chebi	NA	CHEBI:37565
@@ -811,7 +811,7 @@ WP4942	15q13.3 copy number variation syndrome	ENSG00000103832	GOLGA8UP	ENSG00000
 WP4932	7q11.23 copy number variation syndrome	P16104	Gamma H2AX, H2AX, Histone H2AX	ENSG00000188486	uniprot	1	P16104
 WP5346	8p23.1 copy number variation syndrome	ENSG00000072694	FCGR2B	ENSG00000072694	ensembl	1	ENSG00000072694
 WP4657	22q11.2 copy number variation syndrome	ENSG00000159423	ALDH4A1	ENSG00000159423	ensembl	1	ENSG00000159423
-WP5398	NRXN1 deletion syndrome	ENSG00000116032	GRIN3B	ENSG00000116032	ensembl	NA	ENSG00000116032
+WP5398	NRXN1 deletion syndrome	ENSG00000116032	GRIN3B	ENSG00000116032	ensembl	1	ENSG00000116032
 WP4657	22q11.2 copy number variation syndrome	ENSG00000206203	TSSK2	ENSG00000206203	ensembl	1	ENSG00000206203
 WP3584	MECP2 and associated Rett syndrome	ENSG00000075388	FGF4	ENSG00000075388	ensembl	NA	ENSG00000075388
 WP3584	MECP2 and associated Rett syndrome	ENSG00000118515	SGK1	ENSG00000118515	ensembl	NA	ENSG00000118515
@@ -833,7 +833,7 @@ WP5407	15q11q13 copy number variation	ENSG00000179938	GOLGA8J	ENSG00000179938	en
 WP4906, WP4932	3q29 copy number variation syndrome, 7q11.23 copy number variation syndrome	ENSG00000136997	C-MYC, MYC, c-MYC, c-Myc	ENSG00000136997	ensembl	1	ENSG00000136997
 WP5406	13q12.12 copy number variation	ENSG00000240654	C1QTNF9	ENSG00000240654	ensembl	1	ENSG00000240654
 WP4657	22q11.2 copy number variation syndrome	ENSG00000187553	CYP26C1	ENSG00000187553	ensembl	1	ENSG00000187553
-WP4875	Disruption of postsynaptic signaling by CNV	ENSG00000170027	YWHAG	ENSG00000170027	ensembl	1	ENSG00000170027
+WP4875	Disruption of postsynaptic signaling by CNV	ENSG00000170027	YWHAG	ENSG00000170027	ensembl	NA	ENSG00000170027
 WP4905	1q21.1 copy number variation syndrome	ENSG00000236806	RPL7AP15	ENSG00000236806	ensembl	1	ENSG00000236806
 WP408	Oxidative stress response	ENSG00000116044	NFE2L2	ENSG00000116044	ensembl	NA	ENSG00000116044
 WP4657	22q11.2 copy number variation syndrome	ENSG00000237517	DGCR5, LINC00037	ENSG00000237517	ensembl	1	ENSG00000237517
@@ -852,7 +852,7 @@ WP5402	10q22q23 copy number variation	CHEBI:29103	K+, Potassium, potassium		cheb
 WP4657	22q11.2 copy number variation syndrome	HMDB0000214	Ornithine		hmdb	1	HMDB0000214
 WP408	Oxidative stress response	2953	GSTT2	ENSG00000099984	ncbigene	NA	2953
 WP5408	15q25 copy number variation	ENSG00000177082	WDR73	ENSG00000177082	ensembl	1	ENSG00000177082
-WP4875	Disruption of postsynaptic signaling by CNV	ENSG00000150672	DLG2	ENSG00000150672	ensembl	1	ENSG00000150672
+WP4875	Disruption of postsynaptic signaling by CNV	ENSG00000150672	DLG2	ENSG00000150672	ensembl	NA	ENSG00000150672
 WP4222	Phosphodiesterases in neuronal function	WP5294	Sildenafil treatment		wikipathways	NA	WP5294
 WP4657	22q11.2 copy number variation syndrome	ENSG00000255156	RNY1P9	ENSG00000255156	ensembl	1	ENSG00000255156
 WP5346	8p23.1 copy number variation syndrome	ENSG00000137497	NUMA1	ENSG00000137497	ensembl	1	ENSG00000137497
@@ -1019,7 +1019,7 @@ WP4932	7q11.23 copy number variation syndrome	ENSG00000225969	ABHD11-AS1	ENSG000
 WP5346	8p23.1 copy number variation syndrome	ENSG00000136573	BLK	ENSG00000136573	ensembl	1	ENSG00000136573
 WP5408	15q25 copy number variation	ENSG00000136383	ALPK3	ENSG00000136383	ensembl	1	ENSG00000136383
 WP4942	15q13.3 copy number variation syndrome	ENSG00000277031	RN7SL796P	ENSG00000277031	ensembl	1	ENSG00000277031
-WP4875	Disruption of postsynaptic signaling by CNV	9379	NRXN2	ENSG00000110076	ncbigene	1	9379
+WP4875	Disruption of postsynaptic signaling by CNV	9379	NRXN2	ENSG00000110076	ncbigene	NA	9379
 WP3584	MECP2 and associated Rett syndrome	MIMAT0004561	hsa-miR-187-5p		mirbase.mature	NA	MIMAT0004561
 WP5402	10q22q23 copy number variation	ENSG00000185737	NRG3	ENSG00000185737	ensembl	1	ENSG00000185737
 WP4940, WP5346, WP5402, WP5407	10q22q23 copy number variation, 15q11.2 copy number variation syndrome, 15q11q13 copy number variation, 8p23.1 copy number variation syndrome	CHEBI:18420	MG2+, Magnesium 2+, Mg(2+), Mg2+, Mg2+ [Golgi membrane], Mg2+ [plasma membrane]		chebi	1	CHEBI:18420
@@ -1029,7 +1029,7 @@ WP3584	MECP2 and associated Rett syndrome	MIMAT0000454	hsa-miR-184		mirbase.matu
 WP3584	MECP2 and associated Rett syndrome	ENSG00000176165	FOXG1	ENSG00000176165	ensembl	NA	ENSG00000176165
 WP4906	3q29 copy number variation syndrome	ENSG00000119227	PIGZ	ENSG00000119227	ensembl	1	ENSG00000119227
 WP4905	1q21.1 copy number variation syndrome	CHEBI:16269	N,N-dimethylaniline		chebi	1	CHEBI:16269
-WP5399	NPHP1 deletion syndrome	ENSG00000050820	BCAR1	ENSG00000050820	ensembl	NA	ENSG00000050820
+WP5399	NPHP1 deletion syndrome	ENSG00000050820	BCAR1	ENSG00000050820	ensembl	1	ENSG00000050820
 WP4657	22q11.2 copy number variation syndrome	ENSG00000183597	TANGO2	ENSG00000183597	ensembl	1	ENSG00000183597
 WP4657, WP4932	22q11.2 copy number variation syndrome, 7q11.23 copy number variation syndrome	CHEBI:18357	L-noradrenaline, NAd, NAd [clathrin-sculpted glutamate transport vesicle lumen], Norepinephrine		chebi	1	CHEBI:18357
 WP3584	MECP2 and associated Rett syndrome	MIMAT0000263	hsa-miR-199b-5p		mirbase.mature	NA	MIMAT0000263
@@ -1047,7 +1047,7 @@ WP4905	1q21.1 copy number variation syndrome	ENSG00000277762	RN7SL261P	ENSG00000
 WP4906	3q29 copy number variation syndrome	ENSG00000109670	FBXW7	ENSG00000109670	ensembl	1	ENSG00000109670
 WP4932	7q11.23 copy number variation syndrome	ENSG00000163520	FBLN2	ENSG00000163520	ensembl	1	ENSG00000163520
 WP4906	3q29 copy number variation syndrome	ENSG00000138036	DYNC2LI1	ENSG00000138036	ensembl	1	ENSG00000138036
-WP5398	NRXN1 deletion syndrome	MI0000279	hsa-mir-196a-2	ENSG00000207924	mirbase	NA	MI0000279
+WP5398	NRXN1 deletion syndrome	MI0000279	hsa-mir-196a-2	ENSG00000207924	mirbase	1	MI0000279
 WP4875, WP5408	15q25 copy number variation, Disruption of postsynaptic signaling by CNV	ENSG00000152822	GRM1	ENSG00000152822	ensembl	1	ENSG00000152822
 WP5346	8p23.1 copy number variation syndrome	ENSG00000152595	MEPE	ENSG00000152595	ensembl	1	ENSG00000152595
 WP4657	22q11.2 copy number variation syndrome	ENSG00000094916	CBX5	ENSG00000094916	ensembl	1	ENSG00000094916
@@ -1069,7 +1069,7 @@ WP5402	10q22q23 copy number variation	ENSG00000107779	BMPR1, BMPR1A	ENSG00000107
 WP3584	MECP2 and associated Rett syndrome	ENSG00000114790	ARHGEF26	ENSG00000114790	ensembl	NA	ENSG00000114790
 WP4932	7q11.23 copy number variation syndrome	ENSG00000071462	BUD23	ENSG00000071462	ensembl	1	ENSG00000071462
 WP3584	MECP2 and associated Rett syndrome	ENSG00000173786	CNP	ENSG00000173786	ensembl	NA	ENSG00000173786
-WP5399	NPHP1 deletion syndrome	ENSG00000119509	INVS	ENSG00000119509	ensembl	NA	ENSG00000119509
+WP5399	NPHP1 deletion syndrome	ENSG00000119509	INVS	ENSG00000119509	ensembl	1	ENSG00000119509
 WP5402	10q22q23 copy number variation	ENSG00000122375	OPN4	ENSG00000122375	ensembl	1	ENSG00000122375
 WP4932, WP5346	7q11.23 copy number variation syndrome, 8p23.1 copy number variation syndrome	CHEBI:82620	L-tyrosine-O-phosphate(2−) residue, O-phospho-L-tyrosyl-[protein]		chebi	1	CHEBI:82620
 WP5399, WP5412	8q11.23 (RB1CC1) copy number variation, NPHP1 deletion syndrome	ENSG00000120899	PTK2B	ENSG00000120899	ensembl	1	ENSG00000120899
@@ -1096,7 +1096,7 @@ WP4932	7q11.23 copy number variation syndrome	ENSG00000143627	PKLR	ENSG000001436
 WP4905	1q21.1 copy number variation syndrome	ENSG00000181929	PRKAG1	ENSG00000181929	ensembl	1	ENSG00000181929
 WP4932	7q11.23 copy number variation syndrome	ESCRT-I	ESCRT-I complex	ESCRT-I	ensembl	1	ESCRT-I
 WP4657	22q11.2 copy number variation syndrome	ENSG00000238125	SLC9A3P2	ENSG00000238125	ensembl	1	ENSG00000238125
-WP5398	NRXN1 deletion syndrome	ENSG00000198785	GRIN3A	ENSG00000198785	ensembl	NA	ENSG00000198785
+WP5398	NRXN1 deletion syndrome	ENSG00000198785	GRIN3A	ENSG00000198785	ensembl	1	ENSG00000198785
 WP5402	10q22q23 copy number variation	ENSG00000148671	ADIRF	ENSG00000148671	ensembl	1	ENSG00000148671
 WP4942	15q13.3 copy number variation syndrome	ENSG00000113262	GRM6	ENSG00000113262	ensembl	1	ENSG00000113262
 WP5402	10q22q23 copy number variation	http://rdf.wikipathways.org/Pathway/WP5402_r129008/Complex/fd6d0	Shieldin complex		Complex	1	http://rdf.wikipathways.org/Pathway/WP5402_r129008/Complex/fd6d0
