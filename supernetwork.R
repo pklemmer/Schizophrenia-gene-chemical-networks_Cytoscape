@@ -691,11 +691,11 @@ separate_keensgpairs <- separate_rows(keensgpairs,Ensembl,sep="; ")
 keensgpairs_byensg <- separate_keensgpairs %>%
   group_by(Ensembl) %>%
   summarise(KEid = paste(KEid, collapse="; "),
-            KEtitle = paste(KEtitle, collapse="; "),
+            KE_title = paste(KEtitle, collapse="; "),
             AOid = paste(AOid, collapse="; "),
-            AOtitle = paste(AOtitle, collapse = "; "),
+            AO_title = paste(AOtitle, collapse = "; "),
             AOPid = paste(AOPid, collapse="; "),
-            AOPtitle =paste(AOPtitle, collapse="; "))
+            AOP_title =paste(AOPtitle, collapse="; "))
   #Concateinating other variables based on unique Ensembl ID to get list of associated KEs, AOs, and AOPs per gene
 keensgpairs_byensg_save <- paste0(getwd(),sprintf("/Data/AOP-Wiki/keensgpairs_byensg_%s.tsv",tag))
   #Defining savepath for newly generated df
@@ -718,40 +718,40 @@ summary_go_terms <- read.delim(paste0(getwd(),"/Data/summary_go_terms.txt"),head
   #Loading cluster titles based on GO terms
 aop_associated_genes <- merge(aop_associated_genes,summary_go_terms,"gLayCluster")
 
-separate_aoptitles <- separate_rows(aop_associated_genes,AOPtitle,sep="; ")
-aop_freq_table <- table(separate_aoptitles$AOPtitle) 
+separate_aoptitles <- separate_rows(aop_associated_genes,AOP_title,sep="; ")
+aop_freq_table <- table(separate_aoptitles$AOP_title) 
 aop_freq_df <- as.data.frame(aop_freq_table)
 add_attributes <- separate_aoptitles %>%
-  group_by(AOPtitle) %>%
+  group_by(AOP_title) %>%
   summarise (AOPEnsembl = paste(Ensembl,collapse="; "),
              AOPgenename = paste(Name2, collapse="; "),
              AOPsummary_go_term = paste(summary_term, collapse="; "))
-names(aop_freq_df) <- c("AOPtitle","AOP frequency")
-aop_freq_df_full <- merge(aop_freq_df, add_attributes,"AOPtitle")
+names(aop_freq_df) <- c("AOP_title","AOP_frequency")
+aop_freq_df_full <- merge(aop_freq_df, add_attributes,"AOP_title")
 #Counting how often which AOPs are associated with all genes
 
-separate_aotitles <- separate_rows(aop_associated_genes,AOtitle,sep="; ")
-ao_freq_table <- table(separate_aotitles$AOtitle) 
+separate_aotitles <- separate_rows(aop_associated_genes,AO_title,sep="; ")
+ao_freq_table <- table(separate_aotitles$AO_title) 
 ao_freq_df <- as.data.frame(ao_freq_table)
 add_attributes <- separate_aotitles %>%
-  group_by(AOtitle) %>%
+  group_by(AO_title) %>%
   summarise (AOEnsembl = paste(Ensembl,collapse="; "),
              AOgenename = paste(Name2, collapse="; "),
              AOsummary_go_term = paste(summary_term, collapse="; "))
-names(ao_freq_df) <- c("AOtitle","AO frequency")
-ao_freq_df_full <- merge(ao_freq_df, add_attributes,"AOtitle")
+names(ao_freq_df) <- c("AO_title","AO_frequency")
+ao_freq_df_full <- merge(ao_freq_df, add_attributes,"AO_title")
 #Counting how often which AOs are associated with all genes
 
-separate_ketitles <- separate_rows(aop_associated_genes,KEtitle,sep="; ")
-ke_freq_table <- table(separate_ketitles$KEtitle) 
+separate_ketitles <- separate_rows(aop_associated_genes,KE_title,sep="; ")
+ke_freq_table <- table(separate_ketitles$KE_title) 
 ke_freq_df <- as.data.frame(ke_freq_table)
 add_attributes <- separate_ketitles %>%
-  group_by(KEtitle) %>%
+  group_by(KE_title) %>%
   summarise (KEEnsembl = paste(Ensembl,collapse="; "),
              KEgenename = paste(Name2, collapse="; "),
              KEsummary_go_term = paste(summary_term, collapse="; "))
-names(ke_freq_df) <- c("KEtitle","KE frequency")
-ke_freq_df_full <- merge(ke_freq_df, add_attributes,"KEtitle")
+names(ke_freq_df) <- c("KE_title","KE_frequency")
+ke_freq_df_full <- merge(ke_freq_df, add_attributes,"KE_title")
 #Counting how often which KEs are associated with all genes
 
 aop_associated_genes_freq <- bind_rows(aop_freq_df_full,ao_freq_df_full,ke_freq_df_full)
@@ -787,6 +787,31 @@ aoplink_all <- aopprocess("all_AO_KE_Ensembl_query.txt","all")
 snw_scz_string_clustered_GO_AOP_all <- getNetworkName()
 exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW_STRING_clustered_GO_AOP_all"),"CX",network=snw_scz_string_clustered_GO_AOP_all,overwriteFile=TRUE)
   #Exporting network
+
+gettop <- function(input) {
+freq_df <- input$aop_associated_genes_freq
+
+cutoff_aop <- quantile(freq_df$AOP_frequency, probs=0.75,na.rm = TRUE)
+  #Defining cutoff for AOP frequency (top 25% most frequent)
+topquarter_aop <- freq_df[freq_df$AOP_frequency >= cutoff_aop & !is.na(freq_df$AOP_frequency),1:5,drop=FALSE]
+  #Selecting the top 25% most frequently matched with AOPs and associated information
+
+cutoff_ao <- quantile(freq_df$AO_frequency, probs=0.75,na.rm = TRUE)
+  #Defining cutoff for AO frequency (top 25% most frequent)
+topquarter_ao <- freq_df[freq_df$AO_frequency >= cutoff_ao & !is.na(freq_df$AO_frequency),6:10,drop=FALSE]
+  #Selecting the top 25% most frequently matched with AOs and associated information
+
+cutoff_ke <- quantile(freq_df$KE_frequency, probs=0.75,na.rm = TRUE)
+  #Defining cutoff for KE frequency (top 25% most frequent)
+topquarter_ke <- freq_df[freq_df$KE_frequency >= cutoff_ke & !is.na(freq_df$KE_frequency),11:15,drop=FALSE]
+  #Selecting the top 25% most frequently matched with KEs and associated information
+
+top_aopwiki <- list(topquarter_aop=topquarter_aop,topquarter_ao=topquarter_ao,topquarter_ke=topquarter_ke)
+}
+
+top_selected <- gettop(aoplink_selected)
+top_all <- gettop(aoplink_all)
+
 
 
 
