@@ -812,6 +812,14 @@ top_aopwiki <- list(topquarter_aop=topquarter_aop,topquarter_ao=topquarter_ao,to
 top_selected <- gettop(aoplink_selected)
 top_all <- gettop(aoplink_all)
 
+topquarter_aop <- top_selected$topquarter_aop
+topquarter_aop_sep <- separate_rows(topquarter_aop,AOPEnsembl,sep="; ")
+mergedaopensg <- union(topquarter_aop_sep$AOP_title,topquarter_aop_sep$AOPEnsembl)
+topquarter_aop_node <- data.frame(combined=mergedaopensg)
+topquarter_aop_edge <- topquarter_aop_sep[,c("AOP_title","AOPEnsembl")]
+
+write.table(topquarter_aop_node, file=paste0(getwd(),"/topquarter_aop_node.tsv"),sep="\t",quote=FALSE,row.names=FALSE)
+write.table(topquarter_aop_edge, file=paste0(getwd(),"/topquarter_aop_edge.tsv"),sep="\t",quote=FALSE,row.names=FALSE)
 
 
 
