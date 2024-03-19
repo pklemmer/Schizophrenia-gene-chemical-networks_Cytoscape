@@ -812,16 +812,22 @@ top_aopwiki <- list(topquarter_aop=topquarter_aop,topquarter_ao=topquarter_ao,to
 top_selected <- gettop(aoplink_selected)
 top_all <- gettop(aoplink_all)
 
-topquarter_ke <- top_selected$topquarter_ke
+makecytable <- function(input) {
+topquarter_ke <- input$topquarter_ke
 topquarter_ke_sep <- separate_rows(topquarter_ke,KEEnsembl,sep="; ")
 mergedkeensg <- union(topquarter_ke_sep$KE_title,topquarter_ke_sep$KEEnsembl)
-topquarter_ke_node <- data.frame(combined=mergedkeensg)
-topquarter_ke_edge <- topquarter_ke_sep[,c("KE_title","KEEnsembl")]
+#topquarter_ke_node <- data.frame(combined=mergedkeensg)
+topquarter_ke<- topquarter_ke_sep[,c("KE_title","KEEnsembl")]
 
-write.table(topquarter_ke_node, file=paste0(getwd(),"/topquarter_ke_node.tsv"),sep="\t",quote=FALSE,row.names=FALSE)
-write.table(topquarter_ke_edge, file=paste0(getwd(),"/topquarter_ke_edge.tsv"),sep="\t",quote=FALSE,row.names=FALSE)
-
-
+#write.table(topquarter_ke_node, file=paste0(getwd(),"/topquarter_ke_node.tsv"),sep="\t",quote=FALSE,row.names=FALSE)
+write.table(topquarter_ke, file=paste0(other_savepath,sprintf("/topquarter_ke_edge%s.tsv",sub("top","",deparse(substitute(input))))),sep="\t",quote=FALSE,row.names=FALSE)
+  #Writing the KE-gene table to file for Cytoscape import
+commandsRun(sprintf('network import file columnTypeList=s,t delimiters=\\t file=%s firstRowAsColumnNames=true rootNetworkList=-- Create new network collection -- startLoadRow=1',paste0(other_savepath,sprintf("/topquarter_ke_edge%s.tsv",sub("top","",deparse(substitute(input)))))))
+Sys.sleep(0.5)
+renameNetwork(sprintf("Top quarter key events - risk genes %s",sub("top","",deparse(substitute(input)))))
+}
+makecytable(top_all)
+makecytable(top_selected)
 
 end_section("AOP")
 
