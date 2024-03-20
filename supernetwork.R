@@ -208,6 +208,7 @@ sparqlquery <- function(endpoint,queryfile,output) {
   #Getting the output as tibble
 }
   #Function to send a SPARQL query defined in a local text file to the endpoint and extract to desired dataframe
+  #Will not work if query includes comments ('# this is a comment') due to HTML conversion
 
 createNodeSource <- function(source,doi=NULL) {
   if (source == "WikiPathways") {
@@ -633,25 +634,25 @@ end_section("GO Analysis")
 start_section("AOP")
 
 aopprocess <- function(input,tag) {
-if (!"SCZ_SNW_STRING_clustered_GO" %in% getNetworkList()) {
-  importNetworkFromFile(file=paste0(nw_savepath,"SCZ_SNW_STRING_clustered_GO.cx"))
-  commandsRun('table delete column column="gLayCluster.2" table="SCZ_SNW_STRING_clustered_GO default node')
-  createColumnFilter(
-    filter.name = "has_GO_result",
-    column = "N_nodes",
-    criterion = 0,
-    predicate = "GREATER_THAN",
-    anyMatch = TRUE,
-    apply = TRUE
-  )
-  #Selecting nodes included in a 'valid' cluster, i.e. clusters with 5 or more nodes (GO analysis only performed for these)
-  #N_nodes is only generated for 'valid' clusters, so good column to filter by
-  invertNodeSelection()
-  deleteSelectedNodes()
-  #Inverting the selection and deleting these nodes: now, the network contains only the nodes that make up the clusters fed into the GO analysis
-  #Nodes not associated to a large enough cluster/GO term are likely not involved in any significant SCZ-contributing way 
-  #The idea is to link GO terms (formed by clusters/genes) to risk factors, so it wouldn't make sense to also link non-cluster/GO associated nodes
-}
+  if (!"SCZ_SNW_STRING_clustered_GO" %in% getNetworkList()) {
+    importNetworkFromFile(file=paste0(nw_savepath,"SCZ_SNW_STRING_clustered_GO.cx"))
+    commandsRun('table delete column column="gLayCluster.2" table="SCZ_SNW_STRING_clustered_GO default node')
+    createColumnFilter(
+      filter.name = "has_GO_result",
+      column = "N_nodes",
+      criterion = 0,
+      predicate = "GREATER_THAN",
+      anyMatch = TRUE,
+      apply = TRUE
+    )
+    #Selecting nodes included in a 'valid' cluster, i.e. clusters with 5 or more nodes (GO analysis only performed for these)
+    #N_nodes is only generated for 'valid' clusters, so good column to filter by
+    invertNodeSelection()
+    deleteSelectedNodes()
+    #Inverting the selection and deleting these nodes: now, the network contains only the nodes that make up the clusters fed into the GO analysis
+    #Nodes not associated to a large enough cluster/GO term are likely not involved in any significant SCZ-contributing way 
+    #The idea is to link GO terms (formed by clusters/genes) to risk factors, so it wouldn't make sense to also link non-cluster/GO associated nodes
+  }
   else {
     commandsRun('table delete column column="gLayCluster.2" table="SCZ_SNW_STRING_clustered_GO default node')
     createColumnFilter(
@@ -671,163 +672,213 @@ if (!"SCZ_SNW_STRING_clustered_GO" %in% getNetworkList()) {
     #The idea is to link GO terms (formed by clusters/genes) to risk factors, so it wouldn't make sense to also link non-cluster/GO associated nodes
     
   }
-
-    #Reimporting the network with GO information back to Cytoscape if needed
-    #Running aopprocess causes all changes to be applied to the GO network
-    #Running aopprocess a second time with other parameters would thus compound changes into the same network which is undesired
   
-sparqlquery("AOP-Wiki",input,"keensgpairs")
+  #Reimporting the network with GO information back to Cytoscape if needed
+  #Running aopprocess causes all changes to be applied to the GO network
+  #Running aopprocess a second time with other parameters would thus compound changes into the same network which is undesired
+  
+  sparqlquery("AOP-Wiki",input,"keensgpairs")
   #Querying AOP-Wiki for a list of all KEs and associated genes. KEs must be contained in an AOP that has an AO from a list of selected AOs
   #Explicity listing keensgpairs so that it is caught by ls()
-for (i in 1:ncol(keensgpairs)) {
-  for (j in 1:nrow(keensgpairs)) {
-    keensgpairs[j, i] <- gsub('"', '', keensgpairs[j, i])
+  for (i in 1:ncol(keensgpairs)) {
+    for (j in 1:nrow(keensgpairs)) {
+      keensgpairs[j, i] <- gsub('"', '', keensgpairs[j, i])
+    }
   }
-}
   #Removing quotation marks from the df
-
-separate_keensgpairs <- separate_rows(keensgpairs,Ensembl,sep="; ")
+  
+  separate_keensgpairs <- separate_rows(keensgpairs,Ensembl,sep="; ")
   #Dividing comma-separated Ensembl IDs into distinct rows
-keensgpairs_byensg <- separate_keensgpairs %>%
-  group_by(Ensembl) %>%
-  summarise(KEid = paste(KEid, collapse="; "),
-            KE_title = paste(KEtitle, collapse="; "),
-            AOid = paste(AOid, collapse="; "),
-            AO_title = paste(AOtitle, collapse = "; "),
-            AOPid = paste(AOPid, collapse="; "),
-            AOP_title =paste(AOPtitle, collapse="; "))
-  #Concateinating other variables based on unique Ensembl ID to get list of associated KEs, AOs, and AOPs per gene
-keensgpairs_byensg_save <- paste0(getwd(),sprintf("/Data/AOP-Wiki/keensgpairs_byensg_%s.tsv",tag))
+  keensgpairs_byensg <- separate_keensgpairs %>%
+    group_by(Ensembl) %>%
+    summarise(KEid = paste(KEid, collapse="; "),
+              AOPid = paste(AOPid, collapse="; "))
+  #Concatenating other variables based on unique Ensembl ID to get list of associated KEs and AOPs per gene
+  keensgpairs_byensg_save <- paste0(getwd(),sprintf("/Data/AOP-Wiki/keensgpairs_byensg_%s.tsv",tag))
   #Defining savepath for newly generated df
-write.table(keensgpairs_byensg, file=keensgpairs_byensg_save,quote=FALSE, sep="\t", row.names=FALSE)
+  write.table(keensgpairs_byensg, file=keensgpairs_byensg_save,quote=FALSE, sep="\t", row.names=FALSE)
   #Saving df containing gene-KE-AO-AOP associations to file as tsv for Cytoscape import
-commandsRun(sprintf('table import file dataTypeTargetforNetworkCollection="Node Table Columns" delimiters=\\t file=%s firstRowAsColumnNames=true keyColumnForMapping="Ensembl" keyColumnIndex=1 startLoadRow=1',keensgpairs_byensg_save))
+  commandsRun(sprintf('table import file dataTypeTargetforNetworkCollection="Node Table Columns" delimiters=\\t file=%s firstRowAsColumnNames=true keyColumnForMapping="Ensembl" keyColumnIndex=1 startLoadRow=1',keensgpairs_byensg_save))
   #Importing the gene-KE-AO-AOP table to Cytoscape as table add AOP-Wiki info as node attributes
-renameNetwork(paste0(getNetworkName(),"_AOP"))
-scz_snw_string_go_aop <- getNetworkName()
-
-commandsRun(sprintf('table export options=CSV outputFile=%s table="SCZ_SNW_STRING_clustered_GO_AOP default  node"',paste0(other_savepath,"SCZ_SNW_STRING_GO_AOP default node","_",tag)))
+  renameNetwork(paste0(getNetworkName(),"_AOP"))
+  scz_snw_string_go_aop <- getNetworkName()
+  
+  commandsRun(sprintf('table export options=CSV outputFile=%s table="SCZ_SNW_STRING_clustered_GO_AOP default  node"',paste0(other_savepath,"SCZ_SNW_STRING_GO_AOP default node","_",tag)))
   #Exporting the network table
-scz_snw_string_go_aop_node <- read.csv(file=paste0(other_savepath,"SCZ_SNW_STRING_GO_AOP default node","_",tag,".csv"),header=TRUE)
+  scz_snw_string_go_aop_node <- read.csv(file=paste0(other_savepath,"SCZ_SNW_STRING_GO_AOP default node","_",tag,".csv"),header=TRUE)
   #Reading the exported table as Cytoscape object
-aop_associated_genes <- scz_snw_string_go_aop_node[!(scz_snw_string_go_aop_node$KEid == ""), , drop=FALSE]
+  aop_associated_genes <- scz_snw_string_go_aop_node[!(scz_snw_string_go_aop_node$KEid == ""), , drop=FALSE]
   #Getting which rows (=gene nodes) have info from AOP-Wiki associated to them
-renameNetwork(paste0(getNetworkName(),"_",tag))
-
-summary_go_terms <- read.delim(paste0(getwd(),"/Data/summary_go_terms.txt"),header=TRUE,sep="\t",quote="")
+  renameNetwork(paste0(getNetworkName(),"_",tag))
+  
+  summary_go_terms <- read.delim(paste0(getwd(),"/Data/summary_go_terms.txt"),header=TRUE,sep="\t",quote="")
   #Loading cluster titles based on GO terms
-aop_associated_genes <- merge(aop_associated_genes,summary_go_terms,"gLayCluster")
+  aop_associated_genes <- merge(aop_associated_genes,summary_go_terms,"gLayCluster")
 
-separate_aoptitles <- separate_rows(aop_associated_genes,AOP_title,sep="; ")
-aop_freq_table <- table(separate_aoptitles$AOP_title) 
-aop_freq_df <- as.data.frame(aop_freq_table)
-add_attributes <- separate_aoptitles %>%
-  group_by(AOP_title) %>%
-  summarise (AOPEnsembl = paste(Ensembl,collapse="; "),
-             AOPgenename = paste(Name2, collapse="; "),
-             AOPsummary_go_term = paste(summary_term, collapse="; "))
-names(aop_freq_df) <- c("AOP_title","AOP_frequency")
-aop_freq_df_full <- merge(aop_freq_df, add_attributes,"AOP_title")
-#Counting how often which AOPs are associated with all genes
-
-separate_aotitles <- separate_rows(aop_associated_genes,AO_title,sep="; ")
-ao_freq_table <- table(separate_aotitles$AO_title) 
-ao_freq_df <- as.data.frame(ao_freq_table)
-add_attributes <- separate_aotitles %>%
-  group_by(AO_title) %>%
-  summarise (AOEnsembl = paste(Ensembl,collapse="; "),
-             AOgenename = paste(Name2, collapse="; "),
-             AOsummary_go_term = paste(summary_term, collapse="; "))
-names(ao_freq_df) <- c("AO_title","AO_frequency")
-ao_freq_df_full <- merge(ao_freq_df, add_attributes,"AO_title")
-#Counting how often which AOs are associated with all genes
-
-separate_ketitles <- separate_rows(aop_associated_genes,KE_title,sep="; ")
-ke_freq_table <- table(separate_ketitles$KE_title) 
-ke_freq_df <- as.data.frame(ke_freq_table)
-add_attributes <- separate_ketitles %>%
-  group_by(KE_title) %>%
-  summarise (KEEnsembl = paste(Ensembl,collapse="; "),
-             KEgenename = paste(Name2, collapse="; "),
-             KEsummary_go_term = paste(summary_term, collapse="; "))
-names(ke_freq_df) <- c("KE_title","KE_frequency")
-ke_freq_df_full <- merge(ke_freq_df, add_attributes,"KE_title")
-#Counting how often which KEs are associated with all genes
-
-aop_associated_genes_freq <- bind_rows(aop_freq_df_full,ao_freq_df_full,ke_freq_df_full)
-
-aop_link <- list()
-
-variables <- ls()
+  separate_ketitles <- separate_rows(aop_associated_genes,KEid,sep="; ")
+  ke_freq_table <- table(separate_ketitles$KEid) 
+  ke_freq_df <- as.data.frame(ke_freq_table)
+  add_attributes <- separate_ketitles %>%
+    group_by(KEid) %>%
+    summarise (KEEnsembl = paste(Ensembl,collapse="; "),
+               KEgenename = paste(Name2, collapse="; "),
+               KEsummary_go_term = paste(summary_term, collapse="; "))
+  names(ke_freq_df) <- c("KEid","KE_frequency")
+  ke_freq_df_full <- merge(ke_freq_df, add_attributes,"KEid")
+  #Counting how often which KEs are associated with all genes
+  
+  ke_associated_genes_freq <- ke_freq_df_full
+  
+  aop_link <- list()
+  
+  variables <- ls()
   #Getting a list of variables defined within the aopprocess function
-#append_suffix <- function(variable, suffix) {
+  #append_suffix <- function(variable, suffix) {
   #assign(paste0(variable,"_",suffix), get(variable), envir = .GlobalEnv)
-#}
+  #}
   #Defining a function to add a suffix to the variables created within the aopprocess function
-for (variable in variables) {
-  aop_link[[variable]] <- get(variable)
-}
-return(aop_link)
+  for (variable in variables) {
+    aop_link[[variable]] <- get(variable)
+  }
+  return(aop_link)
   #Appending the given tag to every produced variable within the aopprocess function
   #Saving the resulting network
 }
-  #Because a comparison should be made between selection criteria of the AOP-Wiki query,
-  #the aopprocess function is used to be more flexible in defining the query file
-  #as well as the suffix that is to be added so that the type of filter/query can be traced back
+#Because a comparison should be made between selection criteria of the AOP-Wiki query,
+#the aopprocess function is used to be more flexible in defining the query file
+#as well as the suffix that is to be added so that the type of filter/query can be traced back
 
 aoplink_selected <- aopprocess("AO_KE_Ensembl_query.txt","selected")
-  #Matching AOP information to risk genes in the network from selected adverse outcomes relating to neuronal development and psychiatric outcomes
+#Matching AOP information to risk genes in the network from selected adverse outcomes relating to neuronal development and psychiatric outcomes
 snw_scz_string_clustered_GO_AOP_selected <- getNetworkName()
 exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW_STRING_clustered_GO_AOP_selected"),"CX",network=snw_scz_string_clustered_GO_AOP_selected,overwriteFile=TRUE)
-  #Exporting network
-
+#Exporting network
 
 aoplink_all <- aopprocess("all_AO_KE_Ensembl_query.txt","all")
-  #Matching AOP information to risk genes in the network from all AOs available in AOP-Wiki
+#Matching AOP information to risk genes in the network from all AOs available in AOP-Wiki
 snw_scz_string_clustered_GO_AOP_all <- getNetworkName()
 exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW_STRING_clustered_GO_AOP_all"),"CX",network=snw_scz_string_clustered_GO_AOP_all,overwriteFile=TRUE)
-  #Exporting network
+#Exporting network
 
 gettop <- function(input) {
-freq_df <- input$aop_associated_genes_freq
-
-cutoff_aop <- quantile(freq_df$AOP_frequency, probs=0.75,na.rm = TRUE)
-  #Defining cutoff for AOP frequency (top 25% most frequent)
-topquarter_aop <- freq_df[freq_df$AOP_frequency >= cutoff_aop & !is.na(freq_df$AOP_frequency),1:5,drop=FALSE]
-  #Selecting the top 25% most frequently matched with AOPs and associated information
-
-cutoff_ao <- quantile(freq_df$AO_frequency, probs=0.75,na.rm = TRUE)
-  #Defining cutoff for AO frequency (top 25% most frequent)
-topquarter_ao <- freq_df[freq_df$AO_frequency >= cutoff_ao & !is.na(freq_df$AO_frequency),6:10,drop=FALSE]
-  #Selecting the top 25% most frequently matched with AOs and associated information
-
-cutoff_ke <- quantile(freq_df$KE_frequency, probs=0.75,na.rm = TRUE)
+  freq_df <- input$ke_freq_df_full
+  cutoff_ke <- quantile(freq_df$KE_frequency, probs=0.75,na.rm = TRUE)
   #Defining cutoff for KE frequency (top 25% most frequent)
-topquarter_ke <- freq_df[freq_df$KE_frequency >= cutoff_ke & !is.na(freq_df$KE_frequency),11:15,drop=FALSE]
+  topquarter_ke <- freq_df[freq_df$KE_frequency >= cutoff_ke & !is.na(freq_df$KE_frequency),,drop=FALSE]
   #Selecting the top 25% most frequently matched with KEs and associated information
-
-top_aopwiki <- list(topquarter_aop=topquarter_aop,topquarter_ao=topquarter_ao,topquarter_ke=topquarter_ke)
+  
 }
 
 top_selected <- gettop(aoplink_selected)
 top_all <- gettop(aoplink_all)
 
 makecytable <- function(input) {
-topquarter_ke <- input$topquarter_ke
-topquarter_ke_sep <- separate_rows(topquarter_ke,KEEnsembl,sep="; ")
-mergedkeensg <- union(topquarter_ke_sep$KE_title,topquarter_ke_sep$KEEnsembl)
-#topquarter_ke_node <- data.frame(combined=mergedkeensg)
-topquarter_ke<- topquarter_ke_sep[,c("KE_title","KEEnsembl")]
-
-#write.table(topquarter_ke_node, file=paste0(getwd(),"/topquarter_ke_node.tsv"),sep="\t",quote=FALSE,row.names=FALSE)
-write.table(topquarter_ke, file=paste0(other_savepath,sprintf("/topquarter_ke_edge%s.tsv",sub("top","",deparse(substitute(input))))),sep="\t",quote=FALSE,row.names=FALSE)
+  topquarter_ke <- input
+  topquarter_ke_sep <- separate_rows(topquarter_ke,KEEnsembl,sep="; ")
+  mergedkeensg <- union(topquarter_ke_sep$KEid,topquarter_ke_sep$KEEnsembl)
+  #topquarter_ke_node <- data.frame(combined=mergedkeensg)
+  topquarter_ke<- topquarter_ke_sep[,c("KEid","KEEnsembl")]
+  names(topquarter_ke) <- c("KEid_source","KEEnsembl_target")
+    #Renaming columns to source and target for Cytoscape import
+  topquarter_ke$KEid <- topquarter_ke$KEid_source
+  topquarter_ke$Ensembl <- topquarter_ke$KEEnsembl_target
+    #Creating duplicate columns of KEid and KEEnsembl to be used as source and target attributes
+    #This allows new columns in the network to easily select Ensembl and KE nodes separately etc.
+    #Without this, both KE and Ensembl nodes are stored in the 'names' column due to how Cytoscape import works
+  sparqlquery("AOP-Wiki","kemap.txt","kemap")
+  #Running query to get KEid-title mappings
+  for (i in 1:ncol(kemap)) {
+    for (j in 1:nrow(kemap)) {
+      kemap[j, i] <- gsub('"', '', kemap[j, i])
+    }
+  }
+  #Removing quotation marks from df
+  topquarter_ke <- merge(topquarter_ke,kemap,by="KEid",all.x=FALSE)
+  #Merging the mapping and node tables to extend node table with KE titles
+  topquarter_ke <- topquarter_ke[,c("KEid_source","KEEnsembl_target","KEid","KEtitle","Ensembl")]
+  #Reordering table columns
+  #write.table(topquarter_ke_node, file=paste0(getwd(),"/topquarter_ke_node.tsv"),sep="\t",quote=FALSE,row.names=FALSE)
+  write.table(topquarter_ke, file=paste0(other_savepath,sprintf("/topquarter_ke_edge%s.tsv",sub("top","",deparse(substitute(input))))),sep="\t",quote=FALSE,row.names=FALSE)
   #Writing the KE-gene table to file for Cytoscape import
-commandsRun(sprintf('network import file columnTypeList=s,t delimiters=\\t file=%s firstRowAsColumnNames=true rootNetworkList=-- Create new network collection -- startLoadRow=1',paste0(other_savepath,sprintf("/topquarter_ke_edge%s.tsv",sub("top","",deparse(substitute(input)))))))
-Sys.sleep(0.5)
-renameNetwork(sprintf("Top quarter key events - risk genes %s",sub("top","",deparse(substitute(input)))))
+  commandsRun(sprintf('network import file columnTypeList=s,t,sa,sa,ta delimiters=\\t file=%s firstRowAsColumnNames=true rootNetworkList=-- Create new network collection -- startLoadRow=1',paste0(other_savepath,sprintf("/topquarter_ke_edge%s.tsv",sub("top","",deparse(substitute(input)))))))
+  Sys.sleep(0.5)
+  renameNetwork(sprintf("Top quarter key events - risk genes%s",sub("top","",deparse(substitute(input)))))
 }
+
 makecytable(top_all)
 makecytable(top_selected)
+
+getkeaoppairs <- function(input) {
+keaoppairs <- keensgpairs[keensgpairs$KEid %in% input$KEid,c("KEid","AOPid")]
+  #For top quarter KEs, get which AOPs these are taken from from result of initial AOP-Wiki query
+keaoppairs <- separate_rows(keaoppairs,AOPid,sep="; ")
+sparqlquery("AOP-Wiki","aopmap.txt","aopmap")
+  #Running query to get AOPid-title mappings
+for (i in 1:ncol(aopmap)) {
+  for (j in 1:nrow(aopmap)) {
+    aopmap[j, i] <- gsub('"', '', aopmap[j, i])
+  }
+}
+  #Removing quotation marks from df
+keaoppairs <- merge(keaoppairs,aopmap,by="AOPid",all.x=FALSE)
+  #Mapping AOPids to AOPtitles using mapping file
+names(keaoppairs) <- c("KEid_source","AOPid_target","AOPtitle")
+keaoppairs$KEid <- keaoppairs$KEid_source
+keaoppairs$AOPid <- keaoppairs$AOPid_target
+keaoppairs <- keaoppairs[,c("KEid_source","KEid","AOPid_target","AOPid","AOPtitle")]
+  #Reordering columns
+write.table(keaoppairs,file=paste0(other_savepath,sprintf("/keaoppairs%s.tsv",sub("top","",deparse(substitute(input))))),sep="\t",quote=FALSE,row.names=FALSE)
+commandsRun(sprintf('network import file columnTypeList=s,sa,t,ta,ta delimiters=\\t file=%s firstRowAsColumnNames=true rootNetworkList= -- Create new network collection -- startLoadRow=1',paste0(other_savepath,sprintf("/keaoppairs%s.tsv",sub("top","",deparse(substitute(input)))))))
+Sys.sleep(0.5)
+renameNetwork(sprintf("Top quarter key events - AOPs%s",sub("top","",deparse(substitute(input)))))
+}
+getkeaoppairs(top_selected)
+getkeaoppairs(top_all)
+
+getaopaopairs <- function(input) {
+keaoppairs <- keensgpairs[keensgpairs$KEid %in% input$KEid,"AOPid"]
+keaoppairs <- unique(separate_rows(keaoppairs,AOPid,sep="; "))
+  #For top quarter KEs, get which unique AOPs these are taken from
+sparqlquery("AOP-Wiki","aopao.txt","aopao")
+  #Getting full list of which AOs are associated to which AOPs
+aopaopairs <- aopao[aopao$AOPid %in% keaoppairs$AOPid,]
+  #Filtering AOP-AO list by AOPs associated with top quarter KEs
+sparqlquery("AOP-Wiki","aopmap.txt","aopmap")
+#Running query to get AOPid-title mappings
+for (i in 1:ncol(aopmap)) {
+  for (j in 1:nrow(aopmap)) {
+    aopmap[j, i] <- gsub('"', '', aopmap[j, i])
+  }
+}
+#Removing quotation marks from df
+aopaopairs <- merge(aopaopairs,aopmap,by="AOPid",all.x=FALSE)
+#Mapping AOPids to AOPtitles using mapping file
+sparqlquery("AOP-Wiki","aomap.txt","aomap")
+for (i in 1:ncol(aomap)) {
+  for (j in 1:nrow(aomap)) {
+    aomap[j, i] <- gsub('"', '', aomap[j, i])
+  }
+}
+#Removing quotation marks from df
+aopaopairs <- merge(aopaopairs,aomap,by="AOid",all.x=FALSE)
+  #Mapping AOids to AOtitles using mapping file
+names(aopaopairs) <- c("AOid_target","AOPid_source","AOPtitle","AOtitle")
+aopaopairs$AOid <- aopaopairs$AOid_target
+aopaopairs$AOPid <- aopaopairs$AOPid_source
+aopaopairs <- aopaopairs[,c("AOid_target","AOPid_source","AOid","AOtitle","AOPid","AOPtitle")]
+  #Reordering columns
+write.table(aopaopairs,file=paste0(other_savepath,sprintf("/aopaopairs%s.tsv",sub("top","",deparse(substitute(input))))),sep="\t",quote=FALSE,row.names=FALSE)
+commandsRun(sprintf('network import file columnTypeList=t,s,ta,ta,sa,sa delimiters=\\t file=%s firstRowAsColumnNames=true rootNetworkList= -- Create new network collection -- startLoadRow=1',paste0(other_savepath,sprintf("/aopaopairs%s.tsv",sub("top","",deparse(substitute(input)))))))
+Sys.sleep(0.5)
+renameNetwork(sprintf("AOP-AO pairs for top AOPs in top quarter KEs%s",sub("top","",deparse(substitute(input)))))
+}
+getaopaopairs(top_selected)
+getaopaopairs(top_all)
+
+altmergeNetworks(sources=c("AOP-AO pairs for top AOPs in top quarter KEs_selected","Top quarter key events - AOPs_selected"),
+                 title="KE-AOP-AO pairs for top quarter KEs_selected",
+                 operation="union",
+                 nodeKeys="AOPid","AOPid")
 
 end_section("AOP")
 
@@ -1214,3 +1265,223 @@ exportImage(filename = paste0(getwd(),"/Visualisations/SNW_functional_analysis")
 # SNW_AOP <- getNetworkName()
 # exportNetwork(filename=paste0(nw_savepath,SNW_AOP),"CX",network=SNW_AOP)
 #   #Exporting the SNW containing the AOP extension
+
+
+
+
+
+
+
+# aopprocess <- function(input,tag) {
+#   if (!"SCZ_SNW_STRING_clustered_GO" %in% getNetworkList()) {
+#     importNetworkFromFile(file=paste0(nw_savepath,"SCZ_SNW_STRING_clustered_GO.cx"))
+#     commandsRun('table delete column column="gLayCluster.2" table="SCZ_SNW_STRING_clustered_GO default node')
+#     createColumnFilter(
+#       filter.name = "has_GO_result",
+#       column = "N_nodes",
+#       criterion = 0,
+#       predicate = "GREATER_THAN",
+#       anyMatch = TRUE,
+#       apply = TRUE
+#     )
+#     #Selecting nodes included in a 'valid' cluster, i.e. clusters with 5 or more nodes (GO analysis only performed for these)
+#     #N_nodes is only generated for 'valid' clusters, so good column to filter by
+#     invertNodeSelection()
+#     deleteSelectedNodes()
+#     #Inverting the selection and deleting these nodes: now, the network contains only the nodes that make up the clusters fed into the GO analysis
+#     #Nodes not associated to a large enough cluster/GO term are likely not involved in any significant SCZ-contributing way 
+#     #The idea is to link GO terms (formed by clusters/genes) to risk factors, so it wouldn't make sense to also link non-cluster/GO associated nodes
+#   }
+#   else {
+#     commandsRun('table delete column column="gLayCluster.2" table="SCZ_SNW_STRING_clustered_GO default node')
+#     createColumnFilter(
+#       filter.name = "has_GO_result",
+#       column = "N_nodes",
+#       criterion = 0,
+#       predicate = "GREATER_THAN",
+#       anyMatch = TRUE,
+#       apply = TRUE
+#     )
+#     #Selecting nodes included in a 'valid' cluster, i.e. clusters with 5 or more nodes (GO analysis only performed for these)
+#     #N_nodes is only generated for 'valid' clusters, so good column to filter by
+#     invertNodeSelection()
+#     deleteSelectedNodes()
+#     #Inverting the selection and deleting these nodes: now, the network contains only the nodes that make up the clusters fed into the GO analysis
+#     #Nodes not associated to a large enough cluster/GO term are likely not involved in any significant SCZ-contributing way 
+#     #The idea is to link GO terms (formed by clusters/genes) to risk factors, so it wouldn't make sense to also link non-cluster/GO associated nodes
+#     
+#   }
+#   
+#   #Reimporting the network with GO information back to Cytoscape if needed
+#   #Running aopprocess causes all changes to be applied to the GO network
+#   #Running aopprocess a second time with other parameters would thus compound changes into the same network which is undesired
+#   
+#   sparqlquery("AOP-Wiki",input,"keensgpairs")
+#   #Querying AOP-Wiki for a list of all KEs and associated genes. KEs must be contained in an AOP that has an AO from a list of selected AOs
+#   #Explicity listing keensgpairs so that it is caught by ls()
+#   for (i in 1:ncol(keensgpairs)) {
+#     for (j in 1:nrow(keensgpairs)) {
+#       keensgpairs[j, i] <- gsub('"', '', keensgpairs[j, i])
+#     }
+#   }
+#   #Removing quotation marks from the df
+#   
+#   separate_keensgpairs <- separate_rows(keensgpairs,Ensembl,sep="; ")
+#   #Dividing comma-separated Ensembl IDs into distinct rows
+#   keensgpairs_byensg <- separate_keensgpairs %>%
+#     group_by(Ensembl) %>%
+#     summarise(KEid = paste(KEid, collapse="; "),
+#               KE_title = paste(KEtitle, collapse="; "),
+#               AOid = paste(AOid, collapse="; "),
+#               AO_title = paste(AOtitle, collapse = "; "),
+#               AOPid = paste(AOPid, collapse="; "),
+#               AOP_title =paste(AOPtitle, collapse="; "))
+#   #Concateinating other variables based on unique Ensembl ID to get list of associated KEs, AOs, and AOPs per gene
+#   keensgpairs_byensg_save <- paste0(getwd(),sprintf("/Data/AOP-Wiki/keensgpairs_byensg_%s.tsv",tag))
+#   #Defining savepath for newly generated df
+#   write.table(keensgpairs_byensg, file=keensgpairs_byensg_save,quote=FALSE, sep="\t", row.names=FALSE)
+#   #Saving df containing gene-KE-AO-AOP associations to file as tsv for Cytoscape import
+#   commandsRun(sprintf('table import file dataTypeTargetforNetworkCollection="Node Table Columns" delimiters=\\t file=%s firstRowAsColumnNames=true keyColumnForMapping="Ensembl" keyColumnIndex=1 startLoadRow=1',keensgpairs_byensg_save))
+#   #Importing the gene-KE-AO-AOP table to Cytoscape as table add AOP-Wiki info as node attributes
+#   renameNetwork(paste0(getNetworkName(),"_AOP"))
+#   scz_snw_string_go_aop <- getNetworkName()
+#   
+#   commandsRun(sprintf('table export options=CSV outputFile=%s table="SCZ_SNW_STRING_clustered_GO_AOP default  node"',paste0(other_savepath,"SCZ_SNW_STRING_GO_AOP default node","_",tag)))
+#   #Exporting the network table
+#   scz_snw_string_go_aop_node <- read.csv(file=paste0(other_savepath,"SCZ_SNW_STRING_GO_AOP default node","_",tag,".csv"),header=TRUE)
+#   #Reading the exported table as Cytoscape object
+#   aop_associated_genes <- scz_snw_string_go_aop_node[!(scz_snw_string_go_aop_node$KEid == ""), , drop=FALSE]
+#   #Getting which rows (=gene nodes) have info from AOP-Wiki associated to them
+#   renameNetwork(paste0(getNetworkName(),"_",tag))
+#   
+#   summary_go_terms <- read.delim(paste0(getwd(),"/Data/summary_go_terms.txt"),header=TRUE,sep="\t",quote="")
+#   #Loading cluster titles based on GO terms
+#   aop_associated_genes <- merge(aop_associated_genes,summary_go_terms,"gLayCluster")
+#   
+#   separate_aoptitles <- separate_rows(aop_associated_genes,AOP_title,sep="; ")
+#   aop_freq_table <- table(separate_aoptitles$AOP_title) 
+#   aop_freq_df <- as.data.frame(aop_freq_table)
+#   add_attributes <- separate_aoptitles %>%
+#     group_by(AOP_title) %>%
+#     summarise (AOPEnsembl = paste(Ensembl,collapse="; "),
+#                AOPgenename = paste(Name2, collapse="; "),
+#                AOPsummary_go_term = paste(summary_term, collapse="; "))
+#   names(aop_freq_df) <- c("AOP_title","AOP_frequency")
+#   aop_freq_df_full <- merge(aop_freq_df, add_attributes,"AOP_title")
+#   #Counting how often which AOPs are associated with all genes
+#   
+#   separate_aotitles <- separate_rows(aop_associated_genes,AO_title,sep="; ")
+#   ao_freq_table <- table(separate_aotitles$AO_title) 
+#   ao_freq_df <- as.data.frame(ao_freq_table)
+#   add_attributes <- separate_aotitles %>%
+#     group_by(AO_title) %>%
+#     summarise (AOEnsembl = paste(Ensembl,collapse="; "),
+#                AOgenename = paste(Name2, collapse="; "),
+#                AOsummary_go_term = paste(summary_term, collapse="; "))
+#   names(ao_freq_df) <- c("AO_title","AO_frequency")
+#   ao_freq_df_full <- merge(ao_freq_df, add_attributes,"AO_title")
+#   #Counting how often which AOs are associated with all genes
+#   
+#   separate_ketitles <- separate_rows(aop_associated_genes,KE_title,sep="; ")
+#   ke_freq_table <- table(separate_ketitles$KE_title) 
+#   ke_freq_df <- as.data.frame(ke_freq_table)
+#   add_attributes <- separate_ketitles %>%
+#     group_by(KE_title) %>%
+#     summarise (KEEnsembl = paste(Ensembl,collapse="; "),
+#                KEgenename = paste(Name2, collapse="; "),
+#                KEsummary_go_term = paste(summary_term, collapse="; "))
+#   names(ke_freq_df) <- c("KE_title","KE_frequency")
+#   ke_freq_df_full <- merge(ke_freq_df, add_attributes,"KE_title")
+#   #Counting how often which KEs are associated with all genes
+#   
+#   aop_associated_genes_freq <- bind_rows(aop_freq_df_full,ao_freq_df_full,ke_freq_df_full)
+#   
+#   aop_link <- list()
+#   
+#   variables <- ls()
+#   #Getting a list of variables defined within the aopprocess function
+#   #append_suffix <- function(variable, suffix) {
+#   #assign(paste0(variable,"_",suffix), get(variable), envir = .GlobalEnv)
+#   #}
+#   #Defining a function to add a suffix to the variables created within the aopprocess function
+#   for (variable in variables) {
+#     aop_link[[variable]] <- get(variable)
+#   }
+#   return(aop_link)
+#   #Appending the given tag to every produced variable within the aopprocess function
+#   #Saving the resulting network
+# }
+# #Because a comparison should be made between selection criteria of the AOP-Wiki query,
+# #the aopprocess function is used to be more flexible in defining the query file
+# #as well as the suffix that is to be added so that the type of filter/query can be traced back
+# 
+# aoplink_selected <- aopprocess("AO_KE_Ensembl_query.txt","selected")
+# #Matching AOP information to risk genes in the network from selected adverse outcomes relating to neuronal development and psychiatric outcomes
+# snw_scz_string_clustered_GO_AOP_selected <- getNetworkName()
+# exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW_STRING_clustered_GO_AOP_selected"),"CX",network=snw_scz_string_clustered_GO_AOP_selected,overwriteFile=TRUE)
+# #Exporting network
+# 
+# 
+# aoplink_all <- aopprocess("all_AO_KE_Ensembl_query.txt","all")
+# #Matching AOP information to risk genes in the network from all AOs available in AOP-Wiki
+# snw_scz_string_clustered_GO_AOP_all <- getNetworkName()
+# exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW_STRING_clustered_GO_AOP_all"),"CX",network=snw_scz_string_clustered_GO_AOP_all,overwriteFile=TRUE)
+# #Exporting network
+# 
+# gettop <- function(input) {
+#   freq_df <- input$aop_associated_genes_freq
+#   
+#   cutoff_aop <- quantile(freq_df$AOP_frequency, probs=0.75,na.rm = TRUE)
+#   #Defining cutoff for AOP frequency (top 25% most frequent)
+#   topquarter_aop <- freq_df[freq_df$AOP_frequency >= cutoff_aop & !is.na(freq_df$AOP_frequency),1:5,drop=FALSE]
+#   #Selecting the top 25% most frequently matched with AOPs and associated information
+#   
+#   cutoff_ao <- quantile(freq_df$AO_frequency, probs=0.75,na.rm = TRUE)
+#   #Defining cutoff for AO frequency (top 25% most frequent)
+#   topquarter_ao <- freq_df[freq_df$AO_frequency >= cutoff_ao & !is.na(freq_df$AO_frequency),6:10,drop=FALSE]
+#   #Selecting the top 25% most frequently matched with AOs and associated information
+#   
+#   cutoff_ke <- quantile(freq_df$KE_frequency, probs=0.75,na.rm = TRUE)
+#   #Defining cutoff for KE frequency (top 25% most frequent)
+#   topquarter_ke <- freq_df[freq_df$KE_frequency >= cutoff_ke & !is.na(freq_df$KE_frequency),11:15,drop=FALSE]
+#   #Selecting the top 25% most frequently matched with KEs and associated information
+#   
+#   top_aopwiki <- list(topquarter_aop=topquarter_aop,topquarter_ao=topquarter_ao,topquarter_ke=topquarter_ke)
+# }
+# 
+# top_selected <- gettop(aoplink_selected)
+# top_all <- gettop(aoplink_all)
+# 
+# makecytable <- function(input) {
+#   topquarter_ke <- input$topquarter_ke
+#   topquarter_ke_sep <- separate_rows(topquarter_ke,KEEnsembl,sep="; ")
+#   mergedkeensg <- union(topquarter_ke_sep$KE_title,topquarter_ke_sep$KEEnsembl)
+#   #topquarter_ke_node <- data.frame(combined=mergedkeensg)
+#   topquarter_ke<- topquarter_ke_sep[,c("KE_title","KEEnsembl")]
+#   
+#   #write.table(topquarter_ke_node, file=paste0(getwd(),"/topquarter_ke_node.tsv"),sep="\t",quote=FALSE,row.names=FALSE)
+#   write.table(topquarter_ke, file=paste0(other_savepath,sprintf("/topquarter_ke_edge%s.tsv",sub("top","",deparse(substitute(input))))),sep="\t",quote=FALSE,row.names=FALSE)
+#   #Writing the KE-gene table to file for Cytoscape import
+#   commandsRun(sprintf('network import file columnTypeList=s,t delimiters=\\t file=%s firstRowAsColumnNames=true rootNetworkList=-- Create new network collection -- startLoadRow=1',paste0(other_savepath,sprintf("/topquarter_ke_edge%s.tsv",sub("top","",deparse(substitute(input)))))))
+#   Sys.sleep(0.5)
+#   renameNetwork(sprintf("Top quarter key events - risk genes%s",sub("top","",deparse(substitute(input)))))
+# }
+# 
+# makecytable(top_all)
+# makecytable(top_selected)
+# 
+# 
+# 
+# topquarter_ke <- top_selected$topquarter_ke
+# for (i in 1:ncol(keensgpairs)) {
+#   for (j in 1:nrow(keensgpairs)) {
+#     keensgpairs[j, i] <- gsub('"', '', keensgpairs[j, i])
+#   }
+# }
+# assoc_aop <- keensgpairs[keensgpairs$KEtitle %in% topquarter_ke$KE_title,c("KEtitle","AOPtitle")]
+# assoc_aop <- separate_rows(assoc_aop,AOPtitle, sep="; " )
+# write.table(assoc_aop, file=paste0(other_savepath,"/assoc_aop.tsv"),sep="\t",quote=FALSE,row.names=FALSE)
+# 
+# 
+# uniqueaops <- data.frame(AOPtitle = unique(assoc_aop$AOPtitle))
+# assoc_ao <- keensgpairs[keensgpairs$AOtitle %in% uniqueaops$AOPtitle, c("AOtitle","AOPtitle")]

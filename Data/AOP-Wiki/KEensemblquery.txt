@@ -1,5 +1,0 @@
-SELECT DISTINCT ?KE ?ensembl WHERE {
-	?KE a aopo:KeyEvent; edam:data_1025 ?object.
-	?object skos:exactMatch ?id.
-	?id a edam:data_1033; edam:data_1033 ?ensembl.
-}

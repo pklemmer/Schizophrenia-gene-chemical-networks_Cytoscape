@@ -1,6 +1,0 @@
-SELECT ?KE ?KEtitle WHERE {
-?KE a aopo:KeyEvent .
-?KE dc:title ?KEtitle .
-}
-
-

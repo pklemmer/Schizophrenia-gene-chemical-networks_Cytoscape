@@ -1,0 +1,7 @@
+SELECT DISTINCT ?KER ?KEup ?KEdown WHERE {
+  ?AOP a aopo:AdverseOutcomePathway ;
+  dc:title ?AOPTitle ; aopo:has_adverse_outcome ?AO;   aopo:has_key_event_relationship ?KER .
+  ?KER aopo:has_upstream_key_event ?KEup ; aopo:has_downstream_key_event ?KEdown .
+  VALUES ?AO {
+    <https://identifiers.org/aop.events/1841> <https://identifiers.org/aop.events/352> <https://identifiers.org/aop.events/1344> <https://identifiers.org/aop.events/1345> <https://identifiers.org/aop.events/1346> <https://identifiers.org/aop.events/1348> <https://identifiers.org/aop.events/1362> <https://identifiers.org/aop.events/1363> <https://identifiers.org/aop.events/1432> <https://identifiers.org/aop.events/1514> <https://identifiers.org/aop.events/1561> <https://identifiers.org/aop.events/1583> <https://identifiers.org/aop.events/341> <https://identifiers.org/aop.events/402> <https://identifiers.org/aop.events/613> <https://identifiers.org/aop.events/896> <https://identifiers.org/aop.events/986> <https://identifiers.org/aop.events/1875> <https://identifiers.org/aop.events/1941> <https://identifiers.org/aop.events/1978> <https://identifiers.org/aop.events/2121>
+  }}

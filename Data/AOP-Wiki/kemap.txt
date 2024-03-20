@@ -1,0 +1,2 @@
+select distinct ?KEtitle ?KEid where {
+  ?KEid a aopo:KeyEvent; dc:title ?KEtitle. }

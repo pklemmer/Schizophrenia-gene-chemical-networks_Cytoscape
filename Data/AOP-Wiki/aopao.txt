@@ -1,0 +1,4 @@
+select distinct ?AOPid ?AOid where {
+  ?AOPid a aopo:AdverseOutcomePathway; aopo:has_adverse_outcome ?AOid.}
+
+
