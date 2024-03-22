@@ -714,7 +714,7 @@ aopprocess <- function(input,tag) {
   summary_go_terms <- read.delim(paste0(getwd(),"/Data/summary_go_terms.txt"),header=TRUE,sep="\t",quote="")
   #Loading cluster titles based on GO terms
   aop_associated_genes <- merge(aop_associated_genes,summary_go_terms,"gLayCluster")
-
+Sys.sleep(1)
   separate_ketitles <- separate_rows(aop_associated_genes,KEid,sep="; ")
   ke_freq_table <- table(separate_ketitles$KEid) 
   ke_freq_df <- as.data.frame(ke_freq_table)
@@ -760,6 +760,8 @@ snw_scz_string_clustered_GO_AOP_all <- getNetworkName()
 exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW_STRING_clustered_GO_AOP_all"),"CX",network=snw_scz_string_clustered_GO_AOP_all,overwriteFile=TRUE)
 #Exporting network
 
+
+
 gettop <- function(input) {
   freq_df <- input$ke_freq_df_full
   cutoff_ke <- quantile(freq_df$KE_frequency, probs=0.75,na.rm = TRUE)
@@ -772,13 +774,17 @@ gettop <- function(input) {
 top_selected <- gettop(aoplink_selected)
 top_all <- gettop(aoplink_all)
 
-makecytable <- function(input) {
+
+
+getkegenepairs <- function(input) {
   topquarter_ke <- input
   topquarter_ke_sep <- separate_rows(topquarter_ke,KEEnsembl,sep="; ")
   mergedkeensg <- union(topquarter_ke_sep$KEid,topquarter_ke_sep$KEEnsembl)
   #topquarter_ke_node <- data.frame(combined=mergedkeensg)
   topquarter_ke<- topquarter_ke_sep[,c("KEid","KEEnsembl")]
-  names(topquarter_ke) <- c("KEid_source","KEEnsembl_target")
+  topquarter_ke <- topquarter_ke %>%
+    rename(KEid_source = KEid,
+           KEEnsembl_target = KEEnsembl)
     #Renaming columns to source and target for Cytoscape import
   topquarter_ke$KEid <- topquarter_ke$KEid_source
   topquarter_ke$Ensembl <- topquarter_ke$KEEnsembl_target
@@ -805,8 +811,13 @@ makecytable <- function(input) {
   renameNetwork(sprintf("Top quarter key events - risk genes%s",sub("top","",deparse(substitute(input)))))
 }
 
-makecytable(top_all)
-makecytable(top_selected)
+getkegenepairs(top_selected)
+kegenenetwork_selected <- getNetworkName()
+
+getkegenepairs(top_all)
+kegenenetwork_all <- getNetworkName()
+
+
 
 getkeaoppairs <- function(input) {
 keaoppairs <- keensgpairs[keensgpairs$KEid %in% input$KEid,c("KEid","AOPid")]
@@ -822,18 +833,26 @@ for (i in 1:ncol(aopmap)) {
   #Removing quotation marks from df
 keaoppairs <- merge(keaoppairs,aopmap,by="AOPid",all.x=FALSE)
   #Mapping AOPids to AOPtitles using mapping file
-names(keaoppairs) <- c("KEid_source","AOPid_target","AOPtitle")
-keaoppairs$KEid <- keaoppairs$KEid_source
-keaoppairs$AOPid <- keaoppairs$AOPid_target
-keaoppairs <- keaoppairs[,c("KEid_source","KEid","AOPid_target","AOPid","AOPtitle")]
+keaoppairs <- keaoppairs %>%
+  rename(KEid_target = KEid,
+         AOPid_source = AOPid)
+keaoppairs$KEid <- keaoppairs$KEid_target
+keaoppairs$AOPid <- keaoppairs$AOPid_source
+keaoppairs <- keaoppairs[,c("KEid_target","KEid","AOPid_source","AOPid","AOPtitle")]
   #Reordering columns
 write.table(keaoppairs,file=paste0(other_savepath,sprintf("/keaoppairs%s.tsv",sub("top","",deparse(substitute(input))))),sep="\t",quote=FALSE,row.names=FALSE)
-commandsRun(sprintf('network import file columnTypeList=s,sa,t,ta,ta delimiters=\\t file=%s firstRowAsColumnNames=true rootNetworkList= -- Create new network collection -- startLoadRow=1',paste0(other_savepath,sprintf("/keaoppairs%s.tsv",sub("top","",deparse(substitute(input)))))))
+commandsRun(sprintf('network import file columnTypeList=t,ta,s,sa,sa delimiters=\\t file=%s firstRowAsColumnNames=true rootNetworkList= -- Create new network collection -- startLoadRow=1',paste0(other_savepath,sprintf("/keaoppairs%s.tsv",sub("top","",deparse(substitute(input)))))))
 Sys.sleep(0.5)
 renameNetwork(sprintf("Top quarter key events - AOPs%s",sub("top","",deparse(substitute(input)))))
 }
+
 getkeaoppairs(top_selected)
+keaopnetwork_selected <- getNetworkName()
+
 getkeaoppairs(top_all)
+keaopnetwork_all <- getNetworkName()
+
+
 
 getaopaopairs <- function(input) {
 keaoppairs <- keensgpairs[keensgpairs$KEid %in% input$KEid,"AOPid"]
@@ -862,26 +881,107 @@ for (i in 1:ncol(aomap)) {
 #Removing quotation marks from df
 aopaopairs <- merge(aopaopairs,aomap,by="AOid",all.x=FALSE)
   #Mapping AOids to AOtitles using mapping file
-names(aopaopairs) <- c("AOid_target","AOPid_source","AOPtitle","AOtitle")
-aopaopairs$AOid <- aopaopairs$AOid_target
-aopaopairs$AOPid <- aopaopairs$AOPid_source
-aopaopairs <- aopaopairs[,c("AOid_target","AOPid_source","AOid","AOtitle","AOPid","AOPtitle")]
+aopaopairs <- aopaopairs %>%
+  rename(AOPid_target = AOPid,
+         AOid_source = AOid)
+aopaopairs$AOid <- aopaopairs$AOid_source
+aopaopairs$AOPid <- aopaopairs$AOPid_target
+aopaopairs <- aopaopairs[,c("AOid_source","AOPid_target","AOid","AOtitle","AOPid","AOPtitle")]
   #Reordering columns
 write.table(aopaopairs,file=paste0(other_savepath,sprintf("/aopaopairs%s.tsv",sub("top","",deparse(substitute(input))))),sep="\t",quote=FALSE,row.names=FALSE)
-commandsRun(sprintf('network import file columnTypeList=t,s,ta,ta,sa,sa delimiters=\\t file=%s firstRowAsColumnNames=true rootNetworkList= -- Create new network collection -- startLoadRow=1',paste0(other_savepath,sprintf("/aopaopairs%s.tsv",sub("top","",deparse(substitute(input)))))))
+commandsRun(sprintf('network import file columnTypeList=s,t,sa,sa,ta,ta delimiters=\\t file=%s firstRowAsColumnNames=true rootNetworkList= -- Create new network collection -- startLoadRow=1',paste0(other_savepath,sprintf("/aopaopairs%s.tsv",sub("top","",deparse(substitute(input)))))))
 Sys.sleep(0.5)
 renameNetwork(sprintf("AOP-AO pairs for top AOPs in top quarter KEs%s",sub("top","",deparse(substitute(input)))))
 }
 getaopaopairs(top_selected)
-getaopaopairs(top_all)
+aopaonetwork_selected <- getNetworkName()
 
-altmergeNetworks(sources=c("AOP-AO pairs for top AOPs in top quarter KEs_selected","Top quarter key events - AOPs_selected"),
-                 title="KE-AOP-AO pairs for top quarter KEs_selected",
+getaopaopairs(top_all)
+aopaonetwork_all <- getNetworkName()
+
+
+
+mergeaop <- function (input){
+aopaonetwork <- get(paste0("aopaonetwork_",input))
+keaopnetwork <- get(paste0("keaopnetwork_", input))
+kegenenetwork <- get(paste0("kegenenetwork_",input))
+
+  
+altmergeNetworks(sources=c(aopaonetwork,keaopnetwork),
+                 title = "KE-AOP-AO merged network",
                  operation="union",
-                 nodeKeys="AOPid","AOPid")
+                 nodeKeys=c("AOPid","AOPid"))
+renameNetwork(paste0("KE-AOP-AO merged network_",input))
+keaopaomerged <- getNetworkName()
+
+altmergeNetworks(sources=c(keaopaomerged,kegenenetwork),
+                 title="gene-KE-AOP-AO merged network",
+                 operation="union",
+                 nodeKeys=c("KEid","KEid"))
+renameNetwork(paste0("gene-KE-AOP-AO merged network_",input))
+mapTableColumn("Ensembl","Human","Ensembl","HGNC")
+commandsRun(sprintf('table export options=CSV outputFile="%s" table="%s"',paste0(other_savepath,paste0("gene-KE-AOP-AO merged network_",input," node")),paste0("gene-KE-AOP-AO merged network_",input," default  node")))
+nodetable <- read.table(paste0(other_savepath,paste0('gene-KE-AOP-AO merged network_',input," node.csv")), header=TRUE, sep=",")
+nodetable <- nodetable %>%
+  rowwise() %>%
+  mutate(label=paste(na.omit(c_across(all_of(c("KEtitle","AOPtitle","AOtitle","HGNC")))), collapse=""))
+nodetable <- nodetable %>%
+  rowwise() %>%
+  mutate(type = case_when(
+    str_detect(AOPid, "\\S") ~ "AOP",
+    str_detect(AOid, "\\S") ~ "AO",
+    str_detect(KEid, "\\S") ~ "KE",
+    str_detect(Ensembl, "\\S") ~ "gene",
+    TRUE ~ NA_character_
+  ))
+#write.table(nodetable, file=paste0(other_savepath,paste0('gene-KE-AOP-AO merged network_',input," node.csv")),quote=FALSE,sep=",",row.names=FALSE)
+loadTableData(nodetable,data.key.column = "name",table="node",table.key.column = "name")
+deleteTableColumn("shared.name")
+lapply(c(aopaonetwork,keaopnetwork,kegenenetwork,keaopaomerged),deleteNetwork)
+
+} 
+mergeaop("selected")
+exportNetwork(paste0(nw_savepath,"gene-KE-AOP-AO merged network_selected"),"CX", overwriteFile=TRUE,network="gene-KE-AOP-AO merged network_selected")
+
+mergeaop("all")
+exportNetwork(paste0(nw_savepath,"gene-KE-AOP-AO merged network_all"),"CX", overwriteFile=TRUE,network="gene-KE-AOP-AO merged network_all")
 
 end_section("AOP")
 
+##AOP VISUALISATION -------------------------------------------------------------------------------------------------------------------------------
+createVisualStyle("AOP_vis")
+setVisualStyle("AOP_vis")
+setNodeLabelMapping(
+  table.column="label",
+  style.name="AOP_vis"
+)
+setNodeColorMapping(
+  table.column = "type",
+  mapping.type="d",
+  table.column.values = c("AO","AOP","KE","gene"),
+  colors=c("#FB6a4A","#FEB24C","#FA9FB5","#74C476"),
+  style.name="AOP_vis"
+)
+setNodeShapeDefault(
+  new.shape="ROUND_RECTANGLE",
+  style.name="AOP_vis"
+)
+setNodeSizeDefault (
+  new.size = "70",
+  style.name="AOP_vis"
+)
+setNodeFontSizeDefault (
+  new.size = "15",
+  style.name = "AOP_vis"
+)
+setEdgeSourceArrowShapeDefault(
+  new.shape = "DELTA",
+  style.name="AOP_vis"
+)
+setEdgeColorDefault(
+  new.color="#BCBCBC",
+  style.name="AOP_vis"
+)  
 
 ##RAW SNW VISUALISATION --------------------------------------------------------------------------------------------------------------------------- 
 setCurrentNetwork(snw_scz_filtered_string_clustered_go)
