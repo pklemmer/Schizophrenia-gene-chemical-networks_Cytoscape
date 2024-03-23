@@ -747,12 +747,12 @@ Sys.sleep(1)
 #Because a comparison should be made between selection criteria of the AOP-Wiki query,
 #the aopprocess function is used to be more flexible in defining the query file
 #as well as the suffix that is to be added so that the type of filter/query can be traced back
-
-aoplink_selected <- aopprocess("AO_KE_Ensembl_query.txt","selected")
-#Matching AOP information to risk genes in the network from selected adverse outcomes relating to neuronal development and psychiatric outcomes
-snw_scz_string_clustered_GO_AOP_selected <- getNetworkName()
-exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW_STRING_clustered_GO_AOP_selected"),"CX",network=snw_scz_string_clustered_GO_AOP_selected,overwriteFile=TRUE)
-#Exporting network
+# 
+# aoplink_selected <- aopprocess("AO_KE_Ensembl_query.txt","selected")
+# #Matching AOP information to risk genes in the network from selected adverse outcomes relating to neuronal development and psychiatric outcomes
+# snw_scz_string_clustered_GO_AOP_selected <- getNetworkName()
+# exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW_STRING_clustered_GO_AOP_selected"),"CX",network=snw_scz_string_clustered_GO_AOP_selected,overwriteFile=TRUE)
+# #Exporting network
 
 aoplink_all <- aopprocess("all_AO_KE_Ensembl_query.txt","all")
 #Matching AOP information to risk genes in the network from all AOs available in AOP-Wiki
@@ -771,7 +771,7 @@ gettop <- function(input) {
   
 }
 
-top_selected <- gettop(aoplink_selected)
+# top_selected <- gettop(aoplink_selected)
 top_all <- gettop(aoplink_all)
 
 
@@ -807,12 +807,13 @@ getkegenepairs <- function(input) {
   write.table(topquarter_ke, file=paste0(other_savepath,sprintf("/topquarter_ke_edge%s.tsv",sub("top","",deparse(substitute(input))))),sep="\t",quote=FALSE,row.names=FALSE)
   #Writing the KE-gene table to file for Cytoscape import
   commandsRun(sprintf('network import file columnTypeList=s,t,sa,sa,ta delimiters=\\t file=%s firstRowAsColumnNames=true rootNetworkList=-- Create new network collection -- startLoadRow=1',paste0(other_savepath,sprintf("/topquarter_ke_edge%s.tsv",sub("top","",deparse(substitute(input)))))))
+  #Importing as network
   Sys.sleep(0.5)
   renameNetwork(sprintf("Top quarter key events - risk genes%s",sub("top","",deparse(substitute(input)))))
 }
 
-getkegenepairs(top_selected)
-kegenenetwork_selected <- getNetworkName()
+# getkegenepairs(top_selected)
+# kegenenetwork_selected <- getNetworkName()
 
 getkegenepairs(top_all)
 kegenenetwork_all <- getNetworkName()
@@ -836,18 +837,24 @@ keaoppairs <- merge(keaoppairs,aopmap,by="AOPid",all.x=FALSE)
 keaoppairs <- keaoppairs %>%
   rename(KEid_target = KEid,
          AOPid_source = AOPid)
+  #Renaming columns in preparation for import
 keaoppairs$KEid <- keaoppairs$KEid_target
 keaoppairs$AOPid <- keaoppairs$AOPid_source
+  #Creating duplicate columns of KEid and AOPid to be used as source and target attributes
+  #This allows new columns in the network to easily select AOP and KE nodes separately etc.
+  #Without this, both KE and AOP nodes are stored in the 'names' column due to how Cytoscape import works
 keaoppairs <- keaoppairs[,c("KEid_target","KEid","AOPid_source","AOPid","AOPtitle")]
   #Reordering columns
 write.table(keaoppairs,file=paste0(other_savepath,sprintf("/keaoppairs%s.tsv",sub("top","",deparse(substitute(input))))),sep="\t",quote=FALSE,row.names=FALSE)
+  #Writing modified table to file
 commandsRun(sprintf('network import file columnTypeList=t,ta,s,sa,sa delimiters=\\t file=%s firstRowAsColumnNames=true rootNetworkList= -- Create new network collection -- startLoadRow=1',paste0(other_savepath,sprintf("/keaoppairs%s.tsv",sub("top","",deparse(substitute(input)))))))
+  #Importing as network
 Sys.sleep(0.5)
 renameNetwork(sprintf("Top quarter key events - AOPs%s",sub("top","",deparse(substitute(input)))))
 }
 
-getkeaoppairs(top_selected)
-keaopnetwork_selected <- getNetworkName()
+# getkeaoppairs(top_selected)
+# keaopnetwork_selected <- getNetworkName()
 
 getkeaoppairs(top_all)
 keaopnetwork_all <- getNetworkName()
@@ -884,17 +891,26 @@ aopaopairs <- merge(aopaopairs,aomap,by="AOid",all.x=FALSE)
 aopaopairs <- aopaopairs %>%
   rename(AOPid_target = AOPid,
          AOid_source = AOid)
+  #Renaming columns in preparation for import
 aopaopairs$AOid <- aopaopairs$AOid_source
 aopaopairs$AOPid <- aopaopairs$AOPid_target
-aopaopairs <- aopaopairs[,c("AOid_source","AOPid_target","AOid","AOtitle","AOPid","AOPtitle")]
+  #Creating duplicate columns of AOid and AOPid to be used as source and target attributes
+  #This allows new columns in the network to easily select AOid and AOPid nodes separately etc.
+  #Without this, both AO and AOP nodes are stored in the 'names' column due to how Cytoscape import works
+aopaopairs$index <- NA
+  #Creating an empty placeholder column that is to be filled with copies of row values from the SUID column; explained more in mergeaop function later
+  #Must be created in df that then becomes a network, since creating a column using the Cytoscape command line will result in an 'invisible' column that cannot be used as key for merging tables
+aopaopairs <- aopaopairs[,c("AOid_source","AOPid_target","AOid","AOtitle","AOPid","AOPtitle","index")]
   #Reordering columns
 write.table(aopaopairs,file=paste0(other_savepath,sprintf("/aopaopairs%s.tsv",sub("top","",deparse(substitute(input))))),sep="\t",quote=FALSE,row.names=FALSE)
-commandsRun(sprintf('network import file columnTypeList=s,t,sa,sa,ta,ta delimiters=\\t file=%s firstRowAsColumnNames=true rootNetworkList= -- Create new network collection -- startLoadRow=1',paste0(other_savepath,sprintf("/aopaopairs%s.tsv",sub("top","",deparse(substitute(input)))))))
+  #Writing modified table to file
+commandsRun(sprintf('network import file columnTypeList=s,t,sa,sa,ta,ta,ta delimiters=\\t file=%s firstRowAsColumnNames=true rootNetworkList= -- Create new network collection -- startLoadRow=1',paste0(other_savepath,sprintf("/aopaopairs%s.tsv",sub("top","",deparse(substitute(input)))))))
+  #Importing table as network
 Sys.sleep(0.5)
 renameNetwork(sprintf("AOP-AO pairs for top AOPs in top quarter KEs%s",sub("top","",deparse(substitute(input)))))
 }
-getaopaopairs(top_selected)
-aopaonetwork_selected <- getNetworkName()
+# getaopaopairs(top_selected)
+# aopaonetwork_selected <- getNetworkName()
 
 getaopaopairs(top_all)
 aopaonetwork_all <- getNetworkName()
@@ -905,26 +921,37 @@ mergeaop <- function (input){
 aopaonetwork <- get(paste0("aopaonetwork_",input))
 keaopnetwork <- get(paste0("keaopnetwork_", input))
 kegenenetwork <- get(paste0("kegenenetwork_",input))
-
+  #Renaming variables to contain type of selection to correctly select previously generated objects
   
 altmergeNetworks(sources=c(aopaonetwork,keaopnetwork),
                  title = "KE-AOP-AO merged network",
                  operation="union",
                  nodeKeys=c("AOPid","AOPid"))
 renameNetwork(paste0("KE-AOP-AO merged network_",input))
+  #Merging the AOP-AO network to the KE-AOP network to extend KE-AOP associations with AOs
 keaopaomerged <- getNetworkName()
 
 altmergeNetworks(sources=c(keaopaomerged,kegenenetwork),
                  title="gene-KE-AOP-AO merged network",
                  operation="union",
                  nodeKeys=c("KEid","KEid"))
+  #Merging KE-AOP-AO associations with the KE-gene network to extend KE-gene associations with AOPs and AOs
 renameNetwork(paste0("gene-KE-AOP-AO merged network_",input))
 mapTableColumn("Ensembl","Human","Ensembl","HGNC")
+  #Generating HGNC names for gene nodes to improve readability
+commandsRun(sprintf('table set values columnName=index handleEquations=true rowList=all value="=$SUID" table=%s',paste0("gene-KE-AOP-AO merged network_",input," default  node")))
+  #Filling the  index column with node SUIDs
+  #SUIDs are always generated for each node but are not exported with the table, so they must first be transposed to a column that will be exported
 commandsRun(sprintf('table export options=CSV outputFile="%s" table="%s"',paste0(other_savepath,paste0("gene-KE-AOP-AO merged network_",input," node")),paste0("gene-KE-AOP-AO merged network_",input," default  node")))
+  #Exporting the node table of the current network
 nodetable <- read.table(paste0(other_savepath,paste0('gene-KE-AOP-AO merged network_',input," node.csv")), header=TRUE, sep=",")
+  #Reading the node table as R object
 nodetable <- nodetable %>%
   rowwise() %>%
   mutate(label=paste(na.omit(c_across(all_of(c("KEtitle","AOPtitle","AOtitle","HGNC")))), collapse=""))
+  #Generating a new 'label' column that combines KEtitle, AOPtitle, AOtitle, and HGNC into one columns
+  #Since each node represents a different type of data (KE, AOP, AO, or gene), titles will never overlap
+  #Cytoscape visualisation is based on one column, thus labels need to all be stored in a single column for visualisation
 nodetable <- nodetable %>%
   rowwise() %>%
   mutate(type = case_when(
@@ -934,34 +961,146 @@ nodetable <- nodetable %>%
     str_detect(Ensembl, "\\S") ~ "gene",
     TRUE ~ NA_character_
   ))
-#write.table(nodetable, file=paste0(other_savepath,paste0('gene-KE-AOP-AO merged network_',input," node.csv")),quote=FALSE,sep=",",row.names=FALSE)
-loadTableData(nodetable,data.key.column = "name",table="node",table.key.column = "name")
+  #Generating a new 'type' column indicating of which type (KE, AOP, AO, or gene) a node is 
+  #Again for visualsation purposes - later used to determine color mapping of node based on type
+write.table(nodetable, file=paste0(other_savepath,paste0("gene-KE-AOP-AO merged network_",input," node.tsv")),sep="\t",row.names = FALSE,quote = FALSE)
+commandsRun(sprintf('table import file file=%s dataTypeTargetForNetworkCollection="Node Table Columns" delimiters=\\t keyColumnForMapping="index"  keyColumnIndex=7 startLoadRow=1 firstRowAsColumnNames=true',paste0(other_savepath,paste0("gene-KE-AOP-AO merged network_",input," node.tsv"))))
+  #Loading modified node table back to the network to include label and type columns
+  #In AOP-Wiki, KEs and AOs have the same type of URL, and some data may be considered an AO in one AOP and a KE in another
+  #The only column where every node has a value is 'name', but since the same URL (used for 'name') may designate two different types (AO or KE),
+  #using 'name' as key column for table reimport causes nodes with the same 'name' to be merged, even though they are different
+  #Therefore, SUID is used as key column as it is unique for every node
+  #Now, a datapoint that represents an AO in one AOP and a KE in another AOP is kept as two distinct nodes as desired
 deleteTableColumn("shared.name")
+  #Deleting duplicate column
 lapply(c(aopaonetwork,keaopnetwork,kegenenetwork,keaopaomerged),deleteNetwork)
-
+  #Deleting intermediary networks used to generate full gene-KE-AOP-AO network
 } 
-mergeaop("selected")
-exportNetwork(paste0(nw_savepath,"gene-KE-AOP-AO merged network_selected"),"CX", overwriteFile=TRUE,network="gene-KE-AOP-AO merged network_selected")
+
 
 mergeaop("all")
+#Creating the full gene-KE-AOP-AO network with data from all AOs and associated AOPs and KEs in AOP-Wiki
 exportNetwork(paste0(nw_savepath,"gene-KE-AOP-AO merged network_all"),"CX", overwriteFile=TRUE,network="gene-KE-AOP-AO merged network_all")
+#Exporting the network
+
+#mergeaop("selected")
+#exportNetwork(paste0(nw_savepath,"gene-KE-AOP-AO merged network_selected"),"CX", overwriteFile=TRUE,network="gene-KE-AOP-AO merged network_selected")
+
 
 end_section("AOP")
+
+##SNW-AOP -----------------------------------------------------------------------------------------------------------------------------------------
+
+importNetworkFromFile(paste0(nw_savepath,"SCZ_SNW_STRING_clustered_GO.cx"))
+  #Reimporting clustered supernetwork with GO results added
+commandsRun('table delete column column="gLayCluster.2" table="SCZ_SNW_STRING_clustered_GO default node')
+  #Deleting duplicate gLayCluster column
+createColumnFilter(
+  filter.name = "has_GO_result",
+  column = "N_nodes",
+  criterion = 0,
+  predicate = "GREATER_THAN",
+  anyMatch = TRUE,
+  apply = TRUE
+)
+  #Selecting nodes included in a 'valid' cluster, i.e. clusters with 5 or more nodes (GO analysis only performed for these)
+  #N_nodes is only generated for 'valid' clusters, so good column to filter by
+invertNodeSelection()
+deleteSelectedNodes()
+  #Inverting selection and deleting nodes that don't have GO results
+commandsRun(sprintf('table export options=CSV outputFile=%s table="SCZ_SNW_STRING_clustered_GO default node"',paste0(other_savepath,"SCZ_SNW_STRING_clustered_GO node")))
+  #Exporting the node table from the clustered supernetwork with GO results
+snw_node <- read.table(file=paste0(other_savepath,"SCZ_SNW_STRING_clustered_GO node.tsv"),header=TRUE,sep="\t")
+deleteNetwork("SCZ_SNW_STRING_clustered_GO")
+  #Deleting the SNW again, was only imported to get node table
+
+aopmerged_node <- read.table(file=paste0(other_savepath,"gene-KE-AOP-AO merged network_all node.tsv"),header=TRUE,sep="\t")
+  #Reading the node table of the merged AOP network
+
+snw_node_aop <- snw_node[snw_node$Ensembl %in% aopmerged_node$Ensembl,]
+  #Selecting rows from snw_node_aop that have the same genes that are also found in the AOP network 
+
+remove_duplicates <- function(pathway_string) {
+  pathway_string %>%
+    str_split(";|, ") %>%     # Split the string by commas or semicolons
+    unlist() %>%              # Unlist the resulting list
+    unique() %>%              # Remove duplicates
+    paste(collapse = ", ")    # Collapse the unique elements back into a single string
+}
+  #When merging WikiPathways node and edge networks, it's possible that there are semi-colon separated duplicates in PathwayID
+  #This function splits strings and removes duplicates for a more consistent and clean look 
+snw_node_aop$PathwayID <- sapply(snw_node_aop$PathwayID, remove_duplicates)
+
+snw_node_aop_valid <- select(snw_node_aop,Ensembl, fromPublication,fromSTRING,fromWikiPathways,fromDisGeNET,gLayCluster,snpID,CNVassociated,PathwayID)
+  #Getting relevant columns for network construction
+snw_node_aop_valid <- separate_rows(snw_node_aop_valid,PathwayID,sep=", ")
+  #Separating PathwayID rows to have one or multiple PathwayIDs per gene; one PathwayID per row
+sparqlquery("WikiPathways","pathwaymap.txt","pathwaymap")
+  #Querying WikiPathways for all Pathway IDs and Pathway titles for mapping
+pathwaymap$PathwayTitle <- sub("@en$","",pathwaymap$PathwayTitle)
+pathwaymap$PathwayTitle <- gsub('"','',pathwaymap$PathwayTitle)
+  #Cleaning up mapping file by removing quotation marks and "@en" appendix of all rows
+snw_node_aop_valid <- merge(snw_node_aop_valid,pathwaymap,by="PathwayID",all.x=TRUE)
+  #Adding PathwayTitle to the df to map pathway IDs to titles
+snw_node_aop_valid[is.na(snw_node_aop_valid)] <- ""
+  #Replacing NA with empty for nicer look in Cytoscape
+snw_node_aop_valid <- snw_node_aop_valid %>%
+  rename(Ensembl_source = Ensembl,
+         PathwayID_target = PathwayID)
+  #Renaming source and target cols for import
+snw_node_aop_valid$Ensembl <- snw_node_aop_valid$Ensembl_source
+snw_node_aop_valid$PathwayID <- snw_node_aop_valid$PathwayID_target
+  #Duplicating source and target cols for import
+snw_node_aop_valid <- snw_node_aop_valid[,c("Ensembl_source","Ensembl","fromPublication","fromSTRING","fromDisGeNET","fromWikiPathways","gLayCluster","snpID","CNVassociated","PathwayID_target","PathwayID","PathwayTitle")]
+  #Reordering columns
+write.table(snw_node_aop_valid, file=paste0(other_savepath,"snw_node_aop.tsv"), sep="\t", quote=FALSE, row.names=FALSE)
+  #Writing to file for Cytoscape import
+commandsRun(sprintf('network import file columnTypeList=s,sa,sa,sa,sa,sa,sa,sa,sa,t,ta,ta delimiters=\\t file=%s firstRowAsColumnNames=true rootNetworkList=-- Create new network collection -- startLoadRow=1',paste0(other_savepath,"snw_node_aop.tsv")))
+  #Importing network to Cytoscape
+renameNetwork("Genes from AOP network with SNW attributes")
+commandsRun(sprintf('table export options=CSV table="Genes from AOP network with SNW attributes default  node outputFile=%s ',paste0(other_savepath,"Genes from AOP network with SNW attributes node")))
+  #Exporting node table
+snw_node_aop_valid_node <- read.table(file=paste0(other_savepath,"Genes from AOP network with SNW attributes node.csv"),header=TRUE,sep=",")
+  #Reading node table as R object
+snw_node_aop_valid_node <- snw_node_aop_valid_node %>%
+  rowwise() %>%
+  mutate(label=paste(na.omit(c_across(all_of(c("PathwayTitle")))), collapse=""))
+  #Adding 'label' column for pathway nodes in preparation for merge with gene-AOP network
+snw_node_aop_valid_node <- snw_node_aop_valid_node %>%
+  rowwise() %>%
+  mutate(type = case_when(
+    str_detect(PathwayID, "\\S") ~ "Pathway",
+    str_detect(Ensembl, "\\S") ~ "gene",
+    TRUE ~ NA_character_
+  ))
+  #Adding 'type' column in preparation for merge with gene-AOP network
+loadTableData(snw_node_aop_valid_node,data.key.column='name',table.key.column = 'name',table='node')
+  #Loading modified node table back to network
+altmergeNetworks(sources=c("gene-KE-AOP-AO merged network_all","Genes from AOP network with SNW attributes"),
+                 title="gene-KE-AOP-AO merged network with pathways",
+                 operation="union",
+                 nodeKeys=c("Ensembl","name"))
+  #Merging gene-KE-AOP-AO network with gene-pathway network
+deleteTableColumn("shared.name")
+exportNetwork(filename=paste0(other_savepath,"gene-KE-AO merged network with pathways"), type="CX", overwriteFile = TRUE)
 
 ##AOP VISUALISATION -------------------------------------------------------------------------------------------------------------------------------
 createVisualStyle("AOP_vis")
 setVisualStyle("AOP_vis")
+#Creating and setting a new visual style for the AOP network
 setNodeLabelMapping(
   table.column="label",
   style.name="AOP_vis"
 )
+#Setting node labels using dedicated node label column
 setNodeColorMapping(
   table.column = "type",
   mapping.type="d",
-  table.column.values = c("AO","AOP","KE","gene"),
-  colors=c("#FB6a4A","#FEB24C","#FA9FB5","#74C476"),
+  table.column.values = c("AO","AOP","KE","gene","Pathway"),
+  colors=c("#FB6a4A","#FEB24C","#FA9FB5","#74C476","#76cdf3"),
   style.name="AOP_vis"
 )
+#Setting node colors using dedicated type column
 setNodeShapeDefault(
   new.shape="ROUND_RECTANGLE",
   style.name="AOP_vis"
@@ -981,7 +1120,8 @@ setEdgeSourceArrowShapeDefault(
 setEdgeColorDefault(
   new.color="#BCBCBC",
   style.name="AOP_vis"
-)  
+) 
+
 
 ##RAW SNW VISUALISATION --------------------------------------------------------------------------------------------------------------------------- 
 setCurrentNetwork(snw_scz_filtered_string_clustered_go)

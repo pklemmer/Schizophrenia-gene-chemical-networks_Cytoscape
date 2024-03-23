@@ -1,5 +1,0 @@
-Importing and merging	31.10s
-STRING	24.34s
-Clustering	9.64s
-GO Analysis	63.66s
-AOP	18.52s
