@@ -1,0 +1,278 @@
+AOid	AOPid	AOPtitle	AOtitle	Ensembl	HGNC	index	KEid	KEtitle	name	selected	shared.name	label	type
+						164436	https://identifiers.org/aop.events/209	Peptide Oxidation	https://identifiers.org/aop.events/209	false	https://identifiers.org/aop.events/209	Peptide Oxidation	KE
+						164439	https://identifiers.org/aop.events/55	Cell injury/death	https://identifiers.org/aop.events/55	false	https://identifiers.org/aop.events/55	Cell injury/death	KE
+						164442	https://identifiers.org/aop.events/188	Neuroinflammation	https://identifiers.org/aop.events/188	false	https://identifiers.org/aop.events/188	Neuroinflammation	KE
+						164445	https://identifiers.org/aop.events/381	Reduced levels of BDNF	https://identifiers.org/aop.events/381	false	https://identifiers.org/aop.events/381	Reduced levels of BDNF	KE
+						164448	https://identifiers.org/aop.events/202	Inhibition, Nuclear factor kappa B (NF-kB)	https://identifiers.org/aop.events/202	false	https://identifiers.org/aop.events/202	Inhibition, Nuclear factor kappa B (NF-kB)	KE
+						164451	https://identifiers.org/aop.events/898	Disruption, Lysosome	https://identifiers.org/aop.events/898	false	https://identifiers.org/aop.events/898	Disruption, Lysosome	KE
+						164454	https://identifiers.org/aop.events/1493	Increased Pro-inflammatory mediators	https://identifiers.org/aop.events/1493	false	https://identifiers.org/aop.events/1493	Increased Pro-inflammatory mediators	KE
+						164457	https://identifiers.org/aop.events/941	Activation, EGFR	https://identifiers.org/aop.events/941	false	https://identifiers.org/aop.events/941	Activation, EGFR	KE
+						164460	https://identifiers.org/aop.events/962	Increase, Mucin production	https://identifiers.org/aop.events/962	false	https://identifiers.org/aop.events/962	Increase, Mucin production	KE
+						164463	https://identifiers.org/aop.events/960	Increased, Uptake of thyroxine into tissue	https://identifiers.org/aop.events/960	false	https://identifiers.org/aop.events/960	Increased, Uptake of thyroxine into tissue	KE
+						164466	https://identifiers.org/aop.events/984	Impairment, T-cell dependent antibody response	https://identifiers.org/aop.events/984	false	https://identifiers.org/aop.events/984	Impairment, T-cell dependent antibody response	KE
+						164469	https://identifiers.org/aop.events/981	Reduction, NFAT/AP-1 complex formation	https://identifiers.org/aop.events/981	false	https://identifiers.org/aop.events/981	Reduction, NFAT/AP-1 complex formation	KE
+						164472	https://identifiers.org/aop.events/1202	Suppression, IL-2 and IL-4 production	https://identifiers.org/aop.events/1202	false	https://identifiers.org/aop.events/1202	Suppression, IL-2 and IL-4 production	KE
+						164475	https://identifiers.org/aop.events/1488	Glutamate dyshomeostasis	https://identifiers.org/aop.events/1488	false	https://identifiers.org/aop.events/1488	Glutamate dyshomeostasis	KE
+						164478	https://identifiers.org/aop.events/1492	Tissue resident cell activation	https://identifiers.org/aop.events/1492	false	https://identifiers.org/aop.events/1492	Tissue resident cell activation	KE
+						164481	https://identifiers.org/aop.events/1499	Increased, activation of T (T) helper (h) type 2 cells	https://identifiers.org/aop.events/1499	false	https://identifiers.org/aop.events/1499	Increased, activation of T (T) helper (h) type 2 cells	KE
+						164484	https://identifiers.org/aop.events/1496	Increased, secretion of proinflammatory mediators	https://identifiers.org/aop.events/1496	false	https://identifiers.org/aop.events/1496	Increased, secretion of proinflammatory mediators	KE
+						164487	https://identifiers.org/aop.events/1193	N/A, Breast Cancer	https://identifiers.org/aop.events/1193	false	https://identifiers.org/aop.events/1193	N/A, Breast Cancer	KE
+						164490	https://identifiers.org/aop.events/1262	Apoptosis	https://identifiers.org/aop.events/1262	false	https://identifiers.org/aop.events/1262	Apoptosis	KE
+						164493	https://identifiers.org/aop.events/1457	Induction, Epithelial Mesenchymal Transition	https://identifiers.org/aop.events/1457	false	https://identifiers.org/aop.events/1457	Induction, Epithelial Mesenchymal Transition	KE
+						164496	https://identifiers.org/aop.events/1394	Induction, persistent proliferation/sustained proliferation	https://identifiers.org/aop.events/1394	false	https://identifiers.org/aop.events/1394	Induction, persistent proliferation/sustained proliferation	KE
+						164499	https://identifiers.org/aop.events/1439	Systemic acute phase response	https://identifiers.org/aop.events/1439	false	https://identifiers.org/aop.events/1439	Systemic acute phase response	KE
+						164502	https://identifiers.org/aop.events/1513	General Apoptosis	https://identifiers.org/aop.events/1513	false	https://identifiers.org/aop.events/1513	General Apoptosis	KE
+						164505	https://identifiers.org/aop.events/87	Release, Cytokine	https://identifiers.org/aop.events/87	false	https://identifiers.org/aop.events/87	Release, Cytokine	KE
+						164508	https://identifiers.org/aop.events/1700	Impaired IL-1R1 signaling in T cell	https://identifiers.org/aop.events/1700	false	https://identifiers.org/aop.events/1700	Impaired IL-1R1 signaling in T cell	KE
+						164511	https://identifiers.org/aop.events/1825	Increase, Cell death	https://identifiers.org/aop.events/1825	false	https://identifiers.org/aop.events/1825	Increase, Cell death	KE
+						164514	https://identifiers.org/aop.events/1822	Maturation of TNF/iNOS-Producing Dendritic Cells	https://identifiers.org/aop.events/1822	false	https://identifiers.org/aop.events/1822	Maturation of TNF/iNOS-Producing Dendritic Cells	KE
+						164517	https://identifiers.org/aop.events/1718	Suppression of IL-4 production	https://identifiers.org/aop.events/1718	false	https://identifiers.org/aop.events/1718	Suppression of IL-4 production	KE
+						164520	https://identifiers.org/aop.events/1854	Dysregulation, ACE2 expression and activity	https://identifiers.org/aop.events/1854	false	https://identifiers.org/aop.events/1854	Dysregulation, ACE2 expression and activity	KE
+						164523	https://identifiers.org/aop.events/1848	Toll Like Receptor (TLR) Dysregulation	https://identifiers.org/aop.events/1848	false	https://identifiers.org/aop.events/1848	Toll Like Receptor (TLR) Dysregulation	KE
+						164526	https://identifiers.org/aop.events/264	Activation, SREBP-1c	https://identifiers.org/aop.events/264	false	https://identifiers.org/aop.events/264	Activation, SREBP-1c	KE
+						164529	https://identifiers.org/aop.events/89	Synthesis, De Novo FA	https://identifiers.org/aop.events/89	false	https://identifiers.org/aop.events/89	Synthesis, De Novo FA	KE
+						164532	https://identifiers.org/aop.events/167	Activation, LXR	https://identifiers.org/aop.events/167	false	https://identifiers.org/aop.events/167	Activation, LXR	KE
+						164535	https://identifiers.org/aop.events/398	Activation, Dendritic Cells	https://identifiers.org/aop.events/398	false	https://identifiers.org/aop.events/398	Activation, Dendritic Cells	KE
+						164538	https://identifiers.org/aop.events/854	Alterations, Cellular proliferation / hyperplasia	https://identifiers.org/aop.events/854	false	https://identifiers.org/aop.events/854	Alterations, Cellular proliferation / hyperplasia	KE
+						164541	https://identifiers.org/aop.events/1980	Increased microRNA expression	https://identifiers.org/aop.events/1980	false	https://identifiers.org/aop.events/1980	Increased microRNA expression	KE
+						164544	https://identifiers.org/aop.events/1981	Decreased SIRT1 expression	https://identifiers.org/aop.events/1981	false	https://identifiers.org/aop.events/1981	Decreased SIRT1 expression	KE
+						164547	https://identifiers.org/aop.events/1982	metastatic breast cancer	https://identifiers.org/aop.events/1982	false	https://identifiers.org/aop.events/1982	metastatic breast cancer	KE
+						164550	https://identifiers.org/aop.events/2040	Decrease, GLI1/2 target gene expression	https://identifiers.org/aop.events/2040	false	https://identifiers.org/aop.events/2040	Decrease, GLI1/2 target gene expression	KE
+						164553	https://identifiers.org/aop.events/2043	Decrease, Sonic Hedgehog second messenger production	https://identifiers.org/aop.events/2043	false	https://identifiers.org/aop.events/2043	Decrease, Sonic Hedgehog second messenger production	KE
+						164556	https://identifiers.org/aop.events/2180	Immune mechanisms antagonized by viral proteins	https://identifiers.org/aop.events/2180	false	https://identifiers.org/aop.events/2180	Immune mechanisms antagonized by viral proteins	KE
+						164559	https://identifiers.org/aop.events/851	Decrease of GABAergic interneurons	https://identifiers.org/aop.events/851	false	https://identifiers.org/aop.events/851	Decrease of GABAergic interneurons	KE
+https://identifiers.org/aop.events/1016			Inhibition, Feeding			164562			https://identifiers.org/aop.events/1016	false	https://identifiers.org/aop.events/1016	Inhibition, Feeding	AO
+	https://identifiers.org/aop/471	Various neuronal effects induced by elavl3, sox10, and mbp				164565			https://identifiers.org/aop/471	false	https://identifiers.org/aop/471	Various neuronal effects induced by elavl3, sox10, and mbp	AOP
+https://identifiers.org/aop.events/1090			Increased, mesotheliomas			164568			https://identifiers.org/aop.events/1090	false	https://identifiers.org/aop.events/1090	Increased, mesotheliomas	AO
+	https://identifiers.org/aop/409	Frustrated phagocytosis leads to malignant mesothelioma				164571			https://identifiers.org/aop/409	false	https://identifiers.org/aop/409	Frustrated phagocytosis leads to malignant mesothelioma	AOP
+https://identifiers.org/aop.events/1192			Increased, Ductal Hyperplasia			164574			https://identifiers.org/aop.events/1192	false	https://identifiers.org/aop.events/1192	Increased, Ductal Hyperplasia	AO
+	https://identifiers.org/aop/294	Increased reactive oxygen and nitrogen species (RONS) leading to increased risk of breast cancer				164577			https://identifiers.org/aop/294	false	https://identifiers.org/aop/294	Increased reactive oxygen and nitrogen species (RONS) leading to increased risk of breast cancer	AOP
+	https://identifiers.org/aop/293	Increased DNA damage leading to increased risk of breast cancer				164580			https://identifiers.org/aop/293	false	https://identifiers.org/aop/293	Increased DNA damage leading to increased risk of breast cancer	AOP
+https://identifiers.org/aop.events/1193			N/A, Breast Cancer			164583			https://identifiers.org/aop.events/1193	false	https://identifiers.org/aop.events/1193	N/A, Breast Cancer	AO
+	https://identifiers.org/aop/200	Estrogen receptor activation leading to breast cancer				164586			https://identifiers.org/aop/200	false	https://identifiers.org/aop/200	Estrogen receptor activation leading to breast cancer	AOP
+	https://identifiers.org/aop/439	Activation of the AhR leading to breast cancer				164589			https://identifiers.org/aop/439	false	https://identifiers.org/aop/439	Activation of the AhR leading to breast cancer	AOP
+https://identifiers.org/aop.events/1194			Increase, DNA damage			164592			https://identifiers.org/aop.events/1194	false	https://identifiers.org/aop.events/1194	Increase, DNA damage	AO
+https://identifiers.org/aop.events/1250			Decrease, Lung function			164595			https://identifiers.org/aop.events/1250	false	https://identifiers.org/aop.events/1250	Decrease, Lung function	AO
+	https://identifiers.org/aop/419	Aryl hydrocarbon receptor activation leading to impaired lung function through P53 toxicity pathway				164598			https://identifiers.org/aop/419	false	https://identifiers.org/aop/419	Aryl hydrocarbon receptor activation leading to impaired lung function through P53 toxicity pathway	AOP
+	https://identifiers.org/aop/148	EGFR Activation Leading to Decreased Lung Function				164601			https://identifiers.org/aop/148	false	https://identifiers.org/aop/148	EGFR Activation Leading to Decreased Lung Function	AOP
+https://identifiers.org/aop.events/1262			Apoptosis			164604			https://identifiers.org/aop.events/1262	false	https://identifiers.org/aop.events/1262	Apoptosis	AO
+	https://identifiers.org/aop/205	AOP from chemical insult to cell death				164607			https://identifiers.org/aop/205	false	https://identifiers.org/aop/205	AOP from chemical insult to cell death	AOP
+https://identifiers.org/aop.events/1263			Necrosis			164610			https://identifiers.org/aop.events/1263	false	https://identifiers.org/aop.events/1263	Necrosis	AO
+https://identifiers.org/aop.events/1276			Lung fibrosis			164613			https://identifiers.org/aop.events/1276	false	https://identifiers.org/aop.events/1276	Lung fibrosis	AO
+	https://identifiers.org/aop/415	Aryl hydrocarbon receptor activation leading to lung fibrosis through IL-6 toxicity pathway				164616			https://identifiers.org/aop/415	false	https://identifiers.org/aop/415	Aryl hydrocarbon receptor activation leading to lung fibrosis through IL-6 toxicity pathway	AOP
+	https://identifiers.org/aop/206	Peroxisome proliferator-activated receptors γ inactivation leading to lung fibrosis				164619			https://identifiers.org/aop/206	false	https://identifiers.org/aop/206	Peroxisome proliferator-activated receptors γ inactivation leading to lung fibrosis	AOP
+	https://identifiers.org/aop/319	Binding to ACE2 leading to lung fibrosis				164622			https://identifiers.org/aop/319	false	https://identifiers.org/aop/319	Binding to ACE2 leading to lung fibrosis	AOP
+	https://identifiers.org/aop/382	Angiotensin II type 1 receptor (AT1R) agonism leading to lung fibrosis				164625			https://identifiers.org/aop/382	false	https://identifiers.org/aop/382	Angiotensin II type 1 receptor (AT1R) agonism leading to lung fibrosis	AOP
+https://identifiers.org/aop.events/1277			Reproductive failure			164628			https://identifiers.org/aop.events/1277	false	https://identifiers.org/aop.events/1277	Reproductive failure	AO
+	https://identifiers.org/aop/210	Activation of c-Jun N-terminal kinase (JNK) and Forkhead box O (FOXO) and reduction of WNT pathways leading to reproductive failure: Integrated multi-OMICS approach for AOP building				164631			https://identifiers.org/aop/210	false	https://identifiers.org/aop/210	Activation of c-Jun N-terminal kinase (JNK) and Forkhead box O (FOXO) and reduction of WNT pathways leading to reproductive failure: Integrated multi-OMICS approach for AOP building	AOP
+	https://identifiers.org/aop/207	NADPH oxidase and P38 MAPK activation leading to reproductive failure in Caenorhabditis elegans				164634			https://identifiers.org/aop/207	false	https://identifiers.org/aop/207	NADPH oxidase and P38 MAPK activation leading to reproductive failure in Caenorhabditis elegans	AOP
+https://identifiers.org/aop.events/1348			Increase, seizure			164637			https://identifiers.org/aop.events/1348	false	https://identifiers.org/aop.events/1348	Increase, seizure	AO
+https://identifiers.org/aop.events/1363			Increased, epilepsy			164640			https://identifiers.org/aop.events/1363	false	https://identifiers.org/aop.events/1363	Increased, epilepsy	AO
+https://identifiers.org/aop.events/1395			Liver Cancer			164643			https://identifiers.org/aop.events/1395	false	https://identifiers.org/aop.events/1395	Liver Cancer	AO
+	https://identifiers.org/aop/220	Cyp2E1 Activation Leading to Liver Cancer				164646			https://identifiers.org/aop/220	false	https://identifiers.org/aop/220	Cyp2E1 Activation Leading to Liver Cancer	AOP
+https://identifiers.org/aop.events/1443			Atherosclerosis			164649			https://identifiers.org/aop.events/1443	false	https://identifiers.org/aop.events/1443	Atherosclerosis	AO
+	https://identifiers.org/aop/237	Substance interaction with lung resident cell membrane components leading to atherosclerosis				164652			https://identifiers.org/aop/237	false	https://identifiers.org/aop/237	Substance interaction with lung resident cell membrane components leading to atherosclerosis	AOP
+https://identifiers.org/aop.events/1458			Pulmonary fibrosis			164655			https://identifiers.org/aop.events/1458	false	https://identifiers.org/aop.events/1458	Pulmonary fibrosis	AO
+	https://identifiers.org/aop/241	Latent Transforming Growth Factor beta1 activation leads to pulmonary fibrosis				164658			https://identifiers.org/aop/241	false	https://identifiers.org/aop/241	Latent Transforming Growth Factor beta1 activation leads to pulmonary fibrosis	AOP
+	https://identifiers.org/aop/347	Toll-like receptor 4 activation and peroxisome proliferator-activated receptor gamma inactivation leading to pulmonary fibrosis				164661			https://identifiers.org/aop/347	false	https://identifiers.org/aop/347	Toll-like receptor 4 activation and peroxisome proliferator-activated receptor gamma inactivation leading to pulmonary fibrosis	AOP
+	https://identifiers.org/aop/173	Substance interaction with the pulmonary resident cell membrane components leading to pulmonary fibrosis				164664			https://identifiers.org/aop/173	false	https://identifiers.org/aop/173	Substance interaction with the pulmonary resident cell membrane components leading to pulmonary fibrosis	AOP
+https://identifiers.org/aop.events/1506			Testicular atrophy			164667			https://identifiers.org/aop.events/1506	false	https://identifiers.org/aop.events/1506	Testicular atrophy	AO
+	https://identifiers.org/aop/212	Histone deacetylase inhibition leading to testicular atrophy				164670			https://identifiers.org/aop/212	false	https://identifiers.org/aop/212	Histone deacetylase inhibition leading to testicular atrophy	AOP
+https://identifiers.org/aop.events/1514			Neurodegeneration			164673			https://identifiers.org/aop.events/1514	false	https://identifiers.org/aop.events/1514	Neurodegeneration	AO
+	https://identifiers.org/aop/260	CYP2E1 activation and formation of protein adducts leading to neurodegeneration				164676			https://identifiers.org/aop/260	false	https://identifiers.org/aop/260	CYP2E1 activation and formation of protein adducts leading to neurodegeneration	AOP
+https://identifiers.org/aop.events/1521			Decrease, Growth			164679			https://identifiers.org/aop.events/1521	false	https://identifiers.org/aop.events/1521	Decrease, Growth	AO
+	https://identifiers.org/aop/268	Uncoupling of oxidative phosphorylation leading to growth inhibition via mitochondrial swelling				164682			https://identifiers.org/aop/268	false	https://identifiers.org/aop/268	Uncoupling of oxidative phosphorylation leading to growth inhibition via mitochondrial swelling	AOP
+	https://identifiers.org/aop/265	Uncoupling of oxidative phosphorylation leading to growth inhibition via increased cytosolic calcium				164685			https://identifiers.org/aop/265	false	https://identifiers.org/aop/265	Uncoupling of oxidative phosphorylation leading to growth inhibition via increased cytosolic calcium	AOP
+	https://identifiers.org/aop/266	Uncoupling of oxidative phosphorylation leading to growth inhibition via decreased Na-K ATPase activity				164688			https://identifiers.org/aop/266	false	https://identifiers.org/aop/266	Uncoupling of oxidative phosphorylation leading to growth inhibition via decreased Na-K ATPase activity	AOP
+	https://identifiers.org/aop/264	Uncoupling of oxidative phosphorylation leading to growth inhibition via ATP depletion associated cell death				164691			https://identifiers.org/aop/264	false	https://identifiers.org/aop/264	Uncoupling of oxidative phosphorylation leading to growth inhibition via ATP depletion associated cell death	AOP
+	https://identifiers.org/aop/287	Mitochondrial complex III antagonism leading to growth inhibition (2)				164694			https://identifiers.org/aop/287	false	https://identifiers.org/aop/287	Mitochondrial complex III antagonism leading to growth inhibition (2)	AOP
+	https://identifiers.org/aop/291	Mitochondrial ATP synthase antagonism leading to growth inhibition (2)				164697			https://identifiers.org/aop/291	false	https://identifiers.org/aop/291	Mitochondrial ATP synthase antagonism leading to growth inhibition (2)	AOP
+https://identifiers.org/aop.events/1535			Heart failure			164700			https://identifiers.org/aop.events/1535	false	https://identifiers.org/aop.events/1535	Heart failure	AO
+	https://identifiers.org/aop/479	Mitochondrial complexes inhibition leading to heart failure via increased myocardial oxidative stress				164703			https://identifiers.org/aop/479	false	https://identifiers.org/aop/479	Mitochondrial complexes inhibition leading to heart failure via increased myocardial oxidative stress	AOP
+https://identifiers.org/aop.events/1548			Necrotic Tissue			164706			https://identifiers.org/aop.events/1548	false	https://identifiers.org/aop.events/1548	Necrotic Tissue	AO
+	https://identifiers.org/aop/273	Mitochondrial complex inhibition leading to liver injury				164709			https://identifiers.org/aop/273	false	https://identifiers.org/aop/273	Mitochondrial complex inhibition leading to liver injury	AOP
+	https://identifiers.org/aop/278	IKK complex inhibition leading to liver injury				164712			https://identifiers.org/aop/278	false	https://identifiers.org/aop/278	IKK complex inhibition leading to liver injury	AOP
+https://identifiers.org/aop.events/1549			Liver Injury			164715			https://identifiers.org/aop.events/1549	false	https://identifiers.org/aop.events/1549	Liver Injury	AO
+	https://identifiers.org/aop/285	Inhibition of N-linked glycosylation leads to liver injury				164718			https://identifiers.org/aop/285	false	https://identifiers.org/aop/285	Inhibition of N-linked glycosylation leads to liver injury	AOP
+https://identifiers.org/aop.events/1588			Bronchiolitis obliterans			164721			https://identifiers.org/aop.events/1588	false	https://identifiers.org/aop.events/1588	Bronchiolitis obliterans	AO
+	https://identifiers.org/aop/280	α-diketone-induced bronchiolitis obliterans				164724			https://identifiers.org/aop/280	false	https://identifiers.org/aop/280	α-diketone-induced bronchiolitis obliterans	AOP
+https://identifiers.org/aop.events/1616			Malformation, cryptorchidism - maldescended testis			164727			https://identifiers.org/aop.events/1616	false	https://identifiers.org/aop.events/1616	Malformation, cryptorchidism - maldescended testis	AO
+	https://identifiers.org/aop/476	Adverse Outcome Pathways diagram related to PBDEs associated male reproductive toxicity				164730			https://identifiers.org/aop/476	false	https://identifiers.org/aop/476	Adverse Outcome Pathways diagram related to PBDEs associated male reproductive toxicity	AOP
+https://identifiers.org/aop.events/1670			Lung cancer			164733			https://identifiers.org/aop.events/1670	false	https://identifiers.org/aop.events/1670	Lung cancer	AO
+	https://identifiers.org/aop/451	Interaction with lung resident cell membrane components leads to lung cancer				164736			https://identifiers.org/aop/451	false	https://identifiers.org/aop/451	Interaction with lung resident cell membrane components leads to lung cancer	AOP
+	https://identifiers.org/aop/303	Frustrated phagocytosis-induced lung cancer				164739			https://identifiers.org/aop/303	false	https://identifiers.org/aop/303	Frustrated phagocytosis-induced lung cancer	AOP
+https://identifiers.org/aop.events/1688			anogenital distance (AGD), decreased			164742			https://identifiers.org/aop.events/1688	false	https://identifiers.org/aop.events/1688	anogenital distance (AGD), decreased	AO
+https://identifiers.org/aop.events/1709			Psoriatic skin disease			164745			https://identifiers.org/aop.events/1709	false	https://identifiers.org/aop.events/1709	Psoriatic skin disease	AO
+	https://identifiers.org/aop/313	Stimulation of TLR7/8 in dendric cells leading to Psoriatic skin disease				164748			https://identifiers.org/aop/313	false	https://identifiers.org/aop/313	Stimulation of TLR7/8 in dendric cells leading to Psoriatic skin disease	AOP
+https://identifiers.org/aop.events/1719			Impairment of T-cell dependent antibody response			164751			https://identifiers.org/aop.events/1719	false	https://identifiers.org/aop.events/1719	Impairment of T-cell dependent antibody response	AO
+	https://identifiers.org/aop/315	Inhibition of JAK3 leading to impairment of T-Cell Dependent Antibody Response				164754			https://identifiers.org/aop/315	false	https://identifiers.org/aop/315	Inhibition of JAK3 leading to impairment of T-Cell Dependent Antibody Response	AOP
+https://identifiers.org/aop.events/1841			Encephalitis			164757			https://identifiers.org/aop.events/1841	false	https://identifiers.org/aop.events/1841	Encephalitis	AO
+	https://identifiers.org/aop/374	Binding of Sars-CoV-2 spike protein to ACE 2 receptors expressed on brain cells (neuronal and non-neuronal) leads to neuroinflammation resulting in encephalitis				164760			https://identifiers.org/aop/374	false	https://identifiers.org/aop/374	Binding of Sars-CoV-2 spike protein to ACE 2 receptors expressed on brain cells (neuronal and non-neuronal) leads to neuroinflammation resulting in encephalitis	AOP
+https://identifiers.org/aop.events/1843			Multi Organ Failure involving Acute Respiratory Distress Syndrome			164763			https://identifiers.org/aop.events/1843	false	https://identifiers.org/aop.events/1843	Multi Organ Failure involving Acute Respiratory Distress Syndrome	AO
+	https://identifiers.org/aop/377	Dysregulated prolonged Toll Like Receptor 9 (TLR9) activation leading to Multi Organ Failure involving Acute Respiratory Distress Syndrome (ARDS)				164766			https://identifiers.org/aop/377	false	https://identifiers.org/aop/377	Dysregulated prolonged Toll Like Receptor 9 (TLR9) activation leading to Multi Organ Failure involving Acute Respiratory Distress Syndrome (ARDS)	AOP
+https://identifiers.org/aop.events/185			Increase, Mutations			164769			https://identifiers.org/aop.events/185	false	https://identifiers.org/aop.events/185	Increase, Mutations	AO
+https://identifiers.org/aop.events/1863			Decrease, Reproduction			164772			https://identifiers.org/aop.events/1863	false	https://identifiers.org/aop.events/1863	Decrease, Reproduction	AO
+https://identifiers.org/aop.events/1868			Hyperinflammation			164775			https://identifiers.org/aop.events/1868	false	https://identifiers.org/aop.events/1868	Hyperinflammation	AO
+	https://identifiers.org/aop/392	Decreased fibrinolysis and activated bradykinin system leading to hyperinflammation				164778			https://identifiers.org/aop/392	false	https://identifiers.org/aop/392	Decreased fibrinolysis and activated bradykinin system leading to hyperinflammation	AOP
+	https://identifiers.org/aop/468	Binding of SARS-CoV-2 to ACE2 leads to hyperinflammation (via cell death)				164781			https://identifiers.org/aop/468	false	https://identifiers.org/aop/468	Binding of SARS-CoV-2 to ACE2 leads to hyperinflammation (via cell death)	AOP
+https://identifiers.org/aop.events/1916			Thromboinflammation, Increased			164784			https://identifiers.org/aop.events/1916	false	https://identifiers.org/aop.events/1916	Thromboinflammation, Increased	AO
+	https://identifiers.org/aop/412	Endothelial cell dysfunction leading to thromboinflammation				164787			https://identifiers.org/aop/412	false	https://identifiers.org/aop/412	Endothelial cell dysfunction leading to thromboinflammation	AOP
+https://identifiers.org/aop.events/1941			Memory Loss			164790			https://identifiers.org/aop.events/1941	false	https://identifiers.org/aop.events/1941	Memory Loss	AO
+	https://identifiers.org/aop/429	A cholesterol/glucose dysmetabolism initiated Tau-driven AOP toward memory loss (AO) in sporadic Alzheimer's Disease with plausible MIE's plug-ins for environmental neurotoxicants				164793			https://identifiers.org/aop/429	false	https://identifiers.org/aop/429	A cholesterol/glucose dysmetabolism initiated Tau-driven AOP toward memory loss (AO) in sporadic Alzheimer's Disease with plausible MIE's plug-ins for environmental neurotoxicants	AOP
+https://identifiers.org/aop.events/1955			Acute Myeloid Leukemia			164796			https://identifiers.org/aop.events/1955	false	https://identifiers.org/aop.events/1955	Acute Myeloid Leukemia	AO
+	https://identifiers.org/aop/432	Deposition of Energy by Ionizing Radiation leading to Acute Myeloid Leukemia				164799			https://identifiers.org/aop/432	false	https://identifiers.org/aop/432	Deposition of Energy by Ionizing Radiation leading to Acute Myeloid Leukemia	AOP
+https://identifiers.org/aop.events/1982			metastatic breast cancer			164802			https://identifiers.org/aop.events/1982	false	https://identifiers.org/aop.events/1982	metastatic breast cancer	AO
+	https://identifiers.org/aop/443	DNA damage and mutations leading to Metastatic Breast Cancer				164805			https://identifiers.org/aop/443	false	https://identifiers.org/aop/443	DNA damage and mutations leading to Metastatic Breast Cancer	AOP
+https://identifiers.org/aop.events/2008			Chronic obstructive pulmonary disease			164808			https://identifiers.org/aop.events/2008	false	https://identifiers.org/aop.events/2008	Chronic obstructive pulmonary disease	AO
+	https://identifiers.org/aop/452	Adverse outcome pathway of PM-induced respiratory toxicity				164811			https://identifiers.org/aop/452	false	https://identifiers.org/aop/452	Adverse outcome pathway of PM-induced respiratory toxicity	AOP
+https://identifiers.org/aop.events/2042			Orofacial clefting			164814			https://identifiers.org/aop.events/2042	false	https://identifiers.org/aop.events/2042	Orofacial clefting	AO
+	https://identifiers.org/aop/491	Decrease, GLI1/2 target gene expression leads to orofacial clefting				164817			https://identifiers.org/aop/491	false	https://identifiers.org/aop/491	Decrease, GLI1/2 target gene expression leads to orofacial clefting	AOP
+	https://identifiers.org/aop/460	Antagonism of Smoothened receptor leading to orofacial clefting				164820			https://identifiers.org/aop/460	false	https://identifiers.org/aop/460	Antagonism of Smoothened receptor leading to orofacial clefting	AOP
+	https://identifiers.org/aop/502	Decrease, cholesterol synthesis leads to orofacial clefting				164823			https://identifiers.org/aop/502	false	https://identifiers.org/aop/502	Decrease, cholesterol synthesis leads to orofacial clefting	AOP
+https://identifiers.org/aop.events/2069			Occurrence, Vascular Remodeling			164826			https://identifiers.org/aop.events/2069	false	https://identifiers.org/aop.events/2069	Occurrence, Vascular Remodeling	AO
+	https://identifiers.org/aop/470	Deposition of energy leads to vascular remodeling				164829			https://identifiers.org/aop/470	false	https://identifiers.org/aop/470	Deposition of energy leads to vascular remodeling	AOP
+https://identifiers.org/aop.events/2091			Occurrence, Bone Loss			164832			https://identifiers.org/aop.events/2091	false	https://identifiers.org/aop.events/2091	Occurrence, Bone Loss	AO
+	https://identifiers.org/aop/482	Deposition of energy leading to occurrence of bone loss				164835			https://identifiers.org/aop/482	false	https://identifiers.org/aop/482	Deposition of energy leading to occurrence of bone loss	AOP
+https://identifiers.org/aop.events/2121			decreased, Intellectual Quotient			164838			https://identifiers.org/aop.events/2121	false	https://identifiers.org/aop.events/2121	decreased, Intellectual Quotient	AO
+	https://identifiers.org/aop/490	Co-activation of IP3R and RyR leads to economic burden through reduced IQ and non-cholinergic mechanisms				164841			https://identifiers.org/aop/490	false	https://identifiers.org/aop/490	Co-activation of IP3R and RyR leads to economic burden through reduced IQ and non-cholinergic mechanisms	AOP
+https://identifiers.org/aop.events/2122			increased, Economic Burden			164844			https://identifiers.org/aop.events/2122	false	https://identifiers.org/aop.events/2122	increased, Economic Burden	AO
+https://identifiers.org/aop.events/2135			Prostate cancer			164847			https://identifiers.org/aop.events/2135	false	https://identifiers.org/aop.events/2135	Prostate cancer	AO
+	https://identifiers.org/aop/495	Androgen receptor activation leading to prostate cancer				164850			https://identifiers.org/aop/495	false	https://identifiers.org/aop/495	Androgen receptor activation leading to prostate cancer	AOP
+https://identifiers.org/aop.events/2194			Influenza A Virus (IAV) shedding and transmission			164853			https://identifiers.org/aop.events/2194	false	https://identifiers.org/aop.events/2194	Influenza A Virus (IAV) shedding and transmission	AO
+	https://identifiers.org/aop/506	Binding of Influenza A Virus (IAV) to Sialic Acid Glycan Receptor leads to viral infection proliferation				164856			https://identifiers.org/aop/506	false	https://identifiers.org/aop/506	Binding of Influenza A Virus (IAV) to Sialic Acid Glycan Receptor leads to viral infection proliferation	AOP
+https://identifiers.org/aop.events/313			Increase, Allergic Respiratory Hypersensitivity Response			164859			https://identifiers.org/aop.events/313	false	https://identifiers.org/aop.events/313	Increase, Allergic Respiratory Hypersensitivity Response	AO
+	https://identifiers.org/aop/39	Covalent Binding, Protein, leading to Increase, Allergic Respiratory Hypersensitivity Response				164862			https://identifiers.org/aop/39	false	https://identifiers.org/aop/39	Covalent Binding, Protein, leading to Increase, Allergic Respiratory Hypersensitivity Response	AOP
+https://identifiers.org/aop.events/323			Increased, Disease susceptibility			164865			https://identifiers.org/aop.events/323	false	https://identifiers.org/aop.events/323	Increased, Disease susceptibility	AO
+	https://identifiers.org/aop/14	Glucocorticoid Receptor Activation Leading to Increased Disease Susceptibility				164868			https://identifiers.org/aop/14	false	https://identifiers.org/aop/14	Glucocorticoid Receptor Activation Leading to Increased Disease Susceptibility	AOP
+https://identifiers.org/aop.events/341			Impairment, Learning and memory			164871			https://identifiers.org/aop.events/341	false	https://identifiers.org/aop.events/341	Impairment, Learning and memory	AO
+	https://identifiers.org/aop/12	Chronic binding of antagonist to N-methyl-D-aspartate receptors (NMDARs) during brain development leads to neurodegeneration with impairment in learning and memory in aging				164874			https://identifiers.org/aop/12	false	https://identifiers.org/aop/12	Chronic binding of antagonist to N-methyl-D-aspartate receptors (NMDARs) during brain development leads to neurodegeneration with impairment in learning and memory in aging	AOP
+	https://identifiers.org/aop/13	Chronic binding of antagonist to N-methyl-D-aspartate receptors (NMDARs) during brain development induces impairment of learning and memory abilities				164877			https://identifiers.org/aop/13	false	https://identifiers.org/aop/13	Chronic binding of antagonist to N-methyl-D-aspartate receptors (NMDARs) during brain development induces impairment of learning and memory abilities	AOP
+	https://identifiers.org/aop/500	Activation of MEK-ERK1/2 leads to deficits in learning and cognition via ROS and apoptosis				164880			https://identifiers.org/aop/500	false	https://identifiers.org/aop/500	Activation of MEK-ERK1/2 leads to deficits in learning and cognition via ROS and apoptosis	AOP
+	https://identifiers.org/aop/483	Deposition of Energy Leading to Learning and Memory Impairment				164883			https://identifiers.org/aop/483	false	https://identifiers.org/aop/483	Deposition of Energy Leading to Learning and Memory Impairment	AOP
+	https://identifiers.org/aop/17	Binding of electrophilic chemicals to SH(thiol)-group of proteins and /or to seleno-proteins involved in protection against oxidative stress during brain development leads to impairment of learning and memory				164886			https://identifiers.org/aop/17	false	https://identifiers.org/aop/17	Binding of electrophilic chemicals to SH(thiol)-group of proteins and /or to seleno-proteins involved in protection against oxidative stress during brain development leads to impairment of learning and memory	AOP
+	https://identifiers.org/aop/48	Binding of agonists to ionotropic glutamate receptors in adult brain causes excitotoxicity that mediates neuronal cell death, contributing to learning and memory impairment.				164889			https://identifiers.org/aop/48	false	https://identifiers.org/aop/48	Binding of agonists to ionotropic glutamate receptors in adult brain causes excitotoxicity that mediates neuronal cell death, contributing to learning and memory impairment.	AOP
+	https://identifiers.org/aop/54	Inhibition of Na+/I- symporter (NIS) leads to learning and memory impairment				164892			https://identifiers.org/aop/54	false	https://identifiers.org/aop/54	Inhibition of Na+/I- symporter (NIS) leads to learning and memory impairment	AOP
+https://identifiers.org/aop.events/344			N/A, Liver fibrosis			164895			https://identifiers.org/aop.events/344	false	https://identifiers.org/aop.events/344	N/A, Liver fibrosis	AO
+	https://identifiers.org/aop/38	Protein Alkylation leading to Liver Fibrosis				164898			https://identifiers.org/aop/38	false	https://identifiers.org/aop/38	Protein Alkylation leading to Liver Fibrosis	AOP
+	https://identifiers.org/aop/494	AhR activation leading to liver fibrosis				164901			https://identifiers.org/aop/494	false	https://identifiers.org/aop/494	AhR activation leading to liver fibrosis	AOP
+	https://identifiers.org/aop/144	Endocytic lysosomal uptake leading to liver fibrosis				164904			https://identifiers.org/aop/144	false	https://identifiers.org/aop/144	Endocytic lysosomal uptake leading to liver fibrosis	AOP
+https://identifiers.org/aop.events/345			N/A, Liver Steatosis			164907			https://identifiers.org/aop.events/345	false	https://identifiers.org/aop.events/345	N/A, Liver Steatosis	AO
+	https://identifiers.org/aop/34	LXR activation leading to hepatic steatosis				164910			https://identifiers.org/aop/34	false	https://identifiers.org/aop/34	LXR activation leading to hepatic steatosis	AOP
+https://identifiers.org/aop.events/350			Increase, Mortality			164913			https://identifiers.org/aop.events/350	false	https://identifiers.org/aop.events/350	Increase, Mortality	AO
+https://identifiers.org/aop.events/351			Increased Mortality			164916			https://identifiers.org/aop.events/351	false	https://identifiers.org/aop.events/351	Increased Mortality	AO
+	https://identifiers.org/aop/410	GSK3beta inactivation leading to increased mortality via defects in developing inner ear				164919			https://identifiers.org/aop/410	false	https://identifiers.org/aop/410	GSK3beta inactivation leading to increased mortality via defects in developing inner ear	AOP
+	https://identifiers.org/aop/320	Binding of SARS-CoV-2 to ACE2 receptor leading to acute respiratory distress associated mortality				164922			https://identifiers.org/aop/320	false	https://identifiers.org/aop/320	Binding of SARS-CoV-2 to ACE2 receptor leading to acute respiratory distress associated mortality	AOP
+https://identifiers.org/aop.events/352			N/A, Neurodegeneration			164925			https://identifiers.org/aop.events/352	false	https://identifiers.org/aop.events/352	N/A, Neurodegeneration	AO
+	https://identifiers.org/aop/281	Acetylcholinesterase Inhibition Leading to Neurodegeneration				164928			https://identifiers.org/aop/281	false	https://identifiers.org/aop/281	Acetylcholinesterase Inhibition Leading to Neurodegeneration	AOP
+https://identifiers.org/aop.events/357			Cholestasis, Pathology			164931			https://identifiers.org/aop.events/357	false	https://identifiers.org/aop.events/357	Cholestasis, Pathology	AO
+	https://identifiers.org/aop/27	Cholestatic Liver Injury induced by Inhibition of the Bile Salt Export Pump (ABCB11)				164934			https://identifiers.org/aop/27	false	https://identifiers.org/aop/27	Cholestatic Liver Injury induced by Inhibition of the Bile Salt Export Pump (ABCB11)	AOP
+https://identifiers.org/aop.events/360			Decrease, Population growth rate			164937			https://identifiers.org/aop.events/360	false	https://identifiers.org/aop.events/360	Decrease, Population growth rate	AO
+https://identifiers.org/aop.events/402			Cognitive Function, Decreased			164940			https://identifiers.org/aop.events/402	false	https://identifiers.org/aop.events/402	Cognitive Function, Decreased	AO
+	https://identifiers.org/aop/152	Interference with thyroid serum binding protein transthyretin and subsequent adverse human neurodevelopmental toxicity				164943			https://identifiers.org/aop/152	false	https://identifiers.org/aop/152	Interference with thyroid serum binding protein transthyretin and subsequent adverse human neurodevelopmental toxicity	AOP
+https://identifiers.org/aop.events/459			Increased, Liver Steatosis			164946			https://identifiers.org/aop.events/459	false	https://identifiers.org/aop.events/459	Increased, Liver Steatosis	AO
+	https://identifiers.org/aop/518	Liver X Receptor (LXR) activation leads to liver steatosis				164949			https://identifiers.org/aop/518	false	https://identifiers.org/aop/518	Liver X Receptor (LXR) activation leads to liver steatosis	AOP
+	https://identifiers.org/aop/58	NR1I3 (CAR) suppression leading to hepatic steatosis				164952			https://identifiers.org/aop/58	false	https://identifiers.org/aop/58	NR1I3 (CAR) suppression leading to hepatic steatosis	AOP
+https://identifiers.org/aop.events/520			Decreased sperm quantity or quality in the adult, Decreased fertility			164955			https://identifiers.org/aop.events/520	false	https://identifiers.org/aop.events/520	Decreased sperm quantity or quality in the adult, Decreased fertility	AO
+https://identifiers.org/aop.events/637			impaired, Learning and memory			164958			https://identifiers.org/aop.events/637	false	https://identifiers.org/aop.events/637	impaired, Learning and memory	AO
+https://identifiers.org/aop.events/719			Increase, hepatocellular adenomas and carcinomas			164961			https://identifiers.org/aop.events/719	false	https://identifiers.org/aop.events/719	Increase, hepatocellular adenomas and carcinomas	AO
+	https://identifiers.org/aop/108	Inhibition of pyruvate dehydrogenase kinase leading to hepatocellular adenomas and carcinomas (in mouse and rat)				164964			https://identifiers.org/aop/108	false	https://identifiers.org/aop/108	Inhibition of pyruvate dehydrogenase kinase leading to hepatocellular adenomas and carcinomas (in mouse and rat)	AOP
+https://identifiers.org/aop.events/759			Increased, Kidney Failure			164967			https://identifiers.org/aop.events/759	false	https://identifiers.org/aop.events/759	Increased, Kidney Failure	AO
+	https://identifiers.org/aop/447	Kidney failure induced by inhibition of mitochondrial electron transfer chain through apoptosis, inflammation and oxidative stress pathways				164970			https://identifiers.org/aop/447	false	https://identifiers.org/aop/447	Kidney failure induced by inhibition of mitochondrial electron transfer chain through apoptosis, inflammation and oxidative stress pathways	AOP
+https://identifiers.org/aop.events/814			Occurrence, Kidney toxicity			164973			https://identifiers.org/aop.events/814	false	https://identifiers.org/aop.events/814	Occurrence, Kidney toxicity	AO
+	https://identifiers.org/aop/257	Receptor mediated endocytosis and lysosomal overload leading to kidney toxicity				164976			https://identifiers.org/aop/257	false	https://identifiers.org/aop/257	Receptor mediated endocytosis and lysosomal overload leading to kidney toxicity	AOP
+https://identifiers.org/aop.events/827			sensitisation, skin			164979			https://identifiers.org/aop.events/827	false	https://identifiers.org/aop.events/827	sensitisation, skin	AO
+	https://identifiers.org/aop/40	Covalent Protein binding leading to Skin Sensitisation				164982			https://identifiers.org/aop/40	false	https://identifiers.org/aop/40	Covalent Protein binding leading to Skin Sensitisation	AOP
+https://identifiers.org/aop.events/856			Formation, Hepatocellular and Bile duct tumors			164985			https://identifiers.org/aop.events/856	false	https://identifiers.org/aop.events/856	Formation, Hepatocellular and Bile duct tumors	AO
+	https://identifiers.org/aop/41	Sustained AhR Activation leading to Rodent Liver Tumours				164988			https://identifiers.org/aop/41	false	https://identifiers.org/aop/41	Sustained AhR Activation leading to Rodent Liver Tumours	AOP
+https://identifiers.org/aop.events/872			Increase, Site of Contact Nasal Tumors			164991			https://identifiers.org/aop.events/872	false	https://identifiers.org/aop.events/872	Increase, Site of Contact Nasal Tumors	AO
+	https://identifiers.org/aop/368	Cytochrome oxidase inhibition leading to olfactory nasal lesions				164994			https://identifiers.org/aop/368	false	https://identifiers.org/aop/368	Cytochrome oxidase inhibition leading to olfactory nasal lesions	AOP
+https://identifiers.org/aop.events/885			Increase, Cancer			164997			https://identifiers.org/aop.events/885	false	https://identifiers.org/aop.events/885	Increase, Cancer	AO
+	https://identifiers.org/aop/513	Reactive Oxygen (ROS) formation leads to cancer via Peroxisome proliferation-activated receptor (PPAR) pathway				165000			https://identifiers.org/aop/513	false	https://identifiers.org/aop/513	Reactive Oxygen (ROS) formation leads to cancer via Peroxisome proliferation-activated receptor (PPAR) pathway	AOP
+	https://identifiers.org/aop/505	Reactive Oxygen Species (ROS) formation leads to cancer via inflammation pathway				165003			https://identifiers.org/aop/505	false	https://identifiers.org/aop/505	Reactive Oxygen Species (ROS) formation leads to cancer via inflammation pathway	AOP
+https://identifiers.org/aop.events/896			Parkinsonian motor deficits			165006			https://identifiers.org/aop.events/896	false	https://identifiers.org/aop.events/896	Parkinsonian motor deficits	AO
+	https://identifiers.org/aop/464	Calcium overload in dopaminergic neurons of the substantia nigra leading to parkinsonian motor deficits				165009			https://identifiers.org/aop/464	false	https://identifiers.org/aop/464	Calcium overload in dopaminergic neurons of the substantia nigra leading to parkinsonian motor deficits	AOP
+	https://identifiers.org/aop/3	Inhibition of the mitochondrial complex I of nigro-striatal neurons leads to parkinsonian motor deficits				165012			https://identifiers.org/aop/3	false	https://identifiers.org/aop/3	Inhibition of the mitochondrial complex I of nigro-striatal neurons leads to parkinsonian motor deficits	AOP
+https://identifiers.org/aop.events/952			Hypertension			165015			https://identifiers.org/aop.events/952	false	https://identifiers.org/aop.events/952	Hypertension	AO
+	https://identifiers.org/aop/149	Peptide Oxidation Leading to Hypertension				165018			https://identifiers.org/aop/149	false	https://identifiers.org/aop/149	Peptide Oxidation Leading to Hypertension	AOP
+https://identifiers.org/aop.events/984			Impairment, T-cell dependent antibody response			165021			https://identifiers.org/aop.events/984	false	https://identifiers.org/aop.events/984	Impairment, T-cell dependent antibody response	AO
+	https://identifiers.org/aop/154	Inhibition of Calcineurin Activity Leading to Impaired T-Cell Dependent Antibody Response				165024			https://identifiers.org/aop/154	false	https://identifiers.org/aop/154	Inhibition of Calcineurin Activity Leading to Impaired T-Cell Dependent Antibody Response	AOP
+	https://identifiers.org/aop/277	Impaired IL-1R1 signaling leading to Impaired T-Cell Dependent Antibody Response				165027			https://identifiers.org/aop/277	false	https://identifiers.org/aop/277	Impaired IL-1R1 signaling leading to Impaired T-Cell Dependent Antibody Response	AOP
+				ENSG00000100294	MCAT	165030			ENSG00000100294	false	ENSG00000100294	MCAT	gene
+				ENSG00000047457	CP	165033			ENSG00000047457	false	ENSG00000047457	CP	gene
+				ENSG00000118271	TTR	165036			ENSG00000118271	false	ENSG00000118271	TTR	gene
+				ENSG00000142208	AKT1	165039			ENSG00000142208	false	ENSG00000142208	AKT1	gene
+				ENSG00000196396	PTPN1	165042			ENSG00000196396	false	ENSG00000196396	PTPN1	gene
+				ENSG00000108823	SGCA	165045			ENSG00000108823	false	ENSG00000108823	SGCA	gene
+				ENSG00000164733	CTSB	165048			ENSG00000164733	false	ENSG00000164733	CTSB	gene
+				ENSG00000117984	CTSD	165051			ENSG00000117984	false	ENSG00000117984	CTSD	gene
+				ENSG00000271503	CCL5	165054			ENSG00000271503	false	ENSG00000271503	CCL5	gene
+				ENSG00000189056	RELN	165057			ENSG00000189056	false	ENSG00000189056	RELN	gene
+				ENSG00000100362	PVALB	165060			ENSG00000100362	false	ENSG00000100362	PVALB	gene
+				ENSG00000064651	SLC12A2	165063			ENSG00000064651	false	ENSG00000064651	SLC12A2	gene
+				ENSG00000157005	SST	165066			ENSG00000157005	false	ENSG00000157005	SST	gene
+				ENSG00000146469	VIP	165069			ENSG00000146469	false	ENSG00000146469	VIP	gene
+				ENSG00000089250	NOS1	165072			ENSG00000089250	false	ENSG00000089250	NOS1	gene
+				ENSG00000090339	ICAM1	165075			ENSG00000090339	false	ENSG00000090339	ICAM1	gene
+				ENSG00000067560	RHOA	165078			ENSG00000067560	false	ENSG00000067560	RHOA	gene
+				ENSG00000028137	TNFRSF1B	165081			ENSG00000028137	false	ENSG00000028137	TNFRSF1B	gene
+				ENSG00000064300	NGFR	165084			ENSG00000064300	false	ENSG00000064300	NGFR	gene
+				ENSG00000278540	ACACA	165087			ENSG00000278540	false	ENSG00000278540	ACACA	gene
+				ENSG00000125538	IL1B	165090			ENSG00000125538	false	ENSG00000125538	IL1B	gene
+				ENSG00000126456	IRF3	165093			ENSG00000126456	false	ENSG00000126456	IRF3	gene
+				ENSG00000070193	FGF10	165096			ENSG00000070193	false	ENSG00000070193	FGF10	gene
+				ENSG00000066468	FGFR2	165099			ENSG00000066468	false	ENSG00000066468	FGFR2	gene
+				ENSG00000164690	SHH	165102			ENSG00000164690	false	ENSG00000164690	SHH	gene
+				ENSG00000162409	PRKAA2	165105			ENSG00000162409	false	ENSG00000162409	PRKAA2	gene
+				ENSG00000112062	MAPK14	165108			ENSG00000112062	false	ENSG00000112062	MAPK14	gene
+				ENSG00000157017	GHRL	165111			ENSG00000157017	false	ENSG00000157017	GHRL	gene
+				ENSG00000133636	NTS	165114			ENSG00000133636	false	ENSG00000133636	NTS	gene
+				ENSG00000103546	SLC6A2	165117			ENSG00000103546	false	ENSG00000103546	SLC6A2	gene
+				ENSG00000144381	HSPD1	165120			ENSG00000144381	false	ENSG00000144381	HSPD1	gene
+				ENSG00000067182	TNFRSF1A	165123			ENSG00000067182	false	ENSG00000067182	TNFRSF1A	gene
+				ENSG00000164342	TLR3	165126			ENSG00000164342	false	ENSG00000164342	TLR3	gene
+				ENSG00000170458	CD14	165129			ENSG00000170458	false	ENSG00000170458	CD14	gene
+				ENSG00000126561	STAT5A	165132			ENSG00000126561	false	ENSG00000126561	STAT5A	gene
+				ENSG00000173039	RELA	165135			ENSG00000173039	false	ENSG00000173039	RELA	gene
+				ENSG00000072310	SREBF1	165138			ENSG00000072310	false	ENSG00000072310	SREBF1	gene
+				ENSG00000026103	FAS	165141			ENSG00000026103	false	ENSG00000026103	FAS	gene
+				ENSG00000175445	LPL	165144			ENSG00000175445	false	ENSG00000175445	LPL	gene
+				ENSG00000171791	BCL2	165147			ENSG00000171791	false	ENSG00000171791	BCL2	gene
+				ENSG00000136634	IL10	165150			ENSG00000136634	false	ENSG00000136634	IL10	gene
+				ENSG00000164399	IL3	165153			ENSG00000164399	false	ENSG00000164399	IL3	gene
+				ENSG00000163599	CTLA4	165156			ENSG00000163599	false	ENSG00000163599	CTLA4	gene
+				ENSG00000108691	CCL2	165159			ENSG00000108691	false	ENSG00000108691	CCL2	gene
+				ENSG00000232810	TNF	165162			ENSG00000232810	false	ENSG00000232810	TNF	gene
+				ENSG00000164400	CSF2	165165			ENSG00000164400	false	ENSG00000164400	CSF2	gene
+				ENSG00000136869	TLR4	165168			ENSG00000136869	false	ENSG00000136869	TLR4	gene
+				ENSG00000150782	IL18	165171			ENSG00000150782	false	ENSG00000150782	IL18	gene
+				ENSG00000137462	TLR2	165174			ENSG00000137462	false	ENSG00000137462	TLR2	gene
+				ENSG00000168621	GDNF	165177			ENSG00000168621	false	ENSG00000168621	GDNF	gene
+				ENSG00000176697	BDNF	165180			ENSG00000176697	false	ENSG00000176697	BDNF	gene
+				ENSG00000086730	LAT2	165183			ENSG00000086730	false	ENSG00000086730	LAT2	gene
+				ENSG00000136244	IL6	165186			ENSG00000136244	false	ENSG00000136244	IL6	gene
+				ENSG00000105976	MET	165189			ENSG00000105976	false	ENSG00000105976	MET	gene
+				ENSG00000100030	MAPK1	165192			ENSG00000100030	false	ENSG00000100030	MAPK1	gene
+				ENSG00000138798	EGF	165195			ENSG00000138798	false	ENSG00000138798	EGF	gene
+				ENSG00000132693	CRP	165198			ENSG00000132693	false	ENSG00000132693	CRP	gene
+				ENSG00000142192	APP	165201			ENSG00000142192	false	ENSG00000142192	APP	gene
+				ENSG00000134982	APC	165204			ENSG00000134982	false	ENSG00000134982	APC	gene
+				ENSG00000110092	CCND1	165207			ENSG00000110092	false	ENSG00000110092	CCND1	gene
+				ENSG00000136997	MYC	165210			ENSG00000136997	false	ENSG00000136997	MYC	gene
+				ENSG00000100644	HIF1A	165213			ENSG00000100644	false	ENSG00000100644	HIF1A	gene
+				ENSG00000168036	CTNNB1	165216			ENSG00000168036	false	ENSG00000168036	CTNNB1	gene
+				ENSG00000107643	MAPK8	165219			ENSG00000107643	false	ENSG00000107643	MAPK8	gene
+				ENSG00000123384	LRP1	165222			ENSG00000123384	false	ENSG00000123384	LRP1	gene
+				ENSG00000103126	AXIN1	165225			ENSG00000103126	false	ENSG00000103126	AXIN1	gene
+				ENSG00000148737	TCF7L2	165228			ENSG00000148737	false	ENSG00000148737	TCF7L2	gene
+				ENSG00000132670	PTPRA	165231			ENSG00000132670	false	ENSG00000132670	PTPRA	gene
+				ENSG00000109320	NFKB1	165234			ENSG00000109320	false	ENSG00000109320	NFKB1	gene
+				ENSG00000077782	FGFR1	165237			ENSG00000077782	false	ENSG00000077782	FGFR1	gene
+				ENSG00000134460	IL2RA	165240			ENSG00000134460	false	ENSG00000134460	IL2RA	gene
+				ENSG00000177606	JUN	165243			ENSG00000177606	false	ENSG00000177606	JUN	gene
+				ENSG00000015475	BID	165246			ENSG00000015475	false	ENSG00000015475	BID	gene
+				ENSG00000170345	FOS	165249			ENSG00000170345	false	ENSG00000170345	FOS	gene
+				ENSG00000109471	IL2	165252			ENSG00000109471	false	ENSG00000109471	IL2	gene
+				ENSG00000113520	IL4	165255			ENSG00000113520	false	ENSG00000113520	IL4	gene
+				ENSG00000141510	TP53	165258			ENSG00000141510	false	ENSG00000141510	TP53	gene
+				ENSG00000121879	PIK3CA	165261			ENSG00000121879	false	ENSG00000121879	PIK3CA	gene
+				ENSG00000146648	EGFR	165264			ENSG00000146648	false	ENSG00000146648	EGFR	gene

@@ -23,9 +23,14 @@ if(!"RCy3" %in% installed.packages()){
     install.packages("BiocManager")
   BiocManager::install("RCy3")
 }
+if(!"BridgeDbR" %in% installed.packages()){
+  if (!requireNamespace("BiocManager", quietly=TRUE))
+    install.packages("BiocManager")
+  BiocManager::install("BridgeDbR")
+}
   #Checking if required packages are installed and installing if not
   #Different structure for rWikiPathways and RCy3 packages as these are not installed directly but via the BiocManager package
-invisible(lapply(c(packages,"rWikiPathways","RCy3"), require, character.only = TRUE))
+invisible(lapply(c(packages,"rWikiPathways","RCy3","BridgeDbR","rJava"), require, character.only = TRUE))
   #Loading libraries
 
 sysdatetime <- Sys.time()
@@ -107,6 +112,28 @@ lapply(applist,getAppInformation)
 metadata.add("Required Cytoscape apps and versions:")
 invisible(metadata.add(print(lapply(applist,getAppInformation))))
 metadata.add("")
+
+
+bridgedb_dir <- paste0(getwd(),"/BridgeDb/Hs_Derby_Ensembl_108.bridge")
+  #Defining directory in which BridgeDb mapping file is stored
+getBridgeDbmap <- function(dir = bridgedb_dir, confirmation = "BridgeDb mapping file not detected. Download BridgeDb mapping file for Homo sapiens (800.4 MB)? (yes/no): ") {
+  if(file.exists(dir)) {
+    message("File already present at ", dir, " No files downloaded.")
+  } else {
+    confirm <- readline(prompt = confirmation)
+    if (tolower(confirm) == "yes") {
+      bridgedb_hs <- getDatabase("Homo sapiens",location=paste0(getwd(),"/BridgeDb"))
+      message("BridgeDb mapping file downloaded to ",dir)
+    } else {
+      message("File download cancelled.")
+      }
+  }
+}
+getBridgeDbmap()
+  #Downloading the BridgeDb bridge file for Homo sapiens identifiers to the repo 
+  #The directory is added to .gitignore to avoid uploading it to GitHub
+  #This is a relatively large (800MB) file - downloading it once is sufficient
+
 
 # FUNCTION DICTIONARY-------------------------------------------------------------------------------------------------------------------
 .defaultBaseUrl <- 'http://127.0.0.1:1234/v1'
@@ -939,6 +966,8 @@ altmergeNetworks(sources=c(keaopaomerged,kegenenetwork),
 renameNetwork(paste0("gene-KE-AOP-AO merged network_",input))
 mapTableColumn("Ensembl","Human","Ensembl","HGNC")
   #Generating HGNC names for gene nodes to improve readability
+renameTableColumn("HGNC","Name2")
+  #Renaming HGNC column to Name2 for consistency with SNW
 commandsRun(sprintf('table set values columnName=index handleEquations=true rowList=all value="=$SUID" table=%s',paste0("gene-KE-AOP-AO merged network_",input," default  node")))
   #Filling the  index column with node SUIDs
   #SUIDs are always generated for each node but are not exported with the table, so they must first be transposed to a column that will be exported
@@ -1010,7 +1039,7 @@ deleteSelectedNodes()
   #Inverting selection and deleting nodes that don't have GO results
 commandsRun(sprintf('table export options=CSV outputFile=%s table="SCZ_SNW_STRING_clustered_GO default node"',paste0(other_savepath,"SCZ_SNW_STRING_clustered_GO node")))
   #Exporting the node table from the clustered supernetwork with GO results
-snw_node <- read.table(file=paste0(other_savepath,"SCZ_SNW_STRING_clustered_GO node.tsv"),header=TRUE,sep="\t")
+snw_node <- read.table(file=paste0(other_savepath,"SCZ_SNW_STRING_clustered_GO node.csv"),header=TRUE,sep=",")
 deleteNetwork("SCZ_SNW_STRING_clustered_GO")
   #Deleting the SNW again, was only imported to get node table
 
