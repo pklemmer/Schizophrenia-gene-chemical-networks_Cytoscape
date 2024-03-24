@@ -966,7 +966,7 @@ altmergeNetworks(sources=c(keaopaomerged,kegenenetwork),
 renameNetwork(paste0("gene-KE-AOP-AO merged network_",input))
 mapTableColumn("Ensembl","Human","Ensembl","HGNC")
   #Generating HGNC names for gene nodes to improve readability
-renameTableColumn("HGNC","Name2")
+# renameTableColumn("HGNC","Name2")
   #Renaming HGNC column to Name2 for consistency with SNW
 commandsRun(sprintf('table set values columnName=index handleEquations=true rowList=all value="=$SUID" table=%s',paste0("gene-KE-AOP-AO merged network_",input," default  node")))
   #Filling the  index column with node SUIDs
@@ -1086,6 +1086,7 @@ write.table(snw_node_aop_valid, file=paste0(other_savepath,"snw_node_aop.tsv"), 
   #Writing to file for Cytoscape import
 commandsRun(sprintf('network import file columnTypeList=s,sa,sa,sa,sa,sa,sa,sa,sa,t,ta,ta delimiters=\\t file=%s firstRowAsColumnNames=true rootNetworkList=-- Create new network collection -- startLoadRow=1',paste0(other_savepath,"snw_node_aop.tsv")))
   #Importing network to Cytoscape
+Sys.sleep(1)
 renameNetwork("Genes from AOP network with SNW attributes")
 commandsRun(sprintf('table export options=CSV table="Genes from AOP network with SNW attributes default  node outputFile=%s ',paste0(other_savepath,"Genes from AOP network with SNW attributes node")))
   #Exporting node table
@@ -1153,6 +1154,8 @@ setEdgeColorDefault(
 
 
 ##RAW SNW VISUALISATION --------------------------------------------------------------------------------------------------------------------------- 
+importNetworkFromFile(paste0(nw_savepath,"SCZ_SNW_STRING_clustered_GO.cx"))
+#Reimporting clustered supernetwork with GO results added
 setCurrentNetwork(snw_scz_filtered_string_clustered_go)
 createColumnFilter(
   filter.name = "has_GO_result",
