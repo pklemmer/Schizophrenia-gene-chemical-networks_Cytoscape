@@ -23,14 +23,14 @@ if(!"RCy3" %in% installed.packages()){
     install.packages("BiocManager")
   BiocManager::install("RCy3")
 }
-if(!"BridgeDbR" %in% installed.packages()){
-  if (!requireNamespace("BiocManager", quietly=TRUE))
-    install.packages("BiocManager")
-  BiocManager::install("BridgeDbR")
-}
+# if(!"BridgeDbR" %in% installed.packages()){
+#   if (!requireNamespace("BiocManager", quietly=TRUE))
+#     install.packages("BiocManager")
+#   BiocManager::install("BridgeDbR")
+# }
   #Checking if required packages are installed and installing if not
   #Different structure for rWikiPathways and RCy3 packages as these are not installed directly but via the BiocManager package
-invisible(lapply(c(packages,"rWikiPathways","RCy3","BridgeDbR","rJava"), require, character.only = TRUE))
+invisible(lapply(c(packages,"rWikiPathways","RCy3"), require, character.only = TRUE))
   #Loading libraries
 
 sysdatetime <- Sys.time()
@@ -114,22 +114,22 @@ invisible(metadata.add(print(lapply(applist,getAppInformation))))
 metadata.add("")
 
 
-bridgedb_dir <- paste0(getwd(),"/BridgeDb/Hs_Derby_Ensembl_108.bridge")
-  #Defining directory in which BridgeDb mapping file is stored
-getBridgeDbmap <- function(dir = bridgedb_dir, confirmation = "BridgeDb mapping file not detected. Download BridgeDb mapping file for Homo sapiens (800.4 MB)? (yes/no): ") {
-  if(file.exists(dir)) {
-    message("File already present at ", dir, " No files downloaded.")
-  } else {
-    confirm <- readline(prompt = confirmation)
-    if (tolower(confirm) == "yes") {
-      bridgedb_hs <- getDatabase("Homo sapiens",location=paste0(getwd(),"/BridgeDb"))
-      message("BridgeDb mapping file downloaded to ",dir)
-    } else {
-      message("File download cancelled.")
-      }
-  }
-}
-getBridgeDbmap()
+# bridgedb_dir <- paste0(getwd(),"/BridgeDb/Hs_Derby_Ensembl_108.bridge")
+#   #Defining directory in which BridgeDb mapping file is stored
+# getBridgeDbmap <- function(dir = bridgedb_dir, confirmation = "BridgeDb mapping file not detected. Download BridgeDb mapping file for Homo sapiens (800.4 MB)? (yes/no): ") {
+#   if(file.exists(dir)) {
+#     message("File already present at ", dir, " No files downloaded.")
+#   } else {
+#     confirm <- readline(prompt = confirmation)
+#     if (tolower(confirm) == "yes") {
+#       bridgedb_hs <- getDatabase("Homo sapiens",location=paste0(getwd(),"/BridgeDb"))
+#       message("BridgeDb mapping file downloaded to ",dir)
+#     } else {
+#       message("File download cancelled.")
+#       }
+#   }
+# }
+# getBridgeDbmap()
   #Downloading the BridgeDb bridge file for Homo sapiens identifiers to the repo 
   #The directory is added to .gitignore to avoid uploading it to GitHub
   #This is a relatively large (800MB) file - downloading it once is sufficient
@@ -1106,7 +1106,58 @@ snw_node_aop_valid_node <- snw_node_aop_valid_node %>%
   #Adding 'type' column in preparation for merge with gene-AOP network
 loadTableData(snw_node_aop_valid_node,data.key.column='name',table.key.column = 'name',table='node')
   #Loading modified node table back to network
-altmergeNetworks(sources=c("gene-KE-AOP-AO merged network_all","Genes from AOP network with SNW attributes"),
+
+
+snw_node_aop_cluster <- select(snw_node_aop, Ensembl, CNVassociated, gLayCluster, GO_Pvals,GO_Terms,N_nodes,Nodes,Publication_source,STRING_source,DisGeNET_source,WikiPathways_source,WikiPathways_CNV,WikiPathways_noCNV)
+  #Getting relevant columns for gene-cluster associations
+summary_terms <- read.delim(file=paste0(getwd(),"/Data/summary_go_terms.txt"),sep="\t",header=TRUE,quote="")
+  #Loading summary GO terms
+snw_node_aop_cluster <- merge(snw_node_aop_cluster,summary_terms,by="gLayCluster")
+  #Adding summary terms per cluster
+snw_node_aop_cluster[is.na(snw_node_aop_cluster)] <- ""
+  #Replacing NA with empty for nicer look in Cytoscape
+snw_node_aop_cluster <- snw_node_aop_cluster %>%
+  rename(Ensembl_source = Ensembl,
+         gLayCluster_target = gLayCluster)
+  #Renaming source and target columns for import
+snw_node_aop_cluster$Ensembl <- snw_node_aop_cluster$Ensembl_source
+snw_node_aop_cluster$gLayCluster <- snw_node_aop_cluster$gLayCluster
+  #Duplicating source and target columns for import
+snw_node_aop_cluster <- select(snw_node_aop_cluster, Ensembl,Ensembl_source, CNVassociated, gLayCluster,gLayCluster_target,N_nodes,Publication_source,STRING_source,DisGeNET_source,WikiPathways_source,WikiPathways_CNV,WikiPathways_noCNV,summary_term)
+snw_node_aop_cluster <- snw_node_aop_cluster[,c("Ensembl_source","Ensembl","CNVassociated","gLayCluster_target","gLayCluster","N_nodes","Publication_source","STRING_source","DisGeNET_source","WikiPathways_source","WikiPathways_CNV","WikiPathways_noCNV","summary_term")]
+  #Reordering columns
+write.table(snw_node_aop_cluster, file=paste0(other_savepath,"snw_node_aop_cluster.tsv"), sep="\t", quote=FALSE, row.names=FALSE)
+  #Writing to file for Cytoscape import
+commandsRun(sprintf('network import file columnTypeList="s,sa,sa,t,ta,ta,ta,ta,ta,ta,ta,ta,ta,ta" delimiters=\\t decimalSeparator="." file=%s firstRowAsColumnNames=true rootNetworkList=-- Create new network collection -- startLoadRow=1',paste0(other_savepath,"snw_node_aop_cluster.tsv")))
+#Importing network to Cytoscape
+Sys.sleep(1)
+renameNetwork("Genes from AOP network with clusters")
+commandsRun(sprintf('table export options=CSV table="Genes from AOP network with clusters default  node" outputFile=%s ',paste0(other_savepath,"Genes from AOP network with clusters node")))
+#Exporting node table
+snw_node_aop_cluster_node <- read.table(file=paste0(other_savepath,"Genes from AOP network with clusters node.csv"),header=TRUE,sep=",")
+#Reading node table as R object
+snw_node_aop_cluster_node <- snw_node_aop_cluster_node %>%
+  rowwise() %>%
+  mutate(label=paste(na.omit(c_across(all_of(c("summary_term")))), collapse=""))
+#Adding 'label' column for pathway nodes in preparation for merge with gene-AOP network
+snw_node_aop_cluster_node <- snw_node_aop_cluster_node %>%
+  rowwise() %>%
+  mutate(type = case_when(
+    str_detect(gLayCluster, "\\S") ~ "Cluster",
+    str_detect(Ensembl, "\\S") ~ "gene",
+    TRUE ~ NA_character_
+  ))
+#Adding 'type' column in preparation for merge with gene-AOP network
+loadTableData(snw_node_aop_cluster_node,data.key.column='name',table.key.column = 'name',table='node')
+#Loading modified node table back to network
+
+altmergeNetworks(sources=c("Genes from AOP network with clusters","Genes from AOP network with SNW attributes"),
+                 title="Genes from AOP network with pathways and clusters",
+                 operation="union",
+                 nodeKeys=c("name","name"))
+
+
+altmergeNetworks(sources=c("gene-KE-AOP-AO merged network_all","Genes from AOP network with pathways and clusters"),
                  title="gene-KE-AOP-AO merged network with pathways",
                  operation="union",
                  nodeKeys=c("Ensembl","name"))
@@ -1126,8 +1177,8 @@ setNodeLabelMapping(
 setNodeColorMapping(
   table.column = "type",
   mapping.type="d",
-  table.column.values = c("AO","AOP","KE","gene","Pathway"),
-  colors=c("#FB6a4A","#FEB24C","#FA9FB5","#74C476","#76cdf3"),
+  table.column.values = c("AO","AOP","KE","gene","Pathway","Cluster"),
+  colors=c("#FB6a4A","#FEB24C","#FA9FB5","#74C476","#1DEFF2","#1D91C0"),
   style.name="AOP_vis"
 )
 #Setting node colors using dedicated type column
@@ -1135,12 +1186,8 @@ setNodeShapeDefault(
   new.shape="ROUND_RECTANGLE",
   style.name="AOP_vis"
 )
-setNodeSizeDefault (
-  new.size = "70",
-  style.name="AOP_vis"
-)
 setNodeFontSizeDefault (
-  new.size = "15",
+  new.size = "25",
   style.name = "AOP_vis"
 )
 setEdgeSourceArrowShapeDefault(
@@ -1151,8 +1198,21 @@ setEdgeColorDefault(
   new.color="#BCBCBC",
   style.name="AOP_vis"
 ) 
-
-
+commandsRun('analyzer analyze directed=true selectedOnly=false')
+  #Running analyzer for topoligcal information
+setNodeSizeMapping(
+  table.column = "Indegree",
+  sizes=c(50,250),
+  mapping.type='c',
+  style.name="AOP_vis"
+)
+  #Setting node size relative to indegree (in this graph: edges going from bottom to top)
+fitContent()
+exportImage(
+  filename=paste0(getwd(),"/Visualisations/SNW-AOP-pathways-clusters"),
+  type="SVG"
+)
+  #Fitting and exporting visualisation
 ##RAW SNW VISUALISATION --------------------------------------------------------------------------------------------------------------------------- 
 importNetworkFromFile(paste0(nw_savepath,"SCZ_SNW_STRING_clustered_GO.cx"))
 #Reimporting clustered supernetwork with GO results added
@@ -1203,7 +1263,11 @@ setEdgeLineWidthDefault(new.width = 0.5,
 setNodeLabelMapping(table.column = "Name2",
                     style.name="SNW_vis")
   #Changing node labels to show HGNC name
-
+fitContent()
+exportImage(
+  filename=paste0(getwd(),"/Visualisations/hairball-SNW"),
+  type="SVG"
+)
 ##PIE CHART VISUALISATION -----------------------------------------------------------------------------------------------------------------------
 commandsRun(sprintf("network import file columnTypeList='s,sa,sa,sa,sa,sa,sa,sa,sa,sa,sa,sa,sa,sa' file=%s firstRowAsColumnNames=true delimiters=\\t rootNetworkList=-- Create new network collection -- startLoadRow=1", paste0(getwd(),"/Data/GO-clusters-vis.tsv")))
 #Importing the previoulsy generated table 'GO-clusters-vis' back to Cytoscape as new network
