@@ -1,0 +1,11 @@
+SELECT DISTINCT ?source ?gene str(?genesymbol) as ?symbol
+WHERE { 
+	?gda sio:SIO_000628 ?gene,?disease ; sio:SIO_000253 ?source.
+	?gene rdf:type ncit:C16612 ; sio:SIO_000205 ?genesymbol . 
+	?disease rdf:type ncit:C7057 ; 
+		dcterms:title "Schizophrenia"@en . 
+	FILTER regex(
+	?source, 
+	"UNIPROT|CTD_human|PSYGENET|ORPHANET|CLINGEN|GENOMICS_ENGLAND|CGI|CLINGEN"
+	)
+}

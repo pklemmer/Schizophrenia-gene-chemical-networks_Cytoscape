@@ -337,8 +337,9 @@ apply(genedisparams.scz.df,1,function(row) {
     #Executing the DisGeNET query
   createNodeSource("fromDisGeNET")
     #Adding information about data source to each node
-  mapTableColumn("geneId","Human","Entrez Gene","Ensembl")
-    #Mapping Entrez Gene IDs to Ensembl IDs
+  #mapTableColumn("geneId","Human","Entrez Gene","Ensembl",force.single=TRUE,table="node")
+  commandsRun('bridgedb id mapping network=current sourceColumn=geneId sourceIdType="Entrez Gene" targetColumn=Ensembl targetIdType=Ensembl' )  
+  #Mapping Entrez Gene IDs to Ensembl IDs
   renameTableColumn("geneName","DisGeNETname")
 })  
   #Importing networks from DisGeNET
@@ -347,6 +348,11 @@ metadata.add(paste("DisGeNET URL:",disgeneturl))
 metadata.add(paste("DisGeNET net type:",net))
 metadata.add("")
   #Adding the DisGeNET URL and net type used to add networks to the metadata file
+
+
+
+
+
 
 
 sparqlquery("wp","nodequery.txt","wp_nodelist")
@@ -464,7 +470,8 @@ end_section("Importing and merging")
 ## STRING --------------------------------------------------------------------------------------------------------------------------
 start_section("STRING")
 commandsRun('string stringify colDisplayName=name column=Ensembl compoundQuery=true cutoff=0.9 includeNotMapped=true  networkType="full STRING network" species="Homo sapiens" networkNoGui=current')
-mapTableColumn("Ensembl","Human","Ensembl","HGNC")
+commandsRun('bridgedb id mapping network=current sourceColumn=Ensembl sourceIdType=Ensembl targetColumn=HGNC targetIdType=HGNC')
+#mapTableColumn("Ensembl","Human","Ensembl","HGNC")
 #   #Generating a new column 'HGNC' from Ensembl identifiers - easier and less error-prone than merging various name columns from different import sources
 renameTableColumn("HGNC","Name2")
   #Renaming the new 'HGNC' column to 'Name2', which is now to be used as default name column. ('shared name' and 'name' columns are immutable and cannot be deleted or renamed)
@@ -964,7 +971,7 @@ altmergeNetworks(sources=c(keaopaomerged,kegenenetwork),
                  nodeKeys=c("KEid","KEid"))
   #Merging KE-AOP-AO associations with the KE-gene network to extend KE-gene associations with AOPs and AOs
 renameNetwork(paste0("gene-KE-AOP-AO merged network_",input))
-mapTableColumn("Ensembl","Human","Ensembl","HGNC")
+#mapTableColumn("Ensembl","Human","Ensembl","HGNC")
   #Generating HGNC names for gene nodes to improve readability
 # renameTableColumn("HGNC","Name2")
   #Renaming HGNC column to Name2 for consistency with SNW
