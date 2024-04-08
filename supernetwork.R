@@ -23,14 +23,14 @@ if(!"RCy3" %in% installed.packages()){
     install.packages("BiocManager")
   BiocManager::install("RCy3")
 }
-# if(!"BridgeDbR" %in% installed.packages()){
-#   if (!requireNamespace("BiocManager", quietly=TRUE))
-#     install.packages("BiocManager")
-#   BiocManager::install("BridgeDbR")
-# }
+ if(!"BridgeDbR" %in% installed.packages()){
+   if (!requireNamespace("BiocManager", quietly=TRUE))
+     install.packages("BiocManager")
+   BiocManager::install("BridgeDbR")
+ }
   #Checking if required packages are installed and installing if not
   #Different structure for rWikiPathways and RCy3 packages as these are not installed directly but via the BiocManager package
-invisible(lapply(c(packages,"rWikiPathways","RCy3"), require, character.only = TRUE))
+invisible(lapply(c(packages,"rWikiPathways","RCy3","BridgeDbR"), require, character.only = TRUE))
   #Loading libraries
 
 sysdatetime <- Sys.time()
@@ -113,26 +113,28 @@ metadata.add("Required Cytoscape apps and versions:")
 invisible(metadata.add(print(lapply(applist,getAppInformation))))
 metadata.add("")
 
-
-# bridgedb_dir <- paste0(getwd(),"/BridgeDb/Hs_Derby_Ensembl_108.bridge")
-#   #Defining directory in which BridgeDb mapping file is stored
-# getBridgeDbmap <- function(dir = bridgedb_dir, confirmation = "BridgeDb mapping file not detected. Download BridgeDb mapping file for Homo sapiens (800.4 MB)? (yes/no): ") {
-#   if(file.exists(dir)) {
-#     message("File already present at ", dir, " No files downloaded.")
-#   } else {
-#     confirm <- readline(prompt = confirmation)
-#     if (tolower(confirm) == "yes") {
-#       bridgedb_hs <- getDatabase("Homo sapiens",location=paste0(getwd(),"/BridgeDb"))
-#       message("BridgeDb mapping file downloaded to ",dir)
-#     } else {
-#       message("File download cancelled.")
-#       }
-#   }
-# }
-# getBridgeDbmap()
+dir.create(paste0(getwd(),"/BridgeDb"))
+bridgedb_dir <- paste0(getwd(),"/BridgeDb/Hs_Derby_Ensembl_108.bridge")
+   #Defining directory in which BridgeDb mapping file is stored
+getBridgeDbmap <- function(dir = bridgedb_dir, confirmation = "BridgeDb mapping file not detected. Download BridgeDb mapping file for Homo sapiens (800.4 MB)? (yes/no): ") {
+   if(file.exists(dir)) {
+     message("File already present at ", dir, " No files downloaded.")
+   } else {
+     confirm <- readline(prompt = confirmation)
+     if (tolower(confirm) == "yes") {
+       bridgedb_hs <- getDatabase("Homo sapiens",location=paste0(getwd(),"/BridgeDb"))
+       message("BridgeDb mapping file downloaded to ",dir)
+     } else {
+       message("File download cancelled.")
+       }
+   }
+ }
+getBridgeDbmap()
   #Downloading the BridgeDb bridge file for Homo sapiens identifiers to the repo 
   #The directory is added to .gitignore to avoid uploading it to GitHub
   #This is a relatively large (800MB) file - downloading it once is sufficient
+loadDatabase(bridgedb_dir)
+  #Loading the database
 
 
 # FUNCTION DICTIONARY-------------------------------------------------------------------------------------------------------------------
@@ -215,9 +217,13 @@ sparqlquery <- function(endpoint,queryfile,output) {
     #Specifying file path to the .txt file containing the query
     base_url <- "https://aopwiki.rdf.bigcat-bioinformatics.org/sparql/?default-graph-uri=&query="
     #Defining the base URL preceding all SPARQL URLs for the endpoint
-  } else {
-    print("Error: Please specify either WikiPathways or AOP-Wiki as endpoint.")
-  }
+  } else if (tolower(endpoint) %in% c("DisGeNET","DGN","disgenet","Disgenet")) {
+    file_path <- paste0(getwd(),sprintf("/Data/DisGeNET/%s",queryfile))
+      #Specifying path to the .txt file containing the query
+    base_url <- "http://rdf.disgenet.org/sparql/?default-graph-uri=&query="
+      #Defining the base URL preceding all SPARQL URLs for the endpoint 
+  } else
+    print("Error: Please specify WikiPathways, DisGeNET or AOP-Wiki as endpoint.")
   querybody <- paste(readLines(file_path), collapse = "")
   #Reading a text file containing a SPARQL query stored in the repo
   encoded_query <- URLencode(querybody)
@@ -226,6 +232,12 @@ sparqlquery <- function(endpoint,queryfile,output) {
   #Joining the query from the text file and the base URL and adding that output is desired as HTML
   html <- read_html(full_url)
   #Sending the query to the SPARQL endpoint and extracting as HTML
+  if(tolower(endpoint) %in% c("DisGeNET","DGN","disgenet","Disgenet")) {
+    tablebody <- html %>% 
+      html_element("body") %>%
+      html_element("table") } 
+    #DisGeNET has a slightly different HTML structure than AOP-Wiki and WikiPathways, so navigating to the table is done accordingly
+  else
   tablebody <- html %>% 
     html_element("body") %>%
     html_element("div") %>%
@@ -238,9 +250,9 @@ sparqlquery <- function(endpoint,queryfile,output) {
   #Will not work if query includes comments ('# this is a comment') due to HTML conversion
 
 createNodeSource <- function(source,doi=NULL) {
-  if (source == "WikiPathways") {
+  if (source == "fromDisGeNET") {
   networkname <- getNetworkName()
-  nodetable <- paste0(networkname," default node") 
+  nodetable <- paste0(networkname," default  node") 
   } 
     #Networks imported from WikiPathways have a type in the node table designations, as they have 2 spaces between "default" and "node" instead of one
     #This check determines which node table name format is to be applied depending on the source (WikiPathways or other)
@@ -268,34 +280,34 @@ createNodeSource <- function(source,doi=NULL) {
 }
   #Function to create new column in node table specifying origin of network/node
 
-disgenetRestUrl<-function(netType,host="127.0.0.1",port=1234,version="v7"){
-  if(is.null(netType)){
-    print("Network type not specified.")
-  }else{
-    disgeneturl<-sprintf("http://%s:%i/disgenet/%s/%s",host,port,version,netType)
-  }
-  return (disgeneturl)
-}
-net <- "gene-disease-net"
-disgenetRestUrl(netType = net)
-  #Defining object for REST to call DisGeNET automation module; defining that we will be using gene-disease associations (GDA)
-disgenetRestCall<-function(netType,netParams){
-  disgeneturl<-disgenetRestUrl(netType)
-  restCall<-POST(disgeneturl, body = netParams, encode = "json")
-  result<-content(restCall,"parsed")
-  return(result)
-}
-  #Object that executes REST calls to DisGeNET module in Cytoscape 
-geneDisParams <- function(source,dis,min) {list(
-  source = source,
-  assocType = "Any",
-  diseaseClass = "Any",
-  diseaseSearch = dis,
-  geneSearch = " ",
-  initialScoreValue = min,
-  finalScoreValue = "1.0"
-)}
-  #Specifying parameters of the GDA network to be imported
+# disgenetRestUrl<-function(netType,host="127.0.0.1",port=1234,version="v7"){
+#   if(is.null(netType)){
+#     print("Network type not specified.")
+#   }else{
+#     disgeneturl<-sprintf("http://%s:%i/disgenet/%s/%s",host,port,version,netType)
+#   }
+#   return (disgeneturl)
+# }
+# net <- "gene-disease-net"
+# disgenetRestUrl(netType = net)
+#   #Defining object for REST to call DisGeNET automation module; defining that we will be using gene-disease associations (GDA)
+# disgenetRestCall<-function(netType,netParams){
+#   disgeneturl<-disgenetRestUrl(netType)
+#   restCall<-POST(disgeneturl, body = netParams, encode = "json")
+#   result<-content(restCall,"parsed")
+#   return(result)
+# }
+#   #Object that executes REST calls to DisGeNET module in Cytoscape 
+# geneDisParams <- function(source,dis,min) {list(
+#   source = source,
+#   assocType = "Any",
+#   diseaseClass = "Any",
+#   diseaseSearch = dis,
+#   geneSearch = " ",
+#   initialScoreValue = min,
+#   finalScoreValue = "1.0"
+# )}
+#   #Specifying parameters of the GDA network to be imported
 
 
 
@@ -324,36 +336,71 @@ allpathways_URL <- paste0("<",allpathways,">")
 writeLines(allpathways_URL, con="Data/WikiPathways/Pathwaylists/allpathways.txt")
   #Writing list of all pathways in SPARQL URL format to file
 
-genedisparams.scz.df <- read.table("Data/DisGeNET/disgenetparams-scz.txt",header=TRUE,sep = "\t")
-  #Loading relevant gene-disease networks from DisGeNET
-  #Networks of interest manually added into tsv where it is easier to adjust filters
-disgeneturl <- c()
-  #Preparing container for DisGeNET URL to be saved for addition to metadata file
-apply(genedisparams.scz.df,1,function(row) {
-  gdp <- geneDisParams(row["source"],row["dis"],row["min"])
-  disgeneturl <<- disgenetRestUrl(net)
-    #Fetching the DisGeNET URL used to make this call 
-  geneDisResult <- disgenetRestCall(net,gdp)
-    #Executing the DisGeNET query
-  createNodeSource("fromDisGeNET")
-    #Adding information about data source to each node
-  #mapTableColumn("geneId","Human","Entrez Gene","Ensembl",force.single=TRUE,table="node")
-  commandsRun('bridgedb id mapping network=current sourceColumn=geneId sourceIdType="Entrez Gene" targetColumn=Ensembl targetIdType=Ensembl' )  
-  #Mapping Entrez Gene IDs to Ensembl IDs
-  renameTableColumn("geneName","DisGeNETname")
-})  
-  #Importing networks from DisGeNET
+sparqlquery("DisGeNET","disgenet-query.txt","gda")
+  #Querying the DisGeNET SPARQL endpoint for genes associated to schizophrenia from curated sources
+gda$disgenet_curated <- str_extract(gda$source, "(?<=/)[^/]*$")
+gda$Entrez_gene <- str_extract(gda$gene, "(?<=/)[^/]*$")
+gda$HGNC_symbol <- str_extract(gda$symbol, "(?<=/)[^/]*$")
+gda <- subset(gda, select=c(disgenet_curated,Entrez_gene,HGNC_symbol,gdascore))
+  #cleaning data
+gda <- gda %>%
+  group_by(Entrez_gene) %>%
+  summarise(disgenet_curated = paste(disgenet_curated, collapse = "; "),
+                HGNC_symbol = paste(HGNC_symbol, collapse ="; "),
+                gdascore = paste(gdascore, collapse="; "))
+  #Concatenating to avoid duplicate gene rows if they are confirmed by multiple sources
+mapper <- loadDatabase(bridgedb_dir)
+  #Loading bridgedb database
+input <- data.frame(
+  source = rep("H", length(gda[, 3])),
+  identifier = gda[, 3]
+)
+  #Making a new df to be used as input for bridgedb
+  #Map HGNC symbol
+input <- input %>%
+  rename(source=source,
+         identifier=HGNC_symbol)
+  #Renaming cols for maps function compability
+gda_map <- maps(mapper,input,"En")
+  #Mapping from HGNC to Ensembl
+gda <- merge(gda,gda_map,by.x="HGNC_symbol",by.y="identifier")
+  #Merging the GDA and mapping tables
+gda <- subset(gda, select=c(HGNC_symbol,mapping,Entrez_gene,disgenet_curated,gdascore))
+gda <- gda %>%
+  rename(Ensembl_source=mapping)
+gda$Ensembl <- gda$Ensembl_source
+  #Creating a duplicated Ensembl column for Cytoscape import
+  #Cleaning and renaming df
+write.table(gda,file=paste0(getwd(),"/Data/DisGeNET/gda.tsv"),quote=FALSE,sep="\t",row.names=FALSE)
+commandsRun(sprintf('network import file columnTypeList=sa,s,sa,sa,sa,sa delimiters=\\t file=%s firstRowAsColumnNames=true startLoadRow=1',paste0(getwd(),"/Data/DisGeNET/gda.tsv")))
+Sys.sleep(0.5)
+renameNetwork("DisGeNET network")
+createNodeSource("fromDisGeNET")
 
-metadata.add(paste("DisGeNET URL:",disgeneturl))
-metadata.add(paste("DisGeNET net type:",net))
-metadata.add("")
-  #Adding the DisGeNET URL and net type used to add networks to the metadata file
-
-
-
-
-
-
+# genedisparams.scz.df <- read.table("Data/DisGeNET/disgenetparams-scz.txt",header=TRUE,sep = "\t")
+#   #Loading relevant gene-disease networks from DisGeNET
+#   #Networks of interest manually added into tsv where it is easier to adjust filters
+# disgeneturl <- c()
+#   #Preparing container for DisGeNET URL to be saved for addition to metadata file
+# apply(genedisparams.scz.df,1,function(row) {
+#   gdp <- geneDisParams(row["source"],row["dis"],row["min"])
+#   disgeneturl <<- disgenetRestUrl(net)
+#     #Fetching the DisGeNET URL used to make this call 
+#   geneDisResult <- disgenetRestCall(net,gdp)
+#     #Executing the DisGeNET query
+#   createNodeSource("fromDisGeNET")
+#     #Adding information about data source to each node
+#   #mapTableColumn("geneId","Human","Entrez Gene","Ensembl",force.single=TRUE,table="node")
+#   commandsRun('bridgedb id mapping network=current sourceColumn=geneId sourceIdType="Entrez Gene" targetColumn=Ensembl targetIdType=Ensembl' )  
+#   #Mapping Entrez Gene IDs to Ensembl IDs
+#   renameTableColumn("geneName","DisGeNETname")
+# })  
+#   #Importing networks from DisGeNET
+# 
+# metadata.add(paste("DisGeNET URL:",disgeneturl))
+# metadata.add(paste("DisGeNET net type:",net))
+# metadata.add("")
+#   #Adding the DisGeNET URL and net type used to add networks to the metadata file
 
 sparqlquery("wp","nodequery.txt","wp_nodelist")
   #Making a SPARQL query to the endpoint to get all nodes associated with a list of pathways
