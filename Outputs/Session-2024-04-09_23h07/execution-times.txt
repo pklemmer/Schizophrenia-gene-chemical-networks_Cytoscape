@@ -1,0 +1,3 @@
+Importing and merging	29.11s
+STRING	11.00s
+Clustering	6.94s

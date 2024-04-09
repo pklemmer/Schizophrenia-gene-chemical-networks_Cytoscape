@@ -280,37 +280,6 @@ createNodeSource <- function(source,doi=NULL) {
 }
   #Function to create new column in node table specifying origin of network/node
 
-# disgenetRestUrl<-function(netType,host="127.0.0.1",port=1234,version="v7"){
-#   if(is.null(netType)){
-#     print("Network type not specified.")
-#   }else{
-#     disgeneturl<-sprintf("http://%s:%i/disgenet/%s/%s",host,port,version,netType)
-#   }
-#   return (disgeneturl)
-# }
-# net <- "gene-disease-net"
-# disgenetRestUrl(netType = net)
-#   #Defining object for REST to call DisGeNET automation module; defining that we will be using gene-disease associations (GDA)
-# disgenetRestCall<-function(netType,netParams){
-#   disgeneturl<-disgenetRestUrl(netType)
-#   restCall<-POST(disgeneturl, body = netParams, encode = "json")
-#   result<-content(restCall,"parsed")
-#   return(result)
-# }
-#   #Object that executes REST calls to DisGeNET module in Cytoscape 
-# geneDisParams <- function(source,dis,min) {list(
-#   source = source,
-#   assocType = "Any",
-#   diseaseClass = "Any",
-#   diseaseSearch = dis,
-#   geneSearch = " ",
-#   initialScoreValue = min,
-#   finalScoreValue = "1.0"
-# )}
-#   #Specifying parameters of the GDA network to be imported
-
-
-
 # SCHIZOPHRENIA =======================================================================================================================
 ## IMPORTING AND MERGING ---------------------------------------------------------------------------------------------------------------
 start_section("Importing and merging")
@@ -344,10 +313,10 @@ gda$HGNC_symbol <- str_extract(gda$symbol, "(?<=/)[^/]*$")
 gda <- subset(gda, select=c(disgenet_curated,Entrez_gene,HGNC_symbol,gdascore))
   #cleaning data
 gda <- gda %>%
-  group_by(Entrez_gene) %>%
-  summarise(disgenet_curated = paste(disgenet_curated, collapse = "; "),
-                HGNC_symbol = paste(HGNC_symbol, collapse ="; "),
-                gdascore = paste(gdascore, collapse="; "))
+  group_by(Entrez_gene, HGNC_symbol, gdascore) %>%
+  mutate(disgenet_curated = paste(disgenet_curated, collapse = "; ")) %>%
+  distinct()
+gda <- gda[!duplicated(gda$Entrez_gene),]
   #Concatenating to avoid duplicate gene rows if they are confirmed by multiple sources
 mapper <- loadDatabase(bridgedb_dir)
   #Loading bridgedb database
@@ -363,44 +332,34 @@ input <- input %>%
   #Renaming cols for maps function compability
 gda_map <- maps(mapper,input,"En")
   #Mapping from HGNC to Ensembl
-gda <- merge(gda,gda_map,by.x="HGNC_symbol",by.y="identifier")
-  #Merging the GDA and mapping tables
+gda <- merge(gda,gda_map,by.x="HGNC_symbol",by.y="identifier",all.x=TRUE)
+  #Merging the GDA and mapping tables; some HGNC symbols can't be matched to Ensembl IDs but are still retained
 gda <- subset(gda, select=c(HGNC_symbol,mapping,Entrez_gene,disgenet_curated,gdascore))
+  #Cleaning df
 gda <- gda %>%
-  rename(Ensembl_source=mapping)
-gda$Ensembl <- gda$Ensembl_source
+  rename(Ensembl=mapping)
+man_map <- read.delim(paste0(getwd(),"/Data/DisGeNET/manual-maps.txt"),sep="\t")
+  #Reading a file containing manual mappings for some of the missing Ensembl ID
+gda <- merge(gda, man_map, by="HGNC_symbol",all.x=TRUE)
+  #Merging the manual map and the gda df based on HGNC symbol as key column
+gda$Ensembl.x[is.na(gda$Ensembl.x)] <- gda$Ensembl.y[is.na(gda$Ensembl.x)]
+  #Merging the Ensembl cols
+gda <- select(gda, -Ensembl.y)
+  #Removing superfluous Ensembl col from manual mapping df
+gda <- gda %>%
+  rename(Ensembl = Ensembl.x)
+gda$HGNC_symbol_source <- gda$HGNC_symbol
   #Creating a duplicated Ensembl column for Cytoscape import
   #Cleaning and renaming df
+gda <- mutate_all(gda, ~ifelse(is.na(.),"",.))
+  #Replacing NA with empty strings for Cytoscape compatibility
 write.table(gda,file=paste0(getwd(),"/Data/DisGeNET/gda.tsv"),quote=FALSE,sep="\t",row.names=FALSE)
-commandsRun(sprintf('network import file columnTypeList=sa,s,sa,sa,sa,sa delimiters=\\t file=%s firstRowAsColumnNames=true startLoadRow=1',paste0(getwd(),"/Data/DisGeNET/gda.tsv")))
+commandsRun(sprintf('network import file columnTypeList=sa,sa,sa,sa,sa,s delimiters=\\t file=%s firstRowAsColumnNames=true startLoadRow=1',paste0(getwd(),"/Data/DisGeNET/gda.tsv")))
 Sys.sleep(0.5)
 renameNetwork("DisGeNET network")
 createNodeSource("fromDisGeNET")
+Sys.sleep(0.5)
 
-# genedisparams.scz.df <- read.table("Data/DisGeNET/disgenetparams-scz.txt",header=TRUE,sep = "\t")
-#   #Loading relevant gene-disease networks from DisGeNET
-#   #Networks of interest manually added into tsv where it is easier to adjust filters
-# disgeneturl <- c()
-#   #Preparing container for DisGeNET URL to be saved for addition to metadata file
-# apply(genedisparams.scz.df,1,function(row) {
-#   gdp <- geneDisParams(row["source"],row["dis"],row["min"])
-#   disgeneturl <<- disgenetRestUrl(net)
-#     #Fetching the DisGeNET URL used to make this call 
-#   geneDisResult <- disgenetRestCall(net,gdp)
-#     #Executing the DisGeNET query
-#   createNodeSource("fromDisGeNET")
-#     #Adding information about data source to each node
-#   #mapTableColumn("geneId","Human","Entrez Gene","Ensembl",force.single=TRUE,table="node")
-#   commandsRun('bridgedb id mapping network=current sourceColumn=geneId sourceIdType="Entrez Gene" targetColumn=Ensembl targetIdType=Ensembl' )  
-#   #Mapping Entrez Gene IDs to Ensembl IDs
-#   renameTableColumn("geneName","DisGeNETname")
-# })  
-#   #Importing networks from DisGeNET
-# 
-# metadata.add(paste("DisGeNET URL:",disgeneturl))
-# metadata.add(paste("DisGeNET net type:",net))
-# metadata.add("")
-#   #Adding the DisGeNET URL and net type used to add networks to the metadata file
 
 sparqlquery("wp","nodequery.txt","wp_nodelist")
   #Making a SPARQL query to the endpoint to get all nodes associated with a list of pathways
@@ -509,6 +468,26 @@ snw_scz <- getNetworkName()
   #Getting the name of the unified network to preserve it from deletion
 lapply(networklist[networklist != snw_scz],deleteNetwork)
   #Deleting all networks besides newly generated unified network
+snw_ensembl <- getTableColumns("node","Ensembl")
+  #Getting all values in the Ensembl column of the supernetwork
+input <- data.frame(
+  source = rep("En", length(snw_ensembl[, 1])),
+  identifier = snw_ensembl[, 1]
+)
+  #Making a new df to be used as input for bridgedb
+  #Map Ensembl ID
+snw_map <- maps(mapper,input,"H")
+  #Mapping from Ensembl to HGNC
+snw_map <- select(snw_map, c("identifier", "mapping"))
+snw_map <- rename(snw_map,
+                  Ensembl = identifier,
+                  HGNCsymbol = mapping)
+  #Selecting and renaming relevant columns from bridgeDb mapping output
+loadTableData(snw_map,
+              data.key.column = "Ensembl",
+              table = "node",
+              table.key.column = "Ensembl")
+  #loading HGNC names for Ensembl IDs in supernetwork back to node table
 exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW"),"CX", network = snw_scz, overwriteFile=TRUE)
   #Exporting the supernetwork as cx file
 
@@ -517,12 +496,9 @@ end_section("Importing and merging")
 ## STRING --------------------------------------------------------------------------------------------------------------------------
 start_section("STRING")
 commandsRun('string stringify colDisplayName=name column=Ensembl compoundQuery=true cutoff=0.9 includeNotMapped=true  networkType="full STRING network" species="Homo sapiens" networkNoGui=current')
-commandsRun('bridgedb id mapping network=current sourceColumn=Ensembl sourceIdType=Ensembl targetColumn=HGNC targetIdType=HGNC')
-#mapTableColumn("Ensembl","Human","Ensembl","HGNC")
-#   #Generating a new column 'HGNC' from Ensembl identifiers - easier and less error-prone than merging various name columns from different import sources
-renameTableColumn("HGNC","Name2")
-  #Renaming the new 'HGNC' column to 'Name2', which is now to be used as default name column. ('shared name' and 'name' columns are immutable and cannot be deleted or renamed)
-marked_cols <- as.list(getTableColumnNames()[!(getTableColumnNames() %in% c("selected","name.copy" ,"SUID","shared name","name","fromDisGeNET","fromWikiPathways","Ensembl","fromPublication","Publication.doi","fromSTRING","CNVassociated","PathwayID","NodeID","NodeIDType","snpID","Name2","DisGeNETname"))])
+  #Adding protein-protein interactions from STRING to the supernetwork
+  #Interactions between nodes are poorly preserved during importing and merging, and really only WikiPathways provides edge information while DisGeNET and the publication only provide gene lists
+marked_cols <- as.list(getTableColumnNames()[!(getTableColumnNames() %in% c("selected","name.copy" ,"SUID","shared name","name","fromDisGeNET","fromWikiPathways","Ensembl","fromPublication","Publication.doi","CNVassociated","PathwayID","WPNodeID","WPNodeIDType","snpID","HGNCsymbol","DisGeNETname","disgenet_curated","gdascore","Entrez_gene"))])
 lapply(marked_cols, function(column) {
   deleteTableColumn(column=column)
 })
@@ -537,12 +513,6 @@ end_section("STRING")
 start_section("Clustering")
 createColumnFilter(filter.name="delete.noensembl", column="Ensembl","ENSG","DOES_NOT_CONTAIN")
 deleteSelectedNodes()
-  #Filtering out nodes that do not have an ENSG Ensembl identifier mapped to them
-# marked_cols <- as.list(getTableColumnNames()[!(getTableColumnNames() %in% c("selected","name.copy" ,"SUID","shared name","name","Name2","fromDisGeNET","fromWikiPathways","Ensembl","fromPublication","Publication.doi","fromSTRING","CNVassociated"))])
-# lapply(marked_cols, function(column) {
-#   deleteTableColumn(column=column)
-# })
-  #Deleting all the columns besides immutable columns, Ensembl, name, and source columns
 metadata.add("GLay Clustering")
 metadata.add(capture.output(commandsRun('cluster glay clusterAttribute=__glayCluster createGroups=false network=current restoreEdges=true showUI=true undirectedEdges=true')))
   #Clustering the network using the GLay community cluster from the clusterMaker Cytoscape app and recording outcome to metadata
@@ -594,13 +564,11 @@ sourcecount <- function(cluster) {
   wpcount <- sum(split_tbl[[cluster]][["fromWikiPathways"]] == 1, na.rm = TRUE)
   dgcount <- sum(split_tbl[[cluster]][["fromDisGeNET"]] == 1, na.rm = TRUE)
   litcount <- sum(split_tbl[[cluster]][["fromPublication"]] == 1, na.rm = TRUE)
-  stringcount <- sum(split_tbl[[cluster]][["fromSTRINGnode"]] == 1, na.rm = TRUE)
   result_df <- data.frame(
     gLayCluster = split_tbl[[cluster]][["gLayCluster"]][1],
     WikiPathways_source = wpcount,
     DisGeNET_source = dgcount, 
-    Publication_source = litcount, 
-    STRING_source = stringcount
+    Publication_source = litcount
   )
 }
 sources_count <- do.call(rbind, lapply(seq_along(split_tbl),sourcecount))
@@ -802,7 +770,7 @@ Sys.sleep(1)
   add_attributes <- separate_ketitles %>%
     group_by(KEid) %>%
     summarise (KEEnsembl = paste(Ensembl,collapse="; "),
-               KEgenename = paste(Name2, collapse="; "),
+               KEgenename = paste(HGNCsymbol, collapse="; "),
                KEsummary_go_term = paste(summary_term, collapse="; "))
   names(ke_freq_df) <- c("KEid","KE_frequency")
   ke_freq_df_full <- merge(ke_freq_df, add_attributes,"KEid")
@@ -1314,7 +1282,7 @@ setNodeColorMapping(table.column = "gLayCluster",
 setEdgeLineWidthDefault(new.width = 0.5,
                         style.name = "SNW_vis")
   #Reducing edge width to decrease hairball effect
-setNodeLabelMapping(table.column = "Name2",
+setNodeLabelMapping(table.column = "HGNCsymbol",
                     style.name="SNW_vis")
   #Changing node labels to show HGNC name
 fitContent()
@@ -1419,6 +1387,63 @@ exportImage(filename = paste0(getwd(),"/Visualisations/SNW_functional_analysis")
 ##DEPRECATED==========================================================================================================================================
 
 #storing code that has been replaced by other methods 
+
+
+# disgenetRestUrl<-function(netType,host="127.0.0.1",port=1234,version="v7"){
+#   if(is.null(netType)){
+#     print("Network type not specified.")
+#   }else{
+#     disgeneturl<-sprintf("http://%s:%i/disgenet/%s/%s",host,port,version,netType)
+#   }
+#   return (disgeneturl)
+# }
+# net <- "gene-disease-net"
+# disgenetRestUrl(netType = net)
+#   #Defining object for REST to call DisGeNET automation module; defining that we will be using gene-disease associations (GDA)
+# disgenetRestCall<-function(netType,netParams){
+#   disgeneturl<-disgenetRestUrl(netType)
+#   restCall<-POST(disgeneturl, body = netParams, encode = "json")
+#   result<-content(restCall,"parsed")
+#   return(result)
+# }
+#   #Object that executes REST calls to DisGeNET module in Cytoscape 
+# geneDisParams <- function(source,dis,min) {list(
+#   source = source,
+#   assocType = "Any",
+#   diseaseClass = "Any",
+#   diseaseSearch = dis,
+#   geneSearch = " ",
+#   initialScoreValue = min,
+#   finalScoreValue = "1.0"
+# )}
+#   #Specifying parameters of the GDA network to be imported
+
+
+# genedisparams.scz.df <- read.table("Data/DisGeNET/disgenetparams-scz.txt",header=TRUE,sep = "\t")
+#   #Loading relevant gene-disease networks from DisGeNET
+#   #Networks of interest manually added into tsv where it is easier to adjust filters
+# disgeneturl <- c()
+#   #Preparing container for DisGeNET URL to be saved for addition to metadata file
+# apply(genedisparams.scz.df,1,function(row) {
+#   gdp <- geneDisParams(row["source"],row["dis"],row["min"])
+#   disgeneturl <<- disgenetRestUrl(net)
+#     #Fetching the DisGeNET URL used to make this call 
+#   geneDisResult <- disgenetRestCall(net,gdp)
+#     #Executing the DisGeNET query
+#   createNodeSource("fromDisGeNET")
+#     #Adding information about data source to each node
+#   #mapTableColumn("geneId","Human","Entrez Gene","Ensembl",force.single=TRUE,table="node")
+#   commandsRun('bridgedb id mapping network=current sourceColumn=geneId sourceIdType="Entrez Gene" targetColumn=Ensembl targetIdType=Ensembl' )  
+#   #Mapping Entrez Gene IDs to Ensembl IDs
+#   renameTableColumn("geneName","DisGeNETname")
+# })  
+#   #Importing networks from DisGeNET
+# 
+# metadata.add(paste("DisGeNET URL:",disgeneturl))
+# metadata.add(paste("DisGeNET net type:",net))
+# metadata.add("")
+#   #Adding the DisGeNET URL and net type used to add networks to the metadata file
+
 
 #queryspecies.wp <- c("Homo sapiens","Rattus norvegicus","Mus musculus")
 #getPathways.wp <- function(i) {
