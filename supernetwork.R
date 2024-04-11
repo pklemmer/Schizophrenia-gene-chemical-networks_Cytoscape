@@ -842,11 +842,11 @@ metadata.add("")
 
 gettop <- function(input) {
   freq_df <- input$ke_freq_df_full
-  cutoff_ke <- quantile(freq_df$KE_frequency, probs=0.75,na.rm = TRUE)
+  #cutoff_ke <- quantile(freq_df$KE_frequency, probs=0.75,na.rm = TRUE)
   #Defining cutoff for KE frequency (top 25% most frequent)
-  topquarter_ke <- freq_df[freq_df$KE_frequency >= cutoff_ke & !is.na(freq_df$KE_frequency),,drop=FALSE]
+  #topquarter_ke <- freq_df[freq_df$KE_frequency >= cutoff_ke & !is.na(freq_df$KE_frequency),,drop=FALSE]
   #Selecting the top 25% most frequently matched with KEs and associated information
-  
+  topquarter_ke <- freq_df
 }
 
 top_all <- gettop(aoplink_all)
@@ -1057,6 +1057,18 @@ lapply(c(aopaonetwork,keaopnetwork,kegenenetwork,keaopaomerged),deleteNetwork)
 mergeaop("all")
   #Creating the full gene-KE-AOP-AO network with data from all AOs and associated AOPs and KEs in AOP-Wiki
 aopmerged_node <- getTableColumns("node")
+sparqlquery("AOP-Wiki","miemap.txt","miemap")
+  #Getting a list of all data points in AOP-Wiki tagged as molecular initiating events and the AOPs for which they are MIEs 
+aopmerged_node_KEid <- as.data.frame(aopmerged_node$KEid)
+  #Getting list of key event nodes in the merged network
+names(aopmerged_node_KEid) = "KEid"
+aopmerged_node_KEid <- na.omit(aopmerged_node_KEid)
+  #Df cleanup
+KEid_mie <- merge(aopmerged_node_KEid, miemap, by="KEid", all.x=TRUE)
+  #Mapping in which AOPs the KEs in the network appear as MIEs
+loadTableData(KEid_mie,"KEid","node","KEid")
+  #Loading MIE mapping back to the network
+
 exportNetwork(paste0(nw_savepath,"gene-KE-AOP-AO merged network_all"),"CX", overwriteFile=TRUE,network="gene-KE-AOP-AO merged network_all")
 #Exporting the network
 
