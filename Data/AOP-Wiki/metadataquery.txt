@@ -1,0 +1,4 @@
+SELECT DISTINCT ?dataset ?date WHERE {
+   ?dataset a void:Dataset;pav:createdOn ?date.
+ }
+

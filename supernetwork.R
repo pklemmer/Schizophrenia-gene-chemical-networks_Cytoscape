@@ -103,7 +103,7 @@ checkinstall.app <- function(app) {
     }
 }
   #Function to check whether required Cytoscape apps are installed and installing them if not
-applist <- c("Wikipathways", "DisGeNET-app", "CyTargetLinker","stringApp","BridgeDb","clusterMaker2")
+applist <- c("stringApp","clusterMaker2","yFiles Layout Algorithms")
   #WikiPathways v.3.3.10
   #DisGeNET-app v.7.3.0
   #CyTargetLinker v. 4.1.0
@@ -139,7 +139,9 @@ getBridgeDbmap()
   #This is a relatively large (800MB) file - downloading it once is sufficient
 loadDatabase(bridgedb_dir)
   #Loading the database
-
+metadata.add("BridgeDb")
+metadata.add("Homo sapiens bridge version 108")
+metadata.add("")
 
 # FUNCTION DICTIONARY-------------------------------------------------------------------------------------------------------------------
 .defaultBaseUrl <- 'http://127.0.0.1:1234/v1'
@@ -288,9 +290,69 @@ createNodeSource <- function(source,doi=NULL) {
 ## IMPORTING AND MERGING ---------------------------------------------------------------------------------------------------------------
 start_section("Importing and merging")
 
+sparqlquery("DisGeNET","disgenet-query.txt","gda")
+#Querying the DisGeNET SPARQL endpoint for genes associated to schizophrenia from curated sources
+gda$disgenet_curated <- str_extract(gda$source, "(?<=/)[^/]*$")
+gda$Entrez_gene <- str_extract(gda$gene, "(?<=/)[^/]*$")
+gda$HGNC_symbol <- str_extract(gda$symbol, "(?<=/)[^/]*$")
+gda <- subset(gda, select=c(disgenet_curated,Entrez_gene,HGNC_symbol,gdascore))
+#cleaning data
+gda <- gda %>%
+  group_by(Entrez_gene, HGNC_symbol, gdascore) %>%
+  mutate(disgenet_curated = paste(disgenet_curated, collapse = "; ")) %>%
+  distinct()
+gda <- gda[!duplicated(gda$Entrez_gene),]
+#Concatenating to avoid duplicate gene rows if they are confirmed by multiple sources
+mapper <- loadDatabase(bridgedb_dir)
+#Loading bridgedb database
+input <- data.frame(
+  source = rep("H", length(gda[, 3])),
+  identifier = gda[, 3]
+)
+#Making a new df to be used as input for bridgedb
+#Map HGNC symbol
+input <- input %>%
+  rename(source=source,
+         identifier=HGNC_symbol)
+#Renaming cols for maps function compability
+gda_map <- maps(mapper,input,"En")
+#Mapping from HGNC to Ensembl
+gda <- merge(gda,gda_map,by.x="HGNC_symbol",by.y="identifier",all.x=TRUE)
+#Merging the GDA and mapping tables; some HGNC symbols can't be matched to Ensembl IDs but are still retained
+gda <- subset(gda, select=c(HGNC_symbol,mapping,Entrez_gene,disgenet_curated,gdascore))
+#Cleaning df
+gda <- gda %>%
+  rename(Ensembl=mapping)
+man_map <- read.delim(paste0(getwd(),"/Data/DisGeNET/manual-maps.txt"),sep="\t")
+#Reading a file containing manual mappings for some of the missing Ensembl ID
+gda <- merge(gda, man_map, by="HGNC_symbol",all.x=TRUE)
+#Merging the manual map and the gda df based on HGNC symbol as key column
+gda$Ensembl.x[is.na(gda$Ensembl.x)] <- gda$Ensembl.y[is.na(gda$Ensembl.x)]
+#Merging the Ensembl cols
+gda <- select(gda, -Ensembl.y)
+#Removing superfluous Ensembl col from manual mapping df
+gda <- gda %>%
+  rename(Ensembl = Ensembl.x)
+gda$HGNC_symbol_source <- gda$HGNC_symbol
+#Creating a duplicated Ensembl column for Cytoscape import
+#Cleaning and renaming df
+gda <- mutate_all(gda, ~ifelse(is.na(.),"",.))
+#Replacing NA with empty strings for Cytoscape compatibility
+write.table(gda,file=paste0(other_savepath,"DisGeNET/gda.tsv"),quote=FALSE,sep="\t",row.names=FALSE)
+commandsRun(sprintf('network import file columnTypeList=sa,sa,sa,sa,sa,s delimiters=\\t file=%s firstRowAsColumnNames=true startLoadRow=1',paste0(other_savepath,"DisGeNET/gda.tsv")))
+Sys.sleep(0.5)
+renameNetwork("DisGeNET network")
+createNodeSource("fromDisGeNET")
+Sys.sleep(0.5)
+metadata.add("DisGeNET")
+metadata.add("DisGeNET SPARQL endpoint metadata:")
+metadata.add(paste0("DisGeNET nodes: ",getNodeCount()))
+metadata.add("")
+
 sparqlquery("wp","metadataquery.txt","WikiPathways-SPARQL-metadata")
   #Getting the metadata of the endpoint used for the WikiPathways SPARQL queries
-metadata.add("WikiPathways SPARQL endpoint metadata")
+metadata.add("WikiPathways")
+metadata.add("WikiPathways SPARQL endpoint metadata:")
 metadata.add(`WikiPathways-SPARQL-metadata`)
   #Adding the fetched metadata to the metadata file for the session
   #It is technically possible that the metadata would describe an earlier version of the RDF if it is updated while the script runs but this is unlikely
@@ -309,60 +371,7 @@ allpathways_URL <- paste0("<",allpathways,">")
 writeLines(allpathways_URL, con=paste0(other_savepath,"WikiPathways/allpathways.txt"))
   #Writing list of all pathways in SPARQL URL format to file
 
-sparqlquery("DisGeNET","disgenet-query.txt","gda")
-  #Querying the DisGeNET SPARQL endpoint for genes associated to schizophrenia from curated sources
-gda$disgenet_curated <- str_extract(gda$source, "(?<=/)[^/]*$")
-gda$Entrez_gene <- str_extract(gda$gene, "(?<=/)[^/]*$")
-gda$HGNC_symbol <- str_extract(gda$symbol, "(?<=/)[^/]*$")
-gda <- subset(gda, select=c(disgenet_curated,Entrez_gene,HGNC_symbol,gdascore))
-  #cleaning data
-gda <- gda %>%
-  group_by(Entrez_gene, HGNC_symbol, gdascore) %>%
-  mutate(disgenet_curated = paste(disgenet_curated, collapse = "; ")) %>%
-  distinct()
-gda <- gda[!duplicated(gda$Entrez_gene),]
-  #Concatenating to avoid duplicate gene rows if they are confirmed by multiple sources
-mapper <- loadDatabase(bridgedb_dir)
-  #Loading bridgedb database
-input <- data.frame(
-  source = rep("H", length(gda[, 3])),
-  identifier = gda[, 3]
-)
-  #Making a new df to be used as input for bridgedb
-  #Map HGNC symbol
-input <- input %>%
-  rename(source=source,
-         identifier=HGNC_symbol)
-  #Renaming cols for maps function compability
-gda_map <- maps(mapper,input,"En")
-  #Mapping from HGNC to Ensembl
-gda <- merge(gda,gda_map,by.x="HGNC_symbol",by.y="identifier",all.x=TRUE)
-  #Merging the GDA and mapping tables; some HGNC symbols can't be matched to Ensembl IDs but are still retained
-gda <- subset(gda, select=c(HGNC_symbol,mapping,Entrez_gene,disgenet_curated,gdascore))
-  #Cleaning df
-gda <- gda %>%
-  rename(Ensembl=mapping)
-man_map <- read.delim(paste0(getwd(),"/Data/DisGeNET/manual-maps.txt"),sep="\t")
-  #Reading a file containing manual mappings for some of the missing Ensembl ID
-gda <- merge(gda, man_map, by="HGNC_symbol",all.x=TRUE)
-  #Merging the manual map and the gda df based on HGNC symbol as key column
-gda$Ensembl.x[is.na(gda$Ensembl.x)] <- gda$Ensembl.y[is.na(gda$Ensembl.x)]
-  #Merging the Ensembl cols
-gda <- select(gda, -Ensembl.y)
-  #Removing superfluous Ensembl col from manual mapping df
-gda <- gda %>%
-  rename(Ensembl = Ensembl.x)
-gda$HGNC_symbol_source <- gda$HGNC_symbol
-  #Creating a duplicated Ensembl column for Cytoscape import
-  #Cleaning and renaming df
-gda <- mutate_all(gda, ~ifelse(is.na(.),"",.))
-  #Replacing NA with empty strings for Cytoscape compatibility
-write.table(gda,file=paste0(other_savepath,"DisGeNET/gda.tsv"),quote=FALSE,sep="\t",row.names=FALSE)
-commandsRun(sprintf('network import file columnTypeList=sa,sa,sa,sa,sa,s delimiters=\\t file=%s firstRowAsColumnNames=true startLoadRow=1',paste0(other_savepath,"DisGeNET/gda.tsv")))
-Sys.sleep(0.5)
-renameNetwork("DisGeNET network")
-createNodeSource("fromDisGeNET")
-Sys.sleep(0.5)
+
 
 
 sparqlquery("wp","nodequery.txt","wp_nodelist")
@@ -439,6 +448,8 @@ altmergeNetworks(sources = c("WikiPathways nodes","WikiPathways edges"),
   #Union merging the node and edge networks to extend the node list with corresponding edges
 Sys.sleep(0.5)
 createNodeSource("fromWikiPathways")
+metadata.add(paste0("WikiPathways nodes: ",getNodeCount()))
+metadata.add("")
 deleteNetwork('WikiPathways nodes')
 deleteNetwork('WikiPathways edges')
 
@@ -457,6 +468,15 @@ renameNetwork("Trubetskoy risk genes")
   #Renaming the newly imported network
 metadata.add("Publications")
 metadata.add("Trubetskoy et al. doi: 10.1038/s41586-022-04434-5")
+metadata.add(paste0("Publication nodes: ",getNodeCount()))
+metadata.add("")
+
+sparqlquery("AOP-Wiki","metadataquery.txt","aopwikimetadata")
+aopwikimetadata <- paste(aopwikimetadata$dataset, aopwikimetadata$date, sep ="\t")
+metadata.add("AOP-Wiki")
+metadata.add("AOP-Wiki SPARQL endpoint metadata:")
+metadata.add(paste("Dataset","Date",sep="\t"))
+metadata.add(aopwikimetadata)
 metadata.add("")
 
 networklist <- getNetworkList()
@@ -492,6 +512,9 @@ loadTableData(snw_map,
               table = "node",
               table.key.column = "Ensembl")
   #loading HGNC names for Ensembl IDs in supernetwork back to node table
+snw_nostring_edges <- getEdgeCount()
+metadata.add(paste0("Total nodes in supernetwork: ",getNodeCount()))
+metadata.add("")
 exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW"),"CX", network = snw_scz, overwriteFile=TRUE)
   #Exporting the supernetwork as cx file
 
@@ -502,6 +525,16 @@ start_section("STRING")
 commandsRun('string stringify colDisplayName=name column=Ensembl compoundQuery=true cutoff=0.9 includeNotMapped=true  networkType="full STRING network" species="Homo sapiens" networkNoGui=current')
   #Adding protein-protein interactions from STRING to the supernetwork
   #Interactions between nodes are poorly preserved during importing and merging, and really only WikiPathways provides edge information while DisGeNET and the publication only provide gene lists
+metadata.add("STRING")
+metadata.add("STRINGify parameters:")
+metadata.add("- Perform STRINGification on: Ensembl")
+metadata.add("- Query compounds: true")
+metadata.add("- Cutoff: 0.9")
+snw_string_edges <- getEdgeCount()
+metadata.add(paste0("STRING-added edges: ",snw_string_edges - snw_nostring_edges))
+metadata.add(paste0("Total edges in supernetwork: ",snw_string_edges))
+metadata.add("")
+
 marked_cols <- as.list(getTableColumnNames()[!(getTableColumnNames() %in% c("selected","name.copy" ,"SUID","shared name","name","fromDisGeNET","fromWikiPathways","Ensembl","fromPublication","Publication.doi","CNVassociated","PathwayID","WPNodeID","WPNodeIDType","snpID","HGNCsymbol","DisGeNETname","disgenet_curated","gdascore","Entrez_gene"))])
 lapply(marked_cols, function(column) {
   deleteTableColumn(column=column)
@@ -517,6 +550,8 @@ end_section("STRING")
 start_section("Clustering")
 createColumnFilter(filter.name="delete.noensembl", column="Ensembl","ENSG","DOES_NOT_CONTAIN")
 deleteSelectedNodes()
+metadata.add(paste0("Ensembl nodes in supernetwork: ",getNodeCount()))
+metadata.add("")
 metadata.add("GLay Clustering")
 metadata.add(capture.output(commandsRun('cluster glay clusterAttribute=__glayCluster createGroups=false network=current restoreEdges=true showUI=true undirectedEdges=true')))
   #Clustering the network using the GLay community cluster from the clusterMaker Cytoscape app and recording outcome to metadata
@@ -524,10 +559,6 @@ renameNetwork("SCZ_SNW_STRING_clustered")
 renameTableColumn('__glayCluster','gLayCluster') 
   #Renaming the newly generated gLayCluster column as the original name with two underscores is not recognized during gene ontology
 snw_scz_string_clustered <- getNetworkName()
-# clustered_nodetable <- paste0(other_savepath,sprintf("/%s node table.csv",snw_scz_string_clustered))
-  #Saving the file path to the node table for easier reading (note the double space between node and table)
-# commandsRun(sprintf('table export options=CSV outputFile=%1$s table="%2$s default  node"',clustered_nodetable,snw_scz_string_clustered))
-  #Exporting the node table as .csv file to the current session's "Network" folder
 exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW_STRING_clustered"),"CX",network=snw_scz_string_clustered,overwriteFile=TRUE)
   #Exporting the filtered, stringified, clustered supernetwork as cx file and tagging it with the time and data to match with the metadata file
 
@@ -799,6 +830,13 @@ aoplink_all <- aopprocess("all_AO_KE_Ensembl_query.txt","all")
 snw_scz_string_clustered_GO_AOP_all <- getNetworkName()
 exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW_STRING_clustered_GO_AOP_all"),"CX",network=snw_scz_string_clustered_GO_AOP_all,overwriteFile=TRUE)
 #Exporting network
+
+
+nclusters <- as.character(count(unique(getTableColumns("node","gLayCluster"))))
+  #Counting how many valid clusters remain
+metadata.add(paste0("Valid (>= 5 nodes) clusters: ",nclusters))
+metadata.add(paste0("Nodes associated with valid clusters: ",getNodeCount()))
+metadata.add("")
 
 
 
