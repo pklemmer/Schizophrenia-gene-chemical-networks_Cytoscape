@@ -1,27 +1,29 @@
 gLayCluster	summary_term
-155	G protein-coupled receptor signaling
-157	Cell communication, signal transduction
-159	Antigen processing
-160	Dynein complex and microtubule-associated complex
-161	Cell junctions
-163	Myelination
-165	Synaptic junctions and signaling
-166	Fibrin clot formation and metabolic processes
-167	Acetylcholine-gated channels and binding
-168	Postsynpatic membrane
-172	Radial spoke head
-175	Metabolic process regulation and nucleus structure
-182	SUMO ligase complex and DNA maintenance
-185	BMP signaling and skeletal system development
-186	15q11.2 CNV and microtubule organisation
-187	Fatty acid biosynthesis and kinase signaling
-189	Carboxylic acid and organic acid metabolic processes
-193	Citric acid cycle
-200	NPHP1 deletion and ciliary transition zone
-202	Notch signaling
-204	ESCRT complex and GAG proteins
-249	Double-strand break repair 
-285	Extracellular matrix structure
-288	Clathrin vesicle and AP3 adaptor complex
-303	Serotonin-gated channels and receptor activity
-389	NADPH oxidase activity and superoxide generation
+164	Synaptic signaling & cell junction
+165	Chromosome organisation
+166	Regulation of metabolic processes
+167	Chromatin and histone organisation
+170	Synpatic signaling & neurotransmitter transport
+171	Cell communication
+173	Serotonin receptor complex 
+175	Antigen processing
+176	Cyclic nucleotide phosphodiesterase activity 
+178	Cell junctions
+184	Myelination
+186	Acetylcholine receptor & channel activity
+188	Fibrin clot formation & 22q11.2 CNV
+190	Fatty acid biosynthesis & kinase signaling
+193	Translation regulation 
+195	Citric acid cycle
+196	NADPH oxidase activity
+198	Radial spoke head
+200	ECM structure & elasticity
+206	GABA receptor activity
+215	BMP signaling
+216	15q11.2 CNV & microtubule organisation
+231	7q11.23 CNV & microtububle end
+241	Regulation of double-strand break repair
+245	NPHP1 deletion syndrome & Joubert syndrome
+247	Notch signaling
+251	ESCRT complex & GAG proteins
+369	CLahtrin binding & endocytosis

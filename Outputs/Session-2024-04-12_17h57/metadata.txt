@@ -1,0 +1,13 @@
+2024-04-12 17:57:51.170684
+Europe/Berlin
+
+      apiVersion cytoscapeVersion 
+            "v1"         "3.10.1" 
+Required Cytoscape apps and versions:
+App: stringApp, description: Import and augment Cytoscape networks from STRING, version: 2.0.3
+App: clusterMaker2, description: Multi-algorithm clustering app for Cytoscape, version: 2.3.4
+App: yFiles Layout Algorithms, description: Highly sophisticated algorithms for arranging networks., version: 1.1.4
+
+BridgeDb
+Homo sapiens bridge version 108
+

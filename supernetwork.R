@@ -786,7 +786,7 @@ aopprocess <- function(input,tag) {
   scz_snw_string_go_aop <- getNetworkName()
   scz_snw_string_go_aop_node <- getTableColumns("node")
   #Reading the exported table as Cytoscape object
-  aop_associated_genes <- scz_snw_string_go_aop_node[!(scz_snw_string_go_aop_node$KEid == ""), , drop=FALSE]
+  aop_associated_genes <- scz_snw_string_go_aop_node[!is.na(scz_snw_string_go_aop_node$KEid), , drop=FALSE]
   #Getting which rows (=gene nodes) have info from AOP-Wiki associated to them
   renameNetwork(paste0(getNetworkName(),"_",tag))
   
@@ -1075,6 +1075,7 @@ exportNetwork(paste0(nw_savepath,"gene-KE-AOP-AO merged network_all"),"CX", over
 end_section("AOP")
 
 ##SNW-AOP -----------------------------------------------------------------------------------------------------------------------------------------
+start_section("SNW_AOP")
 
 importNetworkFromFile(paste0(nw_savepath,"SCZ_SNW_STRING_clustered_GO.cx"))
   #Reimporting clustered supernetwork with GO results added
@@ -1134,6 +1135,9 @@ snw_node_aop_valid$PathwayID <- snw_node_aop_valid$PathwayID_target
   #Duplicating source and target cols for import
 snw_node_aop_valid <- snw_node_aop_valid[,c("Ensembl_source","Ensembl","fromPublication","fromDisGeNET","fromWikiPathways","gLayCluster","snpID","CNVassociated","PathwayID_target","PathwayID","PathwayTitle")]
   #Reordering columns
+snw_node_aop_valid <- lapply(snw_node_aop_valid, function(x) gsub("NA","",x))
+  #At some point during processing, literal 'NA' is added to the df which is incorrectly interpreted during Cytoscape import
+  #We simply replace all occurrences of 'NA' with an empty string
 write.table(snw_node_aop_valid, file=paste0(other_savepath,"AOP-Wiki/snw_node_aop.tsv"), sep="\t", quote=FALSE, row.names=FALSE)
   #Writing to file for Cytoscape import
 commandsRun(sprintf('network import file columnTypeList=s,sa,sa,sa,sa,sa,sa,sa,t,ta,ta delimiters=\\t file=%s firstRowAsColumnNames=true rootNetworkList=-- Create new network collection -- startLoadRow=1',paste0(other_savepath,"AOP-Wiki/snw_node_aop.tsv")))
@@ -1214,6 +1218,7 @@ altmergeNetworks(sources=c("gene-KE-AOP-AO merged network_all","Genes from AOP n
 deleteTableColumn("shared.name")
 exportNetwork(filename=paste0(nw_savepath,"gene-KE-AO merged network with pathways"), type="CX", overwriteFile = TRUE)
 
+end_section("SNW_AOP")
 ##AOP VISUALISATION -------------------------------------------------------------------------------------------------------------------------------
 createVisualStyle("AOP_vis")
 setVisualStyle("AOP_vis")
@@ -1231,6 +1236,16 @@ setNodeColorMapping(
   style.name="AOP_vis"
 )
 #Setting node colors using dedicated type column
+createColumnFilter(
+  filter.name = "KE-MIE",
+  column = "KEisMIEin",
+  criterion = "h",
+  predicate = "CONTAINS",
+  anyMatch = TRUE,
+  apply = TRUE
+)
+  #Selecting which KEs are tagged as MIEs
+
 setNodeShapeDefault(
   new.shape="ROUND_RECTANGLE",
   style.name="AOP_vis"
