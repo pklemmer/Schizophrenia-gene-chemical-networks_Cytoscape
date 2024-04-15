@@ -1068,6 +1068,16 @@ KEid_mie <- merge(aopmerged_node_KEid, miemap, by="KEid", all.x=TRUE)
   #Mapping in which AOPs the KEs in the network appear as MIEs
 loadTableData(KEid_mie,"KEid","node","KEid")
   #Loading MIE mapping back to the network
+KEid_mie <- na.omit(KEid_mie[!is.na(KEid_mie[["KEisMIEin"]]), ])
+  #Removing non-MIE rows
+KEid_mie <- separate_rows(KEid_mie, KEisMIEin, sep = "; ")
+  #Separating rows to show one KE being an MIE in a specific AOP per row
+KEid_mie$interaction <- paste(KEid_mie$KEisMIEin, "(interacts with)", KEid_mie$KEid)
+  #Generating a new column that follows Cytoscape edge nomenclature to be used as key column
+KEid_mie$isMIEedge <- 1
+  #Adding column showing whether the edge is related to a MIE or not, used in visualisation 
+loadTableData(KEid_mie, "interaction","edge","name")
+  #Loading edge info back to network
 
 exportNetwork(paste0(nw_savepath,"gene-KE-AOP-AO merged network_all"),"CX", overwriteFile=TRUE,network="gene-KE-AOP-AO merged network_all")
 #Exporting the network
@@ -1216,6 +1226,8 @@ altmergeNetworks(sources=c("gene-KE-AOP-AO merged network_all","Genes from AOP n
                  nodeKeys=c("Ensembl","name"))
   #Merging gene-KE-AOP-AO network with gene-pathway network
 deleteTableColumn("shared.name")
+lapply(c("Genes from AOP network with SNW attributes","Genes from AOP network with clusters","Genes from AOP network with pathways and clusters"),deleteNetwork)
+#Deleting intermediary networks used to generate full gene-KE-AOP-AO network
 exportNetwork(filename=paste0(nw_savepath,"gene-KE-AO merged network with pathways"), type="CX", overwriteFile = TRUE)
 
 end_section("SNW_AOP")
@@ -1245,7 +1257,15 @@ createColumnFilter(
   apply = TRUE
 )
   #Selecting which KEs are tagged as MIEs
-
+kemienode <- getSelectedNodes()
+setNodeBorderColorBypass(
+  node.names = kemienode, 
+  new.colors = "#3030f0"
+)
+setNodeBorderWidthBypass(
+  node.names = kemienode,
+  new.sizes = 20  
+)
 setNodeShapeDefault(
   new.shape="ROUND_RECTANGLE",
   style.name="AOP_vis"
@@ -1262,6 +1282,18 @@ setEdgeColorDefault(
   new.color="#BCBCBC",
   style.name="AOP_vis"
 ) 
+setEdgeColorMapping(
+  table.column = "isMIEedge",
+  table.column.values = c(0,1),
+  colors = c("#BCBCBC", "#3030f0"),
+  style.name= "AOP_vis"
+)
+setEdgeLineWidthMapping(
+  table.column = "isMIEedge",
+  table.column.values = c(0,1),
+  widths = c(1,3),
+  style.name = "AOP_vis"
+)
 commandsRun('analyzer analyze directed=true selectedOnly=false')
   #Running analyzer for topoligcal information
 setNodeSizeMapping(
