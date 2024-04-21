@@ -46,6 +46,7 @@ dir.create(paste0(other_savepath,"WikiPathways"))
 dir.create(paste0(other_savepath,"DisGeNET"))
 dir.create(paste0(other_savepath,"AOP-Wiki"))
 dir.create(paste0(other_savepath,"Clustering"))
+dir.create(paste0(other_savepath,"CyTargetLinker"))
 file.create(sprintf("Outputs/Session-%s/metadata.txt",datetime))
   #Creating a new metadata file with the current date and time as suffix for easier organisation
   #Such a metadata file should be generated every time this script is ran to record parameters and versions of functions or databases, including the time avoids files being overwritten if the script is run multiple times a day (can even include seconds if script is ran multiple times per minute)
@@ -1231,6 +1232,76 @@ lapply(c("Genes from AOP network with SNW attributes","Genes from AOP network wi
 exportNetwork(filename=paste0(nw_savepath,"gene-KE-AO merged network with pathways"), type="CX", overwriteFile = TRUE)
 
 end_section("SNW_AOP")
+
+## CHEBI EXTENSION --------------------------------------------------------------------------------------------------------------------------------
+
+getlinkset <- function(url,dest) {
+  if (!file.exists(dest)) {
+    dir.create(dest)
+  }
+  file <- "chembl_23_hsa_20180126.zip"
+  curl_download(url, destfile=file.path(dest,file))
+  unzip(zipfile=file.path(dest,file),exdir=dest)
+}
+  #Setting up directory creation, file download and unzip for chembl linkset from CyTargetLinker website
+
+linkset_url <- "https://ndownloader.figshare.com/files/21623691?private_link=6cf358aaaaf5adeecce9"
+linkset_dir <- paste0(getwd(),"/Data/CyTargetLinker")
+
+
+if (!file.exists(file.path(linkset_dir, "chembl_23_hsa_20180126.xgmml"))) {
+  getlinkset(linkset_url,linkset_dir)
+  print("Linkset downloaded and unzipped.")
+  file.remove(paste0(getwd(),"/Data/CyTargetLinker/chembl_23_hsa_20180126.zip"))
+    #Deleting the zip file after extracting the desired xgmml file from it
+} else {
+  print("Linkset already exists.")
+}
+  #Downloading and unzipping if necessary
+chembl_path <- paste0(getwd(),"/Data/CyTargetLinker/chembl_23_hsa_20180126.xgmml")
+  #Defining path to chembl linkset for easy access
+commandsRun(sprintf('cytargetlinker extend direction=SOURCES idAttribute=Ensembl  linkSetFiles=%s network=current',chembl_path))
+  #Extending the pathway-gene-AOP network with chemicals from the linkset
+mapped_chembls <- getTableColumns("node","CTL.ChEMBL")
+mapped_chembls <- na.omit(mapped_chembls)
+  #Getting mapped chemicals and removing NA from df for further processing
+write.table(mapped_chembls, file=paste0(other_savepath,"CyTargetLinker/mapped_chembls.tsv"),sep="\t",row.names=FALSE,col.names=FALSE,quote=FALSE)
+  #Writing ChEMBL IDs to file 
+  #ChEMBL IDs are currently mapped to ChEBI IDs using the FixID webservice manually
+chembl_chebi <- read.delim(paste0(getwd(),"/Data/CyTargetLinker/chembl-chebi.tsv"),sep="\t")
+  #Loading ChEMBL-ChEBI mapping file downloaded from FixID
+chembl_chebi <- chembl_chebi %>%
+  rename(ChEMBLid = identifier,
+         ChEBIid = target) %>%
+  select(-c(identifier.source,target.source)) %>%
+  mutate(across(ChEBIid, ~paste("CHEBI:",.,sep="")))
+  #Renaming cols and adding 'CHEBI:' as prefix to ChEBI IDs since this is not returned from FixID
+
+chebimap <- read.delim(paste0(getwd(),"/Data/CyTargetLinker/chebimap.tsv"), sep = "\t")
+  #Loading .tsv containing ChEBI IDs with associated ontology IDs and names
+chebimap <- chebimap %>%
+  rename(ChEBIid = chemical,
+         ChEBIrole = role,
+         ChEBIrolename = rolename) %>%
+    #Renaming cols
+  mutate(ChEBIid = str_replace(ChEBIid, ".*/",""),
+         ChEBIrole = str_replace(ChEBIrole, ".*/","")) %>%
+  #Removing URL to get ChEBI IDs 
+  mutate(ChEBIid = str_replace(ChEBIid, "_",":"),
+         ChEBIrole = str_replace(ChEBIrole,"_",":"))
+  #Replacing underscores with colons 
+chembl_chebi <- merge(chembl_chebi, chebimap, by="ChEBIid",all.x=TRUE) 
+  #Mapping ChEBI ontology terms to ChEBI IDs available from network mapping 
+chembl_chebi <- chembl_chebi2 %>%
+  group_by(ChEBIid,ChEMBLid) %>%
+  summarise(ChEBIrole = paste(ChEBIrole, collapse = "; "),
+            ChEBIrolename = paste(ChEBIrolename, collapse = "; "))
+chembl_chebi <- chembl_chebi %>%
+  mutate_all(~str_replace_all(.,"NA",""))
+  #Replacing literal 'NA' with empty string
+loadTableData(chembl_chebi, data.key.column = "ChEMBLid", "node",table.key.column = "CTL.ChEMBL")
+  #loading data back to network
+
 ##AOP VISUALISATION -------------------------------------------------------------------------------------------------------------------------------
 createVisualStyle("AOP_vis")
 setVisualStyle("AOP_vis")
