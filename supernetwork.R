@@ -1347,13 +1347,11 @@ deleteSelectedNodes()
   #Deleting selected nodes
   #This process could also be done by using Cytoscape filters (createcolumnFilter), but is much slower
   #Removing ChEMBL nodes added by CyTargetLinker that do not have ChEBI IDs
-
-
-
 deleteTableColumn("CTL.ChEMBL")
+
+exportNetwork(filename=paste0(nw_savepath,"gene-KE-AO merged network with pathways and chemicals"), type="CX", overwriteFile = TRUE)
+
 end_section("ChEBI extension")
-
-
 
 ##AOP VISUALISATION -------------------------------------------------------------------------------------------------------------------------------
 createVisualStyle("AOP_vis")
@@ -1429,7 +1427,7 @@ setNodeSizeMapping(
   #Setting node size relative to indegree (in this graph: edges going from bottom to top)
 fitContent()
 exportImage(
-  filename=paste0(getwd(),"/Visualisations/SNW-AOP-pathways-clusters"),
+  filename=paste0(getwd(),"/Visualisations/SNW-AOP-pathways-clusters-chemicals"),
   type="SVG"
 )
   #Fitting and exporting visualisation

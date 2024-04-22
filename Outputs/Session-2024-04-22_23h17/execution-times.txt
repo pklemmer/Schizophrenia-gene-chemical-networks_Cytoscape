@@ -1,0 +1,9 @@
+Importing and merging	45.73s
+STRING	16.20s
+Clustering	11.10s
+GO Analysis	65.15s
+AOP	25.62s
+SNW_AOP	19.12s
+ChEBI extension	61.07s
+ChEBI extension	60.92s
+ChEBI extension	2089.83s
