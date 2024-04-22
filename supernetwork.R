@@ -1265,6 +1265,22 @@ mapped_chembls <- getTableColumns("node","CTL.ChEMBL")
 mapped_chembls <- na.omit(mapped_chembls)
   #Getting mapped chemicals and removing NA from df for further processing
 
+# metabolitedb_dir <- paste0(getwd(),"/BridgeDb/metabolites_20240416.bridge")
+# getmetabolitemap <- function(dir = metabolitedb_dir, confirmation = "Metabolite BridgeDb mapping file not detected. Download metabolite BridgeDb mapping file (2.65 GB)? (yes/no): ") {
+#   if(file.exists(dir)) {
+#     message("File already present at ", dir, " No files downloaded.")
+#   } else {
+#     confirm <- readline(prompt = confirmation)
+#     if (tolower(confirm) == "yes") {
+#       bridgedb_hs <- getDatabase("Homo sapiens",location=paste0(getwd(),"/BridgeDb"))
+#       message("BridgeDb mapping file downloaded to ",dir)
+#     } else {
+#       message("File download cancelled.")
+#     }
+#   }
+# }
+# getmetabolitemap()
+
 metabolite_bridge_dir <- paste0(getwd(),"/BridgeDb/metabolites_20240416.bridge")
 metabolite_mapper <- loadDatabase(metabolite_bridge_dir)
 metabolite_input <- data.frame(
@@ -1294,7 +1310,13 @@ chebimap <- chebimap %>%
          ChEBIrole = str_replace(ChEBIrole,"_",":"))
   #Replacing underscores with colons 
 chembl_chebi <- merge(chembl_map, chebimap, by="ChEBIid",all.x=TRUE) 
-  #Mapping ChEBI ontology terms to ChEBI IDs available from network mapping 
+  #Mapping ChEBI ontology terms to ChEBI IDs available from network mapping
+
+rolecount <- table(chembl_chebi$ChEBIrolename)
+  #Counting how frequently which ChEBI roles can be mapped to a chemical in the network 
+rolecount <- as.data.frame(rolecount)
+rolecount <- rolecount[order(-rolecount$Freq),]
+
 chembl_chebi <- chembl_chebi %>%
   group_by(ChEBIid,ChEMBLid) %>%
   summarise(ChEBIrole = paste(ChEBIrole, collapse = "; "),
@@ -1302,8 +1324,14 @@ chembl_chebi <- chembl_chebi %>%
 chembl_chebi <- chembl_chebi %>%
   mutate_all(~str_replace_all(.,"NA",""))
   #Replacing literal 'NA' with empty string
+
+chembl_map <- read.delim(paste0(getwd(),"/Data/chembl_name.tsv"),sep="\t")
+  #Loading a file containing ChEMBL IDs mapped to compound names retrieved through the WikiData SPARQL endpoint
+chembl_chebi <- merge(chembl_chebi, chembl_map, by = "ChEMBLid",all=TRUE)
+  #Adding compound names to the df
+
 chembl_chebi$type <- "ChEBI node"
-chembl_chebi$label <- chembl_chebi$ChEBIid
+chembl_chebi$label <- chembl_chebi$compound_name
   #Adding type and label attributes for visualisation
 loadTableData(chembl_chebi, data.key.column = "ChEMBLid", "node",table.key.column = "CTL.ChEMBL")
   #loading data back to network
@@ -1318,8 +1346,10 @@ selectNodes(nodes = chemblnochebi$SUID, by.col = "SUID")
 deleteSelectedNodes()
   #Deleting selected nodes
   #This process could also be done by using Cytoscape filters (createcolumnFilter), but is much slower
-
   #Removing ChEMBL nodes added by CyTargetLinker that do not have ChEBI IDs
+
+
+
 deleteTableColumn("CTL.ChEMBL")
 end_section("ChEBI extension")
 
