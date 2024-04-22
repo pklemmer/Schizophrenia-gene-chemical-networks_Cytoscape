@@ -8,7 +8,7 @@ setwd("~/GitHub/SCZ-CNV")
   #Setting working directory
 rm(list=ls(env=.GlobalEnv))
   #Cleaning up workspace
-packages <- c("dplyr","httr","stringr","gprofiler2","rvest","tidyr")
+packages <- c("dplyr","httr","stringr","gprofiler2","rvest","tidyr","curl")
 installed_packages <- packages %in% rownames(installed.packages())
 if (any(installed_packages == FALSE)) {
   install.packages(packages[!installed_packages])
@@ -104,7 +104,7 @@ checkinstall.app <- function(app) {
     }
 }
   #Function to check whether required Cytoscape apps are installed and installing them if not
-applist <- c("stringApp","clusterMaker2","yFiles Layout Algorithms")
+applist <- c("stringApp","clusterMaker2","yFiles Layout Algorithms","CyTargetLinker")
   #WikiPathways v.3.3.10
   #DisGeNET-app v.7.3.0
   #CyTargetLinker v. 4.1.0
@@ -138,8 +138,6 @@ getBridgeDbmap()
   #Downloading the BridgeDb bridge file for Homo sapiens identifiers to the repo 
   #The directory is added to .gitignore to avoid uploading it to GitHub
   #This is a relatively large (800MB) file - downloading it once is sufficient
-loadDatabase(bridgedb_dir)
-  #Loading the database
 metadata.add("BridgeDb")
 metadata.add("Homo sapiens bridge version 108")
 metadata.add("")
@@ -1234,6 +1232,7 @@ exportNetwork(filename=paste0(nw_savepath,"gene-KE-AO merged network with pathwa
 end_section("SNW_AOP")
 
 ## CHEBI EXTENSION --------------------------------------------------------------------------------------------------------------------------------
+start_section("ChEBI extension")
 
 getlinkset <- function(url,dest) {
   if (!file.exists(dest)) {
@@ -1265,17 +1264,21 @@ commandsRun(sprintf('cytargetlinker extend direction=SOURCES idAttribute=Ensembl
 mapped_chembls <- getTableColumns("node","CTL.ChEMBL")
 mapped_chembls <- na.omit(mapped_chembls)
   #Getting mapped chemicals and removing NA from df for further processing
-write.table(mapped_chembls, file=paste0(other_savepath,"CyTargetLinker/mapped_chembls.tsv"),sep="\t",row.names=FALSE,col.names=FALSE,quote=FALSE)
-  #Writing ChEMBL IDs to file 
-  #ChEMBL IDs are currently mapped to ChEBI IDs using the FixID webservice manually
-chembl_chebi <- read.delim(paste0(getwd(),"/Data/CyTargetLinker/chembl-chebi.tsv"),sep="\t")
-  #Loading ChEMBL-ChEBI mapping file downloaded from FixID
-chembl_chebi <- chembl_chebi %>%
+
+metabolite_bridge_dir <- paste0(getwd(),"/BridgeDb/metabolites_20240416.bridge")
+metabolite_mapper <- loadDatabase(metabolite_bridge_dir)
+metabolite_input <- data.frame(
+  source = rep("Cl", length(mapped_chembls[, 1])),
+  identifier = mapped_chembls[, 1]
+)
+  #Making a new df to be used as input for bridgedb
+chembl_map <- maps(metabolite_mapper,metabolite_input,"Ce")
+  #Mapping from ChEMBL to ChEBI
+chembl_map <- chembl_map %>%
+  select(identifier,mapping) %>%
+  filter(grepl("CHEBI", mapping, fixed=TRUE)) %>%
   rename(ChEMBLid = identifier,
-         ChEBIid = target) %>%
-  select(-c(identifier.source,target.source)) %>%
-  mutate(across(ChEBIid, ~paste("CHEBI:",.,sep="")))
-  #Renaming cols and adding 'CHEBI:' as prefix to ChEBI IDs since this is not returned from FixID
+         ChEBIid = mapping)
 
 chebimap <- read.delim(paste0(getwd(),"/Data/CyTargetLinker/chebimap.tsv"), sep = "\t")
   #Loading .tsv containing ChEBI IDs with associated ontology IDs and names
@@ -1290,17 +1293,37 @@ chebimap <- chebimap %>%
   mutate(ChEBIid = str_replace(ChEBIid, "_",":"),
          ChEBIrole = str_replace(ChEBIrole,"_",":"))
   #Replacing underscores with colons 
-chembl_chebi <- merge(chembl_chebi, chebimap, by="ChEBIid",all.x=TRUE) 
+chembl_chebi <- merge(chembl_map, chebimap, by="ChEBIid",all.x=TRUE) 
   #Mapping ChEBI ontology terms to ChEBI IDs available from network mapping 
-chembl_chebi <- chembl_chebi2 %>%
+chembl_chebi <- chembl_chebi %>%
   group_by(ChEBIid,ChEMBLid) %>%
   summarise(ChEBIrole = paste(ChEBIrole, collapse = "; "),
             ChEBIrolename = paste(ChEBIrolename, collapse = "; "))
 chembl_chebi <- chembl_chebi %>%
   mutate_all(~str_replace_all(.,"NA",""))
   #Replacing literal 'NA' with empty string
+chembl_chebi$type <- "ChEBI node"
+chembl_chebi$label <- chembl_chebi$ChEBIid
+  #Adding type and label attributes for visualisation
 loadTableData(chembl_chebi, data.key.column = "ChEMBLid", "node",table.key.column = "CTL.ChEMBL")
   #loading data back to network
+chebi_node <- getTableColumns("node",c("SUID","CTL.ChEMBL","ChEBIid"))
+  #Getting SUID, ChEMBL, and ChEBI columns of all nodes to filter
+chemblnochebi <- chebi_node %>%
+  filter(!is.na(CTL.ChEMBL) & is.na(ChEBIid))
+  #Filtering for nodes that have a ChEMBL ID but no ChEBI ID
+  #Desired to remove all CTL-added nodes that couldn't be mapped to a ChEBI ID
+selectNodes(nodes = chemblnochebi$SUID, by.col = "SUID")
+  #Selecting these nodes in Cytoscape
+deleteSelectedNodes()
+  #Deleting selected nodes
+  #This process could also be done by using Cytoscape filters (createcolumnFilter), but is much slower
+
+  #Removing ChEMBL nodes added by CyTargetLinker that do not have ChEBI IDs
+deleteTableColumn("CTL.ChEMBL")
+end_section("ChEBI extension")
+
+
 
 ##AOP VISUALISATION -------------------------------------------------------------------------------------------------------------------------------
 createVisualStyle("AOP_vis")
@@ -1314,8 +1337,8 @@ setNodeLabelMapping(
 setNodeColorMapping(
   table.column = "type",
   mapping.type="d",
-  table.column.values = c("AO","AOP","KE","gene","Pathway","Cluster"),
-  colors=c("#FB6a4A","#FEB24C","#FA9FB5","#74C476","#1DEFF2","#1D91C0"),
+  table.column.values = c("AO","AOP","KE","gene","Pathway","Cluster","ChEBI node"),
+  colors=c("#FB6a4A","#FEB24C","#FA9FB5","#74C476","#1DEFF2","#1D91C0","#bd34eb"),
   style.name="AOP_vis"
 )
 #Setting node colors using dedicated type column
