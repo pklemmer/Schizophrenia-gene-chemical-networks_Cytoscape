@@ -1577,7 +1577,7 @@ deleteNetwork(network="GO_Visualisation_SCZ_SNW")
 go_vis_nw <- getNetworkName()
 exportNetwork(filename=paste0(nw_savepath,"GO_Visualisation_SCZ_SNW"),"CX",network=go_vis_nw,overwriteFile=TRUE)
 fitContent()
-exportImage(filename = paste0(getwd(),"/Visualisations/SNW_functional_analysis"),type="SVG", overwriteFile=TRUE, zoom="200")
+exportImage(filename = paste0(getwd(),"/Visualisations/SNW_functional_analysis_demo"),type="SVG", overwriteFile=TRUE, zoom="200")
 #Exporting the visualisation as network and as svg
 
 ##DEPRECATED==========================================================================================================================================
