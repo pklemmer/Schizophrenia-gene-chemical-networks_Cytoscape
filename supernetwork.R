@@ -1312,10 +1312,7 @@ chebimap <- chebimap %>%
 chembl_chebi <- merge(chembl_map, chebimap, by="ChEBIid",all.x=TRUE) 
   #Mapping ChEBI ontology terms to ChEBI IDs available from network mapping
 
-rolecount <- table(chembl_chebi$ChEBIrolename)
-  #Counting how frequently which ChEBI roles can be mapped to a chemical in the network 
-rolecount <- as.data.frame(rolecount)
-rolecount <- rolecount[order(-rolecount$Freq),]
+
 
 chembl_chebi <- chembl_chebi %>%
   group_by(ChEBIid,ChEMBLid) %>%
@@ -1348,11 +1345,81 @@ deleteSelectedNodes()
   #This process could also be done by using Cytoscape filters (createcolumnFilter), but is much slower
   #Removing ChEMBL nodes added by CyTargetLinker that do not have ChEBI IDs
 deleteTableColumn("CTL.ChEMBL")
-
-exportNetwork(filename=paste0(nw_savepath,"gene-KE-AO merged network with pathways and chemicals"), type="CX", overwriteFile = TRUE)
+renameNetwork("gene-KE-AOP network with pathways and chemicals")
+exportNetwork(filename=paste0(nw_savepath,"gene-AOP merged network with pathways and chemicals"), type="CX", overwriteFile = TRUE)
 
 end_section("ChEBI extension")
 
+## ChEBI ROLE SUBSETTING --------------------------------------------------------------------------------------------------------------------------------
+start_section("ChEBI role subsetting")
+
+rolecount <- table(chembl_chebi$ChEBIrolename)
+#Counting how frequently which ChEBI roles can be mapped to a chemical in the network 
+rolecount <- as.data.frame(rolecount)
+rolecount <- rolecount[order(-rolecount$Freq),]
+  #Getting distinct roles and how frequently they occur in the network
+  #Can be used to select roles of interest based on frequency
+
+
+filter_chebi <- function(keyword) {
+  chems <- chembl_chebi %>%
+  separate_rows(ChEBIrolename, sep = "; ") %>%
+  filter(grepl(keyword,ChEBIrolename)) %>%
+  pull(ChEBIid) %>%
+  as.list() %>%
+  selectNodes( ,by.col="ChEBIid")
+  
+  #Defining a simple function to filter ChEBI nodes by associated role name
+
+  #Getting nodes matching the given ChEBI role
+chems_genes <- selectFirstNeighbors(direction="outgoing")
+  #Getting first neighbors of ChEBI nodes, which will be gene nodes
+clearSelection()
+genes <- setdiff(chems_genes$nodes, chems$nodes)
+  #Getting the SUIDs of the gene nodes associated with a given ChEBI role
+  #Done by getting the intersection between ChEBI nodes and the selection of both ChEBI and gene nodes 
+  #This is because gene nodes are selected as being first neighbors, so the set of selected nodes will contain both the ChEBI and gene nodes
+selectNodes(genes)
+  #Selecting gene nodes associated with given ChEBI role
+genes_pws <- selectFirstNeighbors(direction="outgoing")
+  #Getting outgoing first neighbors of gene nodes which are pathway and cluster nodes 
+pws <- setdiff(genes_pws$nodes,genes)
+  #Again getting the intersection of gene and pathway/cluster nodes due to neighbor selection including both the source and neighbor nodes
+clearSelection()
+selectNodes(genes)
+allngbrs <- selectFirstNeighbors(direction="incoming")
+  #Selecting incoming first neighbors of gene nodes
+  #This will select all chemical nodes rather than the chemical nodes with the relevant ChEBI role
+suidtype <- getTableColumns("node",columns=c("SUID","type"))
+kengbrs <- setdiff(allngbrs$nodes, suidtype[suidtype$type == "ChEBI node","SUID"])
+  #Therefore, KE nodes are filtered out using the 'type' attribute
+kengbrs <- setdiff(kengbrs, genes)
+  #Filtering out gene nodes
+clearSelection()
+selectNodes(kengbrs)
+aop_kes <- selectFirstNeighbors(direction="incoming")
+  #Selecting AOP nodes related to KE nodes
+aopngbrs <- setdiff(aop_kes$nodes, kengbrs)
+  #Filtering out KE nodes
+clearSelection()
+selectNodes(aopngbrs)
+aop_aos <- selectFirstNeighbors(direction="incoming")
+  #Selecting AO nodes related to AOP nodes
+aongbrs <- setdiff(aop_aos$nodes, aopngbrs)
+clearSelection()
+
+connectednodes <- c(chems, genes, pws, kengbrs,aopngbrs, aongbrs)
+selectNodes(connectednodes)
+createSubnetwork(nodes = connectednodes,subnetwork.name=paste0("Role ", keyword, " subnetwork "))
+Sys.sleep(0.5)
+setCurrentNetwork("gene-KE-AOP network with pathways and chemicals")
+setCurrentView("gene-KE-AOP network with pathways and chemicals")
+clearSelection()
+}
+ filter_chebi("environmental contaminant")
+ filter_chebi("xenobiotic")
+
+end_section("ChEBI role subsetting") 
 ##AOP VISUALISATION -------------------------------------------------------------------------------------------------------------------------------
 createVisualStyle("AOP_vis")
 setVisualStyle("AOP_vis")
