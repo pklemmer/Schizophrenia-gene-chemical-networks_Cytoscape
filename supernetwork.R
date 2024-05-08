@@ -1353,11 +1353,14 @@ end_section("ChEBI extension")
 ## ChEBI ROLE SUBSETTING --------------------------------------------------------------------------------------------------------------------------------
 start_section("ChEBI role subsetting")
 
-rolecount <- table(chembl_chebi$ChEBIrolename)
-#Counting how frequently which ChEBI roles can be mapped to a chemical in the network 
-rolecount <- as.data.frame(rolecount)
-rolecount <- rolecount[order(-rolecount$Freq),]
-  #Getting distinct roles and how frequently they occur in the network
+rolecount <- chembl_chebi$ChEBIrolename %>%
+ strsplit("; ") %>%
+  unlist() %>%
+  data.frame(role = .) %>%
+  group_by(role) %>%
+  summarize(count = n()) %>%
+  arrange(desc(count))
+  #Counting how frequently which ChEBI roles can be mapped to a chemical in the network 
   #Can be used to select roles of interest based on frequency
 
 
@@ -1368,6 +1371,7 @@ filter_chebi <- function(keyword) {
   pull(ChEBIid) %>%
   as.list() %>%
   selectNodes( ,by.col="ChEBIid")
+  chems_list <- chems$nodes
   
   #Defining a simple function to filter ChEBI nodes by associated role name
 
@@ -1408,7 +1412,7 @@ aop_aos <- selectFirstNeighbors(direction="incoming")
 aongbrs <- setdiff(aop_aos$nodes, aopngbrs)
 clearSelection()
 
-connectednodes <- c(chems, genes, pws, kengbrs,aopngbrs, aongbrs)
+connectednodes <- c(chems_list, genes, pws, kengbrs,aopngbrs, aongbrs)
 selectNodes(connectednodes)
 createSubnetwork(nodes = connectednodes,subnetwork.name=paste0("Role ", keyword, " subnetwork "))
 Sys.sleep(0.5)
@@ -1418,6 +1422,7 @@ clearSelection()
 }
  filter_chebi("environmental contaminant")
  filter_chebi("xenobiotic")
+ filter_chebi("neurotoxin")
 
 end_section("ChEBI role subsetting") 
 ##AOP VISUALISATION -------------------------------------------------------------------------------------------------------------------------------
