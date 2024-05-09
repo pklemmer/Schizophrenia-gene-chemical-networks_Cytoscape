@@ -1,0 +1,28 @@
+R version 4.3.3 (2024-02-29 ucrt)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 19045)
+
+Matrix products: default
+
+
+locale:
+[1] LC_COLLATE=English_Europe.utf8  LC_CTYPE=English_Europe.utf8    LC_MONETARY=English_Europe.utf8 LC_NUMERIC=C                    LC_TIME=English_Europe.utf8    
+
+time zone: Europe/Berlin
+tzcode source: internal
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] BridgeDbR_2.12.0     rJava_1.0-11         RCy3_2.22.1          rWikiPathways_1.22.1 curl_5.2.1           tidyr_1.3.1          rvest_1.0.4          gprofiler2_0.2.3    
+ [9] stringr_1.5.1        httr_1.4.7           dplyr_1.1.4         
+
+loaded via a namespace (and not attached):
+ [1] gtable_0.3.4        rjson_0.2.21        ggplot2_3.5.0       htmlwidgets_1.6.4   caTools_1.18.2      vctrs_0.6.5         tools_4.3.3         bitops_1.0-7        generics_0.1.3     
+[10] stats4_4.3.3        base64url_1.4       tibble_3.2.1        fansi_1.0.6         pkgconfig_2.0.3     KernSmooth_2.23-22  data.table_1.15.4   RColorBrewer_1.1-3  uuid_1.2-0         
+[19] graph_1.80.0        lifecycle_1.0.4     compiler_4.3.3      gplots_3.1.3.1      munsell_0.5.1       repr_1.1.7          htmltools_0.5.8.1   RCurl_1.98-1.14     lazyeval_0.2.2     
+[28] plotly_4.10.4       pillar_1.9.0        crayon_1.5.2        gtools_3.9.5        tidyselect_1.2.1    digest_0.6.35       stringi_1.8.3       purrr_1.0.2         RJSONIO_1.3-1.9    
+[37] fastmap_1.1.1       grid_4.3.3          colorspace_2.1-0    cli_3.6.2           magrittr_2.0.3      base64enc_0.1-3     XML_3.99-0.16.1     utf8_1.2.4          IRdisplay_1.1      
+[46] withr_3.0.0         scales_1.3.0        backports_1.4.1     IRkernel_1.3.2      pbdZMQ_0.3-11       evaluate_0.23       viridisLite_0.4.2   rlang_1.1.3         glue_1.7.0         
+[55] selectr_0.4-2       BiocManager_1.30.22 xml2_1.3.6          BiocGenerics_0.48.1 jsonlite_1.8.8      R6_2.5.1            fs_1.6.3           

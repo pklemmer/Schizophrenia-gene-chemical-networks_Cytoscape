@@ -711,8 +711,8 @@ exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW_STRING_clustered_GO"),"CX",ne
 
 end_section("GO Analysis")
 
-##AOP ---------------------------------------------------------------------------------------------------------------------------
-start_section("AOP")
+##AOP-Wiki extension ---------------------------------------------------------------------------------------------------------------------------
+start_section("AOP-Wiki extension")
 
 aopprocess <- function(input,tag) {
   if (!"SCZ_SNW_STRING_clustered_GO" %in% getNetworkList()) {
@@ -1081,10 +1081,10 @@ loadTableData(KEid_mie, "interaction","edge","name")
 exportNetwork(paste0(nw_savepath,"gene-KE-AOP-AO merged network_all"),"CX", overwriteFile=TRUE,network="gene-KE-AOP-AO merged network_all")
 #Exporting the network
 
-end_section("AOP")
+end_section("AOP-Wiki extension")
 
-##SNW-AOP -----------------------------------------------------------------------------------------------------------------------------------------
-start_section("SNW_AOP")
+##Cluster/pathway extesion -----------------------------------------------------------------------------------------------------------------------------------------
+start_section("Cluster/pathway extension")
 
 importNetworkFromFile(paste0(nw_savepath,"SCZ_SNW_STRING_clustered_GO.cx"))
   #Reimporting clustered supernetwork with GO results added
@@ -1229,9 +1229,9 @@ lapply(c("Genes from AOP network with SNW attributes","Genes from AOP network wi
 #Deleting intermediary networks used to generate full gene-KE-AOP-AO network
 exportNetwork(filename=paste0(nw_savepath,"gene-KE-AO merged network with pathways"), type="CX", overwriteFile = TRUE)
 
-end_section("SNW_AOP")
+end_section("Cluster/pathway extension")
 
-## CHEBI EXTENSION --------------------------------------------------------------------------------------------------------------------------------
+## ChEBI EXTENSION --------------------------------------------------------------------------------------------------------------------------------
 start_section("ChEBI extension")
 
 getlinkset <- function(url,dest) {
