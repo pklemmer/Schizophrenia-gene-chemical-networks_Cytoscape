@@ -519,6 +519,24 @@ exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW"),"CX", network = snw_scz, ov
 
 end_section("Importing and merging")
 
+
+# stable <- getTableColumns("node",c("fromDisGeNET","fromPublication","fromWikiPathways"))
+# stable$count_ones <- rowSums(!is.na(stable))
+# combination_counts <- table(stable$count_ones)
+# 
+# sourcenames <- c("One source","Two sources","Three sources")
+# visframe <- data.frame(sourcenames,combination_counts)
+# visframe <- select(visframe, -Var1)
+# visframe <- visframe %>%
+#   mutate(relative_freq = Freq / sum(Freq))
+# 
+# ggplot(visframe,aes(x=factor(sourcenames,levels=c("One source","Two sources","Three sources")),y=Freq)) +
+#   geom_bar(stat="identity", fill = 'darkorange2', width=0.5) +
+#   labs(x=NULL,  y = "Counts", title = "Node counts by source") +
+#   scale_y_continuous(trans="log10", breaks=c(1,10,100,1000,2000)) +
+#   theme_minimal()
+
+
 ## STRING --------------------------------------------------------------------------------------------------------------------------
 start_section("STRING")
 commandsRun('string stringify colDisplayName=name column=Ensembl compoundQuery=true cutoff=0.9 includeNotMapped=true  networkType="full STRING network" species="Homo sapiens" networkNoGui=current')
