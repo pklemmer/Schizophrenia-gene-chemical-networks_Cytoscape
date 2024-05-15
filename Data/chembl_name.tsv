@@ -1,429 +1,1090 @@
 ChEMBLid	compound_name
-CHEMBL96	γ-aminobutyric acid
-CHEMBL23	diltiazem
-CHEMBL279956	quisqualic acid
-CHEMBL325041	bortezomib
-CHEMBL9514	nocodazole
-CHEMBL565612	sotrastaurin
-CHEMBL107251	1400W
-CHEMBL403183	(E)-3-(p-toluenesulfonyl)acrylonitrile
-CHEMBL189584	pd-173074
-CHEMBL1394757	(S)-aminoglutethimide
+CHEMBL6616	4-iodo-2,5-dimethoxyphenylisopropylamine
+CHEMBL6437	(RS)-mianserin
+CHEMBL584	nelfinavir
+CHEMBL7257	N,N-dimethyl-5-methoxytryptamine
+CHEMBL76781	Ro 60-0175
+CHEMBL705	alitretinoin
+CHEMBL61593	cyclothiazide
+CHEMBL60518	L-750,667
+CHEMBL75	(2R,4S)-ketoconazole
 CHEMBL578063	C3-thiacarbocyanine cation
-CHEMBL1334769	1-(3-chlorophenyl)sulfonylpyrrolidine
+CHEMBL575448	bms-754807
+CHEMBL69367	Ro 40-6055
+CHEMBL597477	(S)-selisistat
+CHEMBL603469	lestaurtinib
+CHEMBL593013	biphenylindanone A
+CHEMBL583912	(−)-epicatechin
+CHEMBL67	combrestatin A-4
+CHEMBL598172	nelotanserin
+CHEMBL701	(RS)-baclofen
+CHEMBL633	amiodarone
+CHEMBL646	triazolam
+CHEMBL779	tadalafil
+CHEMBL608533	midostaurin
+CHEMBL75094	prinomastat
+CHEMBL577784	BX-795
+CHEMBL76897	4-DAMP methiodide
+CHEMBL667	acetylcholine
+CHEMBL708	ziprasidone
+CHEMBL629	amitriptyline
+CHEMBL726	fluphenazine
+CHEMBL778	dexmedetomidine
+CHEMBL77921	medetomidine
+CHEMBL807	memantine
+CHEMBL762	oxymetazoline
+CHEMBL59	dopamine
+CHEMBL715	olanzapine
+CHEMBL585	triamterene
+CHEMBL742	ketamine
+CHEMBL80	naloxone
+CHEMBL71	chlorpromazine
+CHEMBL691	ethinylestradiol
+CHEMBL65	camptothecin
+CHEMBL66654	6-methyl-2-(phenylethynyl)pyridine
+CHEMBL721	acrolein
+CHEMBL601719	crizotinib
+CHEMBL6	indomethacin
+CHEMBL623	nefazodone
+CHEMBL72	desipramine
+CHEMBL75435	dexketoprofen
+CHEMBL602962	(S)-ACPA
+CHEMBL71600	(5S)-5-(7-benzofuranyl)-8-chloro-3-methyl-1,2,4,5-tetrahydro-3-benzazepin-7-ol
+CHEMBL7634	oxotremorine
+CHEMBL7162	NS-398
+CHEMBL79834	spiramide
+CHEMBL576982	quizartinib
+CHEMBL6597	Ro-15-4513
+CHEMBL605003	SU6656
+CHEMBL668	protriptyline
+CHEMBL809	sertraline
+CHEMBL575060	L-glutamic acid
+CHEMBL66089	abt-702
+CHEMBL601661	1-[4-[1-(1,4-dioxaspiro[4.5]decan-8-yl)-4-(8-oxa-3-azabicyclo[3.2.1]octan-3-yl)-6-pyrazolo[3,4-d]pyrimidinyl]phenyl]-3-methylurea
+CHEMBL78150	malonoben
+CHEMBL78012	4-(6-iodo-2-imidazo[1,2-a]pyridinyl)-N,N-dimethylaniline
+CHEMBL592	L-morphan
+CHEMBL6246	ellagic acid
+CHEMBL597	phentolamine
+CHEMBL81	raloxifene
+CHEMBL64925	MG132
+CHEMBL63354	amentoflavone
+CHEMBL72631	2-[1-[(4-chlorophenyl)-oxomethyl]-5-methoxy-2-methyl-3-indolyl]-1-(4-morpholinyl)ethanone
+CHEMBL64249	clorotepine
+CHEMBL57427	N-[(4-bromophenyl)methyl]-2-(5-methoxy-1H-indol-3-yl)ethanamine
+CHEMBL7917	AG1478
+CHEMBL6206	bromoenol lactone
+CHEMBL64404	2-methoxy-10H-phenothiazine
+CHEMBL6291	ro-31-8220
+CHEMBL641	atomoxetine
+CHEMBL587723	AEE-788
+CHEMBL70	morphine
+CHEMBL62919	altanserin
+CHEMBL647	apraclonidine
+CHEMBL6623	epibatidine
+CHEMBL61	podofilox
+CHEMBL611494	(-)-pilocarpine
+CHEMBL607707	pelitinib
+CHEMBL574558	skf-83959
+CHEMBL586702	zstk-474
+CHEMBL573339	pi-103
+CHEMBL7890	NΩ-nitro-L-arginine methyl ester
+CHEMBL76904	tyrphostin a23
+CHEMBL65606	meso-tetrakis(N-methyl-4-pyridyl)porphine(4+)
+CHEMBL63102	5-(6-chloro-3-pyridinyl)-9-azabicyclo[4.2.1]non-4-ene
+CHEMBL69271	naxagolide
+CHEMBL77287	CI-966
+CHEMBL686	mefenamic acid
+CHEMBL772	reserpine
+CHEMBL6966	verapamil
+CHEMBL643	(±)-promethazine
+CHEMBL650	methylprednisolone
+CHEMBL325041	bortezomib
+CHEMBL313530	A-77636
+CHEMBL379845	methyl nicotinate
+CHEMBL309490	galangin
+CHEMBL304902	clothiapine
+CHEMBL3707348	acalabrutinib
+CHEMBL324017	skf-83566
+CHEMBL337173	6-chloro-7-[2-(4-morpholinyl)ethylamino]quinoline-5,8-dione
+CHEMBL3545233	pavinetant
+CHEMBL356769	tubacin
+CHEMBL353581	pyroxamide
+CHEMBL3605457	1-[(1R)-1-(1-ethylsulfonyl-4-piperidinyl)ethyl]-N-[(4-methoxy-6-methyl-2-oxo-1H-pyridin-3-yl)methyl]-2-methyl-3-indolecarboxamide
+CHEMBL38	tretinoin
+CHEMBL365141	3β-(2-(diethylamino)ethoxy)androst-5-en-17-one
+CHEMBL364797	(2R)-2-hydroxy-3-(phosphonooxy)propyl hexadecanoate
+CHEMBL32823	N,N'-di-1,2,3,4-tetrahydroacridin-9-ylheptane-1,7-diamine
+CHEMBL305904	etoxadrol
+CHEMBL331372	CGS-21680
+CHEMBL31574	fisetin
+CHEMBL301265	pramipexole
+CHEMBL3040381	SR142948A
+CHEMBL31354	WAY-100635
+CHEMBL3128043	pf-03758309
+CHEMBL373011	L779450
+CHEMBL376503	2',4',5',7'-tetrabromofluorescein
+CHEMBL319620	lavendustin c
+CHEMBL3586089	4-[4-(5,5-dimethyl-4H-thiazol-2-yl)-1-piperazinyl]-6-propylthieno[2,3-d]pyrimidine
+CHEMBL3125890	TAK-632
+CHEMBL370753	opipramol
+CHEMBL34431	cilostamide
+CHEMBL32503	gabazine
+CHEMBL305187	ifenprodil
+CHEMBL33567	L-AP4
+CHEMBL372700	fenpropimorph
+CHEMBL348475	tariquidar
+CHEMBL311469	2-acetylaminofluorene
+CHEMBL325238	4-phenyl-1-(4-phenylbutyl)piperidine
+CHEMBL374107	8-azaguanine
+CHEMBL301982	celastrol
+CHEMBL334773	diarylpropionitrile
+CHEMBL359965	allicin
+CHEMBL379064	isorhamnetin
+CHEMBL371214	JWH-133
+CHEMBL377300	brivanib
+CHEMBL3264002	avutometinib
+CHEMBL365739	diphenyleneiodonium
+CHEMBL3113165	ML355
+CHEMBL3545181	tiotropium bromide monohydrate
+CHEMBL3237719	amg-925
+CHEMBL350221	5-HTP
+CHEMBL343448	romidepsin
+CHEMBL33986	butorphanol
+CHEMBL373742	arginine vasopressin
+CHEMBL336961	1-azakenpaullone
+CHEMBL301742	arbaclofen
+CHEMBL306498	aloisine
+CHEMBL3348846	azd-4547
+CHEMBL379300	A-443654
+CHEMBL3577124	ly-3009120
+CHEMBL3086767	santacruzamate A
+CHEMBL363747	mesuaxanthone A
+CHEMBL336434	N,N'-(9-{[4-(dimethylamino)phenyl]amino}acridine-3,6-diyl)bis(3-pyrrolidin-1-ylpropanamide)
+CHEMBL3182647	1-[3-[4-amino-3-(4-phenoxyphenyl)-1-pyrazolo[3,4-d]pyrimidinyl]-1-piperidinyl]-2-propen-1-one
+CHEMBL361501	3-[({4-[4-({[1-(2-chlorophenyl)ethoxy]carbonyl}amino)-3-methyl-1,2-oxazol-5-yl]phenyl}methyl)sulfanyl]propanoic acid
+CHEMBL3289608	calycosin 7-O-β-D-glucoside
+CHEMBL317229	co-101244
+CHEMBL3286830	lorlatinib
+CHEMBL323197	mangostin
+CHEMBL313747	Joro toxin
+CHEMBL307696	HU-210
+CHEMBL328190	lasofoxifene
+CHEMBL37387	bropirimine
+CHEMBL3301668	carbetocin
+CHEMBL325109	clebopride
+CHEMBL343633	esatenolol
+CHEMBL375611	pomaglumetad
+CHEMBL374508	E-64
+CHEMBL352205	3-hydroxybenzylhydrazine
+CHEMBL3581647	birabresib
+CHEMBL375270	GW9662
+CHEMBL3605057	MRT67307
+CHEMBL3590107	SCH772984
+CHEMBL31965	canertinib
+CHEMBL3353410	osimertinib
+CHEMBL373569	eledoisin
+CHEMBL361259	McN5652
+CHEMBL376897	methylscopolamine bromide
+CHEMBL3217768	26-hydroxycholesterol
+CHEMBL302449	GO-6976
+CHEMBL3287735	gsk-2816126
+CHEMBL3301622	gilteritinib
+CHEMBL362558	ly-2090314
+CHEMBL375126	1-[(3,4-dichlorophenyl)methyl]indole-2,3-dione
+CHEMBL305195	4-[(1R,2S)-1-hydroxy-2-methyl-3-[4-(phenylmethyl)-1-piperidinyl]propyl]phenol
+CHEMBL334255	cetylpyridinium bromide
+CHEMBL3416563	4-(N,N-diethylamino)benzaldehyde
+CHEMBL355606	680C91
+CHEMBL316966	adenosine cyclic phosphate
+CHEMBL31184	benzo[a]pyrene
+CHEMBL360328	lorcaserin
+CHEMBL283509	arisugacin A
+CHEMBL297453	epigallocatechin gallate
+CHEMBL28	apigenin
+CHEMBL272980	mocetinostat
+CHEMBL275528	phencyclidine
+CHEMBL297362	xylazine
+CHEMBL279956	quisqualic acid
+CHEMBL294878	4',7-dihydroxyflavone
+CHEMBL273264	nafamostat
+CHEMBL279107	IP3
+CHEMBL290106	bithionol
+CHEMBL276140	SB 221284
+CHEMBL300389	cgp-60474
+CHEMBL274070	9-aminocamptothecin
+CHEMBL26915	SC560
+CHEMBL29197	pd-153035
+CHEMBL285932	AM-251
+CHEMBL296588	pepstatin A
+CHEMBL279115	12-O-tetradecanoylphorbol-13-acetate
+CHEMBL273481	muscimol
+CHEMBL28079	zaprinast
+CHEMBL280065	oleic monoethanolamide
+CHEMBL282567	proadifen
+CHEMBL300780	NGB 2904
+CHEMBL274893	SC-57666
+CHEMBL294747	gr-103691
+CHEMBL286722	MDL-28170
+CHEMBL300226	(1R,3S)-3-(4-iodophenyl)-8-methyl-8-azabicyclo[3.2.1]octane-4-carboxylic acid methyl ester
+CHEMBL285802	zotepine
+CHEMBL3	(−)-nicotine
+CHEMBL284328	ethidium bromide
+CHEMBL279564	pyrene
+CHEMBL27246	(E)-cinnamic acid
+CHEMBL267932	N-Methylspiperone
+CHEMBL281786	diprenorphine
+CHEMBL295467	nisoxetine
+CHEMBL283196	2-phenyl-4H-benzo[h]chromen-4-one
+CHEMBL28564	eliprodil
+CHEMBL28324	KN-62
+CHEMBL277525	TRIM
+CHEMBL267014	L745870
+CHEMBL279556	benocyclidine
+CHEMBL297784	sb-206553
+CHEMBL27673	methoctramine free base
+CHEMBL267777	ritanserin
+CHEMBL274826	androstenedione
+CHEMBL27403	CGS-12066A
+CHEMBL269732	tacrolimus
+CHEMBL297302	benperidol
+CHEMBL298406	ecopipam
+CHEMBL285063	pd-168393
+CHEMBL296468	sns-032
+CHEMBL293950	dihydro-β-erythroidine
+CHEMBL295698	(2S,4R)-ketoconazole
+CHEMBL278041	sb-202190
+CHEMBL284028	6,7-dichloro-1,4-dihydroquinoxaline-2,3-dione
+CHEMBL271669	9-methyl-5H-quinolino[8,7-c][1,2]benzothiazine 6,6-dioxide
+CHEMBL268368	arcyriaflavin A
+CHEMBL28992	zacopride
+CHEMBL286252	nafadotride
+CHEMBL27768	phorbol 12,13-dibutyrate
+CHEMBL277120	1-naphthylpiperazine
+CHEMBL296586	kenpaullone
+CHEMBL275311	arotinoid acid
+CHEMBL290376	Dup-714
+CHEMBL273862	10-hydroxycamptothecin
+CHEMBL292477	1'-(phenylmethyl)spiro[1,2-dihydroindene-3,4'-piperidine]
+CHEMBL277465	denbufylline
+CHEMBL286077	3-aminopropylphosphonic acid
+CHEMBL27323	2-{[(2E)-3-(naphthalen-2-yl)but-2-enoyl]amino}benzoic acid
+CHEMBL288441	bosutinib
+CHEMBL269538	harmine
+CHEMBL267373	benzamide
+CHEMBL290429	carfentanil
+CHEMBL267476	linoleic acid
+CHEMBL294951	pizotyline
+CHEMBL281594	vanoxerine
+CHEMBL282199	SB269970
+CHEMBL268254	delorazepam
+CHEMBL289469	granisetron
+CHEMBL281211	Arachidonoyl trifluoromethyl ketone
+CHEMBL281948	K252a
+CHEMBL270875	3-[1-(3-AMINOPROPYL)-1H-INDOL-3-YL]-4-(1H-INDOL-3-YL)-1H-PYRROLE-2,5-DIONE
+CHEMBL294989	FMOC-L-Leucine
+CHEMBL273807	MRS1754
+CHEMBL267678	a-205804
+CHEMBL279785	marimastat
+CHEMBL278390	1H-indole-2-carboxylic acid
+CHEMBL276711	semaxanib
+CHEMBL267930	spiperone
+CHEMBL284237	dizocilpine
+CHEMBL296641	antalarmin
+CHEMBL275742	dexpropranolol
+CHEMBL288591	N-methylquipazine
+CHEMBL26998	(7R)-7-(dipropylamino)-5,6,7,8-tetrahydronaphthalen-1-ol
+CHEMBL275809	[4,5-bis(4-methoxyphenyl)-2-thiazolyl]-(4-methyl-1-piperazinyl)methanone
+CHEMBL273910	minalrestat
+CHEMBL275638	flavone
+CHEMBL277500	benzene
+CHEMBL280487	okadaic acid
+CHEMBL44	genistein
+CHEMBL429023	rotenone
+CHEMBL41355	ezogabine
+CHEMBL422	trifluoperazine
+CHEMBL396778	safinamide
+CHEMBL407196	neurotensin
+CHEMBL403183	(E)-3-(p-toluenesulfonyl)acrylonitrile
+CHEMBL417149	Ac-DEVD-CHO
+CHEMBL445813	at-7519
+CHEMBL45245	phenanthridone
+CHEMBL429095	2,3-bis(2-hydroxyethylthio)naphthalene-1,4-dione
+CHEMBL441618	LSM-2007
+CHEMBL393525	N-[(6-bromo-3-imidazo[1,2-a]pyridinyl)methylideneamino]-N,2-dimethyl-5-nitrobenzenesulfonamide
+CHEMBL42485	DuP 697
+CHEMBL395110	pecazine
+CHEMBL445	nortriptyline
+CHEMBL406845	PP2
+CHEMBL388978	staurosporine
+CHEMBL411	diethylstilbestrol
+CHEMBL428496	wortmannin
+CHEMBL444092	Microcystin-LR
+CHEMBL42126	piclamilast
+CHEMBL429736	retosiban
+CHEMBL40086	(2R,3R)-APDC
+CHEMBL45281	NBI27914
+CHEMBL407734	1-(10H-phenothiazin-2-yl)ethanone
+CHEMBL428909	9-(dimethylamino)-3-(4-methoxyphenyl)-4-pyrido[1,2]thieno[3,4-d]pyrimidinone
+CHEMBL429694	Congo red
+CHEMBL395429	oxytocin
+CHEMBL423192	anisomycin
+CHEMBL416	methoxsalen
+CHEMBL452	clonazepam
+CHEMBL404108	lumiracoxib
+CHEMBL442	ergotamine
+CHEMBL39947	lysergol
+CHEMBL443683	Telomestatin
+CHEMBL439044	demoxytocin
+CHEMBL38380	fasudil
+CHEMBL44746	khellin
+CHEMBL415284	nalorphine
+CHEMBL438139	rocaglamide
+CHEMBL433	sodium valproate
+CHEMBL415	clomipramine
+CHEMBL41140	DU-24565
+CHEMBL441282	Propylpyrazoletriol
+CHEMBL412142	CHIR-99021
+CHEMBL434063	gw-1929
+CHEMBL430893	(R)-rolipram
+CHEMBL449158	bryostatin 1
+CHEMBL384467	dexamethasone
+CHEMBL413	sirolimus
+CHEMBL431367	roxindole
+CHEMBL443605	4-hexylresorcinol
+CHEMBL426084	samidorphan
+CHEMBL39664	selfotel
+CHEMBL38686	SKF89976A
+CHEMBL382301	atosiban
+CHEMBL41	fluoxetine
+CHEMBL439849	vilazodone
+CHEMBL386051	PD-173955
+CHEMBL409450	(3e)-6'-Bromo-2,3'-Biindole-2',3(1h,1'h)-Dione 3-Oxime
+CHEMBL441414	(2S,1'R,2'S)-loxoprofen trans-alcohol
+CHEMBL392068	LY-411575
+CHEMBL413376	suramin sodium
+CHEMBL39	serotonin
+CHEMBL430060	apicidin
+CHEMBL418052	S-adenosyl-L-homocysteine
+CHEMBL407	flumazenil
+CHEMBL428690	alvocidib
+CHEMBL422904	22R-Hydroxycholesterol
+CHEMBL40919	kaempferide
+CHEMBL408513	belinostat
+CHEMBL437797	neurokinin B
+CHEMBL432038	LY341495
+CHEMBL443893	(-)-oxedrine
+CHEMBL420311	selisistat
+CHEMBL429852	SP-4206
+CHEMBL40883	3,5-dimethylbenzoic acid (8-methyl-8-azabicyclo[3.2.1]octan-3-yl) ester
+CHEMBL419667	relcovaptan
+CHEMBL381791	SR144528
+CHEMBL440084	sb-431542
+CHEMBL435381	cimicoxib
+CHEMBL386630	testosterone
+CHEMBL437027	bombesin
+CHEMBL392394	GS39783
+CHEMBL39071	isoguvacine
+CHEMBL39317	L-694,247
+CHEMBL38499	4-methylene-L-glutamic acid
+CHEMBL450786	pha-665752
+CHEMBL410478	gw-409544
+CHEMBL425618	4,4-difluoro-N-[(1S)-3-[3-(3-methyl-5-propan-2-yl-1,2,4-triazol-4-yl)-8-azabicyclo[3.2.1]octan-8-yl]-1-phenylpropyl]-1-cyclohexanecarboxamide
+CHEMBL391574	5-methylpyrazole-3-carboxylic acid
+CHEMBL395414	disogluside
+CHEMBL389621	cortisol
+CHEMBL38576	ICI-199,441
+CHEMBL444172	zosuquidar
+CHEMBL436	tolrestat
+CHEMBL451887	carfilzomib
+CHEMBL42	clozapine
+CHEMBL389433	liarozole
+CHEMBL497939	cytisine
+CHEMBL493	bromocriptine
+CHEMBL506247	tannic acid
+CHEMBL535	sunitinib
+CHEMBL498917	pinostilbene
+CHEMBL469	ketorolac
+CHEMBL459505	talarozole
+CHEMBL50588	emetine
+CHEMBL473417	vismodegib
+CHEMBL464859	NECA
+CHEMBL543876	vanoxerine hydrochloride
+CHEMBL509	meclofenamic acid
+CHEMBL489	(Z)-4-hydroxytamoxifen
+CHEMBL565612	sotrastaurin
+CHEMBL460702	bms-777607
+CHEMBL525191	GDC-0879
+CHEMBL47940	Lck inhibitor
+CHEMBL509032	tae-684
+CHEMBL500996	methoctramine hydrochloride
+CHEMBL511749	N-[4-[3-[[[7-(hydroxyamino)-7-oxoheptyl]amino]-oxomethyl]-5-isoxazolyl]phenyl]carbamic acid tert-butyl ester
+CHEMBL522892	dovitinib
+CHEMBL551466	aclidinium bromide
+CHEMBL513389	1-[(7-methyl-2,3-dihydro-1H-inden-4-yl)oxy]-3-(propan-2-ylamino)-2-butanol
+CHEMBL51931	phenanthrenequinone
+CHEMBL512054	Altersolanol A
+CHEMBL562310	IWR-1-endo
+CHEMBL56564	tropisetron
+CHEMBL479	thioridazine
+CHEMBL497207	7alpha-hydroxycholesterol
+CHEMBL517712	(±)-hyoscyamine
+CHEMBL549	(RS)-citalopram
+CHEMBL527	piroxicam
+CHEMBL50	quercetin
+CHEMBL51149	gallopamil
+CHEMBL567	perphenazine
+CHEMBL54	haloperidol
+CHEMBL478	m-chlorophenylpiperazine
+CHEMBL46	ondansetron
+CHEMBL475534	nitrendipine
+CHEMBL553	erlotinib
+CHEMBL502835	nintedanib
+CHEMBL483158	alisertib
+CHEMBL566752	florbetaben f-18
+CHEMBL52	nordihydroguaiaretic acid
+CHEMBL470848	azaleatin
+CHEMBL56	(+/-)-8-hydroxy-2-(di-N-propylamino)tetralin
+CHEMBL517712	atropine
+CHEMBL521	ibuprofen
+CHEMBL480	lansoprazole
+CHEMBL491473	cediranib
+CHEMBL563	(+-)-flurbiprofen
+CHEMBL55400	proflavine
+CHEMBL514409	hesperadin
+CHEMBL475251	tamatinib
+CHEMBL54126	neostigmine bromide
+CHEMBL541018	2-trifluoromethylphenothiazine
+CHEMBL514499	5-(5,6-dimethoxy-1-benzimidazolyl)-3-[[2-(trifluoromethyl)phenyl]methoxy]-2-thiophenecarboxamide
+CHEMBL477772	pazopanib
+CHEMBL53	apomorphine
+CHEMBL516	cyproheptadine
+CHEMBL51	ketanserin
+CHEMBL490	paroxetine
+CHEMBL548	prostaglandin E2
+CHEMBL523299	umeclidinium bromide
+CHEMBL497834	(7β)-hydroxycholesterol
+CHEMBL472172	BMS493
+CHEMBL514201	talmapimod
+CHEMBL453066	beta-carboline-3-carboxylic acid methyl ester
+CHEMBL54079	uk-088800
+CHEMBL52606	forskolin
+CHEMBL487402	eupatorin
+CHEMBL543	1-methylimidazole
+CHEMBL525240	chebulagic acid
+CHEMBL497	clioquinol
+CHEMBL493682	denopamine
+CHEMBL571	(RS)-ketoprofen
+CHEMBL50894	alsterpaullone
+CHEMBL458347	Glaucarubinone
+CHEMBL494089	gsk-690693
+CHEMBL482767	sns-314
+CHEMBL45816	mibefradil
+CHEMBL483254	panobinostat
+CHEMBL506981	meclinertant
+CHEMBL505512	Tautomycin
+CHEMBL465980	ononin
+CHEMBL50267	5,7-dichlorokynurenic acid
+CHEMBL572878	tozasertib
+CHEMBL478629	dorsomorphin
+CHEMBL558752	CHIR-265
+CHEMBL464552	GSK-1838705A
+CHEMBL558642	gsk-650394
+CHEMBL521851	pictilisib
+CHEMBL501867	vincristine sulfate
+CHEMBL458997	2-({5-CHLORO-2-[(2-METHOXY-4-MORPHOLIN-4-YLPHENYL)AMINO]PYRIMIDIN-4-YL}AMINO)-N-METHYLBENZAMIDE
+CHEMBL512504	a-769662
+CHEMBL466397	N-(2,6-difluorophenyl)-5-[3-[2-[5-ethyl-2-methoxy-4-[4-(4-methylsulfonyl-1-piperazinyl)-1-piperidinyl]anilino]-4-pyrimidinyl]-2-imidazo[1,2-a]pyridinyl]-2-methoxybenzamide
+CHEMBL472212	N-methyl-N-[2-[[[2-[(2-oxo-1,3-dihydroindol-5-yl)amino]-5-(trifluoromethyl)-4-pyrimidinyl]amino]methyl]phenyl]methanesulfonamide
+CHEMBL495727	1-cyclopropyl-3-{3-[5-(morpholin-4-ylmethyl)-1H-benzimidazol-2-yl]-1H-pyrazol-4-yl}urea
+CHEMBL473104	NNC-711
+CHEMBL55	pentamidine
+CHEMBL2103840	dinaciclib
+CHEMBL23	diltiazem
+CHEMBL2141296	ixazomib
+CHEMBL226034	tamarixetin
+CHEMBL243664	acacetin
+CHEMBL26260	5,6-benzoflavone
+CHEMBL218071	L-798,106
+CHEMBL2334891	(-)-isocorypalmine
+CHEMBL2381116	2-(6-methoxy-1-oxo-1,3-dihydro-2H-isoindol-2-yl)-N-[4-(piperazin-1-yl)pyridin-3-yl]-1,3-thiazole-4-carboxamide
+CHEMBL2133806	JNJ-38877605
+CHEMBL2106551	miroprofen
+CHEMBL25554	WB-4101
+CHEMBL2177161	AZD2858
 CHEMBL225519	compound 8 [PMID: 17480064]
+CHEMBL21241	GW7647
 CHEMBL2177390	ipatasertib
+CHEMBL249973	lintitript
+CHEMBL2408045	sapitinib
+CHEMBL2024517	cariprazine hydrochloride
+CHEMBL224305	(R)-talarozole
+CHEMBL2103855	telotristat
+CHEMBL241232	4'-[5-[[3-[(cyclopropylamino)methyl]phenyl]amino]-1H-pyrazol-3-yl]-[1,1'-biphenyl]-2,4-diol
+CHEMBL23327	2-({6-[(3-chlorophenyl)amino]-9-isopropyl-9H-purin-2-yl}amino)-3-methylbutan-1-ol
+CHEMBL240773	quinpirole
+CHEMBL219916	domperidone
+CHEMBL2029617	ficine
+CHEMBL2143829	2-(6,7-dimethoxy-4-quinazolinyl)-5-(2-pyridinyl)-1,2,4-triazol-3-amine
+CHEMBL2001019	pf-04217903
+CHEMBL25202	tamibarotene
+CHEMBL202721	ZM-447439
+CHEMBL253144	11-deoxycortisol
+CHEMBL2051955	levosimendan
+CHEMBL255863	nilotinib
+CHEMBL265502	suramin
+CHEMBL260876	thiourea
+CHEMBL20377	2-(3,4-dichlorophenyl)-N-methyl-N-[2-(1-pyrrolidinyl)ethyl]ethanamine
+CHEMBL2110732	dacomitinib
+CHEMBL214268	PHA-543,613
+CHEMBL207538	allopregnanolone
+CHEMBL254129	cyclopamine
+CHEMBL202185	1,2-dioctanoyl-sn-glycero-3-phosphate
+CHEMBL214321	chryseriol
+CHEMBL24828	vandetanib
+CHEMBL258465	LSM-3233
+CHEMBL259209	milnacipran
+CHEMBL239800	fenobam
+CHEMBL2048028	lifitegrast
+CHEMBL2204995	GSK343
+CHEMBL2170855	meso-tetrakis(N-methyl-4-pyridyl)porphine tetrakis(p-toluenesulfonate)
+CHEMBL2106789	nanafrocin
+CHEMBL23293	salirasib
+CHEMBL261641	SU11274
+CHEMBL216276	1-(2,4-dichlorophenyl)-6-methyl-N-(1-piperidinyl)-4H-indeno[1,2-c]pyrazole-3-carboxamide
+CHEMBL222541	7,8,3',4'-Tetrahydroxyflavone
+CHEMBL227744	nitroarginine
+CHEMBL2105763	quisinostat
+CHEMBL255044	flupirtine
+CHEMBL22587	itraconazole
+CHEMBL225304	pimagedine
+CHEMBL225230	(-)-N-porphynorapomorphine
+CHEMBL2017291	I-BET151
+CHEMBL254760	N-(3-fluoro-4-(2-(1-methyl-1H-imidazol-4-yl)thieno(3,2-b)pyridin-7-yloxy)phenylcarbamothioyl)-2-phenylacetamide
+CHEMBL230011	tg-100115
+CHEMBL21156	2-(1,1-DIMETHYLETHYL)9-FLUORO-3,6-DIHYDRO-7H-BENZ[H]-IMIDAZ[4,5-F]ISOQUINOLIN-7-ONE
+CHEMBL2002099	3-cyclopentyl-3-[4-(7H-pyrrolo[2,3-d]pyrimidin-4-yl)-1-pyrazolyl]propanenitrile
+CHEMBL2106804	naxagolide hydrochloride
+CHEMBL224325	chlorquinaldol
+CHEMBL222863	ouabain
+CHEMBL22	trimethoprim
+CHEMBL25619	Anatoxin-a
+CHEMBL233929	luteoloside
+CHEMBL2105717	cabozantinib
+CHEMBL222519	NBQX
+CHEMBL259972	mofezolac
+CHEMBL2028019	cariprazine
+CHEMBL25236	do-687
+CHEMBL218166	bifeprunox
+CHEMBL2037511	epelsiban
+CHEMBL2079609	19-epi-Ajmalicine
+CHEMBL222102	ku-55933
+CHEMBL2170856	N-[3-[[(2,3-dihydroxyphenyl)-oxomethyl]amino]phenyl]-2,3-dihydroxybenzamide
+CHEMBL2403108	ceritinib
+CHEMBL223360	linifanib
+CHEMBL20734	5-chloro-2-methoxy-4-(methylamino)-N-(2-methyl-1-(phenylmethyl)-3-pyrrolidinyl)benzamide
+CHEMBL255696	glycerol monostearate
+CHEMBL220360	taranabant
+CHEMBL242237	2-({2-[(3-HYDROXYPHENYL)AMINO]PYRIMIDIN-4-YL}AMINO)BENZAMIDE
+CHEMBL2051956	dexniguldipine
+CHEMBL259551	ERK inhibitor II
+CHEMBL23254	purvalanol B
+CHEMBL2312289	(R)-selisistat
+CHEMBL235842	4-acetamido-N-(2-amino-5-thiophen-2-ylphenyl)benzamide
+CHEMBL2018302	tubastatin A
+CHEMBL2002649	3-(1H-imidazol-5-ylmethylidene)-5-methoxy-1H-indol-2-one
+CHEMBL2002702	3-[(3,5-dimethyl-1H-pyrrol-2-yl)methylidene]-1H-indol-2-one
+CHEMBL254777	7-amino-N-cyclohexyl-1-methyl-2-thiazolo[3,2-a]benzimidazolecarboxamide
+CHEMBL2069623	PF-4800567
+CHEMBL2385268	bms-453
+CHEMBL260374	thioperamide
+CHEMBL21536	xanomeline
+CHEMBL163	ritonavir
+CHEMBL1947052	tropacocaine
+CHEMBL1643895	ramosetron
+CHEMBL1819440	ornipressin
+CHEMBL188	win 55212-2
+CHEMBL178803	blonanserin
+CHEMBL189584	pd-173074
+CHEMBL1835659	spiruchostatin C
+CHEMBL1610687	2-(1,3-benzodioxol-5-yl)-3-hydroxy-1,2-dihydroquinazolin-4-one
+CHEMBL1695	tiagabine hydrochloride
+CHEMBL191083	methylene blue cation
+CHEMBL18797	sulindac sulfide
+CHEMBL1921961	LSM-2664
+CHEMBL198609	(6S)-2-chloro-5,6,7,8,9,10-hexahydrocyclohepta[b]indole-6-carboxamide
+CHEMBL1729	cisapride
+CHEMBL1879463	dactolisib
+CHEMBL193482	estriol
+CHEMBL19611	ilomastat
+CHEMBL1789941	ruxolitinib
+CHEMBL17127	sch-58261
+CHEMBL171804	24(S)-hydroxycholesterol
+CHEMBL1908394	gsk-461364
+CHEMBL186526	ZM336372
+CHEMBL1972346	4-[2-(3,5-dihydroxyphenyl)ethenyl]benzene-1,2-diol
+CHEMBL1672234	N-[4-[[(2-chlorophenyl)-oxomethyl]amino]-3-methoxyphenyl]-2-pyridinecarboxamide
+CHEMBL1672238	N-[3-chloro-4-[[(2-chlorophenyl)-oxomethyl]amino]phenyl]-2-pyridinecarboxamide
+CHEMBL1699345	N-[3-chloro-4-(3-methyl-2,5-dioxo-3-phenyl-1-pyrrolidinyl)phenyl]-2-pyridinecarboxamide
+CHEMBL1988437	N-methyl-2-[[3-[2-(2-pyridinyl)ethenyl]-1H-indazol-6-yl]thio]benzamide
+CHEMBL1951415	PF-670462 free base
+CHEMBL18	ethoxzolamide
+CHEMBL1676	fluticasone furoate
+CHEMBL19224	papaverine
+CHEMBL175	dexibuprofen
+CHEMBL184450	tetrabromobisphenol A
+CHEMBL1908391	masitinib
+CHEMBL180101	esreboxetine
+CHEMBL189171	acemetacin
+CHEMBL18772	quipazine
+CHEMBL1738797	alectinib
+CHEMBL192	sildenafil
+CHEMBL18840	5-carboxamidotryptamine
+CHEMBL1774461	florbetapir (18F)
+CHEMBL19019	naltrexone
+CHEMBL1873475	ibrutinib
+CHEMBL191003	JNJ-7706621
+CHEMBL1630857	glyasperin C
+CHEMBL178334	Y134
+CHEMBL19259	(4-fluorophenyl)-[1-(4-phenylbutyl)-4-piperidinyl]methanone
+CHEMBL1698322	N-[3-chloro-4-(2,5-dioxo-3-phenyl-1-pyrrolidinyl)phenyl]-2-pyridinecarboxamide
+CHEMBL191144	PHA-533533
+CHEMBL1724	mepenzolate bromide
+CHEMBL18041	zacopride
+CHEMBL1909072	pipamazine
+CHEMBL164	myricetin
+CHEMBL1766	desoximetasone
+CHEMBL1648	isradipine
+CHEMBL169046	25-hydroxycholesterol
+CHEMBL1801948	15-O-desmethyl-(5Z)-7-oxozeaenol
+CHEMBL1696	desipramine hydrochloride
+CHEMBL1614710	osi-930
+CHEMBL180239	hydrazinocurcumin
+CHEMBL1738698	N(2)-[3-methoxy-4-(morpholin-4-yl)phenyl]-N(4)-(quinolin-3-yl)pyrimidine-2,4-diamine
+CHEMBL1970879	N-[4-[1-[4-(4-acetyl-1-piperazinyl)cyclohexyl]-4-amino-3-pyrazolo[3,4-d]pyrimidinyl]-2-methoxyphenyl]-1-methyl-2-indolecarboxamide
+CHEMBL187266	tanshinone IIA
+CHEMBL193240	roflumilast
+CHEMBL190	theophylline
+CHEMBL178372	JTE-907
+CHEMBL1726	nisoldipine
+CHEMBL1957266	JQ1
+CHEMBL16687	CGS 15943
+CHEMBL1657	tazarotene
+CHEMBL186779	jervine
+CHEMBL179166	sodium orthovanadate
+CHEMBL1651956	alisporivir
+CHEMBL1973540	4-[(7-oxo-6H-pyrrolo[2,3-g][1,3]benzothiazol-8-ylidene)methylamino]-N-(2-pyridinyl)benzenesulfonamide
+CHEMBL1651027	omega-conotoxin GVIA
+CHEMBL182461	DL-canavanine
+CHEMBL19215	metergoline
+CHEMBL180022	neratinib
+CHEMBL1908355	tenidap
+CHEMBL170408	N-phenyl-1-naphthylamine
+CHEMBL1755	conivaptan
+CHEMBL191881	leupeptin
+CHEMBL1627	desmethyl loperamide
+CHEMBL1801204	azd-8055
+CHEMBL1765602	torin 2
+CHEMBL1972466	tgx-221
+CHEMBL16312	2-(4-methoxyphenyl)-1-benzopyran-4-one
+CHEMBL1996176	3-(1H-pyrrol-2-ylmethylidene)-1H-indol-2-one
+CHEMBL1705230	N-[3-chloro-4-(1,3-dioxo-2-azaspiro[4.5]decan-2-yl)phenyl]-2-pyridinecarboxamide
+CHEMBL191334	nutlin-3a
+CHEMBL178455	1-(2,4-difluorophenyl)-3-[4-[(6,7-dimethoxy-4-quinolinyl)oxy]-2-fluorophenyl]urea
+CHEMBL1990885	N-[2-(diethylamino)ethyl]-5-[(5-fluoro-2-oxo-1H-indol-3-ylidene)methyl]-2,4-dimethyl-1H-pyrrole-3-carboxamide
+CHEMBL165399	5-sulfoisophthalic acid
+CHEMBL1829335	irdabisant
+CHEMBL177756	2-(6-hydroxy-3-oxo-3H-xanthen-9-yl)-benzoic acid
+CHEMBL193	nifedipine
+CHEMBL189963	palbociclib
+CHEMBL1626	clemastine
+CHEMBL1732	dihydroergotamine
+CHEMBL14460	SB 243213
+CHEMBL1524273	phthalylsulfathiazole
+CHEMBL1504	triamcinolone acetonide
+CHEMBL1499477	2-[[2-(5-methyl-2-thiophenyl)-2-oxoethyl]thio]-3-phenyl-4-quinazolinone
+CHEMBL1523019	2-[(7-methoxy-4-methyl-2-quinazolinyl)amino]-5,6-dimethyl-1H-pyrimidin-4-one
+CHEMBL1516890	3-[(1-methyl-3-indolyl)methylidene]-1H-pyrrolo[3,2-b]pyridin-2-one
+CHEMBL154580	1-(2-naphthalenyl)-2-propen-1-one
+CHEMBL1564871	2-[[oxo-(2,3,4,5,6-pentafluorophenyl)methyl]amino]benzoic acid ethyl ester
+CHEMBL1569708	5-bromo-N-[2-(2,3-dihydroindol-1-yl)-2-oxoethyl]-N-methyl-2-thiophenesulfonamide
+CHEMBL1501	fluocinonide
+CHEMBL1563332	glyasperin D
+CHEMBL1455162	3-(4-oxo-1H-quinazolin-2-yl)propanoic acid [1-(4-bromophenyl)-1-oxopropan-2-yl] ester
+CHEMBL1534287	2-[[3-(4-methylphenyl)-4-oxo-6,7-dihydrothieno[3,2-d]pyrimidin-2-yl]thio]-N-(2-thiazolyl)acetamide
+CHEMBL1589124	3-(4-fluorophenyl)-5-(2-furanyl)-2-phenyl-3,4-dihydropyrazole
+CHEMBL1549018	N'-[3-bicyclo[2.2.1]heptanyl(oxo)methyl]-3-chloro-1-benzothiophene-2-carbohydrazide
+CHEMBL1557	dopamine hydrochloride
+CHEMBL1524185	opipramol hydrochloride
+CHEMBL1445555	2-methylfuran
+CHEMBL1421	dasatinib
+CHEMBL1530428	dexamethasone acetate
+CHEMBL1436585	6-(1,3-benzodioxol-5-yl)-N-(3-oxolanylmethyl)-4-quinazolinamine
+CHEMBL1468769	N-cyclopentyl-2-imino-1-[3-(4-morpholinyl)propyl]-5-oxo-3-dipyrido[1,2-d:3',4'-f]pyrimidinecarboxamide
+CHEMBL1418894	(4-ethoxyphenyl)-[4-[(4-ethoxyphenyl)-oxomethyl]-1,4-diazepan-1-yl]methanone
+CHEMBL1447964	5-hydroxy-2-methyl-3-benzo[g]benzofurancarboxylic acid ethyl ester
+CHEMBL1606959	1-(1,3-Benzodioxol-5-yl)-3-(1-piperidinyl)-1-propanone
+CHEMBL1607086	3-[(4-methoxyphenoxy)methyl]-N-(4-nitro-1-pyrazolyl)benzamide
+CHEMBL1467	allopurinol
+CHEMBL1466	dicumarol
+CHEMBL145	trans-caffeic acid
+CHEMBL153	Trolox
+CHEMBL14370	(RS,RS)-reboxetine
+CHEMBL1570500	thiodiglycolic acid
+CHEMBL14762	seliciclib
+CHEMBL1473	fluticasone propionate
+CHEMBL1568698	ganaxolone
+CHEMBL1423	pimozide
+CHEMBL150	kaempferol
+CHEMBL15245	yohimbine
+CHEMBL15928	gr-127935
+CHEMBL1408847	4-(chloroacetyl)acetanilide
+CHEMBL14276	SB-228357
+CHEMBL1406095	2-[[2-[1-(2-methoxyethyl)-2,5-dimethyl-3-pyrrolyl]-2-oxoethyl]thio]-6-propyl-1H-pyrimidin-4-one
+CHEMBL1422284	6-(2,3-dihydro-1,4-benzodioxin-3-ylmethylamino)-N-ethyl-N-phenyl-3-pyridinesulfonamide
+CHEMBL1435542	6-(1,3-benzodioxol-5-yl)-N-[(2-methyl-4-thiazolyl)methyl]-4-quinazolinamine
+CHEMBL1492473	4-O-methyldopamine
+CHEMBL1602627	4-oxo-3-[(1-oxo-2,2-diphenylethyl)amino]-2-sulfanylidene-1H-quinazoline-7-carboxylic acid methyl ester
+CHEMBL1497197	4-(4-chlorophenyl)-1-(6-fluoro-2-pyridinyl)-3-pyrazolamine
+CHEMBL1559419	3-[4-(1,3-benzodioxol-5-ylmethyl)-1-piperazinyl]-1-phenylpyrrolidine-2,5-dione
+CHEMBL1484	nicardipine
+CHEMBL1562	homovanillic acid
+CHEMBL1464005	ipratropium bromide
+CHEMBL1451	triamcinolone
+CHEMBL1554789	(-)-chlorpheniramine
+CHEMBL1490875	imetit dihydrobromide
+CHEMBL1561148	prostaglandin b1
+CHEMBL1472573	2-chloro-7-methoxy-10H-phenothiazine
+CHEMBL1478395	5-cyclopentylidene-2-sulfanylidene-4-thiazolidinone
+CHEMBL150372	3-hydroxycoumarin
+CHEMBL1578584	2-[[2-(4-ethoxyphenyl)-5-methyl-4-oxazolyl]methylthio]-N-(2-furanylmethyl)acetamide
+CHEMBL1437881	N-(4-fluorophenyl)-3H-benzimidazole-5-carboxamide
+CHEMBL145725	N-[(3R)-1-azabicyclo[2.2.2]octan-3-yl]-6-chloro-1-propan-2-yl-4-benzimidazolecarboxamide
+CHEMBL1600998	4-nitrosodiphenylamine
+CHEMBL1509321	N-[4,6-bis(4-morpholinyl)-1,3,5-triazin-2-yl]-2-(methylthio)-1,3-benzothiazol-6-amine
+CHEMBL157337	ramifenazone
+CHEMBL1547029	N-[4-(2-methyl-4-thiazolyl)phenyl]benzamide
+CHEMBL154	naproxen
+CHEMBL151	luteolin
+CHEMBL15023	trifluperidol
+CHEMBL1490	trihexyphenidyl
+CHEMBL1474834	6-(1,3-benzodioxol-5-yl)-N-methyl-N-[(2-methyl-4-thiazolyl)methyl]-4-quinazolinamine
+CHEMBL1574971	4-(1H-benzimidazol-2-ylmethylthio)-2-methylbenzofuro[3,2-d]pyrimidine
+CHEMBL1516533	1-[(7,8-dimethyl-2-oxo-1H-quinolin-3-yl)methyl]-1-(2-furanylmethyl)-3-(2-methoxyphenyl)thiourea
+CHEMBL1537964	2-(4-oxo-3-quinazolinyl)-N-[3-(1-piperidinylsulfonyl)phenyl]acetamide
+CHEMBL1546726	2-(1,2-benzoxazol-3-yl)-N-(3-methylphenyl)acetamide
+CHEMBL1461730	N-[5-[(2,2-dimethyl-1-oxopropyl)amino]-2-pyridinyl]-2-furancarboxamide
+CHEMBL1588229	1-(1-benzotriazolyl)-3-(10-phenothiazinyl)-2-propanol
+CHEMBL1520645	N-[2-(5-chloro-2-methoxyanilino)-2-oxoethyl]-N-cyclohexyl-2-furancarboxamide
+CHEMBL1522836	bucladesine sodium
+CHEMBL143360	bd-1047
+CHEMBL160	cyclosporine
+CHEMBL1428	nimodipine
+CHEMBL1436121	olprinone hydrochloride
+CHEMBL1421903	(2S)-4-methyl-2-[[[5-[[5-[[(2-methylpropan-2-yl)oxy-oxomethyl]amino]pentylamino]-oxomethyl]-1H-imidazol-4-yl]-oxomethyl]amino]pentanoic acid tert-butyl ester
+CHEMBL1514777	(2-methyl-3-imidazo[1,2-a]pyridinyl)-diphenyl-sulfanylidenephosphorane
+CHEMBL1540789	2-[2-[5-[(3,4-dimethylanilino)-oxomethyl]-6-methyl-2-oxo-3,4-dihydro-1H-pyrimidin-4-yl]phenoxy]propanoic acid ethyl ester
+CHEMBL1444064	N-(4,5,6,7-tetrahydro-1,3-benzothiazol-2-yl)-4-thiophen-2-ylbutanamide
+CHEMBL1547504	N-(3H-benzimidazol-5-yl)-2-furancarboxamide
+CHEMBL1568046	2-methyl-1-phenyl-5-benzimidazolecarboxylic acid [2-(2-methoxyanilino)-2-oxoethyl] ester
+CHEMBL1489079	6,11-dihydroquinoxalino[2,3-b]quinoxaline
+CHEMBL1535191	2-(2-fluoro-5-methoxyphenyl)-5-methyl-4-[(4-phenyl-1-piperidinyl)methyl]oxazole
+CHEMBL1576608	2-[(3,4-dimethylphenyl)thio]-3-pyridinecarboxylic acid
+CHEMBL1602768	1-(4-methyl-3-nitrophenyl)-3-[(4-methylphenyl)methyl]thiourea
+CHEMBL1573436	N-[(5-bromo-8-hydroxy-7-quinolinyl)-thiophen-2-ylmethyl]acetamide
+CHEMBL1511363	(3aS,5S,9aS)-5-[1-(2-methoxyphenyl)-4-pyrazolyl]-2-phenyl-3a,4,5,7,8,9-hexahydro-3H-pyrrolo[3,4-h]pyrrolizin-1-one
+CHEMBL146227	3-hydroxyquinolin-2(1H)-one
+CHEMBL1485	L-arginine
+CHEMBL1554	dactinomycin
+CHEMBL15891	lindane
+CHEMBL157138	lisuride
+CHEMBL1520	vardenafil
+CHEMBL1394829	propachlor
+CHEMBL1333512	N,N'-Diphenyl-p-phenylenediamine
+CHEMBL1396	varenicline
+CHEMBL1394757	(S)-aminoglutethimide
+CHEMBL1385840	ergocornine
+CHEMBL1334769	1-(3-chlorophenyl)sulfonylpyrrolidine
+CHEMBL1325058	4-[(1-methyl-5-tetrazolyl)thio]-5-(1-naphthalenyl)thieno[2,3-d]pyrimidine
+CHEMBL1371372	2-(2,5-dimethylphenoxy)-N-(2-hydroxy-5-methylphenyl)acetamide
+CHEMBL1232461	gsk-525762
+CHEMBL1359713	(R)-enilconazole
 CHEMBL1320139	heliomycin
 CHEMBL1235717	tetramethylrosamine
 CHEMBL1300411	1-(1,3-benzodioxol-5-yl)-3-(2,3-dihydro-1,4-benzodioxin-6-yl)urea
-CHEMBL388978	staurosporine
-CHEMBL1879463	dactolisib
-CHEMBL583912	(−)-epicatechin
-CHEMBL219916	domperidone
-CHEMBL633	amiodarone
-CHEMBL1230609	foretinib
+CHEMBL1363234	2,5-dimethyl-N-[(S)-[(1S,2R)-1-methyl-2-[(2R)-1-(2-naphthalenylamino)-1-oxopropan-2-yl]cyclopropyl]-phenylmethyl]-3-pyrazolecarboxamide
+CHEMBL1381292	4-(2,3-dihydro-1,4-benzodioxin-6-yl)-3-[[2-(2-pyridinyl)-1-benzimidazolyl]methyl]-1H-1,2,4-triazole-5-thione
+CHEMBL129529	butacaine
+CHEMBL13790	1-(3-chlorophenyl)biguanide
+CHEMBL12713	sertindole
+CHEMBL134	clonidine
 CHEMBL1400238	LY-310,762
 CHEMBL136737	nimustine
 CHEMBL1370446	metizoline
-CHEMBL280065	oleic monoethanolamide
-CHEMBL1468769	N-cyclopentyl-2-imino-1-[3-(4-morpholinyl)propyl]-5-oxo-3-dipyrido[1,2-d:3',4'-f]pyrimidinecarboxamide
-CHEMBL2143829	2-(6,7-dimethoxy-4-quinazolinyl)-5-(2-pyridinyl)-1,2,4-triazol-3-amine
-CHEMBL376503	2',4',5',7'-tetrabromofluorescein
-CHEMBL1418894	(4-ethoxyphenyl)-[4-[(4-ethoxyphenyl)-oxomethyl]-1,4-diazepan-1-yl]methanone
-CHEMBL3586089	4-[4-(5,5-dimethyl-4H-thiazol-2-yl)-1-piperazinyl]-6-propylthieno[2,3-d]pyrimidine
-CHEMBL846	calcitriol
+CHEMBL138921	NADA
+CHEMBL134915	Ro 61-8048
+CHEMBL1256678	U73122
+CHEMBL1378392	5-(3-methylsulfonylphenyl)-4-[(1-methyl-5-tetrazolyl)thio]thieno[2,3-d]pyrimidine
+CHEMBL1347786	1-(4-ethylphenyl)-N-(3-pyridinylmethyl)methanamine
+CHEMBL1362864	1-(10-methyl-2-phenothiazinyl)ethanone
 CHEMBL1289926	axitinib
-CHEMBL284328	ethidium bromide
-CHEMBL527	piroxicam
-CHEMBL145	trans-caffeic acid
-CHEMBL807	memantine
-CHEMBL585	triamterene
-CHEMBL54	haloperidol
-CHEMBL742	ketamine
-CHEMBL475534	nitrendipine
-CHEMBL260876	thiourea
-CHEMBL1073	glipizide
-CHEMBL1089	phenelzine
-CHEMBL28564	eliprodil
-CHEMBL305187	ifenprodil
-CHEMBL438139	rocaglamide
-CHEMBL1423	pimozide
-CHEMBL521	ibuprofen
+CHEMBL13280	flunitrazepam
+CHEMBL135	17β-estradiol
+CHEMBL1238	azelaic acid
+CHEMBL123292	cycloheximide
+CHEMBL1382	tolterodine
+CHEMBL131	prednisolone
+CHEMBL1303	(6S)-rotigotine
+CHEMBL1297	(RS)-fenoprofen
+CHEMBL1287853	fedratinib
+CHEMBL1256686	calcimycin A23187
+CHEMBL13378	(RS)-AMPA
+CHEMBL1358	fulvestrant
 CHEMBL1370	budesonide
-CHEMBL55400	proflavine
-CHEMBL15928	gr-127935
+CHEMBL1390	medroxyprogesterone
+CHEMBL1324	tolcapone
+CHEMBL13485	SU11652
+CHEMBL1269896	compound 34 [PMID: 20866075]
 CHEMBL1255837	dihydroergocristine mesylate
 CHEMBL1329218	(3R,5S)-3,5-dimethyl-1-adamantanamine
-CHEMBL514499	5-(5,6-dimethoxy-1-benzimidazolyl)-3-[[2-(trifluoromethyl)phenyl]methoxy]-2-thiophenecarboxamide
+CHEMBL1329235	5-(phenylmethoxymethyl)-7-(1-piperidinylmethyl)-8-quinolinol
+CHEMBL1345327	3-(2-pyridinyl)-6-(2-pyridinylmethylthio)pyridazine
+CHEMBL1402668	5-methyl-2-phenyl-5-(2-phenylethyl)-1,2,4-triazolidine-3-thione
+CHEMBL1302713	3,4-dihydro-1H-isoquinolin-2-yl-(4-ethyl-5-thieno[3,2-b]pyrrolyl)methanone
 CHEMBL1364266	4-[(2,4,6-triamino-5-pyrimidinyl)azo]benzoic acid
-CHEMBL1484	nicardipine
-CHEMBL227744	nitroarginine
-CHEMBL255044	flupirtine
-CHEMBL1554789	(-)-chlorpheniramine
-CHEMBL119385	neflamapimod
-CHEMBL1600998	4-nitrosodiphenylamine
-CHEMBL317229	co-101244
+CHEMBL1389966	4-[5-(4-ethoxyphenyl)-3-isoxazolyl]-N-[(4-methylphenyl)methyl]butanamide
+CHEMBL13470	SNC80
+CHEMBL1405	estrone
+CHEMBL1336	sorafenib
+CHEMBL1243244	(22S)-22-hydroxycholesterol
+CHEMBL1306030	2-[(1R,3S)-3-(7-bromo-2-methyl-1H-indol-3-yl)-2,2-dimethylcyclopropyl]acetonitrile
+CHEMBL1323615	10-methyl-3-phenothiazinamine
+CHEMBL1370700	2-(1-ethyl-4-pyrazolyl)-4-quinolinecarboxylic acid
+CHEMBL1339179	4-chloro-3-[(4-chlorophenyl)sulfamoyl]-N-(1H-1,2,4-triazol-5-yl)benzamide
+CHEMBL1373983	2-oxo-4-phenyl-6-(phenylmethylthio)-3,4-dihydro-1H-pyridine-5-carbonitrile
 CHEMBL1256696	pentoxyverine citrate
-CHEMBL286077	3-aminopropylphosphonic acid
 CHEMBL1254766	dextrorphan
+CHEMBL1326877	dioxybenzone
 CHEMBL1371770	piribedil
-CHEMBL22	trimethoprim
-CHEMBL2105717	cabozantinib
-CHEMBL72631	2-[1-[(4-chlorophenyl)-oxomethyl]-5-methoxy-2-methyl-3-indolyl]-1-(4-morpholinyl)ethanone
-CHEMBL493682	denopamine
-CHEMBL343633	esatenolol
-CHEMBL352205	3-hydroxybenzylhydrazine
-CHEMBL222102	ku-55933
-CHEMBL375270	GW9662
-CHEMBL458347	Glaucarubinone
-CHEMBL494089	gsk-690693
-CHEMBL1973540	4-[(7-oxo-6H-pyrrolo[2,3-g][1,3]benzothiazol-8-ylidene)methylamino]-N-(2-pyridinyl)benzenesulfonamide
-CHEMBL45816	mibefradil
+CHEMBL13647	BMY-7378
+CHEMBL136689	sch-442416
+CHEMBL1241674	pp-242
+CHEMBL1385514	dichlorisone acetate
+CHEMBL1403281	α-ergocryptine
+CHEMBL1328156	4-(octyloxy)benzoic acid
+CHEMBL13668	SCH-23390
 CHEMBL1289494	tivozanib
+CHEMBL1241855	rigosertib
+CHEMBL12314	mesulergine
 CHEMBL1256760	Tetrahydrodeoxycorticosterone
-CHEMBL255696	glycerol monostearate
-CHEMBL1428	nimodipine
+CHEMBL1231330	threo-β-hydroxy-L-aspartic acid
+CHEMBL1276308	mifepristone
 CHEMBL1369896	dexamisole
 CHEMBL1367478	levdobutamine
-CHEMBL1436121	olprinone hydrochloride
-CHEMBL611494	(-)-pilocarpine
-CHEMBL1221601	diphenyl acetamidotrichloroethyl fluoronitrophenyl thiourea
-CHEMBL7890	NΩ-nitro-L-arginine methyl ester
-CHEMBL106516	S-methylthiocitrulline
-CHEMBL305195	4-[(1R,2S)-1-hydroxy-2-methyl-3-[4-(phenylmethyl)-1-piperidinyl]propyl]phenol
-CHEMBL389621	cortisol
-CHEMBL1384554	N,N-dimethylcarbamodithioic acid (1-acetamido-2,2,2-trichloroethyl) ester
-CHEMBL178455	1-(2,4-difluorophenyl)-3-[4-[(6,7-dimethoxy-4-quinolinyl)oxy]-2-fluorophenyl]urea
-CHEMBL3416563	4-(N,N-diethylamino)benzaldehyde
-CHEMBL260374	thioperamide
-CHEMBL1485	L-arginine
-CHEMBL316966	adenosine cyclic phosphate
-CHEMBL6966	verapamil
-CHEMBL275528	phencyclidine
-CHEMBL506247	tannic acid
-CHEMBL1394829	propachlor
-CHEMBL459505	talarozole
-CHEMBL379845	methyl nicotinate
-CHEMBL188	win 55212-2
-CHEMBL1229592	wz-4002
-CHEMBL525191	GDC-0879
-CHEMBL509032	tae-684
-CHEMBL1835659	spiruchostatin C
-CHEMBL154580	1-(2-naphthalenyl)-2-propen-1-one
-CHEMBL2133806	JNJ-38877605
-CHEMBL393525	N-[(6-bromo-3-imidazo[1,2-a]pyridinyl)methylideneamino]-N,2-dimethyl-5-nitrobenzenesulfonamide
-CHEMBL29197	pd-153035
-CHEMBL91867	cl-387785
-CHEMBL353581	pyroxamide
-CHEMBL224305	(R)-talarozole
-CHEMBL1381292	4-(2,3-dihydro-1,4-benzodioxin-6-yl)-3-[[2-(2-pyridinyl)-1-benzimidazolyl]methyl]-1H-1,2,4-triazole-5-thione
-CHEMBL305904	etoxadrol
-CHEMBL406845	PP2
-CHEMBL603469	lestaurtinib
-CHEMBL296588	pepstatin A
-CHEMBL1421	dasatinib
-CHEMBL1213492	givinostat
-CHEMBL444092	Microcystin-LR
-CHEMBL103667	doramapimod
-CHEMBL1200916	thioridazine hydrochloride
-CHEMBL2001019	pf-04217903
-CHEMBL286722	MDL-28170
-CHEMBL1606959	1-(1,3-Benzodioxol-5-yl)-3-(1-piperidinyl)-1-propanone
-CHEMBL1200628	vancomycin hydrochloride
-CHEMBL202721	ZM-447439
-CHEMBL1466	dicumarol
-CHEMBL51149	gallopamil
-CHEMBL553	erlotinib
-CHEMBL184450	tetrabromobisphenol A
-CHEMBL95	tacrine
-CHEMBL566752	florbetaben f-18
-CHEMBL277525	TRIM
-CHEMBL1287853	fedratinib
-CHEMBL27673	methoctramine free base
-CHEMBL108308	nodularin-R
-CHEMBL274826	androstenedione
-CHEMBL1171837	ponatinib
-CHEMBL1774461	florbetapir (18F)
-CHEMBL721	acrolein
-CHEMBL285063	pd-168393
-CHEMBL1408847	4-(chloroacetyl)acetanilide
-CHEMBL1200478	dyclonine hydrochloride
-CHEMBL475251	tamatinib
-CHEMBL284028	6,7-dichloro-1,4-dihydroquinoxaline-2,3-dione
-CHEMBL39664	selfotel
-CHEMBL1648	isradipine
-CHEMBL1336	sorafenib
-CHEMBL939	gefitinib
-CHEMBL439849	vilazodone
-CHEMBL296586	kenpaullone
-CHEMBL3348846	azd-4547
-CHEMBL379300	A-443654
-CHEMBL386051	PD-173955
-CHEMBL96051	scriptaid
-CHEMBL1970879	N-[4-[1-[4-(4-acetyl-1-piperazinyl)cyclohexyl]-4-amino-3-pyrazolo[3,4-d]pyrimidinyl]-2-methoxyphenyl]-1-methyl-2-indolecarboxamide
-CHEMBL3289608	calycosin 7-O-β-D-glucoside
-CHEMBL78012	4-(6-iodo-2-imidazo[1,2-a]pyridinyl)-N,N-dimethylaniline
-CHEMBL288441	bosutinib
-CHEMBL64925	MG132
-CHEMBL1726	nisoldipine
-CHEMBL233929	luteoloside
-CHEMBL408513	belinostat
-CHEMBL179166	sodium orthovanadate
-CHEMBL1077979	5Z-7-oxozeaenol
-CHEMBL7917	AG1478
-CHEMBL3590107	SCH772984
-CHEMBL429852	SP-4206
-CHEMBL31965	canertinib
-CHEMBL1520645	N-[2-(5-chloro-2-methoxyanilino)-2-oxoethyl]-N-cyclohexyl-2-furancarboxamide
-CHEMBL180022	neratinib
-CHEMBL1328156	4-(octyloxy)benzoic acid
-CHEMBL505512	Tautomycin
-CHEMBL284237	dizocilpine
-CHEMBL1173655	afatinib
-CHEMBL386630	testosterone
-CHEMBL50267	5,7-dichlorokynurenic acid
 CHEMBL1236962	omipalisib
-CHEMBL242237	2-({2-[(3-HYDROXYPHENYL)AMINO]PYRIMIDIN-4-YL}AMINO)BENZAMIDE
-CHEMBL275742	dexpropranolol
-CHEMBL521851	pictilisib
-CHEMBL607707	pelitinib
-CHEMBL1236107	sgx-523
-CHEMBL259551	ERK inhibitor II
-CHEMBL1547504	N-(3H-benzimidazol-5-yl)-2-furancarboxamide
-CHEMBL235842	4-acetamido-N-(2-amino-5-thiophen-2-ylphenyl)benzamide
-CHEMBL375126	1-[(3,4-dichlorophenyl)methyl]indole-2,3-dione
-CHEMBL458997	2-({5-CHLORO-2-[(2-METHOXY-4-MORPHOLIN-4-YLPHENYL)AMINO]PYRIMIDIN-4-YL}AMINO)-N-METHYLBENZAMIDE
-CHEMBL1321591	1-(4-chlorophenyl)-3-(2-ethoxyphenyl)urea
-CHEMBL1576608	2-[(3,4-dimethylphenyl)thio]-3-pyridinecarboxylic acid
-CHEMBL165399	5-sulfoisophthalic acid
-CHEMBL389433	liarozole
-CHEMBL280487	okadaic acid
-CHEMBL11	imipramine
-CHEMBL28	apigenin
-CHEMBL272980	mocetinostat
-CHEMBL429023	rotenone
-CHEMBL498917	pinostilbene
-CHEMBL226034	tamarixetin
-CHEMBL243664	acacetin
-CHEMBL473417	vismodegib
-CHEMBL309490	galangin
-CHEMBL489	(Z)-4-hydroxytamoxifen
-CHEMBL26260	5,6-benzoflavone
-CHEMBL276140	SB 221284
-CHEMBL47940	Lck inhibitor
-CHEMBL45245	phenanthridone
-CHEMBL2177161	AZD2858
-CHEMBL356769	tubacin
-CHEMBL1359713	(R)-enilconazole
-CHEMBL597477	(S)-selisistat
-CHEMBL511749	N-[4-[3-[[[7-(hydroxyamino)-7-oxoheptyl]amino]-oxomethyl]-5-isoxazolyl]phenyl]carbamic acid tert-butyl ester
-CHEMBL198609	(6S)-2-chloro-5,6,7,8,9,10-hexahydrocyclohepta[b]indole-6-carboxamide
-CHEMBL1445555	2-methylfuran
-CHEMBL8739	alpha-linolenic acid
-CHEMBL411	diethylstilbestrol
-CHEMBL512054	Altersolanol A
-CHEMBL1676	fluticasone furoate
-CHEMBL549	(RS)-citalopram
-CHEMBL416	methoxsalen
-CHEMBL50	quercetin
-CHEMBL135	17β-estradiol
-CHEMBL279564	pyrene
-CHEMBL131	prednisolone
-CHEMBL691	ethinylestradiol
-CHEMBL283196	2-phenyl-4H-benzo[h]chromen-4-one
-CHEMBL1908391	masitinib
-CHEMBL85139	rutecarpine
-CHEMBL180101	esreboxetine
-CHEMBL44746	khellin
-CHEMBL254129	cyclopamine
-CHEMBL83527	pterostilbene
-CHEMBL214321	chryseriol
-CHEMBL297784	sb-206553
-CHEMBL24828	vandetanib
-CHEMBL415	clomipramine
-CHEMBL259209	milnacipran
-CHEMBL311469	2-acetylaminofluorene
-CHEMBL192	Sildenafil
-CHEMBL1358	fulvestrant
-CHEMBL491473	cediranib
-CHEMBL441282	Propylpyrazoletriol
-CHEMBL85194	SB-200646
-CHEMBL150	kaempferol
-CHEMBL379064	isorhamnetin
-CHEMBL72	desipramine
-CHEMBL99	trichostatin A
-CHEMBL412142	CHIR-99021
-CHEMBL178334	Y134
-CHEMBL365739	diphenyleneiodonium
-CHEMBL271669	9-methyl-5H-quinolino[8,7-c][1,2]benzothiazine 6,6-dioxide
-CHEMBL1497197	4-(4-chlorophenyl)-1-(6-fluoro-2-pyridinyl)-3-pyrazolamine
-CHEMBL3237719	amg-925
-CHEMBL164	myricetin
-CHEMBL117	chrysin
-CHEMBL605003	SU6656
-CHEMBL41	fluoxetine
-CHEMBL490	paroxetine
-CHEMBL828	phenothiazine
-CHEMBL809	sertraline
-CHEMBL1081312	PP121
-CHEMBL336961	1-azakenpaullone
-CHEMBL254760	N-(3-fluoro-4-(2-(1-methyl-1H-imidazol-4-yl)thieno(3,2-b)pyridin-7-yloxy)phenylcarbamothioyl)-2-phenylacetamide
-CHEMBL3577124	ly-3009120
-CHEMBL1801948	15-O-desmethyl-(5Z)-7-oxozeaenol
-CHEMBL1696	desipramine hydrochloride
-CHEMBL1547029	N-[4-(2-methyl-4-thiazolyl)phenyl]benzamide
-CHEMBL413376	suramin sodium
-CHEMBL54079	uk-088800
-CHEMBL430060	apicidin
-CHEMBL90568	diosmetin
-CHEMBL151	luteolin
-CHEMBL81	raloxifene
-CHEMBL487402	eupatorin
-CHEMBL328190	lasofoxifene
-CHEMBL40919	kaempferide
-CHEMBL186779	jervine
-CHEMBL1241674	pp-242
-CHEMBL50894	alsterpaullone
-CHEMBL92708	calpeptin
-CHEMBL483254	panobinostat
-CHEMBL6291	ro-31-8220
-CHEMBL123	ellipticine
-CHEMBL170408	N-phenyl-1-naphthylamine
-CHEMBL39317	L-694,247
+CHEMBL1331734	Cdk4 inhibitor II
 CHEMBL126077	indirubin-3'-monoxime
-CHEMBL2312289	(R)-selisistat
-CHEMBL191334	nutlin-3a
-CHEMBL2018302	tubastatin A
-CHEMBL334255	cetylpyridinium bromide
-CHEMBL1990885	N-[2-(diethylamino)ethyl]-5-[(5-fluoro-2-oxo-1H-indol-3-ylidene)methyl]-2,4-dimethyl-1H-pyrrole-3-carboxamide
-CHEMBL189963	palbociclib
-CHEMBL277500	benzene
-CHEMBL1520	vardenafil
-CHEMBL535	sunitinib
-CHEMBL2141296	ixazomib
-CHEMBL522892	dovitinib
-CHEMBL608533	midostaurin
-CHEMBL1238	azelaic acid
-CHEMBL1159650	clobetasol propionate
-CHEMBL265502	suramin
-CHEMBL502835	nintedanib
-CHEMBL1473	fluticasone propionate
-CHEMBL23293	salirasib
-CHEMBL1492473	4-O-methyldopamine
-CHEMBL384467	dexamethasone
-CHEMBL1562	homovanillic acid
-CHEMBL225304	pimagedine
-CHEMBL1200845	halcinonide
-CHEMBL514201	talmapimod
-CHEMBL543	1-methylimidazole
-CHEMBL420311	selisistat
-CHEMBL276711	semaxanib
-CHEMBL641	atomoxetine
-CHEMBL1276308	mifepristone
-CHEMBL572878	tozasertib
-CHEMBL478629	dorsomorphin
-CHEMBL450786	pha-665752
-CHEMBL410478	gw-409544
-CHEMBL362558	ly-2090314
-CHEMBL512504	a-769662
-CHEMBL495727	1-cyclopropyl-3-{3-[5-(morpholin-4-ylmethyl)-1H-benzimidazol-2-yl]-1H-pyrazol-4-yl}urea
-CHEMBL960	leflunomide
+CHEMBL1236107	sgx-523
+CHEMBL1256459	torin 1
+CHEMBL124660	MLN-518
+CHEMBL1339217	2-[fluoro(trifluoromethoxy)methyl]-6-methyl-1H-benzimidazole
+CHEMBL1321591	1-(4-chlorophenyl)-3-(2-ethoxyphenyl)urea
+CHEMBL1374484	4-[(2,4-dioxo-1,3-diazaspiro[4.5]decan-3-yl)methyl]benzoic acid methyl ester
+CHEMBL1328442	N-(3-methoxyphenyl)-4-(phenylmethyl)-1-piperazinecarbothioamide
+CHEMBL1384554	N,N-dimethylcarbamodithioic acid (1-acetamido-2,2,2-trichloroethyl) ester
+CHEMBL1371143	3-(2-furanylmethyl)-2-phenyl-1,2-dihydroquinazolin-4-one
+CHEMBL1255941	phaclofen
+CHEMBL134342	(+)-thioctic acid
+CHEMBL1346	darifenacin
+CHEMBL139	Diclofenac
+CHEMBL123325	raubasine
+CHEMBL1294	quinidine
 CHEMBL1201749	difluprednate
-CHEMBL98	vorinostat
 CHEMBL1175	(S)-duloxetine
+CHEMBL1110	alosetron
+CHEMBL116	amprenavir
 CHEMBL110739	corticosterone
-CHEMBL163	ritonavir
-CHEMBL44	genistein
-CHEMBL297362	xylazine
-CHEMBL273264	nafamostat
-CHEMBL1524273	phthalylsulfathiazole
-CHEMBL1504	triamcinolone acetonide
+CHEMBL1201335	glycopyrrolate
+CHEMBL111	rimonabant
+CHEMBL1214124	perampanel
 CHEMBL1200732	amcinonide
+CHEMBL1229592	wz-4002
+CHEMBL1088762	1-(2,3-dihydro-1,4-benzodioxin-6-ylsulfonyl)-4-[(4-methoxyphenyl)sulfonyl]piperazine
 CHEMBL1160709	(R)-orciprenaline
 CHEMBL1200562	hydrocortisone valerate
-CHEMBL75	(2R,4S)-ketoconazole
-CHEMBL1501	fluocinonide
+CHEMBL1089364	4-(2,6-difluorophenyl)sulfonyl-1-(2,3-dihydro-1,4-benzodioxin-6-ylsulfonyl)piperidine
+CHEMBL1091458	N-[2-[(2,6-difluorophenyl)sulfonylamino]ethyl]-2,3-dihydro-1,4-benzodioxin-6-sulfonamide
+CHEMBL1091795	N-[4-[(2,6-difluorophenyl)sulfonylamino]butyl]-2,3-dihydro-1,4-benzodioxin-6-sulfonamide
 CHEMBL1091	hydrocortisone acetate
-CHEMBL21241	GW7647
-CHEMBL1589124	3-(4-fluorophenyl)-5-(2-furanyl)-2-phenyl-3,4-dihydropyrazole
-CHEMBL1524185	opipramol hydrochloride
-CHEMBL701	(RS)-baclofen
-CHEMBL193482	estriol
+CHEMBL122903	GR 65630
+CHEMBL1084058	2,4-dimethyl-6-phenyl-5-thieno[3,4]pyrrolo[1,3-d]pyridazinone
+CHEMBL1200986	haloperidol decanoate
+CHEMBL12	diazepam
+CHEMBL1189679	(3aS)-palonosetron
+CHEMBL1201203	benzatropine
+CHEMBL1213492	givinostat
+CHEMBL1230609	foretinib
 CHEMBL121	(RS)-rosiglitazone
-CHEMBL1530428	dexamethasone acetate
 CHEMBL1152	prednisolone acetate
-CHEMBL1447964	5-hydroxy-2-methyl-3-benzo[g]benzofurancarboxylic acid ethyl ester
+CHEMBL1200916	thioridazine hydrochloride
+CHEMBL1092463	1-(2,3-dihydro-1,4-benzodioxin-6-ylsulfonyl)-4-(2-pyridinylsulfonyl)piperazine
+CHEMBL1094006	1-(benzenesulfonyl)-4-(2,3-dihydro-1,4-benzodioxin-6-ylsulfonyl)piperazine
+CHEMBL1200628	vancomycin hydrochloride
 CHEMBL1200545	diflorasone diacetate
-CHEMBL18	ethoxzolamide
-CHEMBL253144	11-deoxycortisol
-CHEMBL27246	(E)-cinnamic acid
-CHEMBL478	m-chlorophenylpiperazine
-CHEMBL1002	levalbuterol
-CHEMBL14370	(RS,RS)-reboxetine
-CHEMBL65	camptothecin
-CHEMBL295467	nisoxetine
-CHEMBL1570500	thiodiglycolic acid
+CHEMBL1201187	maraviroc
+CHEMBL1229517	vemurafenib
+CHEMBL1112	aripiprazole
+CHEMBL1159650	clobetasol propionate
+CHEMBL113262	Methoxy arachidonyl fluorophosphonate
 CHEMBL1197051	isoxsuprine
-CHEMBL189171	acemetacin
-CHEMBL18772	quipazine
-CHEMBL258465	LSM-3233
-CHEMBL41140	DU-24565
-CHEMBL27403	CGS-12066A
-CHEMBL334773	diarylpropionitrile
-CHEMBL601719	crizotinib
-CHEMBL104	clotrimazole
-CHEMBL1390	medroxyprogesterone
-CHEMBL269732	tacrolimus
-CHEMBL623	nefazodone
-CHEMBL84	topotecan
-CHEMBL2048028	lifitegrast
+CHEMBL1160031	Reactive blue 2
+CHEMBL1089	phenelzine
+CHEMBL1215661	pruvanserin
+CHEMBL1086377	KU-0060648
+CHEMBL108308	nodularin-R
+CHEMBL1113	amoxapine
+CHEMBL123132	Fluoro-Willardiine
+CHEMBL1200633	ivermectin
+CHEMBL1171837	ponatinib
+CHEMBL1098240	argiotoxin
+CHEMBL122005	willardiine
+CHEMBL1089641	trypan blue
 CHEMBL1200600	fluorometholone
-CHEMBL296468	sns-032
-CHEMBL295698	(2S,4R)-ketoconazole
-CHEMBL413	sirolimus
-CHEMBL1451	triamcinolone
-CHEMBL2105763	quisinostat
-CHEMBL343448	romidepsin
-CHEMBL1405	estrone
-CHEMBL1766	desoximetasone
-CHEMBL668	protriptyline
-CHEMBL290376	Dup-714
-CHEMBL1561148	prostaglandin b1
-CHEMBL157337	ramifenazone
-CHEMBL78150	malonoben
-CHEMBL1326877	dioxybenzone
-CHEMBL267373	benzamide
-CHEMBL267476	linoleic acid
-CHEMBL83	tamoxifen
-CHEMBL428690	alvocidib
-CHEMBL989	fluocinolone acetonide
-CHEMBL15023	trifluperidol
-CHEMBL97450	5-(nonyloxy)-tryptamine
-CHEMBL16687	CGS 15943
-CHEMBL497	clioquinol
+CHEMBL1200478	dyclonine hydrochloride
+CHEMBL1086580	XAV939
+CHEMBL1230020	plx-4720
+CHEMBL1086218	valspodar
+CHEMBL117	chrysin
+CHEMBL1231	(RS)-oxybutynin
+CHEMBL113142	ZM-241385
+CHEMBL118	celecoxib
+CHEMBL1200845	halcinonide
+CHEMBL119385	neflamapimod
+CHEMBL1092480	[4-(2,6-difluorophenyl)sulfonyl-1-piperazinyl]-(2,3-dihydro-1,4-benzodioxin-6-yl)methanone
+CHEMBL1093996	1-(2,6-difluorophenyl)sulfonyl-4-(2-naphthalenylsulfonyl)piperazine
+CHEMBL109684	6-[2-phenylethyl(propyl)amino]-5,6,7,8-tetrahydronaphthalen-1-ol
+CHEMBL1084546	N-methyl-N-[3-[[[2-[(2-oxo-1,3-dihydroindol-5-yl)amino]-5-(trifluoromethyl)-4-pyrimidinyl]amino]methyl]-2-pyridinyl]methanesulfonamide
+CHEMBL1194287	chloropyramine
+CHEMBL1200596	chloroxine
+CHEMBL1201756	(R,R)-asenapine
+CHEMBL1201027	glycopyrronium bromide
+CHEMBL122	rofecoxib
+CHEMBL120563	thiram
+CHEMBL1123	dicyclomine
 CHEMBL1160723	levisoprenaline
-CHEMBL374508	E-64
-CHEMBL443893	(-)-oxedrine
+CHEMBL1084625	6-(2-fluorobenzyl)-2,4-dimethyl-4,6-dihydro-5H-thieno[2',3':4,5]pyrrolo[2,3-d]pyridazin-5-one
 CHEMBL115225	7-chloro-3-[cyclopropyl(oxo)methyl]-4-hydroxy-1H-quinolin-2-one
+CHEMBL118109	tyrphostin AG 825
 CHEMBL114275	[2-[[2-[(dimethylamino)methyl]phenyl]thio]-5-iodophenyl]methanol
-CHEMBL1537964	2-(4-oxo-3-quinazolinyl)-N-[3-(1-piperidinylsulfonyl)phenyl]acetamide
-CHEMBL267678	a-205804
-CHEMBL1385514	dichlorisone acetate
-CHEMBL182461	DL-canavanine
+CHEMBL123	ellipticine
 CHEMBL1201392	flumetasone
-CHEMBL84567	tracazolate
-CHEMBL1231330	threo-β-hydroxy-L-aspartic acid
-CHEMBL465980	ononin
+CHEMBL1173655	afatinib
 CHEMBL1201012	flurandrenolide
-CHEMBL191881	leupeptin
-CHEMBL61	podofilox
-CHEMBL361259	McN5652
+CHEMBL1090771	avagacestat
 CHEMBL1116	raloxifene hydrochloride
-CHEMBL501867	vincristine sulfate
-CHEMBL1331734	Cdk4 inhibitor II
+CHEMBL1221601	diphenyl acetamidotrichloroethyl fluoronitrophenyl thiourea
+CHEMBL1093091	N-[5-[(2,6-difluorophenyl)sulfonylamino]pentyl]-2,3-dihydro-1,4-benzodioxin-6-sulfonamide
+CHEMBL1230607	pha-793887
+CHEMBL1200904	(−)-selegiline hydrochloride
+CHEMBL117021	1-oleoyl-sn-glycerol 3-phosphate
+CHEMBL1201023	orphenadrine hydrochloride
 CHEMBL1200339	phenylephrine hydrochloride
-CHEMBL395414	disogluside
-CHEMBL1568046	2-methyl-1-phenyl-5-benzimidazolecarboxylic acid [2-(2-methoxyanilino)-2-oxoethyl] ester
-CHEMBL193	nifedipine
-CHEMBL31184	benzo[a]pyrene
-CHEMBL650	methylprednisolone
+CHEMBL1088747	(2S)-1-(2,6-difluorophenyl)sulfonyl-4-(2,3-dihydro-1,4-benzodioxin-6-ylsulfonyl)-2-methylpiperazine
+CHEMBL1090774	1-(2,3-dihydro-1,4-benzodioxin-6-ylsulfonyl)-4-(4-fluorophenyl)sulfonylpiperazine
+CHEMBL1090089	pamapimod
+CHEMBL1092	trihexyphenidyl hydrochloride
+CHEMBL1229516	N^2^-[(2R)-2-{(1S)-1-[formyl(hydroxy)amino]ethyl}-5-phenylpentanoyl]-N,3-dimethyl-L-valinamide
+CHEMBL1173055	rucaparib
+CHEMBL1121	sincalide
+CHEMBL1108	droperidol
+CHEMBL1164729	febuxostat
+CHEMBL11	imipramine
+CHEMBL477989	(E)-SB-590885
+CHEMBL90472	SR57227A
+CHEMBL96	γ-aminobutyric acid
+CHEMBL960	leflunomide
+CHEMBL1027	tiagabine
+CHEMBL98	vorinostat
+CHEMBL1065	methysergide
+CHEMBL859	oxypurinol
+CHEMBL836	tamsulosin
+CHEMBL8946	eticlopride
+CHEMBL844	brimonidine
+CHEMBL9514	nocodazole
+CHEMBL82301	vicriviroc
+CHEMBL107251	1400W
+CHEMBL105442	ci-1040
+CHEMBL91867	cl-387785
+CHEMBL90882	2-chloro-11-(4-methylpiperazino)dibenz(b,f)oxepin
+CHEMBL8739	alpha-linolenic acid
+CHEMBL865	valdecoxib
+CHEMBL9506	devazepide
+CHEMBL101326	fipronil
+CHEMBL86	metoclopramide
+CHEMBL94	physostigmine
+CHEMBL85	risperidone
+CHEMBL887	rasagiline
+CHEMBL903	semicarbazide
+CHEMBL88402	RS-102221
+CHEMBL103667	doramapimod
+CHEMBL10332	2-methoxyidazoxan
+CHEMBL105076	ly-395153
+CHEMBL99203	5-iodotubercidin
+CHEMBL846	calcitriol
+CHEMBL941	imatinib
+CHEMBL964	disulfiram
+CHEMBL814	fluvoxamine
+CHEMBL1023	bexarotene
+CHEMBL841	loperamide
+CHEMBL1002	levalbuterol
+CHEMBL90555	vincristine
+CHEMBL95	tacrine
+CHEMBL8706	clorgiline
+CHEMBL1073	glipizide
+CHEMBL86931	A-68930
+CHEMBL85139	rutecarpine
+CHEMBL1077	bromfenac
+CHEMBL93240	metitepine
+CHEMBL900	orphenadrine
+CHEMBL10347	α-yohimbine
+CHEMBL8260	baicalein
+CHEMBL83527	pterostilbene
+CHEMBL85194	SB-200646
+CHEMBL104	clotrimazole
+CHEMBL84	topotecan
+CHEMBL99	trichostatin A
+CHEMBL104264	H-89
+CHEMBL86313	CGP 78608
+CHEMBL8234	leucine enkephalin
+CHEMBL8846	prifelone
+CHEMBL8618	NAN 190
+CHEMBL8809	raclopride
+CHEMBL10	SB-203580
+CHEMBL953	entacapone
+CHEMBL939	gefitinib
+CHEMBL828	phenothiazine
+CHEMBL1081312	PP121
+CHEMBL96051	scriptaid
+CHEMBL1034	diclofenac sodium
+CHEMBL87	(S)-(−)-colchicine
+CHEMBL90568	diosmetin
+CHEMBL932	dipyridamole
+CHEMBL86304	moclobemide
+CHEMBL83	tamoxifen
+CHEMBL1020	tolmetin
+CHEMBL989	fluocinolone acetonide
+CHEMBL97450	5-(nonyloxy)-tryptamine
+CHEMBL83894	fananserin
+CHEMBL837	7-ethyl-10-hydroxycamptothecin
+CHEMBL1079175	MK-2206
+CHEMBL10316	idazoxan
+CHEMBL1077979	5Z-7-oxozeaenol
+CHEMBL92708	calpeptin
+CHEMBL8514	(+)-butaclamol
+CHEMBL8165	5-methoxytryptamine
+CHEMBL84567	tracazolate
+CHEMBL972	(−)-selegiline
+CHEMBL10284	SB 222200
+CHEMBL88147	MRS1220
+CHEMBL106516	S-methylthiocitrulline
+CHEMBL97162	SB-239063

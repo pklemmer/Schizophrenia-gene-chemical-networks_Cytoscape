@@ -732,7 +732,7 @@ end_section("GO Analysis")
 ##AOP-Wiki extension ---------------------------------------------------------------------------------------------------------------------------
 start_section("AOP-Wiki extension")
 
-aopprocess <- function(input,tag) {
+aopprocess <- function(input,keep,tag) {
   if (!"SCZ_SNW_STRING_clustered_GO" %in% getNetworkList()) {
     importNetworkFromFile(file=paste0(nw_savepath,"SCZ_SNW_STRING_clustered_GO.cx"))
     commandsRun('table delete column column="gLayCluster.2" table="SCZ_SNW_STRING_clustered_GO default node')
@@ -777,8 +777,7 @@ aopprocess <- function(input,tag) {
   #Running aopprocess a second time with other parameters would thus compound changes into the same network which is undesired
   
   sparqlquery("AOP-Wiki",input,"keensgpairs")
-  #Querying AOP-Wiki for a list of all KEs and associated genes. KEs must be contained in an AOP that has an AO from a list of selected AOs
-  #Explicity listing keensgpairs so that it is caught by ls()
+  #Querying AOP-Wiki for a list of all KEs and associated genes
   for (i in 1:ncol(keensgpairs)) {
     for (j in 1:nrow(keensgpairs)) {
       keensgpairs[j, i] <- gsub('"', '', keensgpairs[j, i])
@@ -809,6 +808,9 @@ aopprocess <- function(input,tag) {
   
   summary_go_terms <- read.delim(paste0(getwd(),"/Data/summary_go_terms.txt"),header=TRUE,sep="\t",quote="")
   #Loading cluster titles based on GO terms
+  
+  if(keep == TRUE) {
+    aop_associated_genes <- scz_snw_string_go_aop_node }
   aop_associated_genes <- merge(aop_associated_genes,summary_go_terms,"gLayCluster")
 Sys.sleep(1)
   separate_ketitles <- separate_rows(aop_associated_genes,KEid,sep="; ")
@@ -820,7 +822,7 @@ Sys.sleep(1)
                KEgenename = paste(HGNCsymbol, collapse="; "),
                KEsummary_go_term = paste(summary_term, collapse="; "))
   names(ke_freq_df) <- c("KEid","KE_frequency")
-  ke_freq_df_full <- merge(ke_freq_df, add_attributes,"KEid")
+  ke_freq_df_full <- merge(ke_freq_df, add_attributes,"KEid",all.y=TRUE)
   #Counting how often which KEs are associated with all genes
   
   ke_associated_genes_freq <- ke_freq_df_full
@@ -842,8 +844,9 @@ Sys.sleep(1)
 }
 
 
-aoplink_all <- aopprocess("all_AO_KE_Ensembl_query.txt","all")
-#Matching AOP information to risk genes in the network from all AOs available in AOP-Wiki
+aoplink_all <- aopprocess("all_AO_KE_Ensembl_query.txt",TRUE,"all")
+  #Second function argument specifies whether to save all (gene) rows from the network (=true) or only rows that have AOP-Wiki data ssociated with them 
+  #Matching AOP information to risk genes in the network from all AOs available in AOP-Wiki
 snw_scz_string_clustered_GO_AOP_all <- getNetworkName()
 exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW_STRING_clustered_GO_AOP_all"),"CX",network=snw_scz_string_clustered_GO_AOP_all,overwriteFile=TRUE)
 #Exporting network
@@ -893,7 +896,7 @@ getkegenepairs <- function(input) {
     }
   }
   #Removing quotation marks from df
-  topquarter_ke <- merge(topquarter_ke,kemap,by="KEid",all.x=FALSE)
+  topquarter_ke <- merge(topquarter_ke,kemap,by="KEid",all.x=TRUE)
   #Merging the mapping and node tables to extend node table with KE titles
   topquarter_ke <- topquarter_ke[,c("KEid_source","KEEnsembl_target","KEid","KEtitle","Ensembl")]
   #Reordering table columns
@@ -909,8 +912,9 @@ getkegenepairs <- function(input) {
 
 getkegenepairs(top_all)
 kegenenetwork_all <- getNetworkName()
-
-
+selectNodes("NA","KEid")
+deleteSelectedNodes()
+  #Selecting and deleting a 'NA' node that results from all the genes not associated to any AOP data 
 
 getkeaoppairs <- function(input) {
 keaoppairs <- keensgpairs[keensgpairs$KEid %in% input$KEid,c("KEid","AOPid")]
@@ -1379,7 +1383,9 @@ rolecount <- chembl_chebi$ChEBIrolename %>%
   summarize(count = n()) %>%
   arrange(desc(count))
   #Counting how frequently which ChEBI roles can be mapped to a chemical in the network 
-  #Can be used to select roles of interest based on frequency
+  #Can be used to select roles of interest based on frequency\
+
+#write.table(rolecount, "C:/users/klemm/Desktop/rolecount-all.tsv",sep="\t",quote=FALSE,row.names=FALSE)
 
 
 filter_chebi <- function(keyword) {
@@ -1443,6 +1449,8 @@ clearSelection()
  filter_chebi("neurotoxin")
 
 end_section("ChEBI role subsetting") 
+
+
 ##AOP VISUALISATION -------------------------------------------------------------------------------------------------------------------------------
 createVisualStyle("AOP_vis")
 setVisualStyle("AOP_vis")
