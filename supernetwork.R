@@ -916,6 +916,12 @@ selectNodes("NA","KEid")
 deleteSelectedNodes()
   #Selecting and deleting a 'NA' node that results from all the genes not associated to any AOP data 
 
+# commandsRun('string stringify colDisplayName=label column=Ensembl compoundQuery=false cutoff=0.9 includeNotMapped=true  networkType="full STRING network" species="Homo sapiens" networkNoGui=current')
+# altmergeNetworks(sources = c("Top quarter key events - risk genes_all", "STRING network - Top quarter key events - risk genes_all"),
+#                  title = "Top quarter key events - risk genes_all STRINGified",
+#                  operation = "union",
+#                  nodeKeys = c("shared name","shared name"))
+
 getkeaoppairs <- function(input) {
 keaoppairs <- keensgpairs[keensgpairs$KEid %in% input$KEid,c("KEid","AOPid")]
   #For top quarter KEs, get which AOPs these are taken from from result of initial AOP-Wiki query
