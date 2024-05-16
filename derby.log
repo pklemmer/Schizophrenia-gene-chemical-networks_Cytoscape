@@ -1,11 +1,24 @@
 ----------------------------------------------------------------
-Thu May 16 09:48:41 CEST 2024:
-Booting Derby (version The Apache Software Foundation - Apache Derby - 10.15.2.0 - (1873585)) instance a816c00e-018f-805f-ebaf-00000ed84de0 
-on database directory jar:(C:\Users\klemm\Documents\GitHub\SCZ-CNV\BridgeDb\Hs_Derby_Ensembl_108.bridge)database in READ ONLY mode with class loader RJavaClassLoader@4517d9a3. 
-Loaded from file:/C:/Users/klemm/AppData/Local/R/win-library/4.3/BridgeDbR/java/derby-10.15.2.0.jar.
+Thu May 16 10:14:58 CEST 2024:
+Booting Derby (version The Apache Software Foundation - Apache Derby - 10.15.2.0 - (1873585)) instance a816c00e-018f-8077-fde2-00000ea07ba0 
+on database directory jar:(C:\Users\Pierre Klemmer\Documents\GitHub\SCZ-CNV\BridgeDb\Hs_Derby_Ensembl_108.bridge)database in READ ONLY mode with class loader RJavaClassLoader@372f7a8d. 
+Loaded from file:/C:/Users/Pierre Klemmer/AppData/Local/R/win-library/4.3/BridgeDbR/java/derby-10.15.2.0.jar.
 java.vendor=Oracle Corporation
 java.runtime.version=22+36-2370
-user.dir=C:\Users\klemm\Documents\GitHub\SCZ-CNV
+user.dir=C:\Users\Pierre Klemmer\Documents\GitHub\SCZ-CNV
+os.name=Windows 10
+os.arch=amd64
+os.version=10.0
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Thu May 16 10:18:22 CEST 2024:
+Booting Derby (version The Apache Software Foundation - Apache Derby - 10.15.2.0 - (1873585)) instance 6074401f-018f-8077-fde2-00000ea07ba0 
+on database directory jar:(C:\Users\Pierre Klemmer\Documents\GitHub\SCZ-CNV\BridgeDb\metabolites_20240416.bridge)database in READ ONLY mode with class loader RJavaClassLoader@372f7a8d. 
+Loaded from file:/C:/Users/Pierre Klemmer/AppData/Local/R/win-library/4.3/BridgeDbR/java/derby-10.15.2.0.jar.
+java.vendor=Oracle Corporation
+java.runtime.version=22+36-2370
+user.dir=C:\Users\Pierre Klemmer\Documents\GitHub\SCZ-CNV
 os.name=Windows 10
 os.arch=amd64
 os.version=10.0

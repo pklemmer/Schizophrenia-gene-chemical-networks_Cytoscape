@@ -1,0 +1,7 @@
+Importing and merging	37.67s
+STRING	15.40s
+Clustering	10.80s
+GO Analysis	72.54s
+AOP-Wiki extension	32.25s
+Cluster/pathway extension	26.59s
+ChEBI extension	109.90s

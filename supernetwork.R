@@ -1453,7 +1453,8 @@ clearSelection()
  filter_chebi("environmental contaminant")
  filter_chebi("xenobiotic")
  filter_chebi("neurotoxin")
-
+filter_chebi("herbicide")
+filter_chebi("toxin")
 end_section("ChEBI role subsetting") 
 
 
