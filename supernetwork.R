@@ -1397,7 +1397,7 @@ rolecount <- chembl_chebi$ChEBIrolename %>%
 filter_chebi <- function(keyword) {
   chems <- chembl_chebi %>%
   separate_rows(ChEBIrolename, sep = "; ") %>%
-  filter(grepl(keyword,ChEBIrolename)) %>%
+  filter(grepl(paste0("\\b(", paste(keyword, collapse = "|"), ")\\b"),ChEBIrolename)) %>%
   pull(ChEBIid) %>%
   as.list() %>%
   selectNodes( ,by.col="ChEBIid")
@@ -1444,17 +1444,16 @@ clearSelection()
 
 connectednodes <- c(chems_list, genes, pws, kengbrs,aopngbrs, aongbrs)
 selectNodes(connectednodes)
-createSubnetwork(nodes = connectednodes,subnetwork.name=paste0("Role ", keyword, " subnetwork "))
+createSubnetwork(nodes = connectednodes, subnetwork.name = paste0("Role ", paste(keyword, collapse = ", "), " subnetwork "))
 Sys.sleep(0.5)
 setCurrentNetwork("gene-KE-AOP network with pathways and chemicals")
 setCurrentView("gene-KE-AOP network with pathways and chemicals")
 clearSelection()
 }
- filter_chebi("environmental contaminant")
- filter_chebi("xenobiotic")
- filter_chebi("neurotoxin")
-filter_chebi("herbicide")
-filter_chebi("toxin")
+
+filter_chebi(c("toxin","neurotoxin","genotoxin"))
+filter_chebi(c("drug allergen","drug metabolite"))
+
 end_section("ChEBI role subsetting") 
 
 
