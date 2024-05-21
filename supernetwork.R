@@ -13,11 +13,11 @@ installed_packages <- packages %in% rownames(installed.packages())
 if (any(installed_packages == FALSE)) {
   install.packages(packages[!installed_packages])
 }
-if(!"rWikiPathways" %in% installed.packages()){
-  if (!requireNamespace("BiocManager", quietly=TRUE))
-    install.packages("BiocManager")
-  BiocManager::install("rWikiPathways")
-}
+# if(!"rWikiPathways" %in% installed.packages()) {
+#   if (!requireNamespace("BiocManager", quietly = TRUE))
+#     install.packages("BiocManager")
+#   BiocManager::install("rWikiPathways")
+# }
 if(!"RCy3" %in% installed.packages()){
   if (!requireNamespace("BiocManager", quietly=TRUE))
     install.packages("BiocManager")
@@ -30,7 +30,7 @@ if(!"RCy3" %in% installed.packages()){
  }
   #Checking if required packages are installed and installing if not
   #Different structure for rWikiPathways and RCy3 packages as these are not installed directly but via the BiocManager package
-invisible(lapply(c(packages,"rWikiPathways","RCy3","BridgeDbR"), require, character.only = TRUE))
+invisible(lapply(c(packages,"RCy3","BridgeDbR"), require, character.only = TRUE))
   #Loading libraries
 
 sysdatetime <- Sys.time()
@@ -1255,6 +1255,17 @@ altmergeNetworks(sources=c("gene-KE-AOP-AO merged network_all","Genes from AOP n
 deleteTableColumn("shared.name")
 lapply(c("Genes from AOP network with SNW attributes","Genes from AOP network with clusters","Genes from AOP network with pathways and clusters"),deleteNetwork)
 #Deleting intermediary networks used to generate full gene-KE-AOP-AO network
+genenames <- getTableColumns("node",c("SUID","label","type")) %>%
+  filter(grepl("gene",type)) %>%
+  #First selecting gene labels to avoid removing semicolons that should occur in other node labels
+  mutate(label = str_replace(label, ";",""))
+  #Removing ";" from gene names caused by Cytoscape merging
+  #Row values are merged if they are the same and are separated by semicolons if they are not
+  #Gene names in the 'label' column are not generated in every network since it is not necessary, but this means that after merging, one row will have an empty string and the other the gene name
+  #This leads to gene names being preceded by an empty character and a semicolon
+loadTableData(genenames,"SUID","node","SUID")
+  #Loading corrected names back to the network
+
 exportNetwork(filename=paste0(nw_savepath,"gene-KE-AO merged network with pathways"), type="CX", overwriteFile = TRUE)
 
 end_section("Cluster/pathway extension")
@@ -1452,7 +1463,8 @@ clearSelection()
 }
 
 filter_chebi(c("toxin","neurotoxin","genotoxin"))
-filter_chebi(c("drug allergen","drug metabolite"))
+filter_chebi(c("antifungal agrochemical","persistent organic pollutant"))
+
 
 end_section("ChEBI role subsetting") 
 
