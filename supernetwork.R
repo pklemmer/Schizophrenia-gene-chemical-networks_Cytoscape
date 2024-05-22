@@ -1440,6 +1440,7 @@ kengbrs <- setdiff(allngbrs$nodes, suidtype[suidtype$type == "ChEBI node","SUID"
   #Therefore, KE nodes are filtered out using the 'type' attribute
 kengbrs <- setdiff(kengbrs, genes)
   #Filtering out gene nodes
+if (length(kengbrs) > 0) {
 clearSelection()
 selectNodes(kengbrs)
 aop_kes <- selectFirstNeighbors(direction="incoming")
@@ -1452,7 +1453,10 @@ aop_aos <- selectFirstNeighbors(direction="incoming")
   #Selecting AO nodes related to AOP nodes
 aongbrs <- setdiff(aop_aos$nodes, aopngbrs)
 clearSelection()
-
+} else { 
+  aongbrs <- c()
+  aopngbrs <- c()
+  }
 connectednodes <- c(chems_list, genes, pws, kengbrs,aopngbrs, aongbrs)
 selectNodes(connectednodes)
 createSubnetwork(nodes = connectednodes, subnetwork.name = paste0("Role ", paste(keyword, collapse = ", "), " subnetwork "))
@@ -1462,9 +1466,13 @@ setCurrentView("gene-KE-AOP network with pathways and chemicals")
 clearSelection()
 }
 
-filter_chebi(c("toxin","neurotoxin","genotoxin"))
-filter_chebi(c("antifungal agrochemical","persistent organic pollutant"))
 
+filter_chebi(c("toxin","neurotoxin","genotoxin"))
+filter_chebi(c("agrochemical","piscicide","rodenticide","fungicide","herbicide","insecticide","nematicide"))
+filter_chebi("orphan drug")
+filter_chebi("hallucinogen")
+filter_chebi("fuel")
+filter_chebi(c("CB2 receptor agonist","CB2 receptor antagonist","CB1 receptor antagonist"))
 
 end_section("ChEBI role subsetting") 
 
