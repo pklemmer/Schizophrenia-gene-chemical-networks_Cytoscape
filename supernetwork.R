@@ -1469,10 +1469,10 @@ clearSelection()
 
 filter_chebi(c("toxin","neurotoxin","genotoxin"))
 filter_chebi(c("agrochemical","piscicide","rodenticide","fungicide","herbicide","insecticide","nematicide"))
-filter_chebi("orphan drug")
-filter_chebi("hallucinogen")
-filter_chebi("fuel")
-filter_chebi(c("CB2 receptor agonist","CB2 receptor antagonist","CB1 receptor antagonist"))
+# filter_chebi("orphan drug")
+# filter_chebi("hallucinogen")
+# filter_chebi("fuel")
+# filter_chebi(c("CB2 receptor agonist","CB2 receptor antagonist","CB1 receptor antagonist"))
 
 end_section("ChEBI role subsetting") 
 
@@ -1490,7 +1490,7 @@ setNodeColorMapping(
   table.column = "type",
   mapping.type="d",
   table.column.values = c("AO","AOP","KE","gene","Pathway","Cluster","ChEBI node"),
-  colors=c("#FB6a4A","#FEB24C","#FA9FB5","#74C476","#1DEFF2","#1D91C0","#bd34eb"),
+  colors=c("#FB6a4A","#FEB24C","#FA9FB5","#74C476","#1DEFF2","#b48fff","#bfcdf5"),
   style.name="AOP_vis"
 )
 #Setting node colors using dedicated type column
@@ -1547,8 +1547,15 @@ setNodeSizeMapping(
   sizes=c(50,250),
   mapping.type='c',
   style.name="AOP_vis"
-)
+ )
   #Setting node size relative to indegree (in this graph: edges going from bottom to top)
+setNodeHeightMapping(
+  table.column="name",
+  table.column.values = NULL,
+  heights = c(0,100),
+  mapping.type ="d",
+  style.name="AOP_vis"
+)
 fitContent()
 exportImage(
   filename=paste0(getwd(),"/Visualisations/SNW-AOP-pathways-clusters-chemicals"),
