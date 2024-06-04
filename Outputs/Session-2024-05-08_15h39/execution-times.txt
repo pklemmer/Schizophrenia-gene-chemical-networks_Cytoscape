@@ -1,3 +1,0 @@
-ChEBI extension	64.54s
-ChEBI role subsetting	3.07s
-ChEBI role subsetting	2.95s
