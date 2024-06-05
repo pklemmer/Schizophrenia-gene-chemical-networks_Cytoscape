@@ -1,6 +1,0 @@
-source	dis	min
-ALL	Addictive Behavior	0.01
-ALL	Psychological addiction	0.01
-ALL	Physical addiction	0.01
-ALL	Drug habituation	0.01
-ALL	Alcoholic Intoxication, Chronic	0.01
