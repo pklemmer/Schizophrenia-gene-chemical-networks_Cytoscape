@@ -1,0 +1,128 @@
+@prefix :        <http://rdf.disgenet.org/v7.0.0/void/> .
+@prefix schemaorg:  <http://schema.org/> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix freq:    <http://purl.org/cld/freq/> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix cito:    <http://purl.org/spar/cito/> .
+@prefix sd:      <http://www.w3.org/ns/sparql-service-description#> .
+@prefix wi:      <http://purl.org/ontology/wi/core#> .
+@prefix ncit:    <http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#> .
+@prefix sio:     <http://semanticscience.org/resource/> .
+@prefix dcterms:  <http://purl.org/dc/terms/> .
+@prefix dcat:    <http://www.w3.org/ns/dcat#> .
+@prefix prov:    <http://www.w3.org/ns/prov#> .
+@prefix foaf:    <http://xmlns.com/foaf/0.1/> .
+@prefix dctypes:  <http://purl.org/dc/dcmitype/> .
+@prefix bdb:     <http://vocabularies.bridgedb.org/ops#> .
+@prefix void:    <http://rdfs.org/ns/void#> .
+@prefix pav:     <http://purl.org/pav/> .
+@prefix idot:    <http://identifiers.org/idot/> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix dul:     <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#> .
+@prefix obo:     <http://purl.obolibrary.org/obo/> .
+
+<http://rdf.disgenet.org/void/disgenet>
+      a       dctypes:Dataset ;
+      rdfs:seeAlso <https://en.wikipedia.org/wiki/DisGeNET> ;
+      idot:preferredPrefix
+              "disgenet"^^xsd:string ;
+      dcterms:accrualPeriodicity
+              freq:annual ;
+      dcterms:alternative "DisGeNET [disgenet:disgenet]"@en ;
+      dcterms:description "DisGeNET és una plataforma de descobriment que integra informació sobre associacions entre gens i malalties de diverses fonts de dades públiques i de la literatura científica."@ca , "DisGeNET is a discovery platform integrating information on gene-disease associations (GDAs) from several public data sources and the literature."@en , "DisGeNET es una plataforma de descubrimiento que integra información sobre asociaciones entre genes y enfermedades de diversas fuentes de datos públicas y de la literatura científica."@sp ;
+      dcterms:license <https://creativecommons.org/licenses/by-nc-sa/4.0/> ;
+      dcterms:publisher <http://rdf.disgenet.org/void/IBIGroup> ;
+      dcterms:references <http://www.biomedcentral.com/1471-2105/16/55/abstract> , <http://www.semantic-web-journal.net/content/publishing-disgenet-nanopublications-0> , <http://www.ncbi.nlm.nih.gov/pubmed/27153650> , <http://www.jbiomedsem.com/content/5/1/14> , <http://bioinformatics.oxfordjournals.org/content/26/22/2924> , <http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0020284> ;
+      dcterms:rights "The DisGeNET database is made available under the Attribution-NonCommercial-ShareAlike 4.0 International License whose text can be found here. If DisGeNET is incorporated into other works, we ask that DisGeNET is properly cited (see the citation guidelines ), and that the version number of DisGeNET is clearly displayed."@en ;
+      dcterms:title "DisGeNET"@en ;
+      cito:citesAsAuthority
+              <https://pubmed.ncbi.nlm.nih.gov/31680165/> ;
+      void:sparqlEndpoint <https://rdf.disgenet.org/sparql/> ;
+      schemaorg:logo <https://www.disgenet.org/static/disgenet_ap1/images/logo_disgenet.png> ;
+      dcat:accessURL <http://www.disgenet.org/downloads> ;
+      dcat:theme sio:SIO_000983 ;
+      foaf:page <http://www.disgenet.org/> .
+
+dcat:accessURL
+      a       rdf:Property .
+
+pav:previousVersion
+      a       rdf:Property .
+
+dcterms:rights
+      a       rdf:Property .
+
+schemaorg:logo
+      a       rdf:Property .
+
+foaf:primaryTopic
+      a       rdf:Property .
+
+rdfs:seeAlso
+      a       rdf:Property .
+
+dcterms:publisher
+      a       rdf:Property .
+
+foaf:page
+      a       rdf:Property .
+
+dcterms:references
+      a       rdf:Property .
+
+dcterms:alternative
+      a       rdf:Property .
+
+dcterms:accrualPeriodicity
+      a       rdf:Property .
+
+pav:createdOn
+      a       rdf:Property .
+
+idot:preferredPrefix
+      a       rdf:Property .
+
+pav:lastUpdateOn
+      a       rdf:Property .
+
+dcterms:description
+      a       rdf:Property .
+
+dcterms:issued
+      a       rdf:Property .
+
+dctypes:Dataset
+      a       rdfs:Class .
+
+void:DatasetDescription
+      a       rdfs:Class .
+
+cito:citesAsAuthority
+      a       rdf:Property .
+
+void:sparqlEndpoint
+      a       rdf:Property .
+
+dcat:theme
+      a       rdf:Property .
+
+dcterms:license
+      a       rdf:Property .
+
+pav:createdBy
+      a       rdf:Property .
+
+<http://rdf.disgenet.org/download/void-disgenet.ttl>
+      a       void:DatasetDescription ;
+      dcterms:description "This is the Summary Level VoID description for DisGeNET."@en ;
+      dcterms:issued "2020-06-03T00:00:00Z"^^xsd:dateTime ;
+      dcterms:title "DisGeNET VoID Description."@en ;
+      pav:createdBy <https://orcid.org/0000-0002-4341-7485> ;
+      pav:createdOn "2020-06-03"^^xsd:date ;
+      pav:previousVersion <http://rdf.disgenet.org/download/v6.0.0/void.ttl> ;
+      foaf:primaryTopic <http://rdf.disgenet.org/void/disgenet> .
+
+dcterms:title
+      a       rdf:Property .

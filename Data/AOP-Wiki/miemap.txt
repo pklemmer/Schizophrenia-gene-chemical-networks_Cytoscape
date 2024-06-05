@@ -1,0 +1,2 @@
+select distinct ?KEid (group_concat(distinct ?hasMIE ; separator = "; ") as ?KEisMIEin) where {
+  ?hasMIE a aopo:AdverseOutcomePathway; aopo:has_molecular_initiating_event ?KEid. }

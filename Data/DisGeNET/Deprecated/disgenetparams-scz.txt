@@ -1,0 +1,2 @@
+source	dis	min
+CURATED	Schizophrenia	0.3

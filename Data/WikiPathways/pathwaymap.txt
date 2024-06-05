@@ -1,0 +1,4 @@
+select distinct ?PathwayID ?PathwayTitle where {
+  ?Pathway a wp:Pathway; dc:title ?PathwayTitle; dc:identifier ?PathwayfullID.
+BIND(REPLACE(str(?PathwayfullID), "https://identifiers.org/wikipathways/","") AS ?PathwayID)
+}

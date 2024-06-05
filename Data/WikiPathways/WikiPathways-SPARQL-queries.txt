@@ -1,0 +1,35 @@
+Endpoint : https://sparql.wikipathways.org/sparql/
+Queried on 21/02/24
+
+1. Get IDs of WikiPathways pathways containing 'Schizophrenia' : 
+
+select distinct ?PWID ?Pathwaytitle  where {
+    ?pathway a wp:Pathway ; dc:title ?Pathwaytitle ;?predicate ?object ; dc:identifier ?PWID ; wp:organismName "Homo sapiens".
+  FILTER regex (?object , "Schizophrenia", "i") }
+
+2. Get list of genes associated with pathway IDs returned by prior query + manually selected pathway IDs:
+
+select distinct (GROUP_CONCAT(distinct ?PWID ; separator=", ") as ?PathwayID) (GROUP_CONCAT(distinct ?pwtitle ; separator=", ") as ?PathwayTitle) ?Identifier (GROUP_CONCAT(distinct ?nodename ; separator=", ") as ?name) ?Ensembl  where {
+  VALUES ?PWID { <https://identifiers.org/wikipathways/WP4083> <https://identifiers.org/wikipathways/WP3584> <https://identifiers.org/wikipathways/WP5398> <https://identifiers.org/wikipathways/WP5406> <https://identifiers.org/wikipathways/WP5412> <https://identifiers.org/wikipathways/WP408> <https://identifiers.org/wikipathways/WP2781> <https://identifiers.org/wikipathways/WP4875> <https://identifiers.org/wikipathways/WP5412> <https://identifiers.org/wikipathways/WP4222> <https://identifiers.org/wikipathways/WP4942> <https://identifiers.org/wikipathways/WP5408> <https://identifiers.org/wikipathways/WP5402> <https://identifiers.org/wikipathways/WP5346> <https://identifiers.org/wikipathways/WP5405> <https://identifiers.org/wikipathways/WP5406> <https://identifiers.org/wikipathways/WP5407> <https://identifiers.org/wikipathways/WP4940> <https://identifiers.org/wikipathways/WP4905> <https://identifiers.org/wikipathways/WP5398> <https://identifiers.org/wikipathways/WP5399> <https://identifiers.org/wikipathways/WP4906> <https://identifiers.org/wikipathways/WP4657> <https://identifiers.org/wikipathways/WP4932>   }
+  ?pathway a wp:Pathway ; dc:title ?pwtitle ;?predicate ?object ; dc:identifier ?PWID.
+?Identifier a ?type ; rdfs:label ?nodename ; dcterms:isPartOf ?pathway .
+  OPTIONAL {?Identifier wp:bdbEnsembl ?Ensembl}
+}
+
+3. Get edges associated with pathway IDs returned by prior query + manually selected pathway IDs: 
+
+select distinct (GROUP_CONCAT(distinct ?PWID ; separator=", ") as ?PathwayID) ?source ?target where {
+  VALUES ?PWID { <https://identifiers.org/wikipathways/WP4083> <https://identifiers.org/wikipathways/WP3584> <https://identifiers.org/wikipathways/WP5398> <https://identifiers.org/wikipathways/WP5406> <https://identifiers.org/wikipathways/WP5412> <https://identifiers.org/wikipathways/WP408> <https://identifiers.org/wikipathways/WP2781> <https://identifiers.org/wikipathways/WP4875> <https://identifiers.org/wikipathways/WP5412> <https://identifiers.org/wikipathways/WP4222> <https://identifiers.org/wikipathways/WP4942> <https://identifiers.org/wikipathways/WP5408> <https://identifiers.org/wikipathways/WP5402> <https://identifiers.org/wikipathways/WP5346> <https://identifiers.org/wikipathways/WP5405> <https://identifiers.org/wikipathways/WP5406> <https://identifiers.org/wikipathways/WP5407> <https://identifiers.org/wikipathways/WP4940> <https://identifiers.org/wikipathways/WP4905> <https://identifiers.org/wikipathways/WP5398> <https://identifiers.org/wikipathways/WP5399> <https://identifiers.org/wikipathways/WP4906> <https://identifiers.org/wikipathways/WP4657> <https://identifiers.org/wikipathways/WP4932> }
+
+  ?pathway a wp:Pathway ; dc:title ?Pathwaytitle ;?predicate ?object ; dc:identifier ?PWID.
+?interaction dcterms:isPartOf ?pathway ;			
+             a wp:DirectedInteraction ;
+	           wp:source ?source ;
+	           wp:target ?target .  
+}
+
+
+
+Query results are generated in the HTML format and downloaded - the HTML file is then converted to TSV using an online converter 
+Before import, quoutation marks are removed from the entire file
+Identifiers are cleaned up by removing 'https://identifiers.org/xyz/' from the entire file, in which 'xyz' is variable using this regex in Notepad++: https:\/\/identifiers\.org\/([^\/]+)\/

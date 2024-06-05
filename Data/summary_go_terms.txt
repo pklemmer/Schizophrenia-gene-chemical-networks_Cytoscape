@@ -1,0 +1,29 @@
+gLayCluster	summary_term
+164	Synaptic signalling & cell junction
+165	Chromosome organisation
+166	Regulation of metabolic processes
+167	Chromatin and histone organisation
+170	Synaptic signalling & neurotransmitter transport
+171	Cell communication
+173	Serotonin receptor complex 
+175	Antigen processing
+176	Cyclic nucleotide phosphodiesterase activity 
+178	Cell junctions
+184	Myelination
+186	Acetylcholine receptor & channel activity
+188	Fibrin clot formation & 22q11.2 CNV
+190	Fatty acid biosynthesis & kinase signalling
+193	Translation regulation 
+195	Citric acid cycle
+196	NADPH oxidase activity
+198	Radial spoke head
+200	ECM structure & elasticity
+206	GABA receptor activity
+215	BMP signalling
+216	15q11.2 CNV & microtubule organisation
+231	7q11.23 CNV & microtubule end
+241	Regulation of double-strand break repair
+245	NPHP1 deletion syndrome & Joubert syndrome
+247	Notch signalling
+251	ESCRT complex & GAG proteins
+369	Clathrin binding & endocytosis

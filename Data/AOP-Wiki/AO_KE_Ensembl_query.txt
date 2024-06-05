@@ -1,0 +1,10 @@
+select distinct ?KEid (group_concat(distinct ?ensembl ;separator="; ") as ?Ensembl) (group_concat(distinct ?AOPx ; separator="; ")as ?AOPid)
+WHERE {
+  ?AOPx a aopo:AdverseOutcomePathway;aopo:has_adverse_outcome ?AOx.
+  ?AOx dc:title ?AOtitlex.
+  VALUES ?AOx {<https://identifiers.org/aop.events/1841> <https://identifiers.org/aop.events/352> <https://identifiers.org/aop.events/1344> <https://identifiers.org/aop.events/1345> <https://identifiers.org/aop.events/1346> <https://identifiers.org/aop.events/1348> <https://identifiers.org/aop.events/1362> <https://identifiers.org/aop.events/1363> <https://identifiers.org/aop.events/1432> <https://identifiers.org/aop.events/1514> <https://identifiers.org/aop.events/1561> <https://identifiers.org/aop.events/1583> <https://identifiers.org/aop.events/341> <https://identifiers.org/aop.events/402> <https://identifiers.org/aop.events/613> <https://identifiers.org/aop.events/896> <https://identifiers.org/aop.events/986> <https://identifiers.org/aop.events/1875> <https://identifiers.org/aop.events/1941> <https://identifiers.org/aop.events/1978> <https://identifiers.org/aop.events/2121>
+}
+  ?KEid a aopo:KeyEvent;dcterms:isPartOf ?AOPx;dc:title ?KEtitle; edam:data_1025 ?object.
+  ?object skos:exactMatch ?id.
+  ?id a edam:data_1033; edam:data_1033 ?ensembl.
+}
