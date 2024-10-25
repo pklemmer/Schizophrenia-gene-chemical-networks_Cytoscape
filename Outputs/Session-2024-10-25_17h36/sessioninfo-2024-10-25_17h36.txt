@@ -1,0 +1,32 @@
+R version 4.4.1 (2024-06-14 ucrt)
+Platform: x86_64-w64-mingw32/x64
+Running under: Windows 11 x64 (build 22631)
+
+Matrix products: default
+
+
+locale:
+[1] LC_COLLATE=English_Germany.utf8  LC_CTYPE=English_Germany.utf8    LC_MONETARY=English_Germany.utf8
+[4] LC_NUMERIC=C                     LC_TIME=English_Germany.utf8    
+
+time zone: Europe/Paris
+tzcode source: internal
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] BridgeDbR_2.14.0 RCy3_2.24.0      curl_5.2.3       tidyr_1.3.1      rvest_1.0.4      gprofiler2_0.2.3 stringr_1.5.1   
+ [8] httr_1.4.7       dplyr_1.1.4      rJava_1.0-11    
+
+loaded via a namespace (and not attached):
+ [1] plotly_4.10.4       utf8_1.2.4          generics_0.1.3      gplots_3.2.0        bitops_1.0-9        xml2_1.3.6         
+ [7] KernSmooth_2.23-24  gtools_3.9.5        stringi_1.8.4       caTools_1.18.3      digest_0.6.37       magrittr_2.0.3     
+[13] RColorBrewer_1.1-3  evaluate_1.0.1      grid_4.4.1          pbdZMQ_0.3-13       fastmap_1.2.0       jsonlite_1.8.9     
+[19] graph_1.82.0        backports_1.5.0     purrr_1.0.2         fansi_1.0.6         viridisLite_0.4.2   scales_1.3.0       
+[25] XML_3.99-0.17       lazyeval_0.2.2      cli_3.6.3           rlang_1.1.4         crayon_1.5.3        munsell_0.5.1      
+[31] base64enc_0.1-3     repr_1.1.7          tools_4.4.1         RJSONIO_1.3-1.9     uuid_1.2-1          base64url_1.4      
+[37] colorspace_2.1-1    ggplot2_3.5.1       BiocGenerics_0.50.0 IRdisplay_1.1       vctrs_0.6.5         R6_2.5.1           
+[43] stats4_4.4.1        lifecycle_1.0.4     fs_1.6.4            htmlwidgets_1.6.4   pkgconfig_2.0.3     pillar_1.9.0       
+[49] gtable_0.3.5        data.table_1.16.2   glue_1.8.0          tibble_3.2.1        tidyselect_1.2.1    rstudioapi_0.17.1  
+[55] IRkernel_1.3.2      htmltools_0.5.8.1   compiler_4.4.1      RCurl_1.98-1.16    
