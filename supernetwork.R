@@ -321,68 +321,9 @@ createNodeSource <- function(source,doi=NULL) {
 }
 
 
-# SCHIZOPHRENIA =======================================================================================================================
+
 ## IMPORTING AND MERGING ---------------------------------------------------------------------------------------------------------------
 start_section("Importing and merging")
-
-# sparqlquery("DisGeNET","disgenet-query.txt","gda")
-# #Querying the DisGeNET SPARQL endpoint for genes associated to schizophrenia from curated sources
-# gda$disgenet_curated <- str_extract(gda$source, "(?<=/)[^/]*$")
-# gda$Entrez_gene <- str_extract(gda$gene, "(?<=/)[^/]*$")
-# gda$HGNC_symbol <- str_extract(gda$symbol, "(?<=/)[^/]*$")
-# gda <- subset(gda, select=c(disgenet_curated,Entrez_gene,HGNC_symbol,gdascore))
-# #cleaning data
-# gda <- gda %>%
-#   group_by(Entrez_gene, HGNC_symbol, gdascore) %>%
-#   mutate(disgenet_curated = paste(disgenet_curated, collapse = "; ")) %>%
-#   distinct()
-# gda <- gda[!duplicated(gda$Entrez_gene),]
-# #Concatenating to avoid duplicate gene rows if they are confirmed by multiple sources
-# mapper <- loadDatabase(bridgedb_dir)
-# #Loading bridgedb database
-# input <- data.frame(
-#   source = rep("H", length(gda[, 3])),
-#   identifier = gda[, 3]
-# )
-# #Making a new df to be used as input for bridgedb
-# #Map HGNC symbol
-# input <- input %>%
-#   rename(source=source,
-#          identifier=HGNC_symbol)
-# #Renaming cols for maps function compability
-# gda_map <- maps(mapper,input,"En")
-# #Mapping from HGNC to Ensembl
-# gda <- merge(gda,gda_map,by.x="HGNC_symbol",by.y="identifier",all.x=TRUE)
-# #Merging the GDA and mapping tables; some HGNC symbols can't be matched to Ensembl IDs but are still retained
-# gda <- subset(gda, select=c(HGNC_symbol,mapping,Entrez_gene,disgenet_curated,gdascore))
-# #Cleaning df
-# gda <- gda %>%
-#   rename(Ensembl=mapping)
-# man_map <- read.delim(paste0(getwd(),"/Data/DisGeNET/manual-maps.txt"),sep="\t")
-# #Reading a file containing manual mappings for some of the missing Ensembl ID
-# gda <- merge(gda, man_map, by="HGNC_symbol",all.x=TRUE)
-# #Merging the manual map and the gda df based on HGNC symbol as key column
-# gda$Ensembl.x[is.na(gda$Ensembl.x)] <- gda$Ensembl.y[is.na(gda$Ensembl.x)]
-# #Merging the Ensembl cols
-# gda <- select(gda, -Ensembl.y)
-# #Removing superfluous Ensembl col from manual mapping df
-# gda <- gda %>%
-#   rename(Ensembl = Ensembl.x)
-# gda$HGNC_symbol_source <- gda$HGNC_symbol
-# #Creating a duplicated Ensembl column for Cytoscape import
-# #Cleaning and renaming df
-# gda <- mutate_all(gda, ~ifelse(is.na(.),"",.))
-# #Replacing NA with empty strings for Cytoscape compatibility
-# write.table(gda,file=paste0(other_savepath,"DisGeNET/gda.tsv"),quote=FALSE,sep="\t",row.names=FALSE)
-# commandsRun(sprintf('network import file columnTypeList=sa,sa,sa,sa,sa,s delimiters=\\t file=%s firstRowAsColumnNames=true startLoadRow=1',paste0(other_savepath,"DisGeNET/gda.tsv")))
-# Sys.sleep(0.5)
-# renameNetwork("DisGeNET network")
-# createNodeSource("fromDisGeNET")
-# Sys.sleep(0.5)
-# metadata.add("DisGeNET")
-# metadata.add("DisGeNET SPARQL endpoint metadata:")
-# metadata.add(paste0("DisGeNET nodes: ",getNodeCount()))
-# metadata.add("")
 
 sparqlquery("wp","metadataquery.txt","WikiPathways-SPARQL-metadata")
   #Getting the metadata of the endpoint used for the WikiPathways SPARQL queries
