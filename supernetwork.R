@@ -159,7 +159,7 @@ getBridgeDbmap <- function(dir = bridgedb_dir, confirmation = "BridgeDb mapping 
    }
  }
 getBridgeDbmap()
-
+mapper <- loadDatabase(bridgedb_dir)
   #Adding BridgeDb info to the metadata file
 metadata.add("BridgeDb")
 metadata.add("Homo sapiens bridge version 108")
@@ -325,194 +325,197 @@ createNodeSource <- function(source,doi=NULL) {
 ## IMPORTING AND MERGING ---------------------------------------------------------------------------------------------------------------
 start_section("Importing and merging")
 
+  #Getting metadata of the WikiPathways SPARQL endpoint
+  #sparlquery function argument elaboration:
+    #'wp' specifies the endpoint to be accessed
+    #'metadataquery.txt' specifies which text file should be read to construct the query to be sent to the endpoint
+    #'WikiPathways-SPARQL-metadata' creates an object of the same name to which the ouput of the query is assigned
 sparqlquery("wp","metadataquery.txt","WikiPathways-SPARQL-metadata")
-  #Getting the metadata of the endpoint used for the WikiPathways SPARQL queries
+  #Adding endpoint info to the metadata file
 metadata.add("WikiPathways")
 metadata.add("WikiPathways SPARQL endpoint metadata:")
 metadata.add(`WikiPathways-SPARQL-metadata`)
-  #Adding the fetched metadata to the metadata file for the session
-  #It is technically possible that the metadata would describe an earlier version of the RDF if it is updated while the script runs but this is unlikely
 
+  #Querying the WP SPARQL endpoint for a list of pathways as specified in the query
+  #(List of pathways returned when searching for keyword 'Schizophrenia')
 sparqlquery("wp","pathwayquery.txt","wp_pathwaylist")
-  #Getting a list of pathways corresponding to a keyword as per defined in the query
+  #Saving the list of pathways to file
 writeLines(wp_pathwaylist[["PWID"]], con=paste0(other_savepath,"WikiPathways/automaticpathways.txt"))
-  #Saving the output pathway list to file
+  #Reading list of manually selected pathways saved to file
+  #Some relevant pathways are not returned from the keyword
 manualpathways <- readLines("Data/WikiPathways/Pathwaylists/manualpathways.txt")
-  #Reading a file containing a list of manually selected pathways
+  #Selecting the 'PWID' column from the retrieved list of pathways together with the manually selected pathways
 allpathways <- c(wp_pathwaylist[["PWID"]],manualpathways)
-  #Joining the list of manually and automatically selected pathways together
+  #Surrounding the pathway IDs by chevrons <> for injection into subsequent SPARQL queries
+  #URLs must be surrounded by chevrons in SPARQL queries
 allpathways_URL <- paste0("<",allpathways,">")
-  #Adding <> around all entries for easier use in SPARQL queries
-  #URLs need to be surrounded by <> to be recognised as such
+  #Writing the formatted pathway IDs to file
 writeLines(allpathways_URL, con=paste0(other_savepath,"WikiPathways/allpathways.txt"))
-  #Writing list of all pathways in SPARQL URL format to file
 
-
-
-
+  #Retrieving a list of nodes from the relevant pathways identified earlier
 sparqlquery("wp","nodequery.txt","wp_nodelist")
-  #Making a SPARQL query to the endpoint to get all nodes associated with a list of pathways
+  #Nodes have an 'identifier' attribute corresponding to the ID associated with them
+  #Identifiers can be of numerous types
+  #First, checking if the identifier URL is still in the column to avoid issues when this code section is reran
+  #The type of identifier is extracted from the identifier.org URL for readability
 if (any(grepl("identifiers\\.org", wp_nodelist$Identifier))) {
-  # Checking whether the 'Identifier' column contains the identifiers.org URL
-  #This is to avoid issues later when the identifiers.org part is removed and the code is reran
   wp_nodelist$WPNodeIDType <- gsub(".*/([^/]+)/.*", "\\1", wp_nodelist$Identifier)
-  #If 'identifiers.org' is still in the column, extract part of the string into a new column to see what type the identifier is
 } else {
   # If 'identifiers.org' is not found, do nothing
 }
+  #Removing the identifier.org part of the URL for improved readability of the identifier itself
 wp_nodelist[] <- lapply(wp_nodelist, function(x) str_replace_all(x, "https://identifiers\\.org/([^/]+)/", ""))
-  #Selecting and removing "https://identifiers.org/xyz" from every row in the df for improved readability
+  #Adding new binary column to the df that is set to 1 for all nodes associated with a CNV pathway based on pathway title
 wp_nodelist$CNVassociated <- ifelse(grepl("copy number | CNV | deletion",wp_nodelist$PathwayTitle), 1, NA)
-  #Adding a new binary column showing if a given node is associated with a CNV based on pathway title
+  #Generating duplicate node ID column since the original column is not imported to the node table if used as key column
+  #This seems to be a Cytoscape quirk, and there's probably a smarter way to do this rather than this weird fix
 wp_nodelist$WPNodeID <- wp_nodelist$Identifier
-  #Generating a duplicate node identifier column since the original column will be lost during Cytoscape import due to it being selected as source column
+  #Writing the list of relevant nodes to file for Cytoscape import
+  #There doesn't seem to be a function to directly import a network based on a table from within R
 write.table(wp_nodelist, file=paste0(other_savepath,"WikiPathways/nodelist.tsv"), quote=FALSE, sep="\t", row.names=FALSE)
-  #Writing the modified file for Cytoscape import
+  #Importing the node list to Cytoscape as network and specifying which columns are attributes and which represent the key column (node identifiers)
 commandsRun(sprintf('network import file columnTypeList="sa,sa,s,sa,sa,sa,sa,sa" file=%s firstRowAsColumnNames=true rootNetworkList=-- Create new network collection -- startLoadRow=1 delimiters=\\t', paste0(other_savepath,"WikiPathways/nodelist.tsv")))
-  #Importing a list of nodes from the output of a WikiPathways SPARQL query (get all nodes in pathways matching the keyword 'Schizophrenia' and some manually selected pathways)
+  #Pausing the script for half a second to give Cytoscape time to catch up
+  #Sometimes, the script proceeds without the import being finished in Cytoscape, causing issues down the line
 Sys.sleep(0.5)
-  #Adding sys.sleep to give Cytoscape sufficient time to import the file as network; otherwise, renaming doesn't always work since no network is selected until the import is complete
+  #Renaming the network for readability
 renameNetwork("WikiPathways nodes")
 
-sparqlquery("wp","edgequery.txt","wp_edgelist")
   #Making a SPARQL query to the endpoint to get a list of source-target pairs from selected pathways
-wp_edgelist[] <- lapply(wp_edgelist, function(x) str_replace_all(x, "https://identifiers\\.org/([^/]+)/", ""))
+sparqlquery("wp","edgequery.txt","wp_edgelist")
   #Selecting and removing "https://identifiers.org/xyz" from every row in the df for improved readability
-edge_df <- wp_edgelist[grepl("Interaction",wp_edgelist$source) | grepl("Interaction",wp_edgelist$target),]
+wp_edgelist[] <- lapply(wp_edgelist, function(x) str_replace_all(x, "https://identifiers\\.org/([^/]+)/", ""))
   #Extracting rows containing "Interaction" in either the source or target column
   #Interaction nodes represent phosphorylation and the like and are not suitable for the network
   #They can still provide information about the connection of gene or other nodes so they can't just be deleted either
   #If an Interaction node is connected to two or more non-interaction nodes, these nodes should be connected to each other, and the interaction node can be deleted
+edge_df <- wp_edgelist[grepl("Interaction",wp_edgelist$source) | grepl("Interaction",wp_edgelist$target),]
+  #Counting if a certain interaction occurs more than once; this implies that it is connected to more than one non-interaction node
 interaction_freq <- table(edge_df$target)
 edge_df_filtered <- edge_df[edge_df$target %in% names(interaction_freq[interaction_freq > 1]),]
-  #Counting if a certain interaction occurs more than once; this implies that it is connected to more than one non-interaction node
+  #Identify rows with duplicate target values
 unique_targets <- unique(edge_df_filtered$target)
+  #Transposing the non-identifier nodes for source-target pairs; if two nodes are associated with the same interaction, they become source-target pairs
 for (target_val in unique_targets) {
-  # Identify rows with duplicate target values
   rows_with_duplicate_target <- which(edge_df_filtered$target == target_val)
-  
+  #Select one of the source values
   if (length(rows_with_duplicate_target) > 1) {
-    # Select one of the source values
-    source_val_to_transpose <- edge_df_filtered$source[rows_with_duplicate_target[1]]
-    
-    # Transpose the source value to the target column in the row of the remaining source value
+     source_val_to_transpose <- edge_df_filtered$source[rows_with_duplicate_target[1]]
+    #Transpose the source value to the target column in the row of the remaining source value
     edge_df_filtered$target[rows_with_duplicate_target[-1]] <- source_val_to_transpose
-    
-    # Remove duplicate rows
+    #Remove duplicate rows
     edge_df_filtered <- edge_df_filtered[-rows_with_duplicate_target[1], ]
   }
 }
-  #Transposing the non-identifier nodes for source-target pairs; if two nodes are associated with the same interaction, they become source-target pairs
+  #Removing any row containing "Interaction"
 wp_edgelist <- wp_edgelist <- wp_edgelist[!grepl(".*interaction.*", wp_edgelist$source, ignore.case = TRUE) & 
                                             !grepl(".*interaction.*", wp_edgelist$target, ignore.case = TRUE), ]
-  #Removing any row containing "Interaction"
-wp_edgelist <- rbind(wp_edgelist,edge_df_filtered)
   #Appending the new source-target pairs to the original edge list
-
-write.table(wp_edgelist, file=paste0(other_savepath,"WikiPathways/edgelist.tsv"), quote=FALSE, sep="\t", row.names=FALSE)
+wp_edgelist <- rbind(wp_edgelist,edge_df_filtered)
+  
   #Writing the modified file for Cytoscape import
+write.table(wp_edgelist, file=paste0(other_savepath,"WikiPathways/edgelist.tsv"), quote=FALSE, sep="\t", row.names=FALSE)
+  #Importing a list of source-target pairs from selected pathways from the ouput of a WikiPathways SPARQL query
 commandsRun(sprintf('network import file columnTypeList="sa,s,t" file=%s firstRowAsColumnNames=true rootNetworkList=-- Create new network collection -- startLoadRow=1 delimiters=\\t', paste0(other_savepath,"WikiPathways/edgelist.tsv")))
-  #Importing a list of source-target pairs from selected pathways from the ouput of a WikiPathways SPARQL query 
+  
 Sys.sleep(0.5)
-  #Adding sys.sleep to give Cytoscape sufficient time to import the file as network; otherwise, renaming doesn't always work since no network is selected until the import is complete
+  #Renaming network for readability
 renameNetwork("WikiPathways edges")
-
+  #Union merging the node and edge networks to extend the node list with corresponding edges
+  #Correctly specifying nodeKeys is crucial since these are the columns used to relate two different tables to each other
+  #nodeKeys essentially tell the function based on what a merge should be done
 altmergeNetworks(sources = c("WikiPathways nodes","WikiPathways edges"),
                  title = "WikiPathways networks",
                  operation = "union",
                  nodeKeys=c("WPNodeID","name"))
-  #Union merging the node and edge networks to extend the node list with corresponding edges
+
 Sys.sleep(0.5)
+  #Filling the 'fromWikiPathways' node attribute with 1 to keep track of where nodes were imported from
 createNodeSource("fromWikiPathways")
+  #Counting how many nodes were added from WikiPathways
 metadata.add(paste0("WikiPathways nodes: ",getNodeCount()))
 metadata.add("")
+  #Deleting intermediate networks
 deleteNetwork('WikiPathways nodes')
 deleteNetwork('WikiPathways edges')
 
 Sys.sleep(1)
-  #Pausing the script for 1 second - when letting the script run without this, the publication source creation fails
 
-commandsRun(sprintf("network import file columnTypeList='sa,sa,source,sa,sa,sa,sa' file=%s firstRowAsColumnNames=true rootNetworkList=-- Create new network collection -- startLoadRow=1", paste0(getwd(),"/Data/Publications/Trubetskoy.txt")))
   #Importing network from file
   #List of 120 genes implicated in Trubetskoy et al., doi: 10.1038/s41586-022-04434-5
-commandsRun("table rename column columnName=Ensembl.ID newColumnName=Ensembl table=Trubetskoy.txt default node")
+commandsRun(sprintf("network import file columnTypeList='sa,sa,source,sa,sa,sa,sa' file=%s firstRowAsColumnNames=true rootNetworkList=-- Create new network collection -- startLoadRow=1", paste0(getwd(),"/Data/Publications/Trubetskoy.txt")))
   #Renaming the Ensembl.ID column from the dataset to Ensembl for coherence with networks from other sources
+commandsRun("table rename column columnName=Ensembl.ID newColumnName=Ensembl table=Trubetskoy.txt default node")
+ #Renaming the column specifying SNP ID for improved clarity
 commandsRun("table rename column columnName=Index.SNP newColumnName=snpID table=Trubetskoy.txt default node")
-createNodeSource("fromPublication","10.1038/s41586-022-04434-5")
   #Adding literature as  source to all imported nodes and adding the doi of the corresponding paper
+createNodeSource("fromPublication","10.1038/s41586-022-04434-5")
+
 renameNetwork("Trubetskoy risk genes")
-  #Renaming the newly imported network
+  #Adding relevant metadata from the publication
 metadata.add("Publications")
 metadata.add("Trubetskoy et al. doi: 10.1038/s41586-022-04434-5")
+  #Counting how many nodes were added through the publication and recording to metadata
 metadata.add(paste0("Publication nodes: ",getNodeCount()))
 metadata.add("")
 
+  #Querying AOP-Wiki for endpoint metadata
 sparqlquery("AOP-Wiki","metadataquery.txt","aopwikimetadata")
 aopwikimetadata <- paste(aopwikimetadata$dataset, aopwikimetadata$date, sep ="\t")
+  #Adding endpoint info to metadata file
 metadata.add("AOP-Wiki")
 metadata.add("AOP-Wiki SPARQL endpoint metadata:")
 metadata.add(paste("Dataset","Date",sep="\t"))
 metadata.add(aopwikimetadata)
 metadata.add("")
 
+  #Getting list of imported networks
 networklist <- getNetworkList()
+  #Looping through the networks and merging them together based on Ensembl identifier
 setCurrentNetwork(networklist[[1]])
 for(i in 1:length(networklist)) {
   current <- getNetworkName()
   altmergeNetworks(c(current,networklist[[i]]), paste(current,networklist[[i]]),"union",inNetworkMerge = TRUE,nodeKeys=c("Ensembl","Ensembl"))
 }
-  #Looping through the network list to merge all currently open networks with each other, creating one large unified network
+
 renameNetwork("Schizophrenia supernetwork")
+  #Getting the name of the unified network to preserve it from deletion
 networklist <- getNetworkList()
 snw_scz <- getNetworkName()
-  #Getting the name of the unified network to preserve it from deletion
-lapply(networklist[networklist != snw_scz],deleteNetwork)
   #Deleting all networks besides newly generated unified network
-snw_ensembl <- getTableColumns("node","Ensembl")
+lapply(networklist[networklist != snw_scz],deleteNetwork)
+  
   #Getting all values in the Ensembl column of the supernetwork
+snw_ensembl <- getTableColumns("node","Ensembl")
+ #Making a new df to be used as input for brigedb mapping
+  #The source column tells bridgedb from which identifier type to map from (Ensembl)
+  #identifier column contains the Ensembl identifiers for all nodes in the merged network
 input <- data.frame(
   source = rep("En", length(snw_ensembl[, 1])),
   identifier = snw_ensembl[, 1]
 )
-  #Making a new df to be used as input for bridgedb
-  #Map Ensembl ID
+
+  #Mapping from Ensembl to HGNC to add consistent human-readable gene names
 snw_map <- maps(mapper,input,"H")
-  #Mapping from Ensembl to HGNC
+  #Selecting and renaming relevant columns from bridgeDb mapping output
 snw_map <- select(snw_map, c("identifier", "mapping"))
 snw_map <- rename(snw_map,
                   Ensembl = identifier,
                   HGNCsymbol = mapping)
-  #Selecting and renaming relevant columns from bridgeDb mapping output
+  #loading HGNC names for Ensembl IDs in supernetwork back to node table
 loadTableData(snw_map,
               data.key.column = "Ensembl",
               table = "node",
               table.key.column = "Ensembl")
-  #loading HGNC names for Ensembl IDs in supernetwork back to node table
+  #Counting edges before STRINGification of the network; used later to calcualte how many edges are added by STRING 
 snw_nostring_edges <- getEdgeCount()
+  #Counting total nodes in the merged network and adding to metadata
 metadata.add(paste0("Total nodes in supernetwork: ",getNodeCount()))
 metadata.add("")
+  #Exporting the merged network as cx file
 exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW"),"CX", network = snw_scz, overwriteFile=TRUE)
-  #Exporting the supernetwork as cx file
 
 end_section("Importing and merging")
-
-
-# stable <- getTableColumns("node",c("fromDisGeNET","fromPublication","fromWikiPathways"))
-# stable$count_ones <- rowSums(!is.na(stable))
-# combination_counts <- table(stable$count_ones)
-# 
-# sourcenames <- c("One source","Two sources","Three sources")
-# visframe <- data.frame(sourcenames,combination_counts)
-# visframe <- select(visframe, -Var1)
-# visframe <- visframe %>%
-#   mutate(relative_freq = Freq / sum(Freq))
-# 
-# ggplot(visframe,aes(x=factor(sourcenames,levels=c("One source","Two sources","Three sources")),y=Freq)) +
-#   geom_bar(stat="identity", fill = 'darkorange2', width=0.5) +
-#   labs(x=NULL,  y = "Counts", title = "Node counts by source") +
-#   scale_y_continuous(trans="log10", breaks=c(1,10,100,1000,2000)) +
-#   theme_minimal()
-
 
 ## STRING --------------------------------------------------------------------------------------------------------------------------
 start_section("STRING")
