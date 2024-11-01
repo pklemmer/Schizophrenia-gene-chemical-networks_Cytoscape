@@ -519,24 +519,30 @@ end_section("Importing and merging")
 
 ## STRING --------------------------------------------------------------------------------------------------------------------------
 start_section("STRING")
+  #STRINGifying the network 
+  #Adding edges between the nodes in the merged network from STRINGd, with a cutoff of 0.9
+  #This cutoff indicates that 1/10 added edges might be a false positive
+  #STRINGification is done based on the Ensembl identifier of the node
 commandsRun('string stringify colDisplayName=name column=Ensembl compoundQuery=true cutoff=0.9 includeNotMapped=true  networkType="full STRING network" species="Homo sapiens" networkNoGui=current')
-  #Adding protein-protein interactions from STRING to the supernetwork
-  #Interactions between nodes are poorly preserved during importing and merging, and really only WikiPathways provides edge information while DisGeNET and the publication only provide gene lists
+  #Adding STRINGification information to the metadata
 metadata.add("STRING")
 metadata.add("STRINGify parameters:")
 metadata.add("- Perform STRINGification on: Ensembl")
 metadata.add("- Query compounds: true")
 metadata.add("- Cutoff: 0.9")
+  #Counting total edges in the network
 snw_string_edges <- getEdgeCount()
+  #Computing how many edges are in the network now vs. how many there were just after merging to get how many edges were added by STRING
 metadata.add(paste0("STRING-added edges: ",snw_string_edges - snw_nostring_edges))
 metadata.add(paste0("Total edges in supernetwork: ",snw_string_edges))
 metadata.add("")
 
+  #Cleaning up the node table by filtering columns that will not be used to improve readability
 marked_cols <- as.list(getTableColumnNames()[!(getTableColumnNames() %in% c("selected","name.copy" ,"SUID","shared name","name","fromDisGeNET","fromWikiPathways","Ensembl","fromPublication","Publication.doi","CNVassociated","PathwayID","WPNodeID","WPNodeIDType","snpID","HGNCsymbol","DisGeNETname","disgenet_curated","gdascore","Entrez_gene"))])
 lapply(marked_cols, function(column) {
   deleteTableColumn(column=column)
 })
-  #Filtering columns
+
 renameNetwork("SCZ_SNW_STRING")
 scz_snw_string <- getNetworkName()
 exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW_STRING"),"CX",network=scz_snw_string,overwriteFile=TRUE)
@@ -545,57 +551,52 @@ end_section("STRING")
 
 ## CLUSTERING ----------------------------------------------------------------------------------------------------------------------
 start_section("Clustering")
+  #Clustering is performed based on protein-protein interactions, therefore nodes that do not have an Ensembl ID are deleted
+  #This should remove all non-protein/gene nodes, but will also remove potential proteins/genes that could just not be mapped to Ensembl
 createColumnFilter(filter.name="delete.noensembl", column="Ensembl","ENSG","DOES_NOT_CONTAIN")
 deleteSelectedNodes()
+  #Counting how many nodes in the network have an Ensembl ID
 metadata.add(paste0("Ensembl nodes in supernetwork: ",getNodeCount()))
 metadata.add("")
+  #Clustering and recording the clustering parameters to the metadata
+  #Clustering done using hte GLay clustering algorithm from the Cytoscape app of the same name and is based on PPI
 metadata.add("GLay Clustering")
 metadata.add(capture.output(commandsRun('cluster glay clusterAttribute=__glayCluster createGroups=false network=current restoreEdges=true showUI=true undirectedEdges=true')))
-  #Clustering the network using the GLay community cluster from the clusterMaker Cytoscape app and recording outcome to metadata
+
 renameNetwork("SCZ_SNW_STRING_clustered")
-renameTableColumn('__glayCluster','gLayCluster') 
   #Renaming the newly generated gLayCluster column as the original name with two underscores is not recognized during gene ontology
+renameTableColumn('__glayCluster','gLayCluster') 
+
 snw_scz_string_clustered <- getNetworkName()
-exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW_STRING_clustered"),"CX",network=snw_scz_string_clustered,overwriteFile=TRUE)
   #Exporting the filtered, stringified, clustered supernetwork as cx file and tagging it with the time and data to match with the metadata file
+exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW_STRING_clustered"),"CX",network=snw_scz_string_clustered,overwriteFile=TRUE)
 
 
+  #Extracting the node table from Cytoscape to an R object
 read_clustered_nodetable <- getTableColumns("node")
-  #Reading the exported csv
+  #Splitting the node table based on cluster
 split_df <- split(read_clustered_nodetable$Ensembl,read_clustered_nodetable$gLayCluster)
-  #Splitting the node table by cluster
+  #Counting how many nodes are associated with each cluster
 nodecount <- sapply(split_df, length)
-  #Counting how many nodes are in each cluster
+  #Constructing a matrix to more easily show how many nodes are in each cluster
 countmatrix <- matrix(seq(1,length(nodecount)), ncol=1)
 countmatrix <- cbind(countmatrix,as.numeric(nodecount))
-  #Construcing a matrix showing how many nodes are in each cluster
+  #Getting which clusters have fewer than five nodes associated with them
+  #Clustering is done to later put in gene lists to a gene ontology tool to finally get a list of biological processes associated with the genes in the network
+  #A threhshold of 5 is set as minimum cluster size since we assume that such small clusters are more reflective of noise rather than true biological processes
 invalidclusters <- as.list(countmatrix[countmatrix[, 2] < 5, 1])
-  #Getting which clusters have fewer than 5 nodes associated with them 
+  #Subsetting the node table to only contain nodes associated to clusters that have 5 or more nodes in total
 valid_clustered_nodetable <- read_clustered_nodetable[!read_clustered_nodetable$gLayCluster %in% invalidclusters, ]
-  #Generating a new df containing only nodes associated with clusters that had 5 or more nodes
+  #Splitting the table with valid clusters/nodes per cluster
 split_tbl <- split(valid_clustered_nodetable, valid_clustered_nodetable$gLayCluster)
 
-# test <- split_tbl[[1]]
-# test2 <- test[, c("fromWikiPathways", "fromDisGeNET", "fromPublication")]
-# colnames(test2) <- c("fromWikiPathways", "fromDisGeNET", "fromPublication")
-# 
-# column_combinations_3 <- combn(colnames(test2),3,FUN=function(x) paste(x, collapse="_and_"))
-# column_combinations_2 <- combn(colnames(test2),2,FUN=function(x) paste(x, collapse="_and_"))
-# for (combination in column_combinations_2) {
-#   test2[paste(combination,collapse="_and_")] <- test2[[combination[1]]] & test2[[combination[2]]]
-# }
-# for (combination in column_combinations_3) {
-#   test2[paste(combination, collapse = "_")] <- test2[[combination[1]]] & test2[[combination[2]]] & test2[[combination[3]]]
-# }
-# 
-
-
-
-
+  #For each cluster, counting how many nodes are associated with either source
 sourcecount <- function(cluster) {
   wpcount <- sum(split_tbl[[cluster]][["fromWikiPathways"]] == 1, na.rm = TRUE)
   dgcount <- sum(split_tbl[[cluster]][["fromDisGeNET"]] == 1, na.rm = TRUE)
   litcount <- sum(split_tbl[[cluster]][["fromPublication"]] == 1, na.rm = TRUE)
+    #Constructing a data frame that shows, per cluster, how many nodes are associated with which sources
+    #Note that this does not account for nodes associated to multiple sources (i.e. a gene that appears in both a WikiPathways pathway and in the gene list from Trubetskoy et al.)
   result_df <- data.frame(
     gLayCluster = split_tbl[[cluster]][["gLayCluster"]][1],
     WikiPathways_source = wpcount,
@@ -603,29 +604,36 @@ sourcecount <- function(cluster) {
     Publication_source = litcount
   )
 }
+  #Applying the function to the table containing the valid clusters and assigning the resulting df to sources_count
 sources_count <- do.call(rbind, lapply(seq_along(split_tbl),sourcecount))
-  #For each cluster, counting how many nodes are associated with which sources
+
+  #Count, for each cluster, how many nodes in the cluster come from pathways dedicated to copy number variations
 cnvassociatedcount <- function(cluster) {
   cnvcount <- sum(split_tbl[[cluster]][["CNVassociated"]] == 1,na.rm=TRUE)
+    #Getting per cluster how many nodews in total are associated with WikiPathways as a source
   total_wp_nodes <- sources_count[sources_count$gLayCluster == split_tbl[[cluster]][["gLayCluster"]][1], "WikiPathways_source"]
+    #Based on the difference between total WikiPathways nodes and the nodes that have CNVassociated == 1, compute how many WikiPathways nodes do not come from CNV pathways
   non_cnv_count <- total_wp_nodes - cnvcount
+    #Generating a df showing for each cluster how many nodes come from CNV-associated and non-CNV-associated pathways from WikiPathways
   result_df <- data.frame(
     gLayCluster = split_tbl[[cluster]][["gLayCluster"]][1],
     WikiPathways_CNV = cnvcount,
     WikiPathways_noCNV = non_cnv_count
   )
 }
+  #Assigning the resulting df to cnvassociated_count for each cluster
 cnvassociated_count <- do.call(rbind,lapply(seq_along(split_tbl),cnvassociatedcount))
-  #For each cluster, count how many nodes originally come from CNV-associated pathways which pathways they come from 
 
 end_section("Clustering")
 
 ## GO ANALYSIS ------------------------------------------------------------------------------------------------------------------------
 start_section("GO Analysis")
 
+  #Splitting the node table by cluster to get one list of Ensembl IDs per cluster
 split_df <- split(valid_clustered_nodetable$Ensembl,valid_clustered_nodetable$gLayCluster)
+  #Forcing list to be a vector
 split_list <- lapply(split_df, as.vector)
-  #Splitting the node table by cluster number, i.e. lists of Ensembl IDs are created per cluster
+  #Setting up a wrapper function for the gost function that sends gene lists per cluster to the g:Profiler g:GOSt tool for functional profiling
 go <- function(cluster) {
   gost(
     query = cluster,
@@ -646,16 +654,19 @@ go <- function(cluster) {
     highlight = TRUE
   )
 }
+  #Iterating the function over all clusters
 go_list <- lapply(split_list,go)
-  #Iterating the gost GO function over all clusters
+  #Defining a function to get the 'top terms' per cluster based on p-value
 get_top_terms <- function(cluster) {
-  terms <- toString(go_list[[cluster]][["result"]][["term_name"]][1:5])
     #Extracting the top 5 term names associated with each cluster
-  pval <- toString(go_list[[cluster]][["result"]][["p_values"]][1:5])
+  terms <- toString(go_list[[cluster]][["result"]][["term_name"]][1:5])
     #Extracting the p-values for the corresponding top 5 term names
+  pval <- toString(go_list[[cluster]][["result"]][["p_values"]][1:5])
+    #Extracing the node/gene names in each cluster
   nodes <- paste(go_list[[cluster]][["meta"]][["query_metadata"]][["queries"]][["query_1"]],collapse=",")
-  nnodes <- str_count(toString(go_list[[cluster]][["meta"]][["query_metadata"]][["queries"]][["query_1"]]),"\\S+")
     #Extracing the number of nodes/genes contained in each cluster
+  nnodes <- str_count(toString(go_list[[cluster]][["meta"]][["query_metadata"]][["queries"]][["query_1"]]),"\\S+")
+    #Assigning all results to a df
   result_df <- data.frame(
     gLayCluster = cluster, 
     GO_Terms = terms, 
@@ -664,30 +675,33 @@ get_top_terms <- function(cluster) {
     N_nodes = nnodes
     )
 }
-topterms_df <- do.call(rbind, lapply(names(go_list),get_top_terms))
   #Getting top 5 term names and corresponding p-values for each cluster and storing in topterms_df
-topterms_df <- cbind(topterms_df,sources_count,cnvassociated_count)
+topterms_df <- do.call(rbind, lapply(names(go_list),get_top_terms))
   #joining the cluster table and the table detailing the amount of sources per cluster
-write.table(topterms_df, file=paste0(other_savepath,"Clustering/GO-clusters-vis.tsv"), sep = "\t",row.names=FALSE,quote=FALSE)
+topterms_df <- cbind(topterms_df,sources_count,cnvassociated_count)
+
   #Writing the table to file for Cytoscape import during visualisation
-loadTableData(topterms_df,data.key.column="gLayCluster",table.key.column="gLayCluster")
+write.table(topterms_df, file=paste0(other_savepath,"Clustering/GO-clusters-vis.tsv"), sep = "\t",row.names=FALSE,quote=FALSE)
   #Loading the generated top terms and p-values back to the supernetwork; every gene belonging to cluster x is now associated with the top terms of cluster x
-deleteTableColumn('gLayCluster.1')
+loadTableData(topterms_df,data.key.column="gLayCluster",table.key.column="gLayCluster")
   #Deleting duplicate gLayCluster column that appears after importing top terms data back to network 
+deleteTableColumn('gLayCluster.1')
+  #Renaming and saving the network name to indicate addition of GO information
 renameNetwork(title=paste0(getNetworkName(),"_GO"))
 snw_scz_filtered_string_clustered_go <- getNetworkName()
-  #Renaming and saving the network name to indicate addition of GO information
-
+  
+  #Defining a function to compare the overlap of the terms for two clusters
 compare_term_id_lists <- function(list1, list2) {
   common_elements <- intersect(list1, list2)
   return(length(common_elements))
 }
-  #Setting up a function to get intersections between cluster term IDs
+  #Setting up an emtpy data frame to store the number of overlapping GO terms per cluster comparison
 match_df <- data.frame(Cluster1 = character(),
                         Cluster2 = character(),
                         Matches = numeric(),
                         stringsAsFactors = FALSE)
-  #Setting up a df to store output in 
+  #Iterating through the terms for two clusters at a time and counting how many overlaps there are
+  #Overlaps stored in match_df, used later in the script for visualisation purposes
 for (i in 1:(length(go_list) - 1)) {
   for (j in (i + 1):length(go_list)) {
     term_id_i <- go_list[[i]][["result"]][["term_id"]]
@@ -698,24 +712,33 @@ for (i in 1:(length(go_list) - 1)) {
     match_df <- rbind(match_df, data.frame(Cluster1 = names(go_list)[i],
                                              Cluster2 = names(go_list)[j],
                                              Matches = matches))
-    #Iterating over go_list to compare GO term IDs between every cluster and store number of overlaps
   }
 }
+  #Renaming columns to define source and targets for edge creation
 colnames(match_df) <- c("source","target","GO_term_matches")
-  #Renaming columns
+  #Writing match_df to file for later use
 write.table(match_df, file=paste0(other_savepath,"Clustering/match_df.tsv"), sep = "\t",row.names=FALSE,quote=FALSE)
-exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW_STRING_clustered_GO"),"CX",network=snw_scz_filtered_string_clustered_go,overwriteFile=TRUE)
   #Exporting the filtered, stringified, clustered supernetwork after GO as cx file and tagging it with the time and data to match with the metadata file
+exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW_STRING_clustered_GO"),"CX",network=snw_scz_filtered_string_clustered_go,overwriteFile=TRUE)
+
 
 end_section("GO Analysis")
 
 ##AOP-Wiki extension ---------------------------------------------------------------------------------------------------------------------------
 start_section("AOP-Wiki extension")
 
+  #Defining a function to fetch adverse outcome pathways and associated elements from AOP-Wiki and further processing 
 aopprocess <- function(input,keep,tag) {
+    #Importing the clustered network with gene ontology results loaded in to Cytoscape if not already present
+    #The function applies changes to the network which would compound if it were to be ran again, so a check is done to see if the original network that
+    #the function should run on is present
   if (!"SCZ_SNW_STRING_clustered_GO" %in% getNetworkList()) {
     importNetworkFromFile(file=paste0(nw_savepath,"SCZ_SNW_STRING_clustered_GO.cx"))
+      #Deleting duplicate column
     commandsRun('table delete column column="gLayCluster.2" table="SCZ_SNW_STRING_clustered_GO default node')
+      #Selecting nodes that have a gene ontology result associated with them
+      #This will only select nodes from valid (>= 5 nodes) clusters since only these are put into the GO analysis function
+      #Actual filter set to detect if the N_nodes column has a value since the column is generated during assignment of GO results to nodes
     createColumnFilter(
       filter.name = "has_GO_result",
       column = "N_nodes",
@@ -724,16 +747,19 @@ aopprocess <- function(input,keep,tag) {
       anyMatch = TRUE,
       apply = TRUE
     )
-    #Selecting nodes included in a 'valid' cluster, i.e. clusters with 5 or more nodes (GO analysis only performed for these)
-    #N_nodes is only generated for 'valid' clusters, so good column to filter by
+      #Inverting the selection as to select nodes that do not have GO results and as such do not come from valid clusters
     invertNodeSelection()
+      #Deleting selected nodes
+      #The network now only contains nodes belonging to valid clusters and with GO analysis results
+      #The idea is to link GO terms (formed by clusters/genes) to risk factors, so it wouldn't make sense to also link non-cluster/GO associated nodes
     deleteSelectedNodes()
-    #Inverting the selection and deleting these nodes: now, the network contains only the nodes that make up the clusters fed into the GO analysis
-    #Nodes not associated to a large enough cluster/GO term are likely not involved in any significant SCZ-contributing way 
-    #The idea is to link GO terms (formed by clusters/genes) to risk factors, so it wouldn't make sense to also link non-cluster/GO associated nodes
   }
+    #Same structure, only difference is import of clustered GO network
   else {
     commandsRun('table delete column column="gLayCluster.2" table="SCZ_SNW_STRING_clustered_GO default node')
+      #Selecting nodes that have a gene ontology result associated with them
+      #This will only select nodes from valid (>= 5 nodes) clusters since only these are put into the GO analysis function
+      #Actual filter set to detect if the N_nodes column has a value since the column is generated during assignment of GO results to nodes
     createColumnFilter(
       filter.name = "has_GO_result",
       column = "N_nodes",
@@ -742,60 +768,63 @@ aopprocess <- function(input,keep,tag) {
       anyMatch = TRUE,
       apply = TRUE
     )
-    #Selecting nodes included in a 'valid' cluster, i.e. clusters with 5 or more nodes (GO analysis only performed for these)
-    #N_nodes is only generated for 'valid' clusters, so good column to filter by
+      #Inverting the selection as to select nodes that do not have GO results and as such do not come from valid clusters
     invertNodeSelection()
+      #Deleting selected nodes
+      #The network now only contains nodes belonging to valid clusters and with GO analysis results
+      #The idea is to link GO terms (formed by clusters/genes) to risk factors, so it wouldn't make sense to also link non-cluster/GO associated nodes
     deleteSelectedNodes()
-    #Inverting the selection and deleting these nodes: now, the network contains only the nodes that make up the clusters fed into the GO analysis
-    #Nodes not associated to a large enough cluster/GO term are likely not involved in any significant SCZ-contributing way 
-    #The idea is to link GO terms (formed by clusters/genes) to risk factors, so it wouldn't make sense to also link non-cluster/GO associated nodes
     
   }
-  
-  #Reimporting the network with GO information back to Cytoscape if needed
-  #Running aopprocess causes all changes to be applied to the GO network
-  #Running aopprocess a second time with other parameters would thus compound changes into the same network which is undesired
-  
+    #Querying AOP-Wiki for a list of ALL KEs and their associated genes in the database
   sparqlquery("AOP-Wiki",input,"keensgpairs")
-  #Querying AOP-Wiki for a list of all KEs and associated genes
+    #Cleaning the resulting df to remove quotation marks
   for (i in 1:ncol(keensgpairs)) {
     for (j in 1:nrow(keensgpairs)) {
       keensgpairs[j, i] <- gsub('"', '', keensgpairs[j, i])
     }
   }
-  #Removing quotation marks from the df
-  
+
+    #The df has one row per KE with associated Ensembl IDs for genes associated with that KE concatenanted into one cell of the same row
+    #This separates the Ensembl IDs into distinct rows by splitting on semicolon
   separate_keensgpairs <- separate_rows(keensgpairs,Ensembl,sep="; ")
-  #Dividing comma-separated Ensembl IDs into distinct rows
+    #Concatenating other variables in the df based on unique Ensembl ID to get a list of associated KEs and AOPs per gene
+    #I.e., each row shows the attributes of one gene in AOP-Wiki
   keensgpairs_byensg <- separate_keensgpairs %>%
     group_by(Ensembl) %>%
     summarise(KEid = paste(KEid, collapse="; "),
               AOPid = paste(AOPid, collapse="; "))
-  #Concatenating other variables based on unique Ensembl ID to get list of associated KEs and AOPs per gene
+    #Defining a save path for this df
   keensgpairs_byensg_save <- paste0(other_savepath,sprintf("AOP-Wiki/keensgpairs_byensg_%s.tsv",tag))
-  #Defining savepath for newly generated df
+    #Writing the df with the gene-KE-AO-AOP associations to file as tsv for cytoscape import
   write.table(keensgpairs_byensg, file=keensgpairs_byensg_save,quote=FALSE, sep="\t", row.names=FALSE)
-  #Saving df containing gene-KE-AO-AOP associations to file as tsv for Cytoscape import
+  #Importing to Cytoscape as a table as to add AOP-Wiki info 
   commandsRun(sprintf('table import file dataTypeTargetforNetworkCollection="Node Table Columns" delimiters=\\t file=%s firstRowAsColumnNames=true keyColumnForMapping="Ensembl" keyColumnIndex=1 startLoadRow=1',keensgpairs_byensg_save))
-  #Importing the gene-KE-AO-AOP table to Cytoscape as table add AOP-Wiki info as node attributes
   renameNetwork(paste0(getNetworkName(),"_AOP"))
   scz_snw_string_go_aop <- getNetworkName()
+    #Getting the node table as R object
   scz_snw_string_go_aop_node <- getTableColumns("node")
-  #Reading the exported table as Cytoscape object
+    #Making a list of which rows (=gene nodes) have some data from AOP-Wiki associated to them 
   aop_associated_genes <- scz_snw_string_go_aop_node[!is.na(scz_snw_string_go_aop_node$KEid), , drop=FALSE]
-  #Getting which rows (=gene nodes) have info from AOP-Wiki associated to them
   renameNetwork(paste0(getNetworkName(),"_",tag))
-  
+    #Loading cluster titles based on GO terms
   summary_go_terms <- read.delim(paste0(getwd(),"/Data/summary_go_terms.txt"),header=TRUE,sep="\t",quote="")
-  #Loading cluster titles based on GO terms
   
+    #Checking if the keep argument has been specified as TRUE; in this case, all genes are kept for futher processing
+    #If set to FALSE, further operations are only done on nodes that have data from AOP-Wiki associated to them 
   if(keep == TRUE) {
     aop_associated_genes <- scz_snw_string_go_aop_node }
+    #Merging the list of genes in the network with summary GO terms based on cluster
   aop_associated_genes <- merge(aop_associated_genes,summary_go_terms,"gLayCluster")
 Sys.sleep(1)
+    #Getting a df from the df with AOP-associated genes and cluster that is split on KE ID to have a df with one KE ID per row
   separate_ketitles <- separate_rows(aop_associated_genes,KEid,sep="; ")
-  ke_freq_table <- table(separate_ketitles$KEid) 
+    #Counting how often a given KE is associated to genes in the network
+  ke_freq_table <- table(separate_ketitles$KEid)
+    #Converting table to df
   ke_freq_df <- as.data.frame(ke_freq_table)
+    #Grouping KE attributes and frequency of KEs based on KE ID
+    #This results in a df showing how often a given KE appears in the network, and with which genes and GO terms/clusters it is associated with
   add_attributes <- separate_ketitles %>%
     group_by(KEid) %>%
     summarise (KEEnsembl = paste(Ensembl,collapse="; "),
@@ -803,37 +832,34 @@ Sys.sleep(1)
                KEsummary_go_term = paste(summary_term, collapse="; "))
   names(ke_freq_df) <- c("KEid","KE_frequency")
   ke_freq_df_full <- merge(ke_freq_df, add_attributes,"KEid",all.y=TRUE)
-  #Counting how often which KEs are associated with all genes
   
   ke_associated_genes_freq <- ke_freq_df_full
   
+    #Setting up empty lists
   aop_link <- list()
-  
   variables <- ls()
-  #Getting a list of variables defined within the aopprocess function
-  #append_suffix <- function(variable, suffix) {
-  #assign(paste0(variable,"_",suffix), get(variable), envir = .GlobalEnv)
-  #}
-  #Defining a function to add a suffix to the variables created within the aopprocess function
+
+    #Appending the given tag that specifies if 'all' KEs and associated genes were fetched from AOP-Wiki, or only ones associated with a preselected list of 
+    #disease-related adverse outcomes
+    #Allows to easily compare outcomes when the function is ran with different parameters, notably the difference between keep=TRUE and FALSE and preselection of adverse outcomes to get data from
   for (variable in variables) {
     aop_link[[variable]] <- get(variable)
   }
   return(aop_link)
-  #Appending the given tag to every produced variable within the aopprocess function
-  #Saving the resulting network
 }
 
-
+  #Running the function with the given query that returns all KEs and their genes from all adverse outcomes in AOP-Wiki
+  #keep set to TRUE so that all genes are retained, not only the ones with AOP-Wiki data
 aoplink_all <- aopprocess("all_AO_KE_Ensembl_query.txt",TRUE,"all")
-  #Second function argument specifies whether to save all (gene) rows from the network (=true) or only rows that have AOP-Wiki data ssociated with them 
-  #Matching AOP information to risk genes in the network from all AOs available in AOP-Wiki
+
 snw_scz_string_clustered_GO_AOP_all <- getNetworkName()
+  #Exporting network
 exportNetwork(filename=paste0(nw_savepath,"SCZ_SNW_STRING_clustered_GO_AOP_all"),"CX",network=snw_scz_string_clustered_GO_AOP_all,overwriteFile=TRUE)
-#Exporting network
 
 
+  #Counting how many valid clusters remain (in case genes were filtered for AOP-Wiki data)
 nclusters <- as.character(count(unique(getTableColumns("node","gLayCluster"))))
-  #Counting how many valid clusters remain
+  #Recording to metadata
 metadata.add(paste0("Valid (>= 5 nodes) clusters: ",nclusters))
 metadata.add(paste0("Nodes associated with valid clusters: ",getNodeCount()))
 metadata.add("")
@@ -842,10 +868,6 @@ metadata.add("")
 
 gettop <- function(input) {
   freq_df <- input$ke_freq_df_full
-  #cutoff_ke <- quantile(freq_df$KE_frequency, probs=0.75,na.rm = TRUE)
-  #Defining cutoff for KE frequency (top 25% most frequent)
-  #topquarter_ke <- freq_df[freq_df$KE_frequency >= cutoff_ke & !is.na(freq_df$KE_frequency),,drop=FALSE]
-  #Selecting the top 25% most frequently matched with KEs and associated information
   topquarter_ke <- freq_df
 }
 
