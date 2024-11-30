@@ -1,0 +1,19 @@
+Ensembl_source	Ensembl	CNVassociated	gLayCluster_target	gLayCluster	N_nodes	Publication_source	DisGeNET_source	WikiPathways_source	WikiPathways_CNV	WikiPathways_noCNV	summary_term
+ENSG00000125845	ENSG00000125845	1	171	171	6	0	0	6	4	2	Cell communication
+ENSG00000168487	ENSG00000168487	1	171	171	6	0	0	6	4	2	Cell communication
+ENSG00000107779	ENSG00000107779	1	171	171	6	0	0	6	4	2	Cell communication
+ENSG00000105880	ENSG00000105880		171	171	6	0	0	6	4	2	Cell communication
+ENSG00000090539	ENSG00000090539	1	171	171	6	0	0	6	4	2	Cell communication
+ENSG00000006377	ENSG00000006377		171	171	6	0	0	6	4	2	Cell communication
+ENSG00000167987	ENSG00000167987	1	190	190	7	0	0	7	7	0	Fatty acid biosynthesis & kinase signalling
+ENSG00000155975	ENSG00000155975	1	190	190	7	0	0	7	7	0	Fatty acid biosynthesis & kinase signalling
+ENSG00000139722	ENSG00000139722	1	190	190	7	0	0	7	7	0	Fatty acid biosynthesis & kinase signalling
+ENSG00000141971	ENSG00000141971	1	190	190	7	0	0	7	7	0	Fatty acid biosynthesis & kinase signalling
+ENSG00000074319	ENSG00000074319	1	190	190	7	0	0	7	7	0	Fatty acid biosynthesis & kinase signalling
+ENSG00000160948	ENSG00000160948	1	190	190	7	0	0	7	7	0	Fatty acid biosynthesis & kinase signalling
+ENSG00000176428	ENSG00000176428	1	190	190	7	0	0	7	7	0	Fatty acid biosynthesis & kinase signalling
+ENSG00000138735	ENSG00000138735		245	245	5	0	0	5	0	5	NPHP1 deletion syndrome & Joubert syndrome
+ENSG00000185527	ENSG00000185527		245	245	5	0	0	5	0	5	NPHP1 deletion syndrome & Joubert syndrome
+ENSG00000132915	ENSG00000132915		245	245	5	0	0	5	0	5	NPHP1 deletion syndrome & Joubert syndrome
+ENSG00000186642	ENSG00000186642		245	245	5	0	0	5	0	5	NPHP1 deletion syndrome & Joubert syndrome
+ENSG00000133256	ENSG00000133256		245	245	5	0	0	5	0	5	NPHP1 deletion syndrome & Joubert syndrome

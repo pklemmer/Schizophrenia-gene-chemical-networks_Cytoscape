@@ -784,7 +784,6 @@ aopprocess <- function(input,keep,tag) {
       keensgpairs[j, i] <- gsub('"', '', keensgpairs[j, i])
     }
   }
-
     #The df has one row per KE with associated Ensembl IDs for genes associated with that KE concatenanted into one cell of the same row
     #This separates the Ensembl IDs into distinct rows by splitting on semicolon
   separate_keensgpairs <- separate_rows(keensgpairs,Ensembl,sep="; ")
@@ -815,7 +814,7 @@ aopprocess <- function(input,keep,tag) {
   if(keep == TRUE) {
     aop_associated_genes <- scz_snw_string_go_aop_node }
     #Merging the list of genes in the network with summary GO terms based on cluster
-  aop_associated_genes <- merge(aop_associated_genes,summary_go_terms,"gLayCluster")
+  ###############aop_associated_genes <- merge(aop_associated_genes,summary_go_terms,"gLayCluster")
 Sys.sleep(1)
     #Getting a df from the df with AOP-associated genes and cluster that is split on KE ID to have a df with one KE ID per row
   separate_ketitles <- separate_rows(aop_associated_genes,KEid,sep="; ")
@@ -828,8 +827,8 @@ Sys.sleep(1)
   add_attributes <- separate_ketitles %>%
     group_by(KEid) %>%
     summarise (KEEnsembl = paste(Ensembl,collapse="; "),
-               KEgenename = paste(HGNCsymbol, collapse="; "),
-               KEsummary_go_term = paste(summary_term, collapse="; "))
+               KEgenename = paste(HGNCsymbol, collapse="; "))
+               #############KEsummary_go_term = paste(summary_term, collapse="; "))
   names(ke_freq_df) <- c("KEid","KE_frequency")
   ke_freq_df_full <- merge(ke_freq_df, add_attributes,"KEid",all.y=TRUE)
   
@@ -1322,7 +1321,7 @@ mapped_chembls <- na.omit(mapped_chembls)
 # }
 # getmetabolitemap()
 
-metabolite_bridge_dir <- paste0(getwd(),"/BridgeDb/metabolites_20240416.bridge")
+metabolite_bridge_dir <- paste0(getwd(),"/BridgeDb/metabolites_20240903.bridge")
 metabolite_mapper <- loadDatabase(metabolite_bridge_dir)
 metabolite_input <- data.frame(
   source = rep("Cl", length(mapped_chembls[, 1])),
